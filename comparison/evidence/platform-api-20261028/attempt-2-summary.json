@@ -1,0 +1,105 @@
+{
+  "kind": "native-platform-public-api-calibration",
+  "run_id": "40669456421",
+  "controller_commit": "82bf6964b82dfd184509f8750a88143cd36f3b66",
+  "formal_study_complete": false,
+  "paid_model_calls": 0,
+  "usage_synthetic": true,
+  "rows": [
+    {
+      "product": "DSH",
+      "valid": true,
+      "startup_ms": 3655.349217,
+      "task_elapsed_ms": [
+        228.182618,
+        137.753212
+      ],
+      "accepted_tasks": 2,
+      "distinct_native_sessions": 2,
+      "initial_cgroup_processes": 1,
+      "initial_process_map": [
+        {
+          "pid": 2576,
+          "ppid": 2573,
+          "cmdline": "node /home/runner/work/_temp/platform-api-runtime/node_modules/.bin/dsh --profile web --patch /home/runner/work/_temp/platform-api-d0nc8pem/DSH/server.patch.yml --no-open --host 127.0.0.1 --port 58637"
+        }
+      ],
+      "synthetic_provider_requests": 4,
+      "resources_complete": true,
+      "lifecycle_cpu_core_seconds": 5.409016,
+      "sampled_peak_pss_bytes": 458782720,
+      "sampled_peak_disk_increment_bytes": 114688,
+      "measurement_scope": "Native server startup, two sequential independent session tasks and cleanup; observer/model fixture outside cgroup; shared package installation excluded",
+      "session_binding_recheck": {
+        "valid": true,
+        "sessions": [
+          {
+            "native_identity": "8a92adeb-6c14-41b0-b33f-6f37e719e321",
+            "matching_task_requests": 1,
+            "disjoint_context": true,
+            "native_identity_confirmed": true
+          },
+          {
+            "native_identity": "c6fe8c7b-3202-43ff-9a80-50abf935d72a",
+            "matching_task_requests": 1,
+            "disjoint_context": true,
+            "native_identity_confirmed": true
+          }
+        ]
+      }
+    },
+    {
+      "product": "OpenClaw",
+      "valid": true,
+      "startup_ms": 12803.929048,
+      "task_elapsed_ms": [
+        17166.465637,
+        953.942836
+      ],
+      "accepted_tasks": 2,
+      "distinct_native_sessions": 2,
+      "initial_cgroup_processes": 3,
+      "initial_process_map": [
+        {
+          "pid": 2622,
+          "ppid": 2619,
+          "cmdline": "openclaw-gateway"
+        },
+        {
+          "pid": 2639,
+          "ppid": 2622,
+          "cmdline": "/opt/hostedtoolcache/node/24.22.1/x64/bin/node /home/runner/work/_temp/platform-api-runtime/node_modules/openclaw/dist/process/spawn-broker/worker.js"
+        },
+        {
+          "pid": 2654,
+          "ppid": 2622,
+          "cmdline": "/opt/hostedtoolcache/node/24.22.1/x64/bin/node /home/runner/work/_temp/platform-api-runtime/node_modules/openclaw/dist/infra/sqlite-readonly-location.worker.js --openclaw-sqlite-readonly-child session"
+        }
+      ],
+      "synthetic_provider_requests": 2,
+      "resources_complete": true,
+      "lifecycle_cpu_core_seconds": 51.85299,
+      "sampled_peak_pss_bytes": 2106178560,
+      "sampled_peak_disk_increment_bytes": 45170688,
+      "measurement_scope": "Native server startup, two sequential independent session tasks and cleanup; observer/model fixture outside cgroup; shared package installation excluded",
+      "session_binding_recheck": {
+        "valid": true,
+        "sessions": [
+          {
+            "native_identity": "agent:main:platform:994f28aa-7139-4a63-ae35-e4dd1dfeae30",
+            "matching_task_requests": 1,
+            "disjoint_context": true,
+            "native_identity_confirmed": true
+          },
+          {
+            "native_identity": "agent:main:platform:6497d9a9-84a8-4c3d-be88-4138289e6a0c",
+            "matching_task_requests": 1,
+            "disjoint_context": true,
+            "native_identity_confirmed": true
+          }
+        ]
+      }
+    }
+  ],
+  "interpretation": "Two native sessions share one service/state root. Positive controls now reach public API, provider and native result. No interruption, restore, concurrency, idle or blind-log reconstruction executed; these measurements cannot complete PA or PC or support a product ranking. Formal admission requires a complete fault/recovery pilot and whole-block estimate."
+}

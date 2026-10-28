@@ -17,14 +17,20 @@
           "note": ""
         },
         "DSH": {
-          "status": "planned",
-          "evidence": [],
-          "note": ""
+          "status": "in_progress",
+          "evidence": [
+            "comparison/evidence/platform-api-20261028/attempt-2-summary.json",
+            "comparison/evidence/platform-api-20261028/attempt-2-provenance.json"
+          ],
+          "note": "Long-lived native server public API calibrated: two distinct sessions per service, random input/provider/native-result chain and complete resource collection. Source/process bindings retained. Client/owner exit, companion impact, native restart recovery and blind-log reconstruction still require a complete pilot and formal blocks; this is not a completed fault-domain comparison."
         },
         "OpenClaw": {
-          "status": "planned",
-          "evidence": [],
-          "note": ""
+          "status": "in_progress",
+          "evidence": [
+            "comparison/evidence/platform-api-20261028/attempt-2-summary.json",
+            "comparison/evidence/platform-api-20261028/attempt-2-provenance.json"
+          ],
+          "note": "Long-lived native server public API calibrated: two distinct sessions per service, random input/provider/native-result chain and complete resource collection. Source/process bindings retained. Client/owner exit, companion impact, native restart recovery and blind-log reconstruction still require a complete pilot and formal blocks; this is not a completed fault-domain comparison."
         }
       },
       "dimensions": [

@@ -4,7 +4,7 @@ import sys
 import unittest
 from unittest.mock import patch
 sys.path.insert(0,str(Path(__file__).resolve().parents[1]))
-from platform_api_probe import NativeServer,fixture_response,redact
+from platform_api_probe import NativeServer,fixture_response,redact,fresh_session_bindings
 
 
 class PlatformApiCalibrationTests(unittest.TestCase):
@@ -16,6 +16,15 @@ class PlatformApiCalibrationTests(unittest.TestCase):
 
     def test_launch_token_is_removed_from_retained_native_log(self):
         self.assertEqual(redact('dsh web: http://127.0.0.1:123/?token=synthetic-private\n'),'dsh web: http://127.0.0.1:123/?token=<redacted>\n')
+
+    def test_native_session_projection_and_disjoint_context_are_required(self):
+        tasks=[dict(session_id=str(i),session_key='agent:main:platform:'+str(i),marker='PLATFORM_INPUT_'+digit*32) for i,digit in enumerate(('a','b'))]
+        requests=[dict(request=dict(messages=[dict(role='user',content=t['marker']+'\nRuntime: agent=main | session='+t['session_key']+' | model=fixture')])) for t in tasks]
+        self.assertTrue(fresh_session_bindings('OpenClaw',tasks,requests)['valid'])
+        requests[1]['request']['messages'][0]['content']+='\n'+tasks[0]['marker']
+        self.assertFalse(fresh_session_bindings('OpenClaw',tasks,requests)['valid'])
+        requests[1]['request']['messages'][0]['content']=tasks[1]['marker']
+        self.assertFalse(fresh_session_bindings('OpenClaw',tasks,requests)['valid'])
 
     def test_wrong_rpc_correlation_and_native_rejection_cannot_look_accepted(self):
         server=NativeServer.__new__(NativeServer);server.cookie='owned-only'

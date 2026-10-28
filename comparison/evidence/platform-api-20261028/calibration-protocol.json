@@ -1,0 +1,42 @@
+{
+  "study_id": "PA",
+  "status": "native_api_calibration_before_fault_protocol_freeze",
+  "formal_complete": false,
+  "question": "Which native server process owns admitted work, and which independently identified sessions share its failure domain?",
+  "deployment": {
+    "DSH": "dsh web: loopback, shipped Web composition, fresh owned DSH_HOME, public authenticated session create/prompt/wait API",
+    "OpenClaw": "gateway run: loopback, fresh owned state, public authenticated OpenAI-compatible HTTP endpoint"
+  },
+  "scope": "Platform uses long-lived native servers. Earlier Harness CTX studies used per-invocation headless/embedded entries; their resource points do not stand in for service ownership or warm/idle platform cost.",
+  "calibration": {
+    "products": [
+      "DSH 0.2.2-alpha.2",
+      "OpenClaw 2026.10.8"
+    ],
+    "sessions_per_product": 2,
+    "provider": "deterministic independent local HTTP service; synthetic usage, no paid credentials",
+    "assertions": [
+      "Distinct actual native session identities sharing one service/state root",
+      "Each random user marker reaches actual provider request",
+      "Native terminal output contains fixture-only acknowledgment",
+      "Dedicated service cgroup resources complete",
+      "Sanitized launch logs and process ancestry retained"
+    ],
+    "startup_handshake_safeguard_seconds": 90,
+    "http_calibration_socket_seconds": 60
+  },
+  "future_fault_conditions": [
+    "healthy with healthy companion",
+    "abrupt client exit at independently observed admitted provider boundary",
+    "execution-owner exit at same boundary"
+  ],
+  "fidelity_requirements": [
+    "Freeze actual client and service owner PIDs using process/cgroup witnesses; never infer owner from wrapper Popen PID",
+    "SIGTERM may send native cancellation, so cannot stand in for abrupt client loss without a distinct label",
+    "Keep same native server deployment, principal and session topology within each product block",
+    "Observe companion terminal outcome, native persisted state and recovery rather than treating a disconnected response as task failure",
+    "Freeze full fault/recovery/no-progress protocol and pilot-derived whole-block estimate before formal two-block admission",
+    "Blind native-log reconstruction remains required by PA; external truth may not earn native observability credit"
+  ],
+  "source_bindings": "platform-source-bindings.json"
+}

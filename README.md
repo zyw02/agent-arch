@@ -22,7 +22,7 @@ Read the [Harness measurement and visualization design](comparison/harness-evalu
 
 Explore the [experiment catalogue](comparison/experiment-index.md) and [execution protocol](comparison/execution-protocol.md) for scenarios, measurements, acceptance, and readiness.
 
-[![Architecture research progress](https://raw.githubusercontent.com/zyw02/agent-arch/main/comparison/progress.svg?v=3360c7e25029)](https://github.com/zyw02/agent-arch/actions/workflows/comparison-calibration.yml?query=branch%3Amain)
+[![Architecture research progress](https://raw.githubusercontent.com/zyw02/agent-arch/main/comparison/progress.svg?v=42268dc64527)](https://github.com/zyw02/agent-arch/actions/workflows/comparison-calibration.yml?query=branch%3Amain)
 
 <!-- comparison-dashboard:start -->
 <details>
@@ -32,7 +32,7 @@ Explore the [experiment catalogue](comparison/experiment-index.md) and [executio
 
 | Layer / experiment | Dimensions | Codex | DSH | OpenClaw |
 | --- | --- | --- | --- | --- |
-| Platform · P01 Fault domains | Reliability, Observability | Planned | Planned | Planned |
+| Platform · P01 Fault domains | Reliability, Observability | Planned | In progress | In progress |
 | Platform · P02 State and deployment | Reliability, Security | Planned | Planned | Planned |
 | Platform · P03 Resources and concurrency | Performance, Resource & cost | Planned | Planned | Planned |
 | Platform · P04 Access and operations | Extensibility, Observability | Planned | Planned | Planned |

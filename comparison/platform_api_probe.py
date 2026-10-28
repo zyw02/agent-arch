@@ -19,6 +19,7 @@ import uuid
 from native_read_probe import Provider
 from context_skill_probe import request_text
 from resource_collector import ResourceCollector
+from export_read_metrics import request_stage
 
 MARKER=re.compile(r'PLATFORM_INPUT_[a-f0-9]{32}')
 
@@ -28,6 +29,24 @@ def fixture_response(body,file_path,receipt,target_tool):
     if 'Generate the session title from this JSON array' in text:return dict(text='Platform calibration')
     markers=MARKER.findall(text)
     return dict(text='PLATFORM_ACK:'+markers[-1] if markers else 'CALIBRATION_MISSING_MARKER')
+
+
+def fresh_session_bindings(product,tasks,requests):
+    """Calibrate native identities and disjoint contexts, not just client-minted IDs."""
+    task_requests=[r for r in requests if request_stage(r)!='auxiliary_session_title']
+    rows=[]
+    for task in tasks:
+        reached=[r['request'] for r in task_requests if task['marker'] in request_text(r['request'])]
+        disjoint=bool(reached) and all(other['marker'] not in request_text(body) for body in reached for other in tasks if other is not task)
+        # DSH returns the identity from native session.create. OpenClaw must
+        # additionally show the routed key in its native Runtime projection. The
+        # submitted HTTP message is only a validated random marker; it cannot
+        # itself contain that projection (which is appended in a user-role block).
+        native_key=task['session_id'] if product=='DSH' else task['session_key']
+        native_visible=product=='DSH' or any(re.search(r'(?m)^Runtime: agent=main \| session='+re.escape(native_key)+r' \|',request_text(body)) for body in reached)
+        rows.append(dict(native_identity=native_key,matching_task_requests=len(reached),disjoint_context=disjoint,native_identity_confirmed=native_visible))
+    valid=len(tasks)==2 and all(MARKER.fullmatch(t['marker']) for t in tasks) and len({r['native_identity'] for r in rows})==2 and all(r['matching_task_requests']==1 and r['disjoint_context'] and r['native_identity_confirmed'] for r in rows)
+    return dict(valid=valid,sessions=rows)
 
 
 def free_port():
@@ -155,7 +174,8 @@ def main():
                 server=NativeServer(product,args.runtime,root,provider);server.ready();row['startup_ms']=(server.ready_ns-server.started_ns)/1e6;row['process_map']=server.process_map();row['command']=server.command
                 # Two public native sessions share exactly one server and state root.
                 row['tasks']=[server.task(str(uuid.uuid4()),'PLATFORM_INPUT_'+uuid.uuid4().hex) for _ in range(2)]
-                row['valid']=len({t['session_id'] for t in row['tasks']})==2 and all(t['accepted'] and any(t['marker'] in request_text(r['request']) for r in provider.requests) for t in row['tasks'])
+                row['session_bindings']=fresh_session_bindings(product,row['tasks'],provider.requests)
+                row['valid']=row['session_bindings']['valid'] and all(t['accepted'] and any(t['marker'] in request_text(r['request']) for r in provider.requests) for t in row['tasks'])
             except Exception as error:row['adapter_error']=type(error).__name__+': '+str(error)[:1800]
             finally:
                 if server is not None:row.update(resources=server.stop(),sanitized_native_log=list(server.logs),process_exit=server.process.returncode)

@@ -1,0 +1,21 @@
+{
+  "run_id": "40669456421",
+  "controller_commit": "82bf6964b82dfd184509f8750a88143cd36f3b66",
+  "source_url": "https://github.com/zyw02/agent-arch/actions/runs/40669456421",
+  "artifact_id": 12807577747,
+  "artifact_zip_sha256": "a9f623f6cb05c8e2de5961cee5ad1e061a37cc03e4cc67ea0277e297efc123d2",
+  "uncompressed_members_sha256": {
+    "platform-api-report.json": "745e1966829537fefb59fa394814b3230bd6a371b026b1917da2983ed49d058c",
+    "package-lock.json": "5232cf7c27a01dfd4728fe1ded3c619f1a295468e6a899e9f282c02864ea7f8e"
+  },
+  "retained_files_sha256": {
+    "attempt-2-summary.json": "6c4ab7c6d32dce928d8fa0edaa9920f328ce22ba11864f74cd1e460c5f194463",
+    "attempt-2-platform-api-report.json.gz": "d71fd4b74e0d7a90e7ca65f3b4748f25b2c60f7ead8ba2af2620126130dc5fed",
+    "calibration-protocol.json": "a5ff3770a3b0a9503bfa3405d44947dce3a70aac06fbdb63b8ca267af9b0430c",
+    "attempt-2-package-lock.json.gz": "c0b0593ecf908b24334149c8066d2b1009b200543d06d54f16d718d51646762e",
+    "source-bindings.json": "ef6ec4d7eb0b9cea69efbe46391525d0bc585b4023d9bcf24387f312a2bdbd2a"
+  },
+  "prior_failure": "attempt-1-provenance.json",
+  "offline_session_binding_recheck": "Verify original native create-result identities for DSH, actual native Runtime session-key projections for OpenClaw, and disjoint fresh task contexts. OpenClaw appends Runtime inside a user-role block; role is not misrepresented as system. Original submitted HTTP message is a validated random marker only. Original report judgments unchanged; no new native execution.",
+  "binding_checker_sha256": "1ffe0066b67e733156f971b21f0db4f857f06afef22addc5944e305ecaa969b9"
+}
