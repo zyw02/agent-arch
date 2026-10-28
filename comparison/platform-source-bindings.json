@@ -109,6 +109,15 @@
       "ref": "dc2523e5a5c7a309517fd7fa834add938231d526",
       "blob_sha": "ca7743a70896960bf6b45d53592f3a9bcbae2e2b",
       "url": "https://github.com/openclaw/openclaw/blob/dc2523e5a5c7a309517fd7fa834add938231d526/src/gateway/openai-compatible-agent-run.ts"
+    },
+    {
+      "product": "dsh",
+      "path": "apps/cli/src/args.ts",
+      "owner": "Launcher flags end at first application flag; profile/patch must precede Web options",
+      "repo": "deepseek-ai/deepseek-harness",
+      "ref": "f3803c96974ad4a94195fb97e5c637e9c2a3afe3",
+      "blob_sha": "41d4ebeaa832473b25952af1b185e02a7c182844",
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/apps/cli/src/args.ts"
     }
   ]
 }

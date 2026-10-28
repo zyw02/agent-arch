@@ -47,7 +47,7 @@ class NativeServer:
             patch=root/'server.patch.yml';patch.write_text('- id: llm-deepseek\n  config:\n    thinking: disabled\n    reasoningEffort: off\n    maxTokens: 2048\n')
             env.update(DSH_HOME=str(self.state),DSH_AGENTS_HOME=str(root/'.agents'),DSH_TELEMETRY_DISABLED='1',
                 DEEPSEEK_BASE_URL=provider.base,DEEPSEEK_API_KEY='synthetic-only',DSH_PERMISSION_MODE='read-only')
-            command=[str(runtime/'node_modules/.bin/dsh'),'web','--no-open','--host','127.0.0.1','--port',str(self.port),'--patch',str(patch)]
+            command=[str(runtime/'node_modules/.bin/dsh'),'--profile','web','--patch',str(patch),'--no-open','--host','127.0.0.1','--port',str(self.port)]
         else:
             config=root/'openclaw.json';config.write_text(json.dumps(dict(gateway=dict(mode='local',auth=dict(mode='token',token='synthetic-platform-only'),
                 http=dict(endpoints=dict(chatCompletions=dict(enabled=True)))),
@@ -152,7 +152,7 @@ def main():
             root=Path(tmp)/product;root.mkdir();provider=Provider(root/'unused','unused',decision_fn=fixture_response);server=None
             row=dict(product=product,valid=False,calibration_only=True,paid_model_calls=0)
             try:
-                server=NativeServer(product,args.runtime,root,provider);server.ready();row['startup_ms']=(server.ready_ns-server.started_ns)/1e6;row['process_map']=server.process_map()
+                server=NativeServer(product,args.runtime,root,provider);server.ready();row['startup_ms']=(server.ready_ns-server.started_ns)/1e6;row['process_map']=server.process_map();row['command']=server.command
                 # Two public native sessions share exactly one server and state root.
                 row['tasks']=[server.task(str(uuid.uuid4()),'PLATFORM_INPUT_'+uuid.uuid4().hex) for _ in range(2)]
                 row['valid']=len({t['session_id'] for t in row['tasks']})==2 and all(t['accepted'] and any(t['marker'] in request_text(r['request']) for r in provider.requests) for t in row['tasks'])

@@ -1,0 +1,18 @@
+{
+  "run_id": "40668832946",
+  "controller_commit": "4271d582a88a2271d603520612fb35270627a49f",
+  "artifact_id": 12806918417,
+  "artifact_zip_sha256": "724987d0e55ec3917236bd575db88cecea6536c5fc700e86d191f269014390c8",
+  "formal": false,
+  "paid_model_calls": 0,
+  "DSH": "Adapter launch error: --patch followed app flags; launcher passes the remainder to the Web app, which rejects --patch. No provider request reached. Not a product task outcome.",
+  "OpenClaw": "Two independent native Gateway HTTP sessions accepted, native acknowledgments match distinct random provider-visible inputs; cgroup observation complete. Preliminary calibration only.",
+  "retained_files_sha256": {
+    "attempt-1-package-lock.json.gz": "c0b0593ecf908b24334149c8066d2b1009b200543d06d54f16d718d51646762e",
+    "attempt-1-platform-api-report.json.gz": "8d5868f9abef3bc8c74d796d13fb58558fc3a0328e2f03415d13eed3d833357d"
+  },
+  "uncompressed_members_sha256": {
+    "platform-api-report.json": "de683bf239f6c726fcf542573ee2ee628061acdfa93bf8f6f612e32334b0b2d6",
+    "package-lock.json": "5232cf7c27a01dfd4728fe1ded3c619f1a295468e6a899e9f282c02864ea7f8e"
+  }
+}
