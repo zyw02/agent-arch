@@ -1,0 +1,10 @@
+{
+  "run_id": 40657342012,
+  "artifact_id": 12802231443,
+  "artifact_sha256": "362d463dcce5d483b8dadf701ad2f124f76cd4e2387d7ee4a67fb2a9bad87d7c",
+  "controller_commit": "0d245319ea009d8ef905d16db4ed9269cd03f142",
+  "figures": {
+    "guide-reuse-paired.svg": "773b0e184128669fa9011cee16b5b5565a967074983a86b2391a5d9c539eb61d",
+    "guide-reuse-paired.png": "8cb27b1e565925008a08a9bbcdd229e5d2dd9fa1bab7647a7f525f040d56f6cc"
+  }
+}

@@ -19,22 +19,25 @@ def schemas(body):
     return {t.get('function',t)['name']:t.get('function',t).get('parameters',t.get('input_schema',{})) for t in body.get('tools',[]) if 'name' in t.get('function',t)}
 
 
-def choose_response(body, file_path, receipt):
+def choose_response(body, file_path, receipt, target_tool='read'):
     messages=body.get('messages',[])
     results=[m for m in messages if m.get('role')=='tool' or (isinstance(m.get('content'),list) and any(v.get('type')=='tool_result' for v in m['content'] if isinstance(v,dict)))]
     visible=receipt in json.dumps(results)
     if visible:return dict(text='VERIFIED:'+receipt)
     available=schemas(body)
-    if 'read' not in available:return dict(text='CALIBRATION_MISSING_NATIVE_READ')
+    if target_tool not in available:return dict(text='CALIBRATION_MISSING_NATIVE_READ')
+    if target_tool!='read':
+        if results:return dict(text='CALIBRATION_EXTENSION_WITHOUT_RECEIPT')
+        return dict(tool=target_tool,arguments={})
     props=available['read'].get('properties',{})
     key=next((k for k in ('file_path','path') if k in props),None)
     if key is None:return dict(text='CALIBRATION_UNSUPPORTED_READ_SCHEMA')
     if results:return dict(text='CALIBRATION_TOOL_RESULT_WITHOUT_RECEIPT')
-    return dict(tool='read',arguments={key:str(file_path)})
+    return dict(tool=target_tool,arguments={key:str(file_path)})
 
 
 class Provider:
-    def __init__(self, file_path, receipt):
+    def __init__(self, file_path, receipt, target_tool='read'):
         self.file_path=file_path;self.receipt=receipt;self.requests=[]
         owner=self
         class Handler(BaseHTTPRequestHandler):
@@ -45,7 +48,7 @@ class Provider:
             def do_POST(self):
                 size=int(self.headers.get('Content-Length',0))
                 if not 0<size<=4*1024**2:self.send_error(413);return
-                body=json.loads(self.rfile.read(size));decision=choose_response(body,owner.file_path,owner.receipt)
+                body=json.loads(self.rfile.read(size));decision=choose_response(body,owner.file_path,owner.receipt,target_tool)
                 owner.requests.append(dict(monotonic_ns=time.monotonic_ns(),endpoint=self.path,
                     schemas=schemas(body),request=body,decision=decision))
                 if len(owner.requests)>10:self.send_error(429);return
@@ -89,22 +92,35 @@ class Provider:
     def close(self):self.server.shutdown();self.server.server_close()
 
 
-def run_product(product,runtime,root):
+def run_product(product,runtime,root,route='native'):
     workspace=root/'workspace';workspace.mkdir();input_file=workspace/'receipt.txt'
     receipt='OWNED_NATIVE_READ_'+uuid.uuid4().hex;input_file.write_text(receipt+'\n')
     original=hashlib.sha256(input_file.read_bytes()).hexdigest()
-    provider=Provider(input_file,receipt);env=dict(os.environ)
+    target_tool='read' if route=='native' else ('mcp__probe__eval_read' if product=='DSH' else 'probe__eval_read')
+    provider=Provider(input_file,receipt,target_tool);env=dict(os.environ)
+    ledger=root/'mcp-ledger.jsonl'
+    fixture=Path(__file__).with_name('read_mcp_fixture.py').resolve()
     # Synthetic launch-time credentials and task-owned product roots.
-    prompt=f'NATIVE_READ_CALIBRATION: Use the native read tool to read {input_file}, then report its exact content.'
+    prompt=f'NATIVE_READ_CALIBRATION: Read {input_file} using the exposed read capability, then report its exact content.'
     if product=='DSH':
         home=root/'dsh-home';home.mkdir();env.update(DSH_HOME=str(home),DEEPSEEK_BASE_URL=provider.base,DEEPSEEK_API_KEY='synthetic-only',DSH_PERMISSION_MODE='read-only')
-        command=[str(runtime/'node_modules/.bin/dsh'),'--profile','headless','--json',prompt]
+        command=[str(runtime/'node_modules/.bin/dsh'),'--profile','headless','--json']
+        if route=='mcp':
+            patch=root/'mcp.patch.yml'
+            patch.write_text('- insert:\n    - id: probe-mcp\n      name: "@deepseek-ai/dsh-mcp-client"\n      config:\n        serverName: probe\n        transport: stdio\n        command: /usr/bin/python3\n        args: '+json.dumps([str(fixture),'--file',str(input_file),'--ledger',str(ledger)])+'\n        failOnStartupError: true\n')
+            command+=['--patch',str(patch)]
+        command.append(prompt)
     else:
         state=root/'openclaw-state';state.mkdir();config=root/'openclaw.json'
         config.write_text(json.dumps(dict(gateway=dict(mode='local',auth=dict(mode='token',token='synthetic-only')),
             models=dict(providers=dict(fixture=dict(baseUrl=provider.base,apiKey='synthetic-only',api='openai-completions',models=[dict(id='fixture-model',name='Native read fixture',reasoning=False,input=['text'],contextWindow=128000,maxTokens=1024)]))),
             agents=dict(defaults=dict(workspace=str(workspace),model=dict(primary='fixture/fixture-model'),skipBootstrap=True,thinkingDefault='off')),
             tools=dict(allow=['read'],toolSearch=False),cron=dict(enabled=False))))
+        if route=='mcp':
+            current=json.loads(config.read_text())
+            current['mcp']=dict(servers=dict(probe=dict(transport='stdio',command='/usr/bin/python3',args=[str(fixture),'--file',str(input_file),'--ledger',str(ledger)],supportsParallelToolCalls=True,requestTimeoutMs=10000)))
+            current['tools']['allow']=[target_tool]
+            config.write_text(json.dumps(current))
         env.update(OPENCLAW_STATE_DIR=str(state),OPENCLAW_CONFIG_PATH=str(config))
         command=[str(runtime/'node_modules/.bin/openclaw'),'agent','--local','--session-id',str(uuid.uuid4()),'--json','--message',prompt]
     start=time.monotonic_ns();before=resource.getrusage(resource.RUSAGE_CHILDREN)
@@ -122,17 +138,18 @@ def run_product(product,runtime,root):
             child.wait()
         end=time.monotonic_ns();after=resource.getrusage(resource.RUSAGE_CHILDREN);provider.close()
     visible=any(v['decision'].get('text')=='VERIFIED:'+receipt for v in provider.requests)
-    native_attempt=any(v['decision'].get('tool')=='read' for v in provider.requests)
+    native_attempt=any(v['decision'].get('tool')==target_tool for v in provider.requests)
     final_receipt=('VERIFIED:'+receipt) in result.get('stdout','')
     unchanged=hashlib.sha256(input_file.read_bytes()).hexdigest()==original
-    result.update(product=product,phase='adapter-calibration-only',paid_model_calls=0,
+    mcp_events=[json.loads(line) for line in ledger.read_text().splitlines()] if ledger.exists() else []
+    result.update(product=product,route=route,target_tool=target_tool,mcp_events=mcp_events,phase='adapter-calibration-only',paid_model_calls=0,
         receipt_was_absent_from_initial_prompt=receipt not in prompt,native_read_requested=native_attempt,
         receipt_observed_in_tool_result=visible,receipt_observed_in_final_output=final_receipt,input_unchanged=unchanged,
-        valid=result.get('exit_code')==0 and visible and native_attempt and final_receipt and unchanged,
+        valid=result.get('exit_code')==0 and visible and native_attempt and final_receipt and unchanged and (route=='native' or len(mcp_events)==1),
         invocation_wall_ms=(end-start)/1e6,child_cpu_user_seconds=after.ru_utime-before.ru_utime,
         child_cpu_system_seconds=after.ru_stime-before.ru_stime,
         provider_request_count=len(provider.requests),provider_requests=provider.requests,
-        resource_limitations='CPU is invocation children rusage, not per-stage attribution. Full cgroup/PSS/disk collectors and same-operation extension control are pending. Synthetic usage is not real token cost.',
+        resource_limitations='CPU is invocation children rusage, not per-stage attribution. Full cgroup/PSS/disk collectors and formal paired repetitions are pending. Synthetic usage is not real token cost.',
         file_sha256=original,configuration='DSH shipped headless read-only; OpenClaw local native read-only tool allowlist with public direct-schema setting')
     return result
 
@@ -149,12 +166,13 @@ def main():
     lock_sha256=hashlib.sha256((args.runtime/'package-lock.json').read_bytes()).hexdigest()
     with tempfile.TemporaryDirectory(prefix='native-read-',dir=os.environ['RUNNER_TEMP']) as tmp:
         for product in ('DSH','OpenClaw'):
-            root=Path(tmp)/product;root.mkdir();results.append(run_product(product,args.runtime,root))
+            for route in ('native','mcp'):
+                root=Path(tmp)/(product+'-'+route);root.mkdir();results.append(run_product(product,args.runtime,root,route))
     report=dict(kind='two-product-native-read-calibration',run_id=os.environ.get('GITHUB_RUN_ID'),controller_commit=os.environ.get('GITHUB_SHA'),formal_new_experiments=False,installed_versions=versions,package_lock_sha256=lock_sha256,results=results)
     raw=json.dumps(report,indent=2).encode()
     if len(raw)>4*1024**2:raise ValueError('Compact calibration report bound exceeded')
     (args.output/'native-read-calibration.json').write_bytes(raw)
-    print(json.dumps([dict(product=r['product'],valid=r['valid'],exit_code=r['exit_code'],requests=r['provider_request_count']) for r in results]))
+    print(json.dumps([dict(product=r['product'],route=r['route'],valid=r['valid'],exit_code=r['exit_code'],requests=r['provider_request_count']) for r in results]))
     if not all(r['valid'] for r in results):raise SystemExit('Native adapter calibration incomplete; inspect retained report')
 
 if __name__=='__main__':main()

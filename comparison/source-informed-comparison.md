@@ -37,3 +37,14 @@ Next, bind the actual DSH published headless profile and native tool/MCP schemas
 The [first hosted archive inspection](https://github.com/zyw02/agent-arch/actions/runs/40656560031) succeeded: 42 exact-digest accepted native summaries were inspected across four selected archives. [Compact numeric-field inventory](evidence/source-informed-20261028/native-field-inventory.json) confirms that native timings, sampled PSS/RSS and CPU fields exist in relevant summaries. Availability does not establish that their scopes match the new experiment.
 
 `native_read_probe.py` and its hosted workflow now exercise the actual DSH/OpenClaw native `read` tools using protocol-correct synthetic model responses and an unpredictable file receipt omitted from the prompt. It verifies tool-result adoption, final output, unchanged input and explicit installed versions. This is adapter calibration; native/extension matched controls and full resource collection remain pending.
+
+
+## First actual adapter proof and reused quantitative output
+
+The [native read calibration](https://github.com/zyw02/agent-arch/actions/runs/40657053283) passed for both installed versions, with zero paid model calls. The [compact retained record](evidence/source-informed-20261028/native-read-calibration.json) binds package-lock identity, native tool request, nonce absence from the prompt, receipt adoption in the actual tool result/final output and unchanged input. Invocation timing and child CPU are calibration observations, not a product ranking; deployment/startup and tool exposure are explicitly different. Full resource collection and repeated matched controls remain pending.
+
+COST-03's 24 historical paired units have now been recomputed into [48 source-linked rows](evidence/source-informed-20261028/guide-reuse-metrics.csv), including learning, failed requests and all original acceptance outcomes. [Aggregate definitions and values](evidence/source-informed-20261028/guide-reuse-metrics-summary.json) keep accepted-delivery denominators and unknown invoice cost explicit. Single-delivery reuse costs more known tokens after learning; longer reuse horizons do not establish a general benefit, and the 20-delivery case has incomplete accepted work in both arms. This is agent-written guide reuse, not native Skill Workshop performance.
+
+![Historical paired guide reuse cost and completion](evidence/source-informed-20261028/guide-reuse-paired.png)
+
+The [plotting run](https://github.com/zyw02/agent-arch/actions/runs/40657342012) retains vector/raster figures and raw rows. Each line is one paired independent unit; overlapping lines remain in the data. Token totals include input and output once, with cache as an input partition. Native/MCP calibration is the next extension of the same read operation; its execution is separately labeled and does not overwrite this native-only proof.

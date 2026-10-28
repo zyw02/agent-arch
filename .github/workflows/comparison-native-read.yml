@@ -5,6 +5,7 @@ on:
     branches: [main]
     paths:
       - 'comparison/native_read_probe.py'
+      - 'comparison/read_mcp_fixture.py'
       - '.github/workflows/comparison-native-read.yml'
 permissions:
   contents: read

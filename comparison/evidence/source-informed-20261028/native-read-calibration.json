@@ -1,0 +1,55 @@
+{
+  "kind": "two-product-native-read-calibration",
+  "run_id": "40657053283",
+  "controller_commit": "b88c1028397427e610ef05f3aab99e37c1edb936",
+  "formal_new_experiments": false,
+  "installed_versions": {
+    "@deepseek-ai/dsh": "0.2.2-alpha.2",
+    "openclaw": "2026.10.8"
+  },
+  "package_lock_sha256": "3e723f0ed23bca15d773784beed113c9f9ceca3fa951afa1d3e19b38df2ced16",
+  "results": [
+    {
+      "product": "DSH",
+      "phase": "adapter-calibration-only",
+      "paid_model_calls": 0,
+      "exit_code": 0,
+      "valid": true,
+      "receipt_was_absent_from_initial_prompt": true,
+      "native_read_requested": true,
+      "receipt_observed_in_tool_result": true,
+      "receipt_observed_in_final_output": true,
+      "input_unchanged": true,
+      "invocation_wall_ms": 2313.716808,
+      "child_cpu_user_seconds": 2.186226,
+      "child_cpu_system_seconds": 0.34185299999999996,
+      "provider_request_count": 3,
+      "resource_limitations": "CPU is invocation children rusage, not per-stage attribution. Full cgroup/PSS/disk collectors and same-operation extension control are pending. Synthetic usage is not real token cost.",
+      "configuration": "DSH shipped headless read-only; OpenClaw local native read-only tool allowlist with public direct-schema setting",
+      "file_sha256": "f6bffcac8701759f9e5b00016d1c20a7e0be3df691a9f15ba6f240019ed24d79"
+    },
+    {
+      "product": "OpenClaw",
+      "phase": "adapter-calibration-only",
+      "paid_model_calls": 0,
+      "exit_code": 0,
+      "valid": true,
+      "receipt_was_absent_from_initial_prompt": true,
+      "native_read_requested": true,
+      "receipt_observed_in_tool_result": true,
+      "receipt_observed_in_final_output": true,
+      "input_unchanged": true,
+      "invocation_wall_ms": 17808.77192,
+      "child_cpu_user_seconds": 21.800879,
+      "child_cpu_system_seconds": 3.230142,
+      "provider_request_count": 2,
+      "resource_limitations": "CPU is invocation children rusage, not per-stage attribution. Full cgroup/PSS/disk collectors and same-operation extension control are pending. Synthetic usage is not real token cost.",
+      "configuration": "DSH shipped headless read-only; OpenClaw local native read-only tool allowlist with public direct-schema setting",
+      "file_sha256": "d0bf0425eee1ab54cf492b1316bdb188dee519407f02708f7a7b62fe82419953"
+    }
+  ],
+  "original_report_sha256": "218b71480af546097899fed0b1cfee127366c90ed12c174d48c5f27efbe92906",
+  "artifact_id": 12802390417,
+  "artifact_zip_sha256": "a03753f49319b1a924572ba00129db44e867236419e3c6d18f5ba1053d4d94f2",
+  "artifact_url": "https://github.com/zyw02/agent-arch/actions/runs/40657053283/artifacts/12802390417"
+}
