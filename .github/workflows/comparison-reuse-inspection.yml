@@ -1,0 +1,29 @@
+name: Inspect reusable accepted OpenClaw evidence
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'comparison/inspect_reuse_archives.py'
+      - '.github/workflows/comparison-reuse-inspection.yml'
+permissions:
+  contents: read
+jobs:
+  inspect:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - name: Revalidate historical records and archive provenance
+        run: python3 comparison/audit_reuse.py --output "$RUNNER_TEMP/reuse-inspection"
+      - name: Read verified accepted summaries without extracting archives
+        run: python3 comparison/inspect_reuse_archives.py --output "$RUNNER_TEMP/reuse-inspection"
+      - name: Retain compact field inventory
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: reuse-inspection
+          path: ${{ runner.temp }}/reuse-inspection/
+          retention-days: 30
+          if-no-files-found: error

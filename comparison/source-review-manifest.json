@@ -1,0 +1,386 @@
+{
+  "schema_version": 1,
+  "purpose": "Pinned source review, not runtime capability proof",
+  "sources": [
+    {
+      "product": "dsh",
+      "path": "AGENTS.md",
+      "ref": "f3803c96974ad4a94195fb97e5c637e9c2a3afe3",
+      "repo": "deepseek-ai/deepseek-harness",
+      "blob_sha": "69dbd7d69eb978392336ea2136ff855738c6625d",
+      "bytes": 19109,
+      "review_copy": "newline-normalized; local review only",
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/AGENTS.md"
+    },
+    {
+      "product": "dsh",
+      "path": "packages/AGENTS.md",
+      "ref": "f3803c96974ad4a94195fb97e5c637e9c2a3afe3",
+      "repo": "deepseek-ai/deepseek-harness",
+      "blob_sha": "50f203586c870998b2776e919eff6ce09c784953",
+      "bytes": 6381,
+      "review_copy": "newline-normalized; local review only",
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/AGENTS.md"
+    },
+    {
+      "product": "dsh",
+      "path": "packages/core/agent-loop/src/index.ts",
+      "ref": "f3803c96974ad4a94195fb97e5c637e9c2a3afe3",
+      "repo": "deepseek-ai/deepseek-harness",
+      "blob_sha": "381ef6e93a01eb06a7379f62a47b367f3e26dd0b",
+      "bytes": 36756,
+      "review_copy": "newline-normalized; local review only",
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/core/agent-loop/src/index.ts"
+    },
+    {
+      "product": "dsh",
+      "path": "packages/core/agent-loop/src/runtime-context.ts",
+      "ref": "f3803c96974ad4a94195fb97e5c637e9c2a3afe3",
+      "repo": "deepseek-ai/deepseek-harness",
+      "blob_sha": "1df199c9f8916d38a724c00ef7231a89d758c4c3",
+      "bytes": 7591,
+      "review_copy": "newline-normalized; local review only",
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/core/agent-loop/src/runtime-context.ts"
+    },
+    {
+      "product": "dsh",
+      "path": "packages/core/agent/src/dispatch.ts",
+      "ref": "f3803c96974ad4a94195fb97e5c637e9c2a3afe3",
+      "repo": "deepseek-ai/deepseek-harness",
+      "blob_sha": "03fd952ac554c3ce4cc6dd94252195e8304f6d46",
+      "bytes": 8575,
+      "review_copy": "newline-normalized; local review only",
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/core/agent/src/dispatch.ts"
+    },
+    {
+      "product": "dsh",
+      "path": "packages/compaction/compaction/src/index.ts",
+      "ref": "f3803c96974ad4a94195fb97e5c637e9c2a3afe3",
+      "repo": "deepseek-ai/deepseek-harness",
+      "blob_sha": "c6dee6fbae49bd06732bbbbc1a185ee4b25aeb88",
+      "bytes": 8736,
+      "review_copy": "newline-normalized; local review only",
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/compaction/compaction/src/index.ts"
+    },
+    {
+      "product": "dsh",
+      "path": "packages/context/agent-instructions/src/index.ts",
+      "ref": "f3803c96974ad4a94195fb97e5c637e9c2a3afe3",
+      "repo": "deepseek-ai/deepseek-harness",
+      "blob_sha": "ec752e07150ff3da38e7d7264cee825f7d3f881b",
+      "bytes": 16304,
+      "review_copy": "newline-normalized; local review only",
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/context/agent-instructions/src/index.ts"
+    },
+    {
+      "product": "dsh",
+      "path": "packages/skill/skill/src/index.ts",
+      "ref": "f3803c96974ad4a94195fb97e5c637e9c2a3afe3",
+      "repo": "deepseek-ai/deepseek-harness",
+      "blob_sha": "9c6bbf0ccfc87dfce966de1c9e83cb66275066af",
+      "bytes": 35961,
+      "review_copy": "newline-normalized; local review only",
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/skill/skill/src/index.ts"
+    },
+    {
+      "product": "dsh",
+      "path": "packages/skill/tool-skill/src/index.ts",
+      "ref": "f3803c96974ad4a94195fb97e5c637e9c2a3afe3",
+      "repo": "deepseek-ai/deepseek-harness",
+      "blob_sha": "f08fb8206433bb40ec415c65e9a50382386a3bd0",
+      "bytes": 19968,
+      "review_copy": "newline-normalized; local review only",
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/skill/tool-skill/src/index.ts"
+    },
+    {
+      "product": "dsh",
+      "path": "packages/session/session-checkpoint-policy/src/index.ts",
+      "ref": "f3803c96974ad4a94195fb97e5c637e9c2a3afe3",
+      "repo": "deepseek-ai/deepseek-harness",
+      "blob_sha": "0fc456eb08853b9fe54d0bf9ca3a26c05b4413cf",
+      "bytes": 3361,
+      "review_copy": "newline-normalized; local review only",
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/session/session-checkpoint-policy/src/index.ts"
+    },
+    {
+      "product": "dsh",
+      "path": "packages/core/session/src/index.ts",
+      "ref": "f3803c96974ad4a94195fb97e5c637e9c2a3afe3",
+      "repo": "deepseek-ai/deepseek-harness",
+      "blob_sha": "e9baee1b82d877eb90f67b3a7beae3d14b650442",
+      "bytes": 67065,
+      "review_copy": "newline-normalized; local review only",
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/core/session/src/index.ts"
+    },
+    {
+      "product": "dsh",
+      "path": "packages/llm/token-meter/src/index.ts",
+      "ref": "f3803c96974ad4a94195fb97e5c637e9c2a3afe3",
+      "repo": "deepseek-ai/deepseek-harness",
+      "blob_sha": "8b4f7fff94f477906fa59288374282efabbac994",
+      "bytes": 13226,
+      "review_copy": "newline-normalized; local review only",
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/llm/token-meter/src/index.ts"
+    },
+    {
+      "product": "dsh",
+      "path": "packages/subagent/subagent/src/manager.ts",
+      "ref": "f3803c96974ad4a94195fb97e5c637e9c2a3afe3",
+      "repo": "deepseek-ai/deepseek-harness",
+      "blob_sha": "aa28ddd5577156a4daae2e1bded4b8f79b9c9983",
+      "bytes": 62540,
+      "review_copy": "newline-normalized; local review only",
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/subagent/subagent/src/manager.ts"
+    },
+    {
+      "product": "dsh",
+      "path": "packages/sandbox/sandbox-local/src/index.ts",
+      "ref": "f3803c96974ad4a94195fb97e5c637e9c2a3afe3",
+      "repo": "deepseek-ai/deepseek-harness",
+      "blob_sha": "acf4b4e7387d7e6b3ec7931d96070896c3b71578",
+      "bytes": 28819,
+      "review_copy": "newline-normalized; local review only",
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/sandbox/sandbox-local/src/index.ts"
+    },
+    {
+      "product": "dsh",
+      "path": "packages/telemetry/otel/src/event-transport.ts",
+      "ref": "f3803c96974ad4a94195fb97e5c637e9c2a3afe3",
+      "repo": "deepseek-ai/deepseek-harness",
+      "blob_sha": "74b4ebd1343a923751cfa6fe709c643facf6e7fa",
+      "bytes": 3047,
+      "review_copy": "newline-normalized; local review only",
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/telemetry/otel/src/event-transport.ts"
+    },
+    {
+      "product": "openclaw",
+      "path": "src/agents/tools/goal-tools.ts",
+      "ref": "157d8c2bc3ea2fa183afdc11088e69690bf8e64e",
+      "repo": "openclaw/openclaw",
+      "blob_sha": "fd7fae6f690517b2ad1ed05b9522583e8461bc5c",
+      "bytes": 6161,
+      "review_copy": "newline-normalized; local review only",
+      "url": "https://github.com/openclaw/openclaw/blob/157d8c2bc3ea2fa183afdc11088e69690bf8e64e/src/agents/tools/goal-tools.ts"
+    },
+    {
+      "product": "openclaw",
+      "path": "src/config/sessions/goals.ts",
+      "ref": "157d8c2bc3ea2fa183afdc11088e69690bf8e64e",
+      "repo": "openclaw/openclaw",
+      "blob_sha": "262fdbd00d610861dd8bf0a7fba7bdc0aea1c2b1",
+      "bytes": 7268,
+      "review_copy": "newline-normalized; local review only",
+      "url": "https://github.com/openclaw/openclaw/blob/157d8c2bc3ea2fa183afdc11088e69690bf8e64e/src/config/sessions/goals.ts"
+    },
+    {
+      "product": "openclaw",
+      "path": "src/agents/sessions/event-bus.ts",
+      "ref": "157d8c2bc3ea2fa183afdc11088e69690bf8e64e",
+      "repo": "openclaw/openclaw",
+      "blob_sha": "37e6f2abc766fc5e64859bea539cff80eecd0ff9",
+      "bytes": 1290,
+      "review_copy": "newline-normalized; local review only",
+      "url": "https://github.com/openclaw/openclaw/blob/157d8c2bc3ea2fa183afdc11088e69690bf8e64e/src/agents/sessions/event-bus.ts"
+    },
+    {
+      "product": "openclaw",
+      "path": "src/agents/embedded-agent-runner/context-engine-maintenance-execution.ts",
+      "ref": "157d8c2bc3ea2fa183afdc11088e69690bf8e64e",
+      "repo": "openclaw/openclaw",
+      "blob_sha": "aa20971bd0c6d425b54510b6da59a9cb8699cae8",
+      "bytes": 5704,
+      "review_copy": "newline-normalized; local review only",
+      "url": "https://github.com/openclaw/openclaw/blob/157d8c2bc3ea2fa183afdc11088e69690bf8e64e/src/agents/embedded-agent-runner/context-engine-maintenance-execution.ts"
+    },
+    {
+      "product": "openclaw",
+      "path": "src/agents/embedded-agent-runner/skill-runtime.ts",
+      "ref": "157d8c2bc3ea2fa183afdc11088e69690bf8e64e",
+      "repo": "openclaw/openclaw",
+      "blob_sha": "e37299384c7e1c8fc1c8cf0608324d80134570e9",
+      "bytes": 5302,
+      "review_copy": "newline-normalized; local review only",
+      "url": "https://github.com/openclaw/openclaw/blob/157d8c2bc3ea2fa183afdc11088e69690bf8e64e/src/agents/embedded-agent-runner/skill-runtime.ts"
+    },
+    {
+      "product": "openclaw",
+      "path": "src/commands/backup-restore.ts",
+      "ref": "157d8c2bc3ea2fa183afdc11088e69690bf8e64e",
+      "repo": "openclaw/openclaw",
+      "blob_sha": "b164e729802d4df400454f0e17f7a72ec17778b4",
+      "bytes": 8833,
+      "review_copy": "newline-normalized; local review only",
+      "url": "https://github.com/openclaw/openclaw/blob/157d8c2bc3ea2fa183afdc11088e69690bf8e64e/src/commands/backup-restore.ts"
+    },
+    {
+      "product": "openclaw",
+      "path": "src/agents/worktrees/snapshot-restore.ts",
+      "ref": "157d8c2bc3ea2fa183afdc11088e69690bf8e64e",
+      "repo": "openclaw/openclaw",
+      "blob_sha": "b0cf5c999ccb550dff6efddd6259e74c2598f863",
+      "bytes": 24361,
+      "review_copy": "newline-normalized; local review only",
+      "url": "https://github.com/openclaw/openclaw/blob/157d8c2bc3ea2fa183afdc11088e69690bf8e64e/src/agents/worktrees/snapshot-restore.ts"
+    },
+    {
+      "product": "openclaw",
+      "path": "src/skills/workshop/experience-review.ts",
+      "ref": "157d8c2bc3ea2fa183afdc11088e69690bf8e64e",
+      "repo": "openclaw/openclaw",
+      "blob_sha": "d13b720e3e9cc6fcaa708b7e2e6fe332abf7a968",
+      "bytes": 10330,
+      "review_copy": "newline-normalized; local review only",
+      "url": "https://github.com/openclaw/openclaw/blob/157d8c2bc3ea2fa183afdc11088e69690bf8e64e/src/skills/workshop/experience-review.ts"
+    },
+    {
+      "product": "openclaw",
+      "path": "src/skills/workshop/skill-versions.ts",
+      "ref": "157d8c2bc3ea2fa183afdc11088e69690bf8e64e",
+      "repo": "openclaw/openclaw",
+      "blob_sha": "379e2164453691546baa8d5778a49c8101c92761",
+      "bytes": 3968,
+      "review_copy": "newline-normalized; local review only",
+      "url": "https://github.com/openclaw/openclaw/blob/157d8c2bc3ea2fa183afdc11088e69690bf8e64e/src/skills/workshop/skill-versions.ts"
+    },
+    {
+      "product": "openclaw",
+      "path": "extensions/diagnostics-otel/src/service-logs.ts",
+      "ref": "157d8c2bc3ea2fa183afdc11088e69690bf8e64e",
+      "repo": "openclaw/openclaw",
+      "blob_sha": "b52f5c120a91d47f1c6cc17132569c9cbcc6678b",
+      "bytes": 6926,
+      "review_copy": "newline-normalized; local review only",
+      "url": "https://github.com/openclaw/openclaw/blob/157d8c2bc3ea2fa183afdc11088e69690bf8e64e/extensions/diagnostics-otel/src/service-logs.ts"
+    },
+    {
+      "product": "dsh",
+      "path": "packages/core/agent-loop/src/agent.ts",
+      "ref": "f3803c96974ad4a94195fb97e5c637e9c2a3afe3",
+      "repo": "deepseek-ai/deepseek-harness",
+      "blob_sha": "c4daa50c47c13fb86b94466774dfcac32b214076",
+      "bytes": 31142,
+      "review_copy": "newline-normalized; local review only",
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/core/agent-loop/src/agent.ts"
+    },
+    {
+      "product": "dsh",
+      "path": "packages/goal/goal/src/domain.ts",
+      "ref": "f3803c96974ad4a94195fb97e5c637e9c2a3afe3",
+      "repo": "deepseek-ai/deepseek-harness",
+      "blob_sha": "63f1573dc7dab6e8cdffa73b0037a8daea6cd5b1",
+      "bytes": 3778,
+      "review_copy": "newline-normalized; local review only",
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/goal/goal/src/domain.ts"
+    },
+    {
+      "product": "dsh",
+      "path": "packages/goal/goal/src/runtime.ts",
+      "ref": "f3803c96974ad4a94195fb97e5c637e9c2a3afe3",
+      "repo": "deepseek-ai/deepseek-harness",
+      "blob_sha": "2f5c40735aad3c6504ab7b6ace38a5ad8575535b",
+      "bytes": 1030,
+      "review_copy": "newline-normalized; local review only",
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/goal/goal/src/runtime.ts"
+    },
+    {
+      "product": "dsh",
+      "path": "packages/compaction/compaction-basic/src/index.ts",
+      "ref": "f3803c96974ad4a94195fb97e5c637e9c2a3afe3",
+      "repo": "deepseek-ai/deepseek-harness",
+      "blob_sha": "096fa72fe46a1a715a3a34a2a109b4dc379de42b",
+      "bytes": 19522,
+      "review_copy": "newline-normalized; local review only",
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/compaction/compaction-basic/src/index.ts"
+    },
+    {
+      "product": "dsh",
+      "path": "packages/compaction/compaction-basic/src/config.ts",
+      "ref": "f3803c96974ad4a94195fb97e5c637e9c2a3afe3",
+      "repo": "deepseek-ai/deepseek-harness",
+      "blob_sha": "3792d9694a5cc494407b03b3fb054a52d0a951d7",
+      "bytes": 14220,
+      "review_copy": "newline-normalized; local review only",
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/compaction/compaction-basic/src/config.ts"
+    },
+    {
+      "product": "dsh",
+      "path": "packages/context/agent-instructions/src/config.ts",
+      "ref": "f3803c96974ad4a94195fb97e5c637e9c2a3afe3",
+      "repo": "deepseek-ai/deepseek-harness",
+      "blob_sha": "5ae3c3454c7f42dedf229467aed5d2df0da1b93e",
+      "bytes": 5894,
+      "review_copy": "newline-normalized; local review only",
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/context/agent-instructions/src/config.ts"
+    },
+    {
+      "product": "dsh",
+      "path": "packages/extensions/tool-cordis/src/index.ts",
+      "ref": "f3803c96974ad4a94195fb97e5c637e9c2a3afe3",
+      "repo": "deepseek-ai/deepseek-harness",
+      "blob_sha": "eddc643cb996ab076329ba0d1480212b2d2eddc0",
+      "bytes": 3670,
+      "review_copy": "newline-normalized; local review only",
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/extensions/tool-cordis/src/index.ts"
+    },
+    {
+      "product": "dsh",
+      "path": "packages/session/session-persistence-jsonl/src/index.ts",
+      "ref": "f3803c96974ad4a94195fb97e5c637e9c2a3afe3",
+      "repo": "deepseek-ai/deepseek-harness",
+      "blob_sha": "f8351fa9ee75db9790859de9672d1602c0c05664",
+      "bytes": 75717,
+      "review_copy": "newline-normalized; local review only",
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/session/session-persistence-jsonl/src/index.ts"
+    },
+    {
+      "product": "dsh",
+      "path": "packages/telemetry/otel/src/event-log.ts",
+      "ref": "f3803c96974ad4a94195fb97e5c637e9c2a3afe3",
+      "repo": "deepseek-ai/deepseek-harness",
+      "blob_sha": "feb01de458f9e7741e14348d2f52c6259130e83a",
+      "bytes": 4241,
+      "review_copy": "newline-normalized; local review only",
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/telemetry/otel/src/event-log.ts"
+    },
+    {
+      "product": "openclaw",
+      "path": "src/skills/workshop/changes.kernel.ts",
+      "ref": "157d8c2bc3ea2fa183afdc11088e69690bf8e64e",
+      "repo": "openclaw/openclaw",
+      "blob_sha": "9ab99a1997a9b51821c9d14d35d3f4544c77dc70",
+      "bytes": 4604,
+      "review_copy": "newline-normalized; local review only",
+      "url": "https://github.com/openclaw/openclaw/blob/157d8c2bc3ea2fa183afdc11088e69690bf8e64e/src/skills/workshop/changes.kernel.ts"
+    },
+    {
+      "product": "openclaw",
+      "path": "src/skills/workshop/experience-review-scheduler.ts",
+      "ref": "157d8c2bc3ea2fa183afdc11088e69690bf8e64e",
+      "repo": "openclaw/openclaw",
+      "blob_sha": "fb6316c9b708b7a531cb298118b77109dcc0d495",
+      "bytes": 11753,
+      "review_copy": "newline-normalized; local review only",
+      "url": "https://github.com/openclaw/openclaw/blob/157d8c2bc3ea2fa183afdc11088e69690bf8e64e/src/skills/workshop/experience-review-scheduler.ts"
+    },
+    {
+      "product": "openclaw",
+      "path": "src/agents/bootstrap-budget.ts",
+      "ref": "157d8c2bc3ea2fa183afdc11088e69690bf8e64e",
+      "repo": "openclaw/openclaw",
+      "blob_sha": "4359b1da5c0c76e26ea73c0f9576f60c3ed561e8",
+      "bytes": 8727,
+      "review_copy": "newline-normalized; local review only",
+      "url": "https://github.com/openclaw/openclaw/blob/157d8c2bc3ea2fa183afdc11088e69690bf8e64e/src/agents/bootstrap-budget.ts"
+    },
+    {
+      "product": "openclaw",
+      "path": "src/agents/system-prompt-skills.ts",
+      "ref": "157d8c2bc3ea2fa183afdc11088e69690bf8e64e",
+      "repo": "openclaw/openclaw",
+      "blob_sha": "07af0ba0fb691069385f0d50402c7042e5d1321e",
+      "bytes": 1982,
+      "review_copy": "newline-normalized; local review only",
+      "url": "https://github.com/openclaw/openclaw/blob/157d8c2bc3ea2fa183afdc11088e69690bf8e64e/src/agents/system-prompt-skills.ts"
+    }
+  ]
+}
