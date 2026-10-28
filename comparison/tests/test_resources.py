@@ -8,6 +8,7 @@ sys.path.insert(0,str(Path(__file__).resolve().parents[1]))
 from resource_collector import counters, disk_inventory
 from live_read_provider import observe_event,real_usage
 from export_read_metrics import normalized_usage
+from resource_memory_reader import sample as sample_memory
 
 
 class ResourceAccountingTests(unittest.TestCase):
@@ -22,6 +23,16 @@ class ResourceAccountingTests(unittest.TestCase):
             expected=sum(p.lstat().st_size for p in (inside,payload,inside/'external'))
             self.assertEqual(observed['logical_bytes'],expected)
             self.assertEqual(observed['categories']['overlap']['objects'],0)
+            self.assertEqual(observed['errors'],[])
+
+    def test_memory_reader_preserves_units_and_handles_exit_race(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root=Path(tmp);group=root/'group';group.mkdir();(group/'cgroup.procs').write_text('42\n43\n')
+            proc=root/'proc';(proc/'42').mkdir(parents=True);(proc/'42'/'smaps_rollup').write_text('Rss: 100 kB\nPss: 75 kB\n')
+            observed=sample_memory(group,proc)
+            self.assertEqual(observed['sampled_pss_bytes'],75*1024)
+            self.assertEqual(observed['sampled_rss_sum_bytes'],100*1024)
+            self.assertEqual(observed['memory_processes_observed'],1)
             self.assertEqual(observed['errors'],[])
 
     def test_cpu_and_smaps_units_remain_separate_at_parser_boundary(self):

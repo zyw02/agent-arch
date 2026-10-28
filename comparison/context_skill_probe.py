@@ -45,7 +45,9 @@ def rule_from_text(text):
 
 def skill_catalog(body):
     for block in re.findall(r'<available_skills>(.*?)</available_skills>',request_text(body),re.S):
-        if '`'+SKILL+'`' in block or '<name>'+SKILL+'</name>' in block:return block
+        for entry in re.findall(r'<skill>(.*?)</skill>',block,re.S):
+            if '<name>'+SKILL+'</name>' in entry:return entry
+        if '`'+SKILL+'`' in block:return block
     return ''
 
 
@@ -153,7 +155,7 @@ def run_arm(product,runtime,root,condition,block,values,rule,live,sequence,limit
             skills=dict(allowBundled=[SKILL],entries={SKILL:dict(enabled=condition['skill'])}),tools=dict(allow=['read'],toolSearch=False),cron=dict(enabled=False))))
         config_paths=[config];env.update(OPENCLAW_STATE_DIR=str(state),OPENCLAW_CONFIG_PATH=str(config))
         command=[str(runtime/'node_modules/.bin/openclaw'),'agent','--local','--session-id',str(uuid.uuid4()),'--json','--message',prompt]
-    collector=ResourceCollector(dict(workspace=workspace,product_state=state));before_self=resource.getrusage(resource.RUSAGE_SELF)
+    before_self=resource.getrusage(resource.RUSAGE_SELF);collector=ResourceCollector(dict(workspace=workspace,product_state=state))
     start=time.monotonic_ns();child=None;stdout=stderr='';exit_code=None;adapter_error=None
     try:
         child=subprocess.Popen(collector.command(command),env=env,cwd=workspace,stdout=subprocess.PIPE,stderr=subprocess.PIPE,text=True,start_new_session=True)
@@ -172,7 +174,7 @@ def run_arm(product,runtime,root,condition,block,values,rule,live,sequence,limit
         checked_ns=time.monotonic_ns();resources=collector.finish();provider.close();after_self=resource.getrusage(resource.RUSAGE_SELF)
     requests=provider.requests;task_requests=[r for r in requests if 'Generate the session title from this JSON array' not in request_text(r['request'])]
     first=task_requests[0]['request'] if task_requests else {};actual_calls=calls_from_requests(requests)
-    permitted=lambda c:c['name']=='skill' and c['arguments']=={'name':SKILL} if product=='DSH' else c['name']=='read' and c['arguments'].get('file_path',c['arguments'].get('path'))==str(skill_file)
+    permitted=lambda c:c['name']=='skill' and c['arguments']=={'name':SKILL} if product=='DSH' else c['name']=='read' and str(Path(c['arguments'].get('file_path',c['arguments'].get('path',''))).expanduser().resolve())==str(skill_file.resolve())
     returned_names=[name for r in requests for name in (r.get('tool_names',[]) if live else [r['decision']['tool']] if r.get('decision',{}).get('tool') else [])]
     arguments_complete=len(actual_calls)==len(returned_names)
     constraints=all(permitted(c) and condition['skill'] for c in actual_calls) if arguments_complete else None
@@ -193,7 +195,8 @@ def run_arm(product,runtime,root,condition,block,values,rule,live,sequence,limit
         process_exit_ms=(process_exit_ns-start)/1e6,independent_delivery_check_ms=(checked_ns-start)/1e6,
         timestamps=dict(submission_ns=start,process_exit_ns=process_exit_ns,independent_check_ns=checked_ns),resources=resources,
         observer_process_cpu_seconds=(after_self.ru_utime+after_self.ru_stime-before_self.ru_utime-before_self.ru_stime),
-        observer_cpu_scope='Controller, relay and collector process including sampling thread; sampling-thread CPU is an overlapping subset, never added again',
+        observer_memory_reader_cpu_seconds=resources['memory_reader_cpu_seconds'],
+        observer_cpu_scope='Controller, relay and collector process including sampling thread; memory-reader command is separate and disjoint; sampling-thread CPU overlaps parent CPU and is never added again',
         provider_request_count=len(requests),provider_requests=requests,provider_errors=getattr(provider,'errors',[]),
         token_usage=real_usage(requests) if live else dict(synthetic=True,actual_tokens=None),calibration_valid=calibration_valid)
     if product=='OpenClaw':

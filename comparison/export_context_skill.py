@@ -37,7 +37,9 @@ def metrics(report):
             known_real_output_tokens=sum(v['output_tokens'] for v in normalized) if normalized else None,
             known_cache_hit_input_tokens=sum(v['cache_hit_input_tokens'] for v in normalized) if normalized and all(v['cache_hit_input_tokens'] is not None for v in normalized) else None,
             provider_requests=result['provider_request_count'],cpu_core_seconds=cpu.get('usage_usec')/1e6 if 'usage_usec' in cpu else None,
-            observer_cpu_seconds=result['observer_process_cpu_seconds'],sampled_peak_pss_bytes=resource.get('sampled_peak_pss_bytes'),kernel_memory_peak_bytes=group.get('memory_peak_bytes'),
+            observer_cpu_seconds=result['observer_process_cpu_seconds'],
+            observer_memory_reader_cpu_seconds=result.get('observer_memory_reader_cpu_seconds'),
+            observer_total_cpu_seconds=result['observer_process_cpu_seconds']+result['observer_memory_reader_cpu_seconds'] if result.get('observer_memory_reader_cpu_seconds') is not None else None,sampled_peak_pss_bytes=resource.get('sampled_peak_pss_bytes'),kernel_memory_peak_bytes=group.get('memory_peak_bytes'),
             sampled_peak_disk_increment_bytes=peak-initial if peak is not None else None,retained_disk_increment_bytes=resource.get('retained_incremental_allocated_bytes'),
             initial_context_text_bytes=result['context_payload_bytes']['initial_text_utf8'],invoice_charge=None,run_id=report['run_id']))
     return rows,requests
@@ -82,7 +84,7 @@ def plot(rows,report,output):
         axis.set_xticks(range(4),[label for key,label in columns]);axis.set_yticks(range(5),[LABELS[c] for c in conditions]);axis.set_title(product)
     fig.suptitle('CTX-01: native context route and exact task result — two held-out paired blocks\nCounts are observed trials, not population estimates; redundant rule supplied by design',fontsize=11)
     fig.savefig(output/'context-skill-mechanism.svg');fig.savefig(output/'context-skill-mechanism.png',dpi=145);plt.close(fig)
-    dimensions=[('independent_delivery_seconds','Independent delivery check (s)',1),('known_real_provider_tokens','Actual input + output tokens',1),('cpu_core_seconds','Product CPU (core-seconds)',1),('sampled_peak_pss_bytes','Sampled process PSS peak (MiB)',1024**2),('sampled_peak_disk_increment_bytes','Sampled disk increment peak (MiB)',1024**2),('observer_cpu_seconds','Observer + relay CPU (seconds)',1)]
+    dimensions=[('independent_delivery_seconds','Independent delivery check (s)',1),('known_real_provider_tokens','Actual input + output tokens',1),('cpu_core_seconds','Product CPU (core-seconds)',1),('sampled_peak_pss_bytes','Sampled process PSS peak (MiB)',1024**2),('sampled_peak_disk_increment_bytes','Sampled disk increment peak (MiB)',1024**2),('observer_total_cpu_seconds','Observer + relay CPU (seconds)',1)]
     fig,axes=plt.subplots(2,6,figsize=(19,7.8),layout='constrained')
     for row,product in enumerate(products):
         selected=[r for r in rows if r['product']==product]

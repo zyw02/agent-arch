@@ -13,6 +13,7 @@ on:
       - 'comparison/read_mcp_fixture.py'
       - 'comparison/resource_collector.py'
       - 'comparison/resource_launcher.py'
+      - 'comparison/resource_memory_reader.py'
       - '.github/workflows/comparison-native-read.yml'
 permissions:
   contents: read

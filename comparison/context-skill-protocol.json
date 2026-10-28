@@ -71,9 +71,10 @@
     "real_run": "Record all quality/constraint outcomes, including failures. Do not change predicate after observing real outputs. Native resource or adapter errors remain separate from model task failure."
   },
   "analysis": "Publish all independent block points. Within-product paired contrasts: ample/tight with skill disabled; skill enabled/disabled at each budget; difference-in-differences for constructed redundancy; Required keyword diagnostic at tight/no-skill. Two blocks support mechanism observations only, not a broad quality/performance ranking or population-level significance claim.",
-  "measurement": "Task submission to independently timestamped delivery check; separate process exit; real per-request input/output/cache usage including title calls; cgroup CPU, PSS/RSS, kernel memory peak, sampled disk and raw I/O; controller+relay process CPU separately. Record source payload sizes as bytes, not tokens.",
+  "measurement": "Task submission to independently timestamped delivery check; separate process exit; real per-request input/output/cache usage including title calls; cgroup CPU, PSS/RSS, kernel memory peak, sampled disk and raw I/O; controller+relay process CPU separately. Record source payload sizes as bytes, not tokens. Dedicated memory-reader command CPU is a disjoint observer child cost; sampling thread is an overlapping parent-process subset, never added twice.",
   "ordering": "Randomized arm order per paired block, seed retained. Products share pinned installation; cache state is not reset globally.",
   "exclusions": "This is instruction/bootstrap budgeting and skill availability/loading. It does not test cumulative task-tree hard quotas, dynamic skill policy optimization, full context-window compaction, native self-improvement, or rollback.",
   "scheduling": "Admit complete comparison block; no generic real-task timeout. Synthetic protocol calibration has a declared 120-second settlement safeguard. Native configuration and transport bounds retained.",
-  "source_bindings": "context-skill-source-bindings.json"
+  "source_bindings": "context-skill-source-bindings.json",
+  "instrumentation_revision": "r2: exact named skill catalog entry, canonical advertised path comparison, privileged read-only PSS helper outside product group; original task/quality predicates and expected native control effects unchanged"
 }

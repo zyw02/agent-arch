@@ -18,6 +18,11 @@ class ContextSkillAcceptanceTests(unittest.TestCase):
         decision=fixture_response(body,Path('/owned'),'unused','read')
         self.assertEqual(decision,dict(tool='skill',arguments=dict(name='probe-codec')))
 
+    def test_catalog_location_is_bound_to_the_named_skill(self):
+        catalog='<available_skills><skill><name>browser</name><location>/wrong/SKILL.md</location></skill><skill><name>probe-codec</name><location>/owned/SKILL.md</location></skill></available_skills>'
+        body=dict(messages=[dict(role='user',content=catalog+'\nVALUES_JSON=[1,2,3]')],tools=[dict(type='function',function=dict(name='read',parameters=dict(properties=dict(path=dict(type='string')))))])
+        self.assertEqual(fixture_response(body,Path('/unused'),'unused','read'),dict(tool='read',arguments=dict(path='/owned/SKILL.md')))
+
     def test_delivery_needs_final_json_and_only_the_declared_key(self):
         good=json.dumps(dict(type='final',text='```json\n{"encoded":null}\n```'))
         self.assertEqual(parse_delivery('DSH',good),dict(encoded=None))

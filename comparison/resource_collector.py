@@ -1,6 +1,10 @@
 #!/usr/bin/env python3
 """Owned cgroup + process-memory + task-path collector for hosted native arms."""
 import os
+import json
+import resource
+import subprocess
+import sys
 from pathlib import Path
 import threading
 import time
@@ -48,6 +52,12 @@ class ResourceCollector:
                 try:self.group.rmdir()
                 except OSError:pass
             self.group=None
+        self.memory_reader=None;self.memory_reader_cpu_seconds=None;self.memory_reader_self_cpu_seconds=None
+        if self.group:
+            try:
+                prefix=[] if os.geteuid()==0 else ['sudo','-n','--preserve-env=AGENT_ARCH_CGROUP_ROOT']
+                self.memory_reader=subprocess.Popen([*prefix,sys.executable,str(Path(__file__).with_name('resource_memory_reader.py')),str(self.group)],stdin=subprocess.PIPE,stdout=subprocess.PIPE,stderr=subprocess.PIPE,text=True)
+            except OSError as error:self.errors.append(dict(stage='memory_reader_start',error=type(error).__name__))
         self.thread=threading.Thread(target=self.sample_loop,daemon=True);self.thread.start()
 
     def command(self,command):
@@ -60,16 +70,13 @@ class ResourceCollector:
         row=dict(monotonic_ns=time.monotonic_ns(),disk=disk_inventory(self.paths))
         if self.group:
             try:
-                pids=(self.group/'cgroup.procs').read_text().split();pss=rss=0;visible=0
-                for pid in pids:
-                    try:
-                        values=counters((Path('/proc')/pid/'smaps_rollup').read_text().replace(' kB',''))
-                        pss+=values.get('Pss',0)*1024;rss+=values.get('Rss',0)*1024;visible+=1
-                    except FileNotFoundError:continue
-                    except OSError:self.errors.append(dict(stage='smaps',error='unobservable'))
-                row.update(processes=len(pids),memory_processes_observed=visible,sampled_pss_bytes=pss,sampled_rss_sum_bytes=rss,
-                    cgroup_memory_current_bytes=int((self.group/'memory.current').read_text()),cpu=counters((self.group/'cpu.stat').read_text()))
-            except OSError as e:self.errors.append(dict(stage='sample',error=type(e).__name__))
+                if self.memory_reader is not None:
+                    self.memory_reader.stdin.write('sample\n');self.memory_reader.stdin.flush()
+                    memory=json.loads(self.memory_reader.stdout.readline())
+                    self.errors.extend(memory.pop('errors',[]));row.update(memory)
+                else:self.errors.append(dict(stage='memory_reader',error='unavailable'))
+                row.update(cgroup_memory_current_bytes=int((self.group/'memory.current').read_text()),cpu=counters((self.group/'cpu.stat').read_text()))
+            except (OSError,ValueError) as e:self.errors.append(dict(stage='sample',error=type(e).__name__))
         self.samples.append(row)
 
     def sample_loop(self):
@@ -98,15 +105,29 @@ class ResourceCollector:
                 except OSError:
                     if attempt==99:self.errors.append(dict(stage='cgroup_cleanup',error='pending_kernel_settlement'))
                     else:time.sleep(.01)
+        if self.memory_reader is not None:
+            before=resource.getrusage(resource.RUSAGE_CHILDREN)
+            try:
+                self.memory_reader.stdin.write('finish\n');self.memory_reader.stdin.flush()
+                self.memory_reader_self_cpu_seconds=json.loads(self.memory_reader.stdout.readline()).get('cpu_seconds')
+                self.memory_reader.stdin.close();self.memory_reader.wait(timeout=5)
+                if self.memory_reader.returncode!=0:self.errors.append(dict(stage='memory_reader_exit',error='nonzero'))
+            except (OSError,ValueError,subprocess.TimeoutExpired) as error:
+                self.errors.append(dict(stage='memory_reader_finish',error=type(error).__name__))
+                self.memory_reader.kill();self.memory_reader.wait()
+            after=resource.getrusage(resource.RUSAGE_CHILDREN)
+            self.memory_reader_cpu_seconds=after.ru_utime+after.ru_stime-before.ru_utime-before.ru_stime
         disk=[s['disk'] for s in self.samples]
         if any(d['errors'] for d in disk):self.errors.append(dict(stage='disk_inventory',error='incomplete'))
         return dict(started_ns=self.started_ns,ended_ns=ended,cgroup=final,
-            sampled_peak_pss_bytes=max((s.get('sampled_pss_bytes',0) for s in self.samples),default=0) if self.group else None,
-            sampled_peak_rss_sum_bytes=max((s.get('sampled_rss_sum_bytes',0) for s in self.samples),default=0) if self.group else None,
+            sampled_peak_pss_bytes=max((s['sampled_pss_bytes'] for s in self.samples if 'sampled_pss_bytes' in s),default=None) if self.group else None,
+            sampled_peak_rss_sum_bytes=max((s['sampled_rss_sum_bytes'] for s in self.samples if 'sampled_rss_sum_bytes' in s),default=None) if self.group else None,
             memory_method='sampled PSS/RSS sum and kernel cgroup peak are distinct; cgroup includes accounted file cache',
             disk_initial=self.initial_disk,disk_peak_allocated_bytes=max((s['allocated_bytes'] for s in disk),default=None),
             disk_at_terminal=disk[-1] if disk else None,
             retained_incremental_allocated_bytes=(disk[-1]['allocated_bytes']-self.initial_disk['allocated_bytes']) if disk else None,
-            sample_interval_ms=self.interval*1000,observer_thread_cpu_seconds=self.observer_cpu,samples=self.samples,errors=self.errors,
+            sample_interval_ms=self.interval*1000,observer_thread_cpu_seconds=self.observer_cpu,
+            memory_reader_cpu_seconds=self.memory_reader_cpu_seconds,memory_reader_self_cpu_seconds=self.memory_reader_self_cpu_seconds,
+            memory_reader_scope='Separate read-only privileged helper outside product cgroup; total child-command CPU includes sudo launcher and reader; reader self CPU overlaps that total',samples=self.samples,errors=self.errors,
             complete=bool(self.group) and not self.errors,
             limitation='Sub-interval process-memory/disk peaks may be missed. No COW shared-block or cross-host service attribution. Post-native-cleanup measurement is a separate stage.')
