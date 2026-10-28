@@ -5,6 +5,7 @@ on:
     branches: [main]
     paths:
       - 'comparison/export_reuse_metrics.py'
+      - 'comparison/export_observability_reuse.py'
       - '.github/workflows/comparison-reuse-plots.yml'
 permissions:
   contents: read
@@ -24,6 +25,10 @@ jobs:
         env:
           PYTHONPATH: ${{ runner.temp }}/reuse-plot-deps
         run: python3 comparison/export_reuse_metrics.py --output "$RUNNER_TEMP/reuse-plots" --plot
+      - name: Extract exact accepted telemetry fault counters and render observations
+        env:
+          PYTHONPATH: ${{ runner.temp }}/reuse-plot-deps
+        run: python3 comparison/export_observability_reuse.py --output "$RUNNER_TEMP/reuse-plots" --plot
       - name: Retain chart and source rows
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
