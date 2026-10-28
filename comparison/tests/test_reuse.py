@@ -8,6 +8,7 @@ import zipfile
 
 sys.path.insert(0,str(Path(__file__).resolve().parents[1]))
 from inspect_reuse_archives import inspect
+from native_read_probe import choose_response
 
 
 class ReuseIntegrityTests(unittest.TestCase):
@@ -34,5 +35,18 @@ class ReuseIntegrityTests(unittest.TestCase):
     def test_missing_accepted_summary_is_not_silently_dropped(self):
         archive,accepted=self.fixture();accepted['summary_digests']['0'*64]=[]
         with self.assertRaisesRegex(ValueError,'not found'):inspect(archive,accepted)
+
+
+class NativeReadCalibrationTests(unittest.TestCase):
+    def test_prompt_receipt_cannot_fake_actual_tool_return(self):
+        body={'messages':[{'role':'user','content':'SECRET_RECEIPT'}],
+              'tools':[{'type':'function','function':{'name':'read','parameters':{'properties':{'path':{'type':'string'}}}}}]}
+        result=choose_response(body,Path('/synthetic/input'),'SECRET_RECEIPT')
+        self.assertEqual(result.get('tool'),'read')
+        self.assertNotIn('text',result)
+
+    def test_missing_receipt_is_not_accepted_after_tool_failure(self):
+        body={'messages':[{'role':'tool','content':'Error: read failed'}]}
+        self.assertNotEqual(choose_response(body,Path('/synthetic/input'),'SECRET_RECEIPT').get('text'),'VERIFIED:SECRET_RECEIPT')
 
 if __name__=='__main__':unittest.main()

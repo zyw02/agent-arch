@@ -1,0 +1,41 @@
+name: DSH and OpenClaw native read calibration
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'comparison/native_read_probe.py'
+      - '.github/workflows/comparison-native-read.yml'
+permissions:
+  contents: read
+jobs:
+  calibrate:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '24.22.1'
+      - name: Install explicit comparison versions on disposable worker
+        env:
+          npm_config_cache: ${{ runner.temp }}/native-read-cache
+        run: |
+          npm install --prefix "$RUNNER_TEMP/native-read-runtime" --save-exact --no-audit --no-fund @deepseek-ai/dsh@0.2.2-alpha.2 openclaw@2026.10.8
+          mkdir -p "$RUNNER_TEMP/native-read-evidence"
+          cp "$RUNNER_TEMP/native-read-runtime/package-lock.json" "$RUNNER_TEMP/native-read-evidence/"
+          node --version > "$RUNNER_TEMP/native-read-evidence/node-version.txt"
+      - name: Exercise real native tools with synthetic model responses
+        run: python3 comparison/native_read_probe.py --runtime "$RUNNER_TEMP/native-read-runtime" --output "$RUNNER_TEMP/native-read-evidence"
+      - name: Retain compact adapter calibration evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: native-read-calibration
+          path: ${{ runner.temp }}/native-read-evidence/
+          retention-days: 30
+          if-no-files-found: error
+      - name: Remove task-owned installation and cache
+        if: always()
+        run: rm -rf -- "$RUNNER_TEMP/native-read-runtime" "$RUNNER_TEMP/native-read-cache"

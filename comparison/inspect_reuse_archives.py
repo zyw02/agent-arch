@@ -41,11 +41,13 @@ def inspect(archive, accepted):
             raw=z.read(member);digest=hashlib.sha256(raw).hexdigest()
             if digest not in expected:continue
             d=json.loads(raw)
+            numbers=numeric_fields(d)
             found.append(dict(path=member.filename,sha256=digest,
                 accepted_units=expected[digest],
                 root_type=type(d).__name__,root_keys=sorted(d) if isinstance(d,dict) else [],
                 # This is an availability inventory, not a reconstructed metric ledger.
-                numeric_fields=numeric_fields(d)[:1500],
+                numeric_fields=numbers[:1500], numeric_field_count=len(numbers),
+                numeric_inventory_truncated=len(numbers)>1500,
                 native_json_shape=[{k:type(v).__name__ for k,v in item.items()} for item in d[:2]] if isinstance(d,list) else {}))
     if set(expected)-{v['sha256'] for v in found}:raise ValueError('Accepted native summary not found in archive')
     return found
@@ -70,6 +72,7 @@ def main():
             if f"{r['run_id']}/{r['hosted_artifact_id']}"!=key or r['state'] not in {'pass','fail'}:continue
             digest=r.get('native_summary_sha256')
             if digest:expected.setdefault(digest,[]).append({'scenario':r['scenario_id'],'unit':r['unit'],'state':r['state']})
+        if not expected:raise ValueError('No accepted native-summary digests for selected archive')
         req=urllib.request.Request(asset['download_url'],headers={'User-Agent':'agent-arch-evidence-reuse'})
         with urllib.request.urlopen(req,timeout=60) as response:raw=response.read(8*1024**2+1)
         if len(raw)>8*1024**2 or len(raw)!=asset['zip_bytes']:raise ValueError('Archive size mismatch')

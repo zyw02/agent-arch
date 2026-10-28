@@ -1,0 +1,107 @@
+{
+  "old_version": "2026.10.7",
+  "old_ref": "157d8c2bc3ea2fa183afdc11088e69690bf8e64e",
+  "new_version": "2026.10.8",
+  "new_ref": "dc2523e5a5c7a309517fd7fa834add938231d526",
+  "files": [
+    {
+      "path": "src/agents/tools/goal-tools.ts",
+      "old_blob": "fd7fae6f690517b2ad1ed05b9522583e8461bc5c",
+      "new_blob": "fd7fae6f690517b2ad1ed05b9522583e8461bc5c",
+      "status": "same_source_blob",
+      "new_ref": "dc2523e5a5c7a309517fd7fa834add938231d526"
+    },
+    {
+      "path": "src/config/sessions/goals.ts",
+      "old_blob": "262fdbd00d610861dd8bf0a7fba7bdc0aea1c2b1",
+      "new_blob": "262fdbd00d610861dd8bf0a7fba7bdc0aea1c2b1",
+      "status": "same_source_blob",
+      "new_ref": "dc2523e5a5c7a309517fd7fa834add938231d526"
+    },
+    {
+      "path": "src/agents/sessions/event-bus.ts",
+      "old_blob": "37e6f2abc766fc5e64859bea539cff80eecd0ff9",
+      "new_blob": "37e6f2abc766fc5e64859bea539cff80eecd0ff9",
+      "status": "same_source_blob",
+      "new_ref": "dc2523e5a5c7a309517fd7fa834add938231d526"
+    },
+    {
+      "path": "src/agents/embedded-agent-runner/context-engine-maintenance-execution.ts",
+      "old_blob": "aa20971bd0c6d425b54510b6da59a9cb8699cae8",
+      "new_blob": "aa20971bd0c6d425b54510b6da59a9cb8699cae8",
+      "status": "same_source_blob",
+      "new_ref": "dc2523e5a5c7a309517fd7fa834add938231d526"
+    },
+    {
+      "path": "src/agents/embedded-agent-runner/skill-runtime.ts",
+      "old_blob": "e37299384c7e1c8fc1c8cf0608324d80134570e9",
+      "new_blob": "e37299384c7e1c8fc1c8cf0608324d80134570e9",
+      "status": "same_source_blob",
+      "new_ref": "dc2523e5a5c7a309517fd7fa834add938231d526"
+    },
+    {
+      "path": "src/commands/backup-restore.ts",
+      "old_blob": "b164e729802d4df400454f0e17f7a72ec17778b4",
+      "new_blob": "b164e729802d4df400454f0e17f7a72ec17778b4",
+      "status": "same_source_blob",
+      "new_ref": "dc2523e5a5c7a309517fd7fa834add938231d526"
+    },
+    {
+      "path": "src/agents/worktrees/snapshot-restore.ts",
+      "old_blob": "b0cf5c999ccb550dff6efddd6259e74c2598f863",
+      "new_blob": "b0cf5c999ccb550dff6efddd6259e74c2598f863",
+      "status": "same_source_blob",
+      "new_ref": "dc2523e5a5c7a309517fd7fa834add938231d526"
+    },
+    {
+      "path": "src/skills/workshop/experience-review.ts",
+      "old_blob": "d13b720e3e9cc6fcaa708b7e2e6fe332abf7a968",
+      "new_blob": "d13b720e3e9cc6fcaa708b7e2e6fe332abf7a968",
+      "status": "same_source_blob",
+      "new_ref": "dc2523e5a5c7a309517fd7fa834add938231d526"
+    },
+    {
+      "path": "src/skills/workshop/skill-versions.ts",
+      "old_blob": "379e2164453691546baa8d5778a49c8101c92761",
+      "new_blob": "379e2164453691546baa8d5778a49c8101c92761",
+      "status": "same_source_blob",
+      "new_ref": "dc2523e5a5c7a309517fd7fa834add938231d526"
+    },
+    {
+      "path": "extensions/diagnostics-otel/src/service-logs.ts",
+      "old_blob": "b52f5c120a91d47f1c6cc17132569c9cbcc6678b",
+      "new_blob": "b52f5c120a91d47f1c6cc17132569c9cbcc6678b",
+      "status": "same_source_blob",
+      "new_ref": "dc2523e5a5c7a309517fd7fa834add938231d526"
+    },
+    {
+      "path": "src/skills/workshop/changes.kernel.ts",
+      "old_blob": "9ab99a1997a9b51821c9d14d35d3f4544c77dc70",
+      "new_blob": "9ab99a1997a9b51821c9d14d35d3f4544c77dc70",
+      "status": "same_source_blob",
+      "new_ref": "dc2523e5a5c7a309517fd7fa834add938231d526"
+    },
+    {
+      "path": "src/skills/workshop/experience-review-scheduler.ts",
+      "old_blob": "fb6316c9b708b7a531cb298118b77109dcc0d495",
+      "new_blob": "fb6316c9b708b7a531cb298118b77109dcc0d495",
+      "status": "same_source_blob",
+      "new_ref": "dc2523e5a5c7a309517fd7fa834add938231d526"
+    },
+    {
+      "path": "src/agents/bootstrap-budget.ts",
+      "old_blob": "4359b1da5c0c76e26ea73c0f9576f60c3ed561e8",
+      "new_blob": "4359b1da5c0c76e26ea73c0f9576f60c3ed561e8",
+      "status": "same_source_blob",
+      "new_ref": "dc2523e5a5c7a309517fd7fa834add938231d526"
+    },
+    {
+      "path": "src/agents/system-prompt-skills.ts",
+      "old_blob": "07af0ba0fb691069385f0d50402c7042e5d1321e",
+      "new_blob": "07af0ba0fb691069385f0d50402c7042e5d1321e",
+      "status": "same_source_blob",
+      "new_ref": "dc2523e5a5c7a309517fd7fa834add938231d526"
+    }
+  ],
+  "rule": "Identical selected blobs support source-level continuity only; transitive dependencies, package composition, configuration and runtime effects still require calibration. Historical observations remain labeled 2026.10.7."
+}
