@@ -1,0 +1,65 @@
+name: Native platform lifecycle-resource blocks
+on:
+  workflow_dispatch:
+    inputs:
+      phase:
+        type: choice
+        options: [pilot, formal]
+        default: pilot
+        required: true
+      blocks:
+        type: choice
+        options: ['1', '2']
+        default: '1'
+        required: true
+permissions:
+  contents: read
+concurrency:
+  group: native-platform-resource
+  cancel-in-progress: false
+jobs:
+  blocks:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '24.22.1'
+      - name: Install pinned native service products only on disposable worker
+        env:
+          npm_config_cache: ${{ runner.temp }}/platform-resource-cache
+        run: |
+          npm install --prefix "$RUNNER_TEMP/platform-resource-runtime" --save-exact --no-audit --no-fund @deepseek-ai/dsh@0.2.2-alpha.2 openclaw@2026.10.8
+          mkdir -p "$RUNNER_TEMP/platform-resource-evidence"
+          cp "$RUNNER_TEMP/platform-resource-runtime/package-lock.json" "$RUNNER_TEMP/platform-resource-evidence/"
+          node --version > "$RUNNER_TEMP/platform-resource-evidence/node-version.txt"
+          cat /etc/os-release > "$RUNNER_TEMP/platform-resource-evidence/os-release.txt"
+      - name: Delegate this job's collection subtree
+        run: |
+          task_group="/sys/fs/cgroup/agent-arch-${GITHUB_RUN_ID}"
+          sudo mkdir "$task_group"
+          echo '+cpu +memory +pids +io' | sudo tee "$task_group/cgroup.subtree_control" > /dev/null
+          sudo chown "$(id -u):$(id -g)" "$task_group" "$task_group/cgroup.procs" "$task_group/cgroup.subtree_control"
+          echo "AGENT_ARCH_CGROUP_ROOT=$task_group" >> "$GITHUB_ENV"
+      - name: Execute complete native resource blocks
+        env:
+          STUDY_PHASE: ${{ inputs.phase }}
+          STUDY_BLOCKS: ${{ inputs.blocks }}
+        run: python3 comparison/platform_resource_probe.py --runtime "$RUNNER_TEMP/platform-resource-runtime" --output "$RUNNER_TEMP/platform-resource-evidence" --phase "$STUDY_PHASE" --blocks "$STUDY_BLOCKS"
+      - name: Retain native lifecycle, fixture, resource evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: native-platform-resource-evidence
+          path: ${{ runner.temp }}/platform-resource-evidence/
+          if-no-files-found: error
+          retention-days: 30
+      - name: Remove installation and delegated subtree
+        if: always()
+        run: |
+          rm -rf -- "$RUNNER_TEMP/platform-resource-runtime" "$RUNNER_TEMP/platform-resource-cache"
+          if [ -d "/sys/fs/cgroup/agent-arch-${GITHUB_RUN_ID}" ]; then
+            sudo rmdir "/sys/fs/cgroup/agent-arch-${GITHUB_RUN_ID}"
+          fi

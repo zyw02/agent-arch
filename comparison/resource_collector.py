@@ -39,7 +39,7 @@ class ResourceCollector:
     def __init__(self,paths,interval=.2):
         self.paths=paths;self.interval=interval;self.samples=[];self.errors=[];self.group=None
         self.started_ns=time.monotonic_ns();self.initial_disk=disk_inventory(paths)
-        self.stop_event=threading.Event();self.observer_cpu=0
+        self.stop_event=threading.Event();self.observer_cpu=0;self.sample_lock=threading.Lock()
         base=Path(os.environ.get('AGENT_ARCH_CGROUP_ROOT','/sys/fs/cgroup/system.slice'))
         try:
             group=base/('agent-arch-probe-'+str(os.getpid())+'-'+uuid.uuid4().hex[:10]);group.mkdir()
@@ -67,6 +67,9 @@ class ResourceCollector:
         return [*prefix,sys.executable,str(Path(__file__).with_name('resource_launcher.py')),str(self.group),str(os.getuid()),str(os.getgid()),*command]
 
     def sample(self):
+        with self.sample_lock:self._sample()
+
+    def _sample(self):
         row=dict(monotonic_ns=time.monotonic_ns(),disk=disk_inventory(self.paths))
         if self.group:
             try:

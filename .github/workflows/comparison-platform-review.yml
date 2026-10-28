@@ -1,0 +1,33 @@
+name: Blind native-only platform record reconstruction
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: native-platform-record-review
+  cancel-in-progress: false
+jobs:
+  review:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - name: Freeze randomized native packets and withheld answer-key digest
+        run: python3 comparison/review_platform_native.py prepare --report comparison/evidence/platform-fault-20261028/formal-original-report.json.gz --output "$RUNNER_TEMP/native-review-dataset"
+      - name: Request one isolated automated reconstruction per native packet
+        env:
+          DEEPSEEK_API_KEY: ${{ secrets.DEEPSEEK_API_KEY }}
+        run: python3 comparison/review_platform_native.py review --packets "$RUNNER_TEMP/native-review-dataset/packets" --output "$RUNNER_TEMP/native-review-answers"
+      - name: Score frozen answers after isolated review has finished
+        run: python3 comparison/review_platform_native.py score --dataset "$RUNNER_TEMP/native-review-dataset" --reviews "$RUNNER_TEMP/native-review-answers" --output "$RUNNER_TEMP/native-review-dataset/score.json"
+      - name: Retain native-only prompts, original answers, hashes, usage and scores
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: native-platform-record-review
+          path: |
+            ${{ runner.temp }}/native-review-dataset/
+            ${{ runner.temp }}/native-review-answers/
+          if-no-files-found: error
+          retention-days: 30

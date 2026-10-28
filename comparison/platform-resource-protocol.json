@@ -1,0 +1,21 @@
+{
+  "study": "PC-HTTP-01",
+  "status": "complete_block_pilot_preparation",
+  "track": "D: deterministic ACK provider, 250ms fixed response delay; no real-model quality or cost ranking",
+  "products": {"DSH": "0.2.2-alpha.2 long-lived Web", "OpenClaw": "2026.10.8 long-lived Gateway"},
+  "conditions": ["idle", "cold_single", "warm_single", "four_sequential", "four_concurrent"],
+  "cold": "first task after a new native service reaches carrier readiness; fresh owned state/workspace/session. Shared npm installation and runner OS file cache retained; not a cold host/cache experiment",
+  "warm": "new distinct native session after exactly one accepted priming task on the same service. Priming excluded from task-phase deltas and retained in lifecycle totals",
+  "equal_work": "four distinct fresh native sessions each perform identical ACK operation. Both sequential and concurrent arms use one accepted priming task on a fresh service. All four classified terminal outcomes required; no throughput arrival-rate sweep",
+  "idle_seconds": 5,
+  "provider_delay_seconds": 0.25,
+  "sample_interval_seconds": 0.05,
+  "fixture_max_release_overshoot_ms": 100,
+  "fixture_max_arrival_spread_ms": 100,
+  "provider": "record actual task request arrivals/response releases/active count; do not schedule or enforce product concurrency. Session-title auxiliary calls remain separately labeled",
+  "task_terminal": "exact native assistant ACK of unique submitted marker; initial request must show native session binding and no other fresh-session marker. Native errors retained as outcomes; healthy calibration failure blocks formal admission",
+  "resources": "dedicated native cgroup 2 CPUs, 3GiB memory/no swap; full lifecycle counters plus active phase CPU deltas, sampled integrated RSS and peak PSS, native process maps and owned disk inventory. Model fixture/controller outside; observer CPU and memory-reader command CPU retained separately. Memory integration estimates from samples, sub-sample peaks may be missed",
+  "deadlines": "90s carrier readiness, 60s synthetic HTTP operation, 10s shutdown. Preparation safeguards identify failure, not a universal real-task quota",
+  "formal_admission": "one complete pilot block (five arms per product), publish measured elapsed time including setup/cleanup before admitting two complete formal blocks; reverse product order in second block",
+  "limits": ["fixed four-task load only", "single hosted runner per block", "shared OS caches", "fresh native state per arm", "resident service cost separated from active increments", "no sustainable capacity, p99, leak or statistical product-ranking claim"]
+}

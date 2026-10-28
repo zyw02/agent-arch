@@ -2,6 +2,7 @@
 """Freeze native-only PA review packets, request an isolated review, then score."""
 import argparse
 import copy
+import gzip
 import hashlib
 import json
 import os
@@ -58,7 +59,7 @@ def prepare(report,output):
     # The isolated reviewer command accepts ONLY the packets directory, never
     # this independent key. Key digest is frozen before any paid request.
     key_raw=(json.dumps(keys,indent=2)+'\n').encode();(output/'withheld-answer-key.json').write_bytes(key_raw)
-    manifest_obj=dict(protocol_sha256=digest(PROTOCOL.read_bytes()),withheld_key_sha256=digest(key_raw),packets=manifest,
+    manifest_obj=dict(protocol_sha256=digest(PROTOCOL.read_bytes()),withheld_key_sha256=digest(key_raw),prepared_ns=time.monotonic_ns(),packets=manifest,
         source_run_id=report['run_id'],source_controller_commit=report['controller_commit'])
     (output/'manifest.json').write_text(json.dumps(manifest_obj,indent=2)+'\n')
     return manifest_obj
@@ -137,7 +138,7 @@ def score(dataset,reviews):
 
 def main():
     p=argparse.ArgumentParser();p.add_argument('mode',choices=['prepare','review','score']);p.add_argument('--report',type=Path);p.add_argument('--dataset',type=Path);p.add_argument('--packets',type=Path);p.add_argument('--reviews',type=Path);p.add_argument('--output',type=Path,required=True);args=p.parse_args()
-    if args.mode=='prepare':prepare(json.loads(args.report.read_bytes()),args.output)
+    if args.mode=='prepare':prepare(json.loads(gzip.decompress(args.report.read_bytes()) if args.report.suffix=='.gz' else args.report.read_bytes()),args.output)
     elif args.mode=='review':review(args.packets,args.output)
     else:args.output.write_text(json.dumps(score(args.dataset,args.reviews),indent=2)+'\n')
 
