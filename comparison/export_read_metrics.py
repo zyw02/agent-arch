@@ -87,7 +87,7 @@ def main():
     p=argparse.ArgumentParser();p.add_argument('--report',type=Path,required=True);p.add_argument('--output',type=Path,required=True);p.add_argument('--plot',action='store_true');a=p.parse_args()
     raw=a.report.read_bytes();report=json.loads(raw);arms,requests=export(report);a.output.mkdir(parents=True,exist_ok=True)
     with (a.output/'read-resource-metrics.csv').open('w',newline='') as f:
-        writer=csv.DictWriter(f,fieldnames=list(arms[0]));writer.writeheader();writer.writerows(arms)
+        writer=csv.DictWriter(f,fieldnames=list(arms[0]),lineterminator='\n');writer.writeheader();writer.writerows(arms)
     (a.output/'read-request-usage.json').write_text(json.dumps(dict(report_sha256=hashlib.sha256(raw).hexdigest(),run_id=report['run_id'],requests=requests,
         counter_rule='Raw request counters, including auxiliary work and failures. Inclusive/cache/reasoning fields not blindly summed across protocols.',
         component_token_attribution='Unobserved; source payload bytes must not be labeled tokens.'),indent=2)+'\n')

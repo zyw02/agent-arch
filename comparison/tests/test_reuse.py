@@ -1,4 +1,5 @@
 import hashlib
+import gzip
 import io
 import json
 from pathlib import Path
@@ -13,6 +14,15 @@ from export_reuse_metrics import row_from
 
 
 class ReuseIntegrityTests(unittest.TestCase):
+    def test_retained_pilot_raw_and_exports_match_provenance(self):
+        base=Path(__file__).resolve().parents[1]/'evidence/source-informed-20261028'
+        provenance=json.loads((base/'read-pilot-provenance.json').read_text())
+        compressed=(base/provenance['original_report_archive']).read_bytes()
+        self.assertEqual(hashlib.sha256(compressed).hexdigest(),provenance['original_report_archive_sha256'])
+        self.assertEqual(hashlib.sha256(gzip.decompress(compressed)).hexdigest(),provenance['original_report_sha256'])
+        for name,digest in provenance['retained_files'].items():
+            self.assertEqual(hashlib.sha256((base/name).read_bytes()).hexdigest(),digest,name)
+
     def fixture(self):
         raw=json.dumps({'scenarios':[{'id':'CASE-S01','duration_ms':123}]}).encode()
         buf=io.BytesIO()

@@ -12,12 +12,22 @@
   "artifact_url": "https://github.com/zyw02/agent-arch/actions/runs/40660343474/artifacts/12803492521",
   "retained_files": {
     "read-pilot-summary.json": "363aabddb0bfe73057ece95847db963c14e0b49ca80dca470e8de04e5ff3cf3b",
-    "read-resource-metrics.csv": "56cc3484df1f4f54e44fd218396bd95b24c9c55724f4110ba9edfacae4632892",
+    "read-resource-metrics.csv": "a503fb8c577c645f7d40f7e3d5e606c8104d95e3786222317ca0a4c02b187cec",
     "read-request-usage.json": "c7ecc50cc10dfa8d85c91b08459e85e89f263230a645a6b8b4f69cea5dd6ac74",
     "read-resource-timeline.png": "7a141c2b998170173c73877a2248079d719dd7d81a1b5416837484904aa8bc25",
     "read-resource-timeline.svg": "87f17f27e15a5a27475d303a6f84d656642b636bbbb36c6758b4a7583535482e"
   },
   "live_provider_calls": 10,
   "provider_calls_during_reanalysis": 0,
-  "formal_comparison_credit": false
+  "formal_comparison_credit": false,
+  "artifact_member_sha256": {
+    "read-pilot-summary.json": "363aabddb0bfe73057ece95847db963c14e0b49ca80dca470e8de04e5ff3cf3b",
+    "read-resource-metrics.csv": "56cc3484df1f4f54e44fd218396bd95b24c9c55724f4110ba9edfacae4632892",
+    "read-request-usage.json": "c7ecc50cc10dfa8d85c91b08459e85e89f263230a645a6b8b4f69cea5dd6ac74",
+    "read-resource-timeline.png": "7a141c2b998170173c73877a2248079d719dd7d81a1b5416837484904aa8bc25",
+    "read-resource-timeline.svg": "87f17f27e15a5a27475d303a6f84d656642b636bbbb36c6758b4a7583535482e"
+  },
+  "repository_normalization": {
+    "read-resource-metrics.csv": "CRLF normalized to LF by repository text policy; field values unchanged; original artifact member hash retained separately"
+  }
 }
