@@ -71,7 +71,7 @@ def select_service_owner(rows,product):
 
 
 class NativeServer:
-    def __init__(self,product,runtime,root,provider,sample_interval=.2):
+    def __init__(self,product,runtime,root,provider,sample_interval=.2,configure=None,resource_paths=None):
         self.product=product;self.root=root;self.runtime=runtime;self.port=free_port();self.launch_url=None;self.logs=deque(maxlen=150)
         self.workspace=root/'workspace';self.workspace.mkdir(exist_ok=True);(self.workspace/'.git').mkdir(exist_ok=True)
         self.state=root/'state';self.state.mkdir(exist_ok=True);env=dict(os.environ);env.pop('DEEPSEEK_API_KEY',None)
@@ -88,7 +88,8 @@ class NativeServer:
                 tools=dict(allow=['read'],toolSearch=False),cron=dict(enabled=False))))
             env.update(OPENCLAW_STATE_DIR=str(self.state),OPENCLAW_CONFIG_PATH=str(config),OPENCLAW_SKIP_CHANNELS='1',OPENCLAW_DISABLE_BUNDLED_PLUGINS='1')
             command=[str(runtime/'node_modules/.bin/openclaw'),'gateway','run','--bind','loopback','--port',str(self.port)]
-        self.env=env;self.command=command;self.collector=ResourceCollector(dict(workspace=self.workspace,product_state=self.state),interval=sample_interval);self.started_ns=time.monotonic_ns()
+        if configure is not None:configure(self,env,command)
+        self.env=env;self.command=command;self.collector=ResourceCollector(dict(workspace=self.workspace,product_state=self.state,**(resource_paths or {})),interval=sample_interval);self.started_ns=time.monotonic_ns()
         if self.collector.group is None:
             self.collector.finish()
             raise RuntimeError('Owned native service cgroup is unavailable; execution withheld')

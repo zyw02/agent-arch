@@ -1,0 +1,14 @@
+{
+  "study": "HD-MCP-01 selected native failure/retry reconstruction",
+  "status": "frozen before pilot and before any formal execution or isolated reviewer requests",
+  "reviewer": "One isolated automated deepseek-flash request per randomized native four-batch healthy/failure case, thinking disabled, temperature 0, maximum output 2048. Two formal blocks give eight cases, not eight independent task designs",
+  "packet": "Selected public native history plus bounded native stdout and the original workload markers/file indexes. No condition/block labels, evaluator decisions/summaries, expected values, process/cgroup measurements, MCP fixture records, provider request truth or answer key. Remove condition-bearing owned paths. Native product syntax is not anonymized. Missing selected records do not establish absence from all native logging surfaces",
+  "questions": {
+    "failed_read_index": {"question": "Which offered read index is reported as a tool-operation failure in these native records? Exclude normal cleanup and cancelled calls. Return none only when the native evidence establishes successful results for every offered read; otherwise unknown is appropriate.", "choices": ["0", "1", "2", "3", "none", "unknown"]},
+    "repeat_owner": {"question": "Was any indexed read actually attempted more than once before the task terminal? If so, does the native record establish a model-issued repeated tool call or a native execution/transport retry of one call? Transcript absence alone cannot prove there was no hidden native retry. Return unknown unless the selected native evidence establishes the actual attempt/owner fact.", "choices": ["no_repeat", "model", "native", "both", "unknown"]},
+    "delivered_value_count": {"question": "How many distinct offered file indexes have their random TOOL_VALUE content in an actual native assistant final response, excluding user prompts, tool-call arguments and echoed tool results? Count only the workload task before any separate health task.", "choices": ["0", "1", "2", "3", "4", "unknown"]}
+  },
+  "answer_format": "JSON object with exactly the three question keys. Each value contains answer from choices, evidence_path or null, exact quote or null, and a brief reason. Prefer unknown to unsupported causal or absence inference",
+  "scoring": "Freeze native packets, independent key and actual model requests/responses before reading key. Reconcile against independently observed MCP call/read/result receipts and model-issued call IDs. Preserve exact value matches, wrong answers, unknowns and invalid answers; audit quote existence and support separately without rewriting original scores. No model retry to improve an answer",
+  "limits": "Question-specific automated reconstruction on two selected native surfaces. No human debugging-time, complete native logging inventory, general observability ranking or inference that absence in the supplied transcript proves absence of native transport work"
+}

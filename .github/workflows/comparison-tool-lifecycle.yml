@@ -1,0 +1,62 @@
+name: Native tool integration, batching, failure and cancellation
+on:
+  workflow_dispatch:
+    inputs:
+      phase:
+        description: Complete pilot, or two formal blocks after measured admission
+        type: choice
+        options: [pilot, formal]
+        default: pilot
+permissions:
+  contents: read
+jobs:
+  tool-lifecycle:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '24.22.1'
+      - name: Install pinned native versions on disposable worker
+        env:
+          npm_config_cache: ${{ runner.temp }}/tool-lifecycle-cache
+        run: |
+          npm install --prefix "$RUNNER_TEMP/tool-lifecycle-runtime" --save-exact --no-audit --no-fund @deepseek-ai/dsh@0.2.2-alpha.2 openclaw@2026.10.8
+          mkdir -p "$RUNNER_TEMP/tool-lifecycle-evidence"
+          cp "$RUNNER_TEMP/tool-lifecycle-runtime/package-lock.json" "$RUNNER_TEMP/tool-lifecycle-evidence/"
+          cp comparison/tool-lifecycle-protocol.json comparison/tool-lifecycle-source-bindings.json "$RUNNER_TEMP/tool-lifecycle-evidence/"
+          node --version > "$RUNNER_TEMP/tool-lifecycle-evidence/node-version.txt"
+          cp /etc/os-release "$RUNNER_TEMP/tool-lifecycle-evidence/os-release.txt"
+      - name: Delegate owned native resource subtree
+        run: |
+          task_group="/sys/fs/cgroup/agent-arch-${GITHUB_RUN_ID}"
+          sudo mkdir "$task_group"
+          echo '+cpu +memory +pids +io' | sudo tee "$task_group/cgroup.subtree_control" > /dev/null
+          sudo chown "$(id -u):$(id -g)" "$task_group" "$task_group/cgroup.procs" "$task_group/cgroup.subtree_control"
+          echo "AGENT_ARCH_CGROUP_ROOT=$task_group" >> "$GITHUB_ENV"
+      - name: Execute complete native condition blocks without paid provider keys
+        env:
+          STUDY_PHASE: ${{ inputs.phase }}
+        run: |
+          if [ "$STUDY_PHASE" = formal ]; then
+            python3 comparison/tool_lifecycle_probe.py --runtime "$RUNNER_TEMP/tool-lifecycle-runtime" --output "$RUNNER_TEMP/tool-lifecycle-evidence" --phase formal --admission comparison/tool-lifecycle-formal-admission.json
+          else
+            python3 comparison/tool_lifecycle_probe.py --runtime "$RUNNER_TEMP/tool-lifecycle-runtime" --output "$RUNNER_TEMP/tool-lifecycle-evidence" --phase pilot
+          fi
+      - name: Retain every original native outcome and raw call/resource record
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: tool-lifecycle-evidence
+          path: ${{ runner.temp }}/tool-lifecycle-evidence/
+          retention-days: 30
+          if-no-files-found: error
+      - name: Remove owned runtime/cache and resource subtree
+        if: always()
+        run: |
+          rm -rf -- "$RUNNER_TEMP/tool-lifecycle-runtime" "$RUNNER_TEMP/tool-lifecycle-cache"
+          if [ -d "/sys/fs/cgroup/agent-arch-${GITHUB_RUN_ID}" ]; then
+            sudo rmdir "/sys/fs/cgroup/agent-arch-${GITHUB_RUN_ID}"
+          fi
