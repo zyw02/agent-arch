@@ -1,0 +1,163 @@
+{
+  "study": "HD-MCP-01",
+  "role": "Pinned MCP registration/dispatch/signal and public cancellation owners. Native activation must be shown in pilot; hook documentation is a separate remaining event contrast, not executed by this six-condition protocol",
+  "sources": [
+    {
+      "product": "DSH",
+      "repo": "deepseek-ai/deepseek-harness",
+      "path": "packages/mcp/mcp-client/src/tools.ts",
+      "ref": "f3803c96974ad4a94195fb97e5c637e9c2a3afe3",
+      "blob_sha": "9e7b5c0ab550dc2f2074126ca08c07b12f65dcce",
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/mcp/mcp-client/src/tools.ts"
+    },
+    {
+      "product": "DSH",
+      "repo": "deepseek-ai/deepseek-harness",
+      "path": "packages/mcp/mcp-client/src/connection.ts",
+      "ref": "f3803c96974ad4a94195fb97e5c637e9c2a3afe3",
+      "blob_sha": "310925f184a691d8ea1fc3028ced32e696795651",
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/mcp/mcp-client/src/connection.ts"
+    },
+    {
+      "product": "DSH",
+      "repo": "deepseek-ai/deepseek-harness",
+      "path": "packages/mcp/mcp-client/src/index.ts",
+      "ref": "f3803c96974ad4a94195fb97e5c637e9c2a3afe3",
+      "blob_sha": "3f89532b91d915cad20d65fa06ae52ace088958d",
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/mcp/mcp-client/src/index.ts"
+    },
+    {
+      "product": "DSH",
+      "repo": "deepseek-ai/deepseek-harness",
+      "path": "packages/core/agent-loop/src/agent.ts",
+      "ref": "f3803c96974ad4a94195fb97e5c637e9c2a3afe3",
+      "blob_sha": "c4daa50c47c13fb86b94466774dfcac32b214076",
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/core/agent-loop/src/agent.ts"
+    },
+    {
+      "product": "OpenClaw",
+      "repo": "openclaw/openclaw",
+      "path": "src/agents/agent-bundle-mcp-materialize.ts",
+      "ref": "dc2523e5a5c7a309517fd7fa834add938231d526",
+      "blob_sha": "bb89741b2fb7abc88041c44bf82e32b3c4fafee0",
+      "url": "https://github.com/openclaw/openclaw/blob/dc2523e5a5c7a309517fd7fa834add938231d526/src/agents/agent-bundle-mcp-materialize.ts"
+    },
+    {
+      "product": "OpenClaw",
+      "repo": "openclaw/openclaw",
+      "path": "src/agents/harness/tool-execution.ts",
+      "ref": "dc2523e5a5c7a309517fd7fa834add938231d526",
+      "blob_sha": "2eeb420b4bf3082cbf14d66b7e49b2c4023fbde3",
+      "url": "https://github.com/openclaw/openclaw/blob/dc2523e5a5c7a309517fd7fa834add938231d526/src/agents/harness/tool-execution.ts"
+    },
+    {
+      "product": "OpenClaw",
+      "repo": "openclaw/openclaw",
+      "path": "src/gateway/server-methods/chat-abort-handler.ts",
+      "ref": "dc2523e5a5c7a309517fd7fa834add938231d526",
+      "blob_sha": "d856cc07a4f09aade5d68977ccddd66bba621c90",
+      "url": "https://github.com/openclaw/openclaw/blob/dc2523e5a5c7a309517fd7fa834add938231d526/src/gateway/server-methods/chat-abort-handler.ts"
+    },
+    {
+      "product": "OpenClaw",
+      "repo": "openclaw/openclaw",
+      "path": "docs/plugins/hooks/reference.md",
+      "ref": "dc2523e5a5c7a309517fd7fa834add938231d526",
+      "blob_sha": "59e272e597e44c116dc7df862166ffdedd481fde",
+      "url": "https://github.com/openclaw/openclaw/blob/dc2523e5a5c7a309517fd7fa834add938231d526/docs/plugins/hooks/reference.md"
+    },
+    {
+      "product": "OpenClaw",
+      "repo": "openclaw/openclaw",
+      "path": "docs/plugins/hooks/lifecycle.md",
+      "ref": "dc2523e5a5c7a309517fd7fa834add938231d526",
+      "blob_sha": "83fe9c79ab238211ecfbef806c45de1df1089421",
+      "url": "https://github.com/openclaw/openclaw/blob/dc2523e5a5c7a309517fd7fa834add938231d526/docs/plugins/hooks/lifecycle.md"
+    },
+    {
+      "product": "DSH",
+      "repo": "deepseek-ai/deepseek-harness",
+      "path": "packages/api/session-controller/src/commands.ts",
+      "ref": "f3803c96974ad4a94195fb97e5c637e9c2a3afe3",
+      "blob_sha": "5309872331989824b0f09b97840f913e96f74b8a",
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/api/session-controller/src/commands.ts"
+    },
+    {
+      "product": "DSH",
+      "repo": "deepseek-ai/deepseek-harness",
+      "path": "packages/api/session-controller/src/types.ts",
+      "ref": "f3803c96974ad4a94195fb97e5c637e9c2a3afe3",
+      "blob_sha": "9e399d8f3b08455139f144aa0dfa653e6ef1c8e4",
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/api/session-controller/src/types.ts"
+    },
+    {
+      "product": "DSH",
+      "repo": "deepseek-ai/deepseek-harness",
+      "path": "packages/core/agent-loop/src/index.ts",
+      "ref": "f3803c96974ad4a94195fb97e5c637e9c2a3afe3",
+      "blob_sha": "381ef6e93a01eb06a7379f62a47b367f3e26dd0b",
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/core/agent-loop/src/index.ts"
+    },
+    {
+      "product": "DSH",
+      "repo": "deepseek-ai/deepseek-harness",
+      "path": "packages/core/agent-loop/src/constants.ts",
+      "ref": "f3803c96974ad4a94195fb97e5c637e9c2a3afe3",
+      "blob_sha": "3f5510967a045d2f3b3e566b50f971ade6ec1ecf",
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/core/agent-loop/src/constants.ts"
+    },
+    {
+      "product": "DSH",
+      "repo": "deepseek-ai/deepseek-harness",
+      "path": "packages/core/tool-executor-native/src/index.ts",
+      "ref": "f3803c96974ad4a94195fb97e5c637e9c2a3afe3",
+      "blob_sha": "457749152c004c3b61fe4981eb9c89718bdb1640",
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/core/tool-executor-native/src/index.ts"
+    },
+    {
+      "product": "DSH",
+      "repo": "deepseek-ai/deepseek-harness",
+      "path": "packages/core/tools/src/index.ts",
+      "ref": "f3803c96974ad4a94195fb97e5c637e9c2a3afe3",
+      "blob_sha": "d2d10d6b5be2d77696470e82164bda47322c2112",
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/core/tools/src/index.ts"
+    },
+    {
+      "product": "DSH",
+      "repo": "deepseek-ai/deepseek-harness",
+      "path": "packages/core/tools/src/pipeline.ts",
+      "ref": "f3803c96974ad4a94195fb97e5c637e9c2a3afe3",
+      "blob_sha": "56c68c6c59bb280ac0c96d1198cec6c1e8e7db49",
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/core/tools/src/pipeline.ts"
+    },
+    {
+      "product": "DSH",
+      "repo": "deepseek-ai/deepseek-harness",
+      "path": "packages/core/tools/src/batch.ts",
+      "ref": "f3803c96974ad4a94195fb97e5c637e9c2a3afe3",
+      "blob_sha": "e9a378d997e6a05c305e3bcc1ae6d2e124641f6d",
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/core/tools/src/batch.ts"
+    },
+    {
+      "product": "OpenClaw",
+      "repo": "openclaw/openclaw",
+      "path": "src/agents/tool-call-id.ts",
+      "ref": "dc2523e5a5c7a309517fd7fa834add938231d526",
+      "blob_sha": "a752f0f567b694fc1ba072d31c63036d4856d4a2",
+      "url": "https://github.com/openclaw/openclaw/blob/dc2523e5a5c7a309517fd7fa834add938231d526/src/agents/tool-call-id.ts"
+    },
+    {
+      "product": "OpenClaw",
+      "repo": "openclaw/openclaw",
+      "path": "src/agents/transcript-policy.ts",
+      "ref": "dc2523e5a5c7a309517fd7fa834add938231d526",
+      "blob_sha": "151b0af06a0cc8c8c54448ac54ad2428524da022",
+      "url": "https://github.com/openclaw/openclaw/blob/dc2523e5a5c7a309517fd7fa834add938231d526/src/agents/transcript-policy.ts"
+    }
+  ],
+  "scheduling_source_findings": [
+    "DSH loop default maxParallelToolCalls is 10, but the shared pipeline classifies definitions without isConcurrencySafe as exclusive. The pinned MCP tool definition does not set that classifier or project MCP readOnlyHint into it. This predicts exclusive MCP dispatch in the selected stock bridge; actual activation/overlap still requires runtime evidence.",
+    "OpenClaw MCP materialization selects sequential by default and parallel only when the configured server declares supportsParallelToolCalls=true. This study explicitly selects true; it does not compare default settings or establish that close final outputs prove simultaneous execution."
+  ]
+}
+

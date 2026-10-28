@@ -1,0 +1,221 @@
+{
+  "protocol_sha256": "360a0bbcfad6e1ed093fc7f0ade4d3d303aadb74a3f1e9744ddb86dce931d766",
+  "valid": true,
+  "error": null,
+  "exact_values": true,
+  "read_hashes_correct": true,
+  "active_peak": 4,
+  "max_release_overshoot_ms": 2.1206730000000107,
+  "arrival_spread_ms": 0.522644,
+  "elapsed_seconds": 0.296443488,
+  "fixture_child_cpu_seconds": 0.045274999999999996,
+  "events": [
+    {
+      "kind": "fixture_started",
+      "monotonic_ns": 100452575780,
+      "pid": 2575
+    },
+    {
+      "kind": "call_received",
+      "monotonic_ns": 100453089848,
+      "pid": 2575,
+      "mcp_call_id": 1,
+      "index": 0,
+      "thread_id": 2577
+    },
+    {
+      "kind": "call_received",
+      "monotonic_ns": 100453251590,
+      "pid": 2575,
+      "mcp_call_id": 2,
+      "index": 1,
+      "thread_id": 2578
+    },
+    {
+      "kind": "call_received",
+      "monotonic_ns": 100453445802,
+      "pid": 2575,
+      "mcp_call_id": 3,
+      "index": 2,
+      "thread_id": 2579
+    },
+    {
+      "kind": "call_received",
+      "monotonic_ns": 100453612492,
+      "pid": 2575,
+      "mcp_call_id": 4,
+      "index": 3,
+      "thread_id": 2580
+    },
+    {
+      "kind": "file_read",
+      "monotonic_ns": 100703951684,
+      "pid": 2575,
+      "mcp_call_id": 1,
+      "index": 0,
+      "bytes": 43,
+      "sha256": "4effd2a593018ec93e8eaef0563c0c968286e72af1f3b6d6c4e4d3e1c219c147"
+    },
+    {
+      "kind": "result_sent",
+      "monotonic_ns": 100704333847,
+      "pid": 2575,
+      "mcp_call_id": 1,
+      "index": 0,
+      "is_error": false,
+      "content_sha256": "4effd2a593018ec93e8eaef0563c0c968286e72af1f3b6d6c4e4d3e1c219c147"
+    },
+    {
+      "kind": "file_read",
+      "monotonic_ns": 100704507181,
+      "pid": 2575,
+      "mcp_call_id": 4,
+      "index": 3,
+      "bytes": 43,
+      "sha256": "297a4a6ee17c3d9228515e7b55b220a675377963551df34e784431f6cfe233bf"
+    },
+    {
+      "kind": "file_read",
+      "monotonic_ns": 100704601426,
+      "pid": 2575,
+      "mcp_call_id": 3,
+      "index": 2,
+      "bytes": 43,
+      "sha256": "9319476f9ff4c623fb9ad7aa4488e553e650f69d91c501a6a9a4fe062b930e6c"
+    },
+    {
+      "kind": "call_stopped",
+      "monotonic_ns": 100704713723,
+      "pid": 2575,
+      "mcp_call_id": 1,
+      "index": 0,
+      "reason": "completed"
+    },
+    {
+      "kind": "file_read",
+      "monotonic_ns": 100704792843,
+      "pid": 2575,
+      "mcp_call_id": 2,
+      "index": 1,
+      "bytes": 43,
+      "sha256": "19529d3461147e2022f3eafbd2ecfa1c0a33e9ad35f17ab7e2ed0aaf82582306"
+    },
+    {
+      "kind": "result_sent",
+      "monotonic_ns": 100704903198,
+      "pid": 2575,
+      "mcp_call_id": 4,
+      "index": 3,
+      "is_error": false,
+      "content_sha256": "297a4a6ee17c3d9228515e7b55b220a675377963551df34e784431f6cfe233bf"
+    },
+    {
+      "kind": "result_sent",
+      "monotonic_ns": 100705072174,
+      "pid": 2575,
+      "mcp_call_id": 3,
+      "index": 2,
+      "is_error": false,
+      "content_sha256": "9319476f9ff4c623fb9ad7aa4488e553e650f69d91c501a6a9a4fe062b930e6c"
+    },
+    {
+      "kind": "result_sent",
+      "monotonic_ns": 100705372263,
+      "pid": 2575,
+      "mcp_call_id": 2,
+      "index": 1,
+      "is_error": false,
+      "content_sha256": "19529d3461147e2022f3eafbd2ecfa1c0a33e9ad35f17ab7e2ed0aaf82582306"
+    },
+    {
+      "kind": "call_stopped",
+      "monotonic_ns": 100705685084,
+      "pid": 2575,
+      "mcp_call_id": 2,
+      "index": 1,
+      "reason": "completed"
+    },
+    {
+      "kind": "call_stopped",
+      "monotonic_ns": 100705613713,
+      "pid": 2575,
+      "mcp_call_id": 3,
+      "index": 2,
+      "reason": "completed"
+    },
+    {
+      "kind": "call_stopped",
+      "monotonic_ns": 100705476447,
+      "pid": 2575,
+      "mcp_call_id": 4,
+      "index": 3,
+      "reason": "completed"
+    },
+    {
+      "kind": "fixture_stopped",
+      "monotonic_ns": 100706154819,
+      "pid": 2575
+    }
+  ],
+  "responses": [
+    {
+      "jsonrpc": "2.0",
+      "id": 1,
+      "result": {
+        "content": [
+          {
+            "type": "text",
+            "text": "TOOL_VALUE_a16e0e92ceaf4b76b3b0e4e55791e98b"
+          }
+        ],
+        "isError": false
+      }
+    },
+    {
+      "jsonrpc": "2.0",
+      "id": 4,
+      "result": {
+        "content": [
+          {
+            "type": "text",
+            "text": "TOOL_VALUE_3cb008450e66465d891bd9333cc81bc7"
+          }
+        ],
+        "isError": false
+      }
+    },
+    {
+      "jsonrpc": "2.0",
+      "id": 3,
+      "result": {
+        "content": [
+          {
+            "type": "text",
+            "text": "TOOL_VALUE_63a95f06039b473aaebf84fcce0fd44f"
+          }
+        ],
+        "isError": false
+      }
+    },
+    {
+      "jsonrpc": "2.0",
+      "id": 2,
+      "result": {
+        "content": [
+          {
+            "type": "text",
+            "text": "TOOL_VALUE_864cf1ecad5042e39205ac931e89953c"
+          }
+        ],
+        "isError": false
+      }
+    }
+  ],
+  "values": [
+    "TOOL_VALUE_a16e0e92ceaf4b76b3b0e4e55791e98b",
+    "TOOL_VALUE_864cf1ecad5042e39205ac931e89953c",
+    "TOOL_VALUE_63a95f06039b473aaebf84fcce0fd44f",
+    "TOOL_VALUE_3cb008450e66465d891bd9333cc81bc7"
+  ],
+  "scope": "Fixture protocol/capacity at fixed four-call load only. Does not disable observer, estimate native scheduler performance, remove native cgroup contention or establish sustained-load capacity"
+}

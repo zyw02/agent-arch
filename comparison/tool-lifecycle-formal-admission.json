@@ -1,0 +1,38 @@
+{
+  "study": "HD-MCP-01",
+  "status": "admitted",
+  "phase": "two_complete_formal_blocks",
+  "complete_pilot": true,
+  "pilot_run_id": 40683243368,
+  "pilot_controller_commit": "5cd9c4a0db073f7c4bd3be63dae389d2df32456c",
+  "pilot_report_gzip": "evidence/tool-lifecycle-20261028/pilot-original-report.json.gz",
+  "pilot_report_sha256": "b51fdbbc2c8e044c5febd2f9cf5b1e1c388b891ac3148d9605567df4df9bc25f",
+  "protocol_sha256": "15c33123e7ff9dbae73e55bf2ce6839c4dcb289308c919a6522ae410e19cf1c7",
+  "fixture_protocol_sha256": "360a0bbcfad6e1ed093fc7f0ade4d3d303aadb74a3f1e9744ddb86dce931d766",
+  "fixture_capacity_passed": true,
+  "healthy_controls_passed": true,
+  "measured_complete_pilot_seconds": 261.297971845,
+  "measured_pilot_by_product_seconds": {
+    "DSH": 42.114699077,
+    "OpenClaw": 217.61050879
+  },
+  "measured_setup_cleanup_seconds_approx": 96,
+  "estimated_two_block_runtime_minutes": [
+    10,
+    13
+  ],
+  "method": "Corrected complete pilot block took 261.3 seconds; duplicate native work for two formal blocks, plus one installation/setup/cleanup. Range allows runner/native initialization/observer variation, not a task deadline. Reverse product order in block two. Pilot excluded from formal counts.",
+  "valid_negative_outcome": "OpenClaw acknowledged chat.abort did not stop held MCP call by 10s; empty runIds and absent native aborted terminal retained. This does not block admission: healthy controls and instrumentation pass, and the reached negative cancellation is a valid product-route outcome.",
+  "adapter_changes_after_pilot": "No native adapter, signal, scheduler, tool, provider or fixture behavior changes. New native-only reconstruction/figures are offline or separately accounted model work.",
+  "limits": [
+    "Read-only fixed four-call load; explicitly enabled OpenClaw MCP parallel declaration versus stock DSH MCP bridge",
+    "No native client-disconnect contrast, disabled-observer comparison or generic transport/scheduler causal ranking",
+    "Fresh native service/state retains shared installation and OS caches",
+    "Scripted counters are not actual tokens or billable native-task cost",
+    "Cancellation observation starts at native API receipt; a receipt alone is not proof of effective cancellation"
+  ],
+  "frozen_analysis_scripts_sha256": {
+    "summarize_tool_lifecycle.py": "9f086a6250cca72b878853a6c478132c198318c25673f22d8657c576bdedacdb",
+    "plot_tool_lifecycle.py": "b0514f0b9aeb7ea9259215bba56616ef7d0bd70b5345f2aa85dfc8c992abcf15"
+  }
+}

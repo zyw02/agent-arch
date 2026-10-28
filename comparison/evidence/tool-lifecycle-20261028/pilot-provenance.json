@@ -1,0 +1,46 @@
+{
+  "run_id": 40683243368,
+  "controller_commit": "5cd9c4a0db073f7c4bd3be63dae389d2df32456c",
+  "artifact_id": 12813708006,
+  "artifact_zip_sha256": "6a721c1245367b9a0832530819cb6de63a0d1391ab76ef4513a4be0821ec4f30",
+  "original_report_sha256": "b51fdbbc2c8e044c5febd2f9cf5b1e1c388b891ac3148d9605567df4df9bc25f",
+  "original_members_sha256": {
+    "package-lock.json": "a6ebbd0a07aae1adbee7483b03dc0a22bd12fd4afcd7735c871f838f22037428",
+    "tool-lifecycle-report.json": "b51fdbbc2c8e044c5febd2f9cf5b1e1c388b891ac3148d9605567df4df9bc25f",
+    "node-version.txt": "249baf635bb43877fcb9422efa1a4904b702d0ddf14d3949b7cd0950d5229c81",
+    "os-release.txt": "87458b3b1f1ca0e5c693ade771de7007c3783bdc692fa6b39eb6414bf2af2763",
+    "tool-lifecycle-source-bindings.json": "0a7ce41f953a8c01f903301d9859fe3c5ecc516e74f78abcdf0de11bacbd7de2",
+    "tool-lifecycle-protocol.json": "15c33123e7ff9dbae73e55bf2ce6839c4dcb289308c919a6522ae410e19cf1c7",
+    "fixture-capacity.json": "813806ca37f9378d6673eb8e89a5324233d03f054753da4da8613416ae0f09a6"
+  },
+  "execution_scripts_sha256": {
+    "tool_lifecycle_probe.py": "43aa36d23dd31e0e5865814167db9ec3dbfd0faaf4cae50364c55fae9d72c3b7",
+    "tool_lifecycle_provider.py": "0c9b1276b2f81ea7cb0590fd1f0d9e61e854b73b7d2f662548911ddbd6ee04f2",
+    "tool_lifecycle_mcp.py": "0ca044c47de657e4f03f4f1b054bc417d95f63a7746f0c61843adf8918dc474c",
+    "tool_lifecycle_fixture_check.py": "8040975eed39b4c7b8005c9b3cb2116266cccaabeb68fa7036b9ff7125e41e75",
+    "platform_api_probe.py": "1bc4ccc146a0528a4df2cb2c2cd80467c73219b2df1f087a725d3cf6f4835ccb",
+    "platform_resource_probe.py": "c0a577f1d2713102c8791e8f46ad33aa2753bacd4eaeb7c0d93fcbe2ee21927b",
+    "resource_collector.py": "6e6bcb3a22cdc42ab54c0e2ebd11cb5f014dfd7a6a57e9e7f4f35fd4cd567e01",
+    "resource_launcher.py": "f0fd58ea10f2d2805752dfbffcfdef3cedfbe3d791bfdac4f9d7eefde45bfe8d",
+    "resource_memory_reader.py": "7e3049e9f3d13aa061fcdf3e1431830a48c6e25ef449be4b9f0f6e46a8474222",
+    "native_read_probe.py": "3eb6e86c555dccb2be02f320224d0333fb6ccdd254f1f31bcaad91886e5daff8",
+    "context_skill_probe.py": "f589d40f76e1824d8edcdd343a25a2eda75e3cddf107c5cb5e57e9ea92b3edb3"
+  },
+  "analysis_scripts_sha256": {
+    "summarize_tool_lifecycle.py": "9f086a6250cca72b878853a6c478132c198318c25673f22d8657c576bdedacdb"
+  },
+  "disposition": "One complete corrected pilot block, twelve valid arms and all eight healthy controls. Controlled failures retain three healthy values and explicit index-2 error. DSH effective cancellation accepted; OpenClaw public chat.abort returns aborted=true with empty runIds but fails effective cessation and native aborted-terminal acceptance on this HTTP/MCP route. Both health tasks pass. Preserve this valid negative result and exclude all pilot values from formal repetition counts.",
+  "retained_files_sha256": {
+    "pilot-original-report.json.gz": "3d785d178c73d53d8bf5521da733e5404c0cf18ec45330062b91bf97a65c6a4b",
+    "pilot-package-lock.json.gz": "459f6fddfe92aa121af5e0e7da27d26aa413bacca9cb8474161578a218f24145",
+    "pilot-node-version.txt": "249baf635bb43877fcb9422efa1a4904b702d0ddf14d3949b7cd0950d5229c81",
+    "pilot-os-release.txt": "87458b3b1f1ca0e5c693ade771de7007c3783bdc692fa6b39eb6414bf2af2763",
+    "pilot-tool-lifecycle-protocol.json": "15c33123e7ff9dbae73e55bf2ce6839c4dcb289308c919a6522ae410e19cf1c7",
+    "pilot-tool-lifecycle-source-bindings.json": "0a7ce41f953a8c01f903301d9859fe3c5ecc516e74f78abcdf0de11bacbd7de2",
+    "pilot-fixture-capacity.json": "813806ca37f9378d6673eb8e89a5324233d03f054753da4da8613416ae0f09a6",
+    "pilot-summary.json": "7ed5514c278ffc777a8c224a80f58aacc4ee6fc8beff49f28fce07cfddc1692d",
+    "pilot-metrics.csv": "c5b60fe6f3524c1ed2578d9ef8cf9430fab963f5f3ebc11800f116fe3e557296",
+    "pilot-request-payloads.json": "ba1b292ad92ceb0ba97b83422b918db2b517d074e6813a6a28c52f262af07738",
+    "pilot-fixture-protocol.json": "360a0bbcfad6e1ed093fc7f0ade4d3d303aadb74a3f1e9744ddb86dce931d766"
+  }
+}

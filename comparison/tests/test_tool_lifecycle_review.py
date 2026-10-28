@@ -1,12 +1,27 @@
 import copy
+import gzip
+import hashlib
+import json
 from pathlib import Path
 import sys
 import unittest
 sys.path.insert(0,str(Path(__file__).resolve().parents[1]))
 from prepare_tool_lifecycle_review import make_packet,expected_answers
+from summarize_tool_lifecycle import summarize
 
 
 class ToolNativePacketTests(unittest.TestCase):
+    def test_complete_pilot_recomputes_original_judgments_hashes_and_admission(self):
+        comparison=Path(__file__).resolve().parents[1];root=comparison/'evidence/tool-lifecycle-20261028'
+        admission=json.loads((comparison/'tool-lifecycle-formal-admission.json').read_bytes());raw=gzip.decompress((comparison/admission['pilot_report_gzip']).read_bytes())
+        self.assertEqual(hashlib.sha256(raw).hexdigest(),admission['pilot_report_sha256'])
+        summary=summarize(json.loads(raw),comparison/'tool-lifecycle-protocol.json');published=json.loads((root/'pilot-summary.json').read_bytes());published.pop('original_report_sha256')
+        self.assertEqual(summary,published);self.assertTrue(summary['complete_comparison_blocks']);self.assertTrue(summary['healthy_controls_passed'])
+        fixture=json.loads((root/'pilot-fixture-capacity.json').read_bytes());self.assertTrue(fixture['valid']);self.assertEqual(fixture['protocol_sha256'],admission['fixture_protocol_sha256'])
+        self.assertEqual(hashlib.sha256((root/'pilot-fixture-protocol.json').read_bytes()).hexdigest(),fixture['protocol_sha256'])
+        provenance=json.loads((root/'pilot-provenance.json').read_bytes())
+        for name,digest in provenance['retained_files_sha256'].items():self.assertEqual(hashlib.sha256((root/name).read_bytes()).hexdigest(),digest,name)
+
     def test_native_packet_strips_condition_paths_and_excludes_controller_truth(self):
         arm=dict(task_marker='TOOL_INPUT_x',task=dict(session_id='native-session',native_result=dict(hidden='terminal-oracle')),
             condition='mcp_batch_failure',block=2,fixture_events=[dict(hidden='fixture-oracle')],provider_requests=[dict(hidden='provider-oracle')],

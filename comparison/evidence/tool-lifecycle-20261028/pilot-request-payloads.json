@@ -1,0 +1,739 @@
+[
+  {
+    "product": "DSH",
+    "condition": "native_single",
+    "block": 1,
+    "request_index": 0,
+    "stage": "primary",
+    "endpoint": "/v1/messages",
+    "request_sha256": "ac9d5aa735611b0cc15ec3153d69a7ad8f2f7ad0dfebb11aa509ee1e4a50c46d",
+    "request_json_bytes": 99759,
+    "messages_json_bytes": 1535,
+    "tools_json_bytes": 32418,
+    "synthetic_usage": {
+      "input_tokens": 1,
+      "output_tokens": 1
+    },
+    "actual_usage": null,
+    "invoice_charge": null
+  },
+  {
+    "product": "DSH",
+    "condition": "native_single",
+    "block": 1,
+    "request_index": 1,
+    "stage": "auxiliary_title",
+    "endpoint": "/v1/messages",
+    "request_sha256": "2123c1e321c7b053e72ca1c6ee01c2b53c95ccfdea3e257874f5f088d7441d34",
+    "request_json_bytes": 60937,
+    "messages_json_bytes": 484,
+    "tools_json_bytes": 2,
+    "synthetic_usage": {
+      "input_tokens": 1,
+      "output_tokens": 1
+    },
+    "actual_usage": null,
+    "invoice_charge": null
+  },
+  {
+    "product": "DSH",
+    "condition": "native_single",
+    "block": 1,
+    "request_index": 2,
+    "stage": "primary",
+    "endpoint": "/v1/messages",
+    "request_sha256": "978807e681a705b8f9f389cd02606682c6eb2c7e21a176ddd7ac7bf3218d0594",
+    "request_json_bytes": 59128,
+    "messages_json_bytes": 2172,
+    "tools_json_bytes": 32418,
+    "synthetic_usage": {
+      "input_tokens": 1,
+      "output_tokens": 1
+    },
+    "actual_usage": null,
+    "invoice_charge": null
+  },
+  {
+    "product": "OpenClaw",
+    "condition": "native_single",
+    "block": 1,
+    "request_index": 0,
+    "stage": "primary",
+    "endpoint": "/v1/chat/completions",
+    "request_sha256": "82990713c1d9b3c119cc63b1e19eed987e8ae4b0480fd2878355a4c05941e5b6",
+    "request_json_bytes": 18530,
+    "messages_json_bytes": 17213,
+    "tools_json_bytes": 1153,
+    "synthetic_usage": {
+      "prompt_tokens": 1,
+      "completion_tokens": 1,
+      "total_tokens": 2
+    },
+    "actual_usage": null,
+    "invoice_charge": null
+  },
+  {
+    "product": "OpenClaw",
+    "condition": "native_single",
+    "block": 1,
+    "request_index": 1,
+    "stage": "primary",
+    "endpoint": "/v1/chat/completions",
+    "request_sha256": "c34a75dfdb9c6a6da21d248a0ababfd2a121a0aa8e69a2c1a7e4de85e3454e60",
+    "request_json_bytes": 18942,
+    "messages_json_bytes": 17625,
+    "tools_json_bytes": 1153,
+    "synthetic_usage": {
+      "prompt_tokens": 1,
+      "completion_tokens": 1,
+      "total_tokens": 2
+    },
+    "actual_usage": null,
+    "invoice_charge": null
+  },
+  {
+    "product": "DSH",
+    "condition": "mcp_single",
+    "block": 1,
+    "request_index": 0,
+    "stage": "primary",
+    "endpoint": "/v1/messages",
+    "request_sha256": "372bd7de8780ea92c2f9c1f117235de1de9175f6ec0de16940910eaa6a3edefe",
+    "request_json_bytes": 102878,
+    "messages_json_bytes": 1546,
+    "tools_json_bytes": 33760,
+    "synthetic_usage": {
+      "input_tokens": 1,
+      "output_tokens": 1
+    },
+    "actual_usage": null,
+    "invoice_charge": null
+  },
+  {
+    "product": "DSH",
+    "condition": "mcp_single",
+    "block": 1,
+    "request_index": 1,
+    "stage": "auxiliary_title",
+    "endpoint": "/v1/messages",
+    "request_sha256": "f15ca49a4cd852feb1738ded53318b22b3dbc7a40f8a33aeccf3f7f3f69ab899",
+    "request_json_bytes": 62552,
+    "messages_json_bytes": 498,
+    "tools_json_bytes": 2,
+    "synthetic_usage": {
+      "input_tokens": 1,
+      "output_tokens": 1
+    },
+    "actual_usage": null,
+    "invoice_charge": null
+  },
+  {
+    "product": "DSH",
+    "condition": "mcp_single",
+    "block": 1,
+    "request_index": 2,
+    "stage": "primary",
+    "endpoint": "/v1/messages",
+    "request_sha256": "930616430b93b7ee221e0bbae1a783095fb90eaa8ab794bb5ebbdf04c4cd9554",
+    "request_json_bytes": 59717,
+    "messages_json_bytes": 1920,
+    "tools_json_bytes": 33760,
+    "synthetic_usage": {
+      "input_tokens": 1,
+      "output_tokens": 1
+    },
+    "actual_usage": null,
+    "invoice_charge": null
+  },
+  {
+    "product": "OpenClaw",
+    "condition": "mcp_single",
+    "block": 1,
+    "request_index": 0,
+    "stage": "primary",
+    "endpoint": "/v1/chat/completions",
+    "request_sha256": "1e608261897c0036c350b5234b0b4d28923af6d9ef3b7865e6cbc331c8c990c2",
+    "request_json_bytes": 10011,
+    "messages_json_bytes": 9561,
+    "tools_json_bytes": 286,
+    "synthetic_usage": {
+      "prompt_tokens": 1,
+      "completion_tokens": 1,
+      "total_tokens": 2
+    },
+    "actual_usage": null,
+    "invoice_charge": null
+  },
+  {
+    "product": "OpenClaw",
+    "condition": "mcp_single",
+    "block": 1,
+    "request_index": 1,
+    "stage": "primary",
+    "endpoint": "/v1/chat/completions",
+    "request_sha256": "2649e892315ac1110c9271790368153c2533d0f3cdf6ccbb1decfd8b949a07c3",
+    "request_json_bytes": 10337,
+    "messages_json_bytes": 9887,
+    "tools_json_bytes": 286,
+    "synthetic_usage": {
+      "prompt_tokens": 1,
+      "completion_tokens": 1,
+      "total_tokens": 2
+    },
+    "actual_usage": null,
+    "invoice_charge": null
+  },
+  {
+    "product": "DSH",
+    "condition": "mcp_four_serial",
+    "block": 1,
+    "request_index": 0,
+    "stage": "primary",
+    "endpoint": "/v1/messages",
+    "request_sha256": "d10d91b9d133f0ac5bf0c45ed8fadc2c1bf0784906cd3765fe2cbe9a7c2654e6",
+    "request_json_bytes": 104250,
+    "messages_json_bytes": 1883,
+    "tools_json_bytes": 33760,
+    "synthetic_usage": {
+      "input_tokens": 1,
+      "output_tokens": 1
+    },
+    "actual_usage": null,
+    "invoice_charge": null
+  },
+  {
+    "product": "DSH",
+    "condition": "mcp_four_serial",
+    "block": 1,
+    "request_index": 1,
+    "stage": "auxiliary_title",
+    "endpoint": "/v1/messages",
+    "request_sha256": "5b196ed3f79c88e590e905c63742c5dba64c7eab3446d9d260fdf80f4f0f37d4",
+    "request_json_bytes": 63943,
+    "messages_json_bytes": 854,
+    "tools_json_bytes": 2,
+    "synthetic_usage": {
+      "input_tokens": 1,
+      "output_tokens": 1
+    },
+    "actual_usage": null,
+    "invoice_charge": null
+  },
+  {
+    "product": "DSH",
+    "condition": "mcp_four_serial",
+    "block": 1,
+    "request_index": 2,
+    "stage": "primary",
+    "endpoint": "/v1/messages",
+    "request_sha256": "172815b8bf3b6fc2a927463ab9f39be5e26bd79878cdbe998b5f8df05ab8b513",
+    "request_json_bytes": 60059,
+    "messages_json_bytes": 2257,
+    "tools_json_bytes": 33760,
+    "synthetic_usage": {
+      "input_tokens": 1,
+      "output_tokens": 1
+    },
+    "actual_usage": null,
+    "invoice_charge": null
+  },
+  {
+    "product": "DSH",
+    "condition": "mcp_four_serial",
+    "block": 1,
+    "request_index": 3,
+    "stage": "primary",
+    "endpoint": "/v1/messages",
+    "request_sha256": "b1a13459e014567ae52812f51862590d67c7752d8d3dda27adab6b0a2e6c3c0c",
+    "request_json_bytes": 59972,
+    "messages_json_bytes": 2631,
+    "tools_json_bytes": 33760,
+    "synthetic_usage": {
+      "input_tokens": 1,
+      "output_tokens": 1
+    },
+    "actual_usage": null,
+    "invoice_charge": null
+  },
+  {
+    "product": "DSH",
+    "condition": "mcp_four_serial",
+    "block": 1,
+    "request_index": 4,
+    "stage": "primary",
+    "endpoint": "/v1/messages",
+    "request_sha256": "189c1129ec1c3db5d007aa8bbacb890d576f7fbdce2d2166950f9b970e919b1e",
+    "request_json_bytes": 60346,
+    "messages_json_bytes": 3005,
+    "tools_json_bytes": 33760,
+    "synthetic_usage": {
+      "input_tokens": 1,
+      "output_tokens": 1
+    },
+    "actual_usage": null,
+    "invoice_charge": null
+  },
+  {
+    "product": "DSH",
+    "condition": "mcp_four_serial",
+    "block": 1,
+    "request_index": 5,
+    "stage": "primary",
+    "endpoint": "/v1/messages",
+    "request_sha256": "b4b4b89914a6588f582df3992b384e49e769b1fdc031306c45c8f31a93898e58",
+    "request_json_bytes": 60720,
+    "messages_json_bytes": 3379,
+    "tools_json_bytes": 33760,
+    "synthetic_usage": {
+      "input_tokens": 1,
+      "output_tokens": 1
+    },
+    "actual_usage": null,
+    "invoice_charge": null
+  },
+  {
+    "product": "OpenClaw",
+    "condition": "mcp_four_serial",
+    "block": 1,
+    "request_index": 0,
+    "stage": "primary",
+    "endpoint": "/v1/chat/completions",
+    "request_sha256": "a0095c5e0e069d2b303701c2222be69df741fd07c1b2cb21cedcbff79041479d",
+    "request_json_bytes": 10403,
+    "messages_json_bytes": 9953,
+    "tools_json_bytes": 286,
+    "synthetic_usage": {
+      "prompt_tokens": 1,
+      "completion_tokens": 1,
+      "total_tokens": 2
+    },
+    "actual_usage": null,
+    "invoice_charge": null
+  },
+  {
+    "product": "OpenClaw",
+    "condition": "mcp_four_serial",
+    "block": 1,
+    "request_index": 1,
+    "stage": "primary",
+    "endpoint": "/v1/chat/completions",
+    "request_sha256": "923bc31dd33efbaa9325fdc816ab0c2333786fec2b12e6ed8b3f20391891f20a",
+    "request_json_bytes": 10729,
+    "messages_json_bytes": 10279,
+    "tools_json_bytes": 286,
+    "synthetic_usage": {
+      "prompt_tokens": 1,
+      "completion_tokens": 1,
+      "total_tokens": 2
+    },
+    "actual_usage": null,
+    "invoice_charge": null
+  },
+  {
+    "product": "OpenClaw",
+    "condition": "mcp_four_serial",
+    "block": 1,
+    "request_index": 2,
+    "stage": "primary",
+    "endpoint": "/v1/chat/completions",
+    "request_sha256": "a7a7471440875a6e122ad590625ad8abe49f8cb3ef3fd20a478eb1f4fc8db80a",
+    "request_json_bytes": 11055,
+    "messages_json_bytes": 10605,
+    "tools_json_bytes": 286,
+    "synthetic_usage": {
+      "prompt_tokens": 1,
+      "completion_tokens": 1,
+      "total_tokens": 2
+    },
+    "actual_usage": null,
+    "invoice_charge": null
+  },
+  {
+    "product": "OpenClaw",
+    "condition": "mcp_four_serial",
+    "block": 1,
+    "request_index": 3,
+    "stage": "primary",
+    "endpoint": "/v1/chat/completions",
+    "request_sha256": "2893a467e596a79a1eac162dee77720c6fa483c26c4e5015aeb913addd18ab42",
+    "request_json_bytes": 11381,
+    "messages_json_bytes": 10931,
+    "tools_json_bytes": 286,
+    "synthetic_usage": {
+      "prompt_tokens": 1,
+      "completion_tokens": 1,
+      "total_tokens": 2
+    },
+    "actual_usage": null,
+    "invoice_charge": null
+  },
+  {
+    "product": "OpenClaw",
+    "condition": "mcp_four_serial",
+    "block": 1,
+    "request_index": 4,
+    "stage": "primary",
+    "endpoint": "/v1/chat/completions",
+    "request_sha256": "658d3c32d094f157ad6203f8a40dd3e2954d88bdda8b7535763debe501ed5787",
+    "request_json_bytes": 11707,
+    "messages_json_bytes": 11257,
+    "tools_json_bytes": 286,
+    "synthetic_usage": {
+      "prompt_tokens": 1,
+      "completion_tokens": 1,
+      "total_tokens": 2
+    },
+    "actual_usage": null,
+    "invoice_charge": null
+  },
+  {
+    "product": "DSH",
+    "condition": "mcp_four_batch",
+    "block": 1,
+    "request_index": 0,
+    "stage": "primary",
+    "endpoint": "/v1/messages",
+    "request_sha256": "c7b619b1351f0a0d9bba8a5535dea54bf4fb33dc00046ae4d972ed095782f956",
+    "request_json_bytes": 104230,
+    "messages_json_bytes": 1878,
+    "tools_json_bytes": 33760,
+    "synthetic_usage": {
+      "input_tokens": 1,
+      "output_tokens": 1
+    },
+    "actual_usage": null,
+    "invoice_charge": null
+  },
+  {
+    "product": "DSH",
+    "condition": "mcp_four_batch",
+    "block": 1,
+    "request_index": 1,
+    "stage": "auxiliary_title",
+    "endpoint": "/v1/messages",
+    "request_sha256": "904ee7a1f55c951f5aee72b82a0a03209af02a2b581d2738ea540717c6d99754",
+    "request_json_bytes": 63924,
+    "messages_json_bytes": 850,
+    "tools_json_bytes": 2,
+    "synthetic_usage": {
+      "input_tokens": 1,
+      "output_tokens": 1
+    },
+    "actual_usage": null,
+    "invoice_charge": null
+  },
+  {
+    "product": "DSH",
+    "condition": "mcp_four_batch",
+    "block": 1,
+    "request_index": 2,
+    "stage": "primary",
+    "endpoint": "/v1/messages",
+    "request_sha256": "0cbe55f46adcfcd59674bfeb6bc0a7553f0a22357d63f48cd2d3aa24f6281b45",
+    "request_json_bytes": 65432,
+    "messages_json_bytes": 3173,
+    "tools_json_bytes": 33760,
+    "synthetic_usage": {
+      "input_tokens": 1,
+      "output_tokens": 1
+    },
+    "actual_usage": null,
+    "invoice_charge": null
+  },
+  {
+    "product": "OpenClaw",
+    "condition": "mcp_four_batch",
+    "block": 1,
+    "request_index": 0,
+    "stage": "primary",
+    "endpoint": "/v1/chat/completions",
+    "request_sha256": "15e7a15710cbfdf02cfcc9c23913514f441f82764f6ee2519e4578c528c5a42b",
+    "request_json_bytes": 10390,
+    "messages_json_bytes": 9940,
+    "tools_json_bytes": 286,
+    "synthetic_usage": {
+      "prompt_tokens": 1,
+      "completion_tokens": 1,
+      "total_tokens": 2
+    },
+    "actual_usage": null,
+    "invoice_charge": null
+  },
+  {
+    "product": "OpenClaw",
+    "condition": "mcp_four_batch",
+    "block": 1,
+    "request_index": 1,
+    "stage": "primary",
+    "endpoint": "/v1/chat/completions",
+    "request_sha256": "ecc277b2de3c603bc139ca201c0ceabab5840710f26304bd3d82fc87f20ec6d0",
+    "request_json_bytes": 11526,
+    "messages_json_bytes": 11076,
+    "tools_json_bytes": 286,
+    "synthetic_usage": {
+      "prompt_tokens": 1,
+      "completion_tokens": 1,
+      "total_tokens": 2
+    },
+    "actual_usage": null,
+    "invoice_charge": null
+  },
+  {
+    "product": "DSH",
+    "condition": "mcp_batch_failure",
+    "block": 1,
+    "request_index": 0,
+    "stage": "primary",
+    "endpoint": "/v1/messages",
+    "request_sha256": "09870980e8fa02cf0d16242cd8c8feb092bf79b123b2fc9612e9c824400fcb49",
+    "request_json_bytes": 104290,
+    "messages_json_bytes": 1893,
+    "tools_json_bytes": 33760,
+    "synthetic_usage": {
+      "input_tokens": 1,
+      "output_tokens": 1
+    },
+    "actual_usage": null,
+    "invoice_charge": null
+  },
+  {
+    "product": "DSH",
+    "condition": "mcp_batch_failure",
+    "block": 1,
+    "request_index": 1,
+    "stage": "auxiliary_title",
+    "endpoint": "/v1/messages",
+    "request_sha256": "0d1c0ed1312c3f4086a565aea0252ec29fb67a06f98c27a057faa0ac4afc091d",
+    "request_json_bytes": 63981,
+    "messages_json_bytes": 862,
+    "tools_json_bytes": 2,
+    "synthetic_usage": {
+      "input_tokens": 1,
+      "output_tokens": 1
+    },
+    "actual_usage": null,
+    "invoice_charge": null
+  },
+  {
+    "product": "DSH",
+    "condition": "mcp_batch_failure",
+    "block": 1,
+    "request_index": 2,
+    "stage": "primary",
+    "endpoint": "/v1/messages",
+    "request_sha256": "00117b6fa64ffd76a4331e8ecc5f5752d4d4a7d9f40d18733578a11bda6eb172",
+    "request_json_bytes": 65466,
+    "messages_json_bytes": 3196,
+    "tools_json_bytes": 33760,
+    "synthetic_usage": {
+      "input_tokens": 1,
+      "output_tokens": 1
+    },
+    "actual_usage": null,
+    "invoice_charge": null
+  },
+  {
+    "product": "OpenClaw",
+    "condition": "mcp_batch_failure",
+    "block": 1,
+    "request_index": 0,
+    "stage": "primary",
+    "endpoint": "/v1/chat/completions",
+    "request_sha256": "f7210b305b63fb8a29b07b58f0a7a519251e5c94c8d5cc1dcf5f293c7de5430d",
+    "request_json_bytes": 10429,
+    "messages_json_bytes": 9979,
+    "tools_json_bytes": 286,
+    "synthetic_usage": {
+      "prompt_tokens": 1,
+      "completion_tokens": 1,
+      "total_tokens": 2
+    },
+    "actual_usage": null,
+    "invoice_charge": null
+  },
+  {
+    "product": "OpenClaw",
+    "condition": "mcp_batch_failure",
+    "block": 1,
+    "request_index": 1,
+    "stage": "primary",
+    "endpoint": "/v1/chat/completions",
+    "request_sha256": "836818c81edb1ab45ac38333387e49f545b76c700ba3b5fdc9397599081cff5c",
+    "request_json_bytes": 11567,
+    "messages_json_bytes": 11117,
+    "tools_json_bytes": 286,
+    "synthetic_usage": {
+      "prompt_tokens": 1,
+      "completion_tokens": 1,
+      "total_tokens": 2
+    },
+    "actual_usage": null,
+    "invoice_charge": null
+  },
+  {
+    "product": "DSH",
+    "condition": "mcp_batch_cancel",
+    "block": 1,
+    "request_index": 0,
+    "stage": "primary",
+    "endpoint": "/v1/messages",
+    "request_sha256": "e8804b1ad882f334cb7a7c7cbbe18be0133c0d0e418ebaf9abe1bfee41e2f6b0",
+    "request_json_bytes": 104270,
+    "messages_json_bytes": 1888,
+    "tools_json_bytes": 33760,
+    "synthetic_usage": {
+      "input_tokens": 1,
+      "output_tokens": 1
+    },
+    "actual_usage": null,
+    "invoice_charge": null
+  },
+  {
+    "product": "DSH",
+    "condition": "mcp_batch_cancel",
+    "block": 1,
+    "request_index": 1,
+    "stage": "auxiliary_title",
+    "endpoint": "/v1/messages",
+    "request_sha256": "5c8455490944645e66423bbb2bb7e965a4579aec60d80cceb4c642c0bd8ba0ac",
+    "request_json_bytes": 63962,
+    "messages_json_bytes": 858,
+    "tools_json_bytes": 2,
+    "synthetic_usage": {
+      "input_tokens": 1,
+      "output_tokens": 1
+    },
+    "actual_usage": null,
+    "invoice_charge": null
+  },
+  {
+    "product": "DSH",
+    "condition": "mcp_batch_cancel",
+    "block": 1,
+    "request_index": 2,
+    "stage": "health_or_other",
+    "endpoint": "/v1/messages",
+    "request_sha256": "3ad5feb8d3fd8f9123160709d1ccd7b0d095ebed54eb97b63c36542d230534a1",
+    "request_json_bytes": 102926,
+    "messages_json_bytes": 1558,
+    "tools_json_bytes": 33760,
+    "synthetic_usage": {
+      "input_tokens": 1,
+      "output_tokens": 1
+    },
+    "actual_usage": null,
+    "invoice_charge": null
+  },
+  {
+    "product": "DSH",
+    "condition": "mcp_batch_cancel",
+    "block": 1,
+    "request_index": 3,
+    "stage": "auxiliary_title",
+    "endpoint": "/v1/messages",
+    "request_sha256": "55a337979b6e35c69f3a54ba2d57221cfabfddef97aa89bac9eee85d436bde2c",
+    "request_json_bytes": 62594,
+    "messages_json_bytes": 504,
+    "tools_json_bytes": 2,
+    "synthetic_usage": {
+      "input_tokens": 1,
+      "output_tokens": 1
+    },
+    "actual_usage": null,
+    "invoice_charge": null
+  },
+  {
+    "product": "DSH",
+    "condition": "mcp_batch_cancel",
+    "block": 1,
+    "request_index": 4,
+    "stage": "health_or_other",
+    "endpoint": "/v1/messages",
+    "request_sha256": "14138a4aadc074a3f6da0437ca06a46964e6396b470268457d3f6d54f77bae84",
+    "request_json_bytes": 59735,
+    "messages_json_bytes": 1932,
+    "tools_json_bytes": 33760,
+    "synthetic_usage": {
+      "input_tokens": 1,
+      "output_tokens": 1
+    },
+    "actual_usage": null,
+    "invoice_charge": null
+  },
+  {
+    "product": "OpenClaw",
+    "condition": "mcp_batch_cancel",
+    "block": 1,
+    "request_index": 0,
+    "stage": "primary",
+    "endpoint": "/v1/chat/completions",
+    "request_sha256": "62c5ffe08da5e4992f83f8b52d0d530bf78fd92f98c0648259caf2209a76440a",
+    "request_json_bytes": 10416,
+    "messages_json_bytes": 9966,
+    "tools_json_bytes": 286,
+    "synthetic_usage": {
+      "prompt_tokens": 1,
+      "completion_tokens": 1,
+      "total_tokens": 2
+    },
+    "actual_usage": null,
+    "invoice_charge": null
+  },
+  {
+    "product": "OpenClaw",
+    "condition": "mcp_batch_cancel",
+    "block": 1,
+    "request_index": 1,
+    "stage": "primary",
+    "endpoint": "/v1/chat/completions",
+    "request_sha256": "44c325f36d6dd0e4cfd2768be81d302565ca0e7c239980a41a2f7b759e0d2b4b",
+    "request_json_bytes": 11543,
+    "messages_json_bytes": 11093,
+    "tools_json_bytes": 286,
+    "synthetic_usage": {
+      "prompt_tokens": 1,
+      "completion_tokens": 1,
+      "total_tokens": 2
+    },
+    "actual_usage": null,
+    "invoice_charge": null
+  },
+  {
+    "product": "OpenClaw",
+    "condition": "mcp_batch_cancel",
+    "block": 1,
+    "request_index": 2,
+    "stage": "health_or_other",
+    "endpoint": "/v1/chat/completions",
+    "request_sha256": "1bc907d9bedd6e392439e626eefaa27e0c0be73272a0fed190430b68dac7cca5",
+    "request_json_bytes": 10071,
+    "messages_json_bytes": 9621,
+    "tools_json_bytes": 286,
+    "synthetic_usage": {
+      "prompt_tokens": 1,
+      "completion_tokens": 1,
+      "total_tokens": 2
+    },
+    "actual_usage": null,
+    "invoice_charge": null
+  },
+  {
+    "product": "OpenClaw",
+    "condition": "mcp_batch_cancel",
+    "block": 1,
+    "request_index": 3,
+    "stage": "health_or_other",
+    "endpoint": "/v1/chat/completions",
+    "request_sha256": "bfe0a315dea5b309c5a08b90e0288611ff6ab54c2938b8aada87b962dc8eeb03",
+    "request_json_bytes": 10397,
+    "messages_json_bytes": 9947,
+    "tools_json_bytes": 286,
+    "synthetic_usage": {
+      "prompt_tokens": 1,
+      "completion_tokens": 1,
+      "total_tokens": 2
+    },
+    "actual_usage": null,
+    "invoice_charge": null
+  }
+]
