@@ -8,16 +8,16 @@ The platform layer examines how each system hosts and operates agent work. The h
 
 | Dimension | Platform evaluation | Harness evaluation | Initial work |
 | --- | --- | --- | --- |
-| **Reliability** | Failure isolation, state persistence, and deployment recovery | Context retention, execution recovery, and retry behavior | P01, P02, H03, H04, H05, H07, H08 |
+| **Reliability** | Failure isolation, state persistence, and deployment recovery | Context retention, execution recovery, and retry behavior | P01, P02, H03, H04, H05, H07, H08, H18 |
 | **Security** | State and credential ownership, access boundaries, and isolation | Authorization scope and consistency between approval and execution | P02, P05, H11 |
-| **Performance** | Throughput, concurrency, and resource contention | Tool scheduling, execution latency, and dependency handling | P03, H08 |
-| **Resource & cost** | Idle footprint and marginal cost per task | Context processing, retry overhead, and model usage | P03, H03, H04, H07 |
+| **Performance** | Throughput, concurrency, and resource contention | Tool scheduling, execution latency, and dependency handling | P03, H08, H18 |
+| **Resource & cost** | Idle footprint and marginal cost per task | Context processing, retry overhead, and model usage | P03, H03, H04, H07, H18 |
 | **Extensibility** | Entry-point integration and operational control | Component extension and responsibility boundaries | P04, H14 |
 | **Observability** | Fault visibility and diagnosis across system boundaries | Reconstruction of approvals, tool effects, and recovery | P01, P04, H05, H11, H17 |
 
 Explore the [experiment catalogue](comparison/experiment-index.md) and [execution protocol](comparison/execution-protocol.md) for scenarios, measurements, acceptance, and readiness.
 
-[![Architecture research progress](https://raw.githubusercontent.com/zyw02/agent-arch/main/comparison/progress.svg?v=e061a71a0291)](https://github.com/zyw02/agent-arch/actions/workflows/comparison-calibration.yml?query=branch%3Amain)
+[![Architecture research progress](https://raw.githubusercontent.com/zyw02/agent-arch/main/comparison/progress.svg?v=ef4c19e9fa90)](https://github.com/zyw02/agent-arch/actions/workflows/comparison-calibration.yml?query=branch%3Amain)
 
 <!-- comparison-dashboard:start -->
 ## Research progress
@@ -37,6 +37,7 @@ Explore the [experiment catalogue](comparison/experiment-index.md) and [executio
 | Harness · H11 Approval binding | Security, Observability | Planned | Planned | Planned |
 | Harness · H14 Tool lifecycle and integration | Extensibility, Reliability | Planned | Planned | Planned |
 | Harness · H17 Execution trace | Observability | Planned | Planned | Planned |
+| Harness · H18 End-to-end task delivery | Reliability, Performance, Resource & cost | Planned | Planned | Planned |
 
 **Latest session calibration:** success (three independent calibration units). [View calibration evidence](https://github.com/zyw02/agent-arch/actions/runs/40623428889).
 

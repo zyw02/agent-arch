@@ -27,6 +27,7 @@ Use three complementary tracks: **native product** configurations for operationa
 | [H11](#h11--approval-binding) | Harness | Security, observability | Approval scope and actual dispatch |
 | [H14](execution-protocol.md#h14--extensibility-tool-lifecycle) | Harness | Extensibility, reliability | Tool integration and lifecycle |
 | [H17](#h17--execution-trace) | Harness | Observability | Causal reconstruction |
+| [H18](execution-protocol.md#h18--end-to-end-task-delivery) | Harness | Reliability, performance, resource & cost | Task delivery under context, faults and interruption |
 
 ## Platform experiments
 

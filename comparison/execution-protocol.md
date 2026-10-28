@@ -49,7 +49,9 @@ Inputs: M `hold_before_response`; task `Return ACK for <unit_id>`; one client an
 
 Steps: start profile; submit task; wait for independent `request_received` or T `start`; terminate the named PID with SIGKILL; observe O and M/T for 10 s; restart the component where supported; use the native resume mechanism once, then observe for 60 s. The fixture remains alive.
 
-Acceptance and metrics: C0 reaches a successful final response. Record fault PID, child survival, model connection, session availability, whether work completes independently, resumed result, time to recovery and external effects. Mark a fault case `pass` when its observation and native status agree and no duplicate external effect occurs in the C3 control; a lost task, false success, or duplicate effect is a retained failure. The structural finding is the actual process ownership and fault propagation; manual and automatic recovery are separate outcomes.
+Acceptance and metrics: C0 reaches a successful final response. Record fault PID, child survival, model connection, session availability, whether work completes independently, resumed result, time to recovery and external effects. Classify task completion, explicit interruption, ambiguous status, false success and collateral impact separately. Use the tool ledger to assess effects when a fault case performs a write. The structural finding is the actual process ownership and fault propagation; manual and automatic recovery are separate outcomes.
+
+**Paired fault-isolation extension:** Run a second independent healthy session throughout C1–C3, with a baseline unit without a fault. Record its completion, latency and effects, and the number of other sessions interrupted. Classify task recovery and collateral impact separately; correlate both with the observed process boundary.
 
 ### P02 — Reliability/security: state and deployment
 
@@ -59,6 +61,8 @@ Steps: submit first turn and wait for durable completion and product exit/idle; 
 
 Acceptance and metrics: C0 and C1 pass when both turns succeed and all three elements appear in the second request; C2 uses the same criterion. Record actual state location, processes that can access it, restart steps, elapsed time, and missing state. P05 separately measures actual access enforcement. [Detailed session protocol](first-wave-protocol.md#p02--h05--reconstruct-a-session-after-normal-exit).
 
+**State-consistency extension:** Before restart record a user-confirmed instruction, a completed tool receipt, and a pending operation. After restart check which are reconstructed and whether the pending operation is repeated. The independent tool ledger supplies the effect oracle.
+
 ### P03 — Performance/resource & cost: workload and footprint
 
 Inputs: M `ack` with fixed 250 ms delay. Conditions C0 idle service for 30 s; C1 cold one-task; C2 four independent sessions concurrently; C3 eight independent sessions concurrently. For a command-only profile, C0 records no service baseline. Use six independent units per condition and randomize product order. Each task must return its own `ACK_<task_id>`; exact service delay is fixed.
@@ -66,6 +70,8 @@ Inputs: M `ack` with fixed 250 ms delay. Conditions C0 idle service for 30 s; C1
 Steps: initialize a fresh profile; for C0 start only required resident components; for C1–C3 launch the declared tasks with a barrier, wait up to 180 s, then sample for 10 s after completion. O samples every 100 ms. Record retries and failed/unfinished tasks.
 
 Acceptance and metrics: report task completion/attempts, elapsed wall time, per-task p50 and observed distribution, aggregate tasks/min, peak and time-integrated process-tree RSS, CPU seconds, startup time, residual processes, and idle service cost. Only valid ACKs count as completed. Six units support descriptive distributions; retain raw values and omit p99. Same-machine results compare configurations and profile choices, including their additional components.
+
+**Sustained-load extension:** Add C4, 30 minutes of mixed slow and fast tasks with a fixed arrival schedule, and C5, the same workload with tool execution. Capture per-class completion, queue delay, interference, memory and failure rate. Establish a no-contention baseline; compare service and per-task profiles on the same host.
 
 ### P04 — Extensibility/observability: external control
 
@@ -75,6 +81,8 @@ Steps: implement an adapter using public entry points; record exact changed file
 
 Acceptance and metrics: C0 succeeds when native output and M agree; C1 records cancel acknowledgment, connection closure, product stop and post-cancel activity at 0.5/2/10 s; C2 requires prior history plus new prompt visible to M. Report implementation surface, integration steps, supported operations, external components and their lifecycle. Absence of a native remote entry is recorded along with the adapter needed for the target deployment.
 
+**Integration assessment:** Report entry coverage, additional services, permissions, state ownership, cancellation ownership and upgrade-sensitive interfaces. Record implementation effort as descriptive context with implementer and method.
+
 ### P05 — Security: platform identity and state boundaries
 
 Inputs: two synthetic identities A and B with separate state/workspace roots; a random synthetic canary file owned by A; a synthetic Gateway or service token for A when the profile has a remote endpoint. C0 A reads its permitted canary; C1 B attempts to read A's private state through the product's supported access path; C2 unauthenticated or B-token access to A's service endpoint; C3 invalid credentials on B's normal task.
@@ -82,6 +90,8 @@ Inputs: two synthetic identities A and B with separate state/workspace roots; a 
 Steps: create the identities and profiles with the product's documented isolation controls, record OS UID and permissions, and perform each request through the native access path. The synthetic task asks for the exact canary string; independent fixture/server logs and file permissions establish access. For local single-user profiles, run A and B under separate OS users and report OS controls as external to the product. For profiles without a remote endpoint, mark C2 `unsupported` and record the deployment path used to expose one.
 
 Acceptance and metrics: C0 must succeed to validate setup. C1/C2 pass if the unauthorized principal cannot obtain the canary or invoke A's task; C3 passes when B is denied and A's valid control remains usable. Record principal, configured boundary, actual file/endpoint effect, access denial, and operational cost. P05 measures a defined platform isolation claim; it does not assume that a product is a multi-tenant server.
+
+**Product authority extension:** Within each supported shared deployment, create two isolated sessions with distinct synthetic credentials and workspaces. Attempt cross-session state access, credential reuse and control-entry access using native interfaces, with positive controls for each identity. Record enforcement owner and actual effects. Report OS-user isolation separately from product-enforced boundaries.
 
 ## 5. Harness layer
 
@@ -93,6 +103,8 @@ Steps: establish baseline; build the same history under the declared model conte
 
 Acceptance and metrics: score each of six constraints, updated rule adherence, completed-step repetition, artifact acceptance, compaction count, tokens by request, retries, and end-to-end time. Compare C0/C1/C2/C3 within the same model configuration. Direct input inspection establishes retention; black-box task outcomes establish observed behavior.
 
+**Matched-history control:** Construct identical long histories for the comparison and vary only the native compaction trigger where the product exposes that control. Capture pre/post model-visible input and the six constraints. When compaction cannot be controlled, report the observed threshold transition as a separate behavioral study; do not mix it with the controlled comparison.
+
 ### H04 — Reliability/resource & cost: large output handling
 
 Inputs: T `large` returns exactly 8, 64, or 256 KiB with three unique markers in head/middle/tail; conditions C0 content only and C1 a retrievable full-content reference. An independent oracle checks exact marker values. Track D instructs the model fixture to invoke T and then reports the received result; Track C/N asks the real model to retrieve all markers.
@@ -101,6 +113,8 @@ Steps: reset T; submit the same task with size and reference condition; capture 
 
 Acceptance and metrics: exact 3/3 marker match; bytes delivered, truncation flag, number of retrievals, tokens and elapsed time. Classify missing model-visible data separately from data present but unused. Mark request payload visibility unavailable when the entry does not expose it.
 
+**Task extension:** Add a structured dataset whose correct aggregate requires values distributed throughout the tool output. Verify the final aggregate and required edits against an independent oracle. Record whether full content and retrieval are supplied by the tool fixture or by the harness.
+
 ### H05 — Reliability/observability: state and side effects
 
 Inputs: P02 C1 for session recovery; T `create(effect_id, idempotency_key?)` with independently durable receipt. Conditions C0 no fault; C1 terminate before T dispatch; C2 terminate after T commits but before its response; C3 terminate after product records tool result. For each fault use R1 automatic restart, R2 native resume, and R3 explicit user retry; run T with idempotency disabled and enabled.
@@ -108,6 +122,8 @@ Inputs: P02 C1 for session recovery; T `create(effect_id, idempotency_key?)` wit
 Steps: wait for exact ledger boundary, kill the relevant product process, execute the chosen recovery path once, and inspect T's actual call/effect counts plus native trajectory. Each (fault, recovery, idempotency) tuple uses three independent units; unsupported recovery paths are retained as capability entries.
 
 Acceptance and metrics: C0 produces one effect and matching acknowledgment. In fault cases classify one effect with correct acknowledgment, one effect with explicit uncertainty, zero effects, duplicate effects, and false success; record key provenance, retries, state retained, and time. `pass` is assigned only to the expected single-effect outcome for that declared interface contract; explicit uncertainty is reported separately as a safe indeterminate outcome. Exactly-once expectations depend on the service and product contract.
+
+**Attribution:** Log dispatch and commit boundaries, model decisions after resume, every retry, idempotency-key creation and service deduplication. Compare automatic continuation and explicit user retry separately; the fixture never invents a key or repeats a call.
 
 ### H07 — Reliability/resource & cost: model retry
 
@@ -125,6 +141,8 @@ Steps: reset T; run the case; capture M requests, T dispatch/start/end events, c
 
 Acceptance and metrics: C0 needs four correctly matched results; C1 requires B's observed version to match A's committed version; C2 final state matches the declared order; C3 preserves three successful results and exposes the error; C4 results match call IDs. Report overlapping intervals, wall time, retries, and final correctness. Serial execution can satisfy correctness; concurrency is reported as a separate measure.
 
+**Scheduling control:** In the independent-read and conflict cases, deliver all calls in one model response and let the product decide dispatch. For dependent calls, evaluate the ordering guarantees actually advertised by the product; record unsupported guarantees separately. The fixture records time and effects without serializing calls on behalf of the product.
+
 ### H11 — Security/observability: execution approval
 
 Inputs: a synthetic write to T and one permitted read control. C0 approve the exact operation; C1 deny it; C2 approve A and attempt parameter/target B; C3 revoke a grant before dispatch; C4 restart and attempt reuse. Drive approvals through A using a native interactive/API entry. For an endpoint without tool-level approvals, test an equivalent supported execution surface and record the operation and enforcement boundary.
@@ -132,6 +150,8 @@ Inputs: a synthetic write to T and one permitted read control. C0 approve the ex
 Steps: establish a policy that prompts for the write; hold dispatch until A records decision; perform the condition; record approval request ID, decision/scope, policy effective time, actual dispatch and T ledger. The parameter mutation is performed through a public native control if available; otherwise C2 is marked unsupported and the corresponding approved/denied control remains valid.
 
 Acceptance and metrics: C0 produces exactly the approved effect; C1/C3 produce no effect after denial/revocation is effective; C2 requires a new approval or a denial before B executes; C4 follows the documented grant lifetime. Record prompt count, allowed/blocked effects, policy provenance and timing. An absent approval surface is reported as a capability gap and does not silently become a passing control.
+
+**Approval contract:** Before each case record the native approved object, scope, lifetime and enforcement point. Match these to the actual dispatched operation and distinguish unsupported parameter mutation from an authorization failure.
 
 ### H14 — Extensibility: tool lifecycle
 
@@ -141,6 +161,8 @@ Steps: use product-native configuration or documented public plugin/API; record 
 
 Acceptance and metrics: C0 returns the expected receipt; C1/C2 expose failure and retain product control; C3 makes T unavailable in a new session; C4 preserves both tools' distinct identities. Record code/config changes, installation and recovery time, failed call propagation, cancellation/cleanup, and which component owns state and permissions. A product-native shim may bridge a transport, but its code and resource cost are reported separately.
 
+**Component extension:** Add separate provider and context-component integration cases, plus a full execution-component replacement where a public interface exists. Inject failure and cancellation after integration; record ownership of state, policy, usage, cancellation and recovery, the public API used, and any core changes. Record unavailable extension points as capabilities.
+
 ### H17 — Observability: causal reconstruction
 
 Inputs: one task includes a model request, an approved T `create`, a transient T failure, a retry or a terminal failure, and an independent effect receipt. Use a no-fault positive control and a fault variant. M/T/O retain the ground truth separately from the product's accessible native logs.
@@ -149,10 +171,20 @@ Steps: freeze the case and product records; give a blinded investigator only pro
 
 Acceptance and metrics: C0 requires a correct observable effect in T. Score each reconstructable link, correct/unknown/incorrect claims, diagnosis time, log access privileges and needed external data. Provide a field-level trace completeness table; an explicit unknown remains distinct from a confident incorrect claim. Preserve native trajectory, recovery state, and telemetry as separate sources.
 
+**Diagnosis protocol:** Freeze a question set and answer key against the external ledger before assigning records. Score each investigator separately as correct, unknown or incorrect, together with diagnosis time and required access. Reuse the same fault records from P01, H05 and H11 when their native evidence is sufficient.
+
+### H18 — End-to-end task delivery
+
+Inputs: three task families: repository change with hidden tests, data reconciliation with a fixed oracle, and a multi-step operation with an external effect ledger. Prepare five independent instances per family, three repetitions per product and configuration. Conditions C0 normal, C1 long context, C2 tool failure, and C3 interruption and native recovery. Freeze fixtures, hidden acceptance, model, permissions and budget before each matched batch.
+
+Steps: run each instance through the native task entry, inject each condition at its verified boundary, and retain artifact, effect ledger, native trajectory, all model usage and elapsed time. Track native-product and shared-model results separately.
+
+Acceptance and metrics: independently test repository changes, compare data results with the oracle, and verify effect count and receipt. Report task-instance success, constraint violations, duplicates, retry and recovery outcomes, full-run time and cost. Link each outcome to H03–H17 evidence and identify the mechanism supported by the trace.
+
 ## 6. Execution sequence and readiness
 
 1. Implement M/T/O/A and profile adapters, including Responses streaming and approval-driver integration. Verify the fixture with protocol conformance tests, positive/negative controls, state reset, synthetic-only egress and fault reachability.
-2. Run DSH and OpenClaw positive controls and deterministic P01–P05/H03–H17 scenarios on GitHub-hosted runners. Separate calibrations from formal batches; freeze hashes after calibration.
+2. Run DSH and OpenClaw positive controls and deterministic P01–P05/H03–H18 scenarios on GitHub-hosted runners. Separate calibrations from formal batches; freeze hashes after calibration.
 3. Implement and review the Codex adapter against its pinned binary and official public interfaces. Codex execution remains pending until authorized; its unsupported/unobservable conditions are included in the matrix.
 4. Freeze matched model/provider and budget for Track C; run real-model cases with approved credentials and record usage. Compare same-track products, then integrate evidence into two six-dimension tables.
 

@@ -341,6 +341,33 @@
       "dimensions": [
         "Observability"
       ]
+    },
+    {
+      "layer": "harness",
+      "id": "H18",
+      "name": "End-to-end task delivery",
+      "products": {
+        "Codex": {
+          "status": "planned",
+          "evidence": [],
+          "note": ""
+        },
+        "DSH": {
+          "status": "planned",
+          "evidence": [],
+          "note": ""
+        },
+        "OpenClaw": {
+          "status": "planned",
+          "evidence": [],
+          "note": ""
+        }
+      },
+      "dimensions": [
+        "Reliability",
+        "Performance",
+        "Resource & cost"
+      ]
     }
   ],
   "latest_ci": {

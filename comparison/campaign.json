@@ -168,6 +168,19 @@
       "independent_units_per_condition": 3,
       "track": "scripted",
       "implementation": "planned"
+    },
+    {
+      "id": "H18",
+      "layer": "harness",
+      "conditions": [
+        "C0",
+        "C1",
+        "C2",
+        "C3"
+      ],
+      "independent_units_per_condition": 3,
+      "track": "model_and_scripted",
+      "implementation": "planned"
     }
   ]
 }
