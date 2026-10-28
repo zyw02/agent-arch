@@ -14,9 +14,12 @@ from review_platform_native import digest,score,make_packet as pa_packet
 from prepare_platform_resource_review import make_packet as pc_packet
 from summarize_platform_fault import summarize as pa_summary
 from summarize_platform_resource import summarize as pc_summary
+from prepare_tool_lifecycle_review import make_packet as hd_packet,expected_answers as hd_answers,CONDITIONS as HD_CONDITIONS,TASK_PROTOCOL
+from summarize_tool_lifecycle import summarize as hd_summary
 
 
-def expected_answers(row,study):
+def expected_answers(row,study,arm=None):
+    if study=='HD':return hd_answers(arm,row)
     if study=='PC':
         return dict(accepted_workload_tasks=str(row['accepted_tasks']),ownership='service' if row['offered_tasks'] else None,simultaneous_model_requests=str(row['max_simultaneous_task_model_requests']))
     return dict(ownership='service',interruption={'healthy':'none','client_exit':'client_exit','owner_exit':'owner_exit'}[row['condition']],
@@ -29,10 +32,11 @@ def expected_answers(row,study):
 def export(archive,expected_digest,source_report,protocol,study,output):
     if digest(archive.read_bytes())!=expected_digest:raise ValueError('Original review artifact digest mismatch')
     source_raw=source_report.read_bytes();source_raw=gzip.decompress(source_raw) if source_report.suffix=='.gz' else source_raw;source=json.loads(source_raw)
-    arms={(r['product'],r['condition'],r['block']):r for r in source['results']};packet_builder=pa_packet if study=='PA' else pc_packet
-    source_summary=(pa_summary if study=='PA' else pc_summary)(source)
+    arms={(r['product'],r['condition'],r['block']):r for r in source['results'] if study!='HD' or r['condition'] in HD_CONDITIONS};packet_builder={'PA':pa_packet,'PC':pc_packet,'HD':hd_packet}[study]
+    source_summary=hd_summary(source,TASK_PROTOCOL) if study=='HD' else (pa_summary if study=='PA' else pc_summary)(source)
     if not source_summary['complete_comparison_blocks']:raise ValueError('Complete native source blocks required')
-    truth={(r['product'],r['condition'],r['block']):expected_answers(r,study) for r in source_summary['rows']}
+    if study=='HD' and (source['phase']!='formal' or not source_summary['healthy_controls_passed']):raise ValueError('Formal HD blocks and usable controls required')
+    truth={(r['product'],r['condition'],r['block']):expected_answers(r,study,arms[r['product'],r['condition'],r['block']]) for r in source_summary['rows'] if (r['product'],r['condition'],r['block']) in arms}
     output.mkdir(parents=True,exist_ok=True)
     with tempfile.TemporaryDirectory(prefix='native-review-export-') as tmp:
         temp=Path(tmp)
@@ -44,7 +48,7 @@ def export(archive,expected_digest,source_report,protocol,study,output):
                 zipped.extract(member,temp)
         manifests=list(temp.glob('*/manifest.json'))
         if len(manifests)!=1:raise ValueError('Review manifest identity ambiguous')
-        dataset=manifests[0].parent;reviews=temp/('native-review-answers' if study=='PA' else 'native-pc-review-answers');manifest=json.loads(manifests[0].read_bytes());key=json.loads((dataset/'withheld-answer-key.json').read_bytes())
+        dataset=manifests[0].parent;reviews=temp/{'PA':'native-review-answers','PC':'native-pc-review-answers','HD':'native-hd-review-answers'}[study];manifest=json.loads(manifests[0].read_bytes());key=json.loads((dataset/'withheld-answer-key.json').read_bytes())
         recomputed=score(dataset,reviews,protocol);original=json.loads((dataset/'score.json').read_bytes())
         if recomputed['rows']!=original['rows'] or recomputed['totals']!=original['totals']:raise ValueError('Frozen review judgments changed')
         if manifest['source_run_id']!=source['run_id'] or manifest['source_controller_commit']!=source['controller_commit']:raise ValueError('Native source run identity mismatch')
@@ -55,7 +59,7 @@ def export(archive,expected_digest,source_report,protocol,study,output):
         for case in manifest['packets']:
             case_id=case['case_id'];identity=key[case_id];arm=arms[identity['product'],identity['condition'],identity['block']];packet=json.loads((dataset/'packets'/(case_id+'.json')).read_bytes())
             if packet!=packet_builder(arm,case_id):raise ValueError('Reviewer packet is not the exact declared native-only projection')
-            labels=('client_exit','owner_exit') if study=='PA' else ('cold_single','warm_single','four_sequential','four_concurrent')
+            labels={'PA':('client_exit','owner_exit'),'PC':('cold_single','warm_single','four_sequential','four_concurrent'),'HD':HD_CONDITIONS}[study]
             if any(label in json.dumps(packet) for label in labels):raise ValueError('Condition-bearing fixture path leaked into native packet')
             record=json.loads((reviews/(case_id+'.json')).read_bytes());request=record['request'];messages=request.get('messages',[])
             if set(request)!={'model','messages','thinking','temperature','max_tokens','stream'} or len(messages)!=2 or [m['role'] for m in messages]!=['system','user']:raise ValueError('Unexpected isolated reviewer request envelope')
@@ -88,7 +92,7 @@ def export(archive,expected_digest,source_report,protocol,study,output):
 
 
 def main():
-    p=argparse.ArgumentParser();p.add_argument('--archive',type=Path,required=True);p.add_argument('--sha256',required=True);p.add_argument('--source-report',type=Path,required=True);p.add_argument('--protocol',type=Path,required=True);p.add_argument('--study',choices=['PA','PC'],required=True);p.add_argument('--output',type=Path,required=True);args=p.parse_args()
+    p=argparse.ArgumentParser();p.add_argument('--archive',type=Path,required=True);p.add_argument('--sha256',required=True);p.add_argument('--source-report',type=Path,required=True);p.add_argument('--protocol',type=Path,required=True);p.add_argument('--study',choices=['PA','PC','HD'],required=True);p.add_argument('--output',type=Path,required=True);args=p.parse_args()
     summary=export(args.archive,args.sha256,args.source_report,args.protocol,args.study,args.output);print(json.dumps(summary))
 
 if __name__=='__main__':main()
