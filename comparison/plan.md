@@ -1,5 +1,8 @@
 # Practical two-layer evaluation plan
 
+**Default execution scope:** the [architecture-first core campaign](architecture-core.md) supersedes full-matrix execution and repetition defaults. It allocates 144 bounded units across three product configurations, with at most four aggregate runner-hours including setup. Long soak and full-factor sweeps are deferred reference work.
+
+
 ## Research question
 
 The platform layer studies how a system hosts work: entry points, process and machine boundaries, communication, state and credential ownership, shared resources, failure propagation, and operations. The absence of a Gateway is itself a design choice. Identify which responsibilities move to the client, process, filesystem, or external service, then compare startup and idle cost, fault domains, isolation, and the cost of providing multiple entry points or remote access. Describe how each deployment implements its responsibilities. Compare actual validated deployments and list external components, versions, and cost separately.

@@ -1,0 +1,212 @@
+{
+  "schema_version": 1,
+  "revision": "architecture-core-20261028-r1",
+  "state": "design_only",
+  "default": true,
+  "products": [
+    "Codex",
+    "DSH",
+    "OpenClaw"
+  ],
+  "profiles_per_product": 1,
+  "max_aggregate_runner_seconds": 14400,
+  "max_wall_seconds": 14400,
+  "setup_seconds_per_product": 480,
+  "unit_timeout_seconds": 90,
+  "max_units_per_product": 48,
+  "long_soak_enabled": false,
+  "studies": [
+    {
+      "id": "K01",
+      "references": [
+        "P01"
+      ],
+      "conditions": [
+        "baseline",
+        "entry_loss",
+        "core_loss"
+      ],
+      "repetitions": 2,
+      "question": "Where does execution live, and what shares its failure domain?",
+      "alternative_explanations": "Caller-owned versus service-owned execution; isolated versus shared failure domains.",
+      "required_observations": [
+        "process ancestry",
+        "verified kill boundary",
+        "primary and healthy companion outcomes",
+        "surviving model connection"
+      ],
+      "intervention": "Kill only the selected process after request receipt; keep an independent healthy companion in every arm.",
+      "inference_rule": "Survival plus process ownership can identify execution placement and blast radius. Coalesce entry/core faults if they are the same PID.",
+      "limit_and_tradeoff": "Service independence may preserve work but adds shared-service cost; do not infer availability from process topology alone."
+    },
+    {
+      "id": "K02",
+      "references": [
+        "P02",
+        "H05"
+      ],
+      "conditions": [
+        "baseline_no_dedup",
+        "baseline_dedup",
+        "commit_gap_no_dedup",
+        "commit_gap_dedup"
+      ],
+      "repetitions": 2,
+      "question": "Which state is durable, and who prevents duplicate external effects?",
+      "alternative_explanations": "Conversation reconstruction versus execution/result persistence versus external-service deduplication.",
+      "required_observations": [
+        "resumed model-visible history",
+        "durable effect receipts",
+        "retry origin",
+        "idempotency-key origin",
+        "acknowledgment or uncertainty"
+      ],
+      "intervention": "Use native resume after externally confirmed commit but before reply; change only service deduplication for each paired comparison.",
+      "inference_rule": "Deduplication-on/off isolates the external service contribution. Distinguish harness retries, scripted-model decisions and service suppression.",
+      "limit_and_tradeoff": "Replayable history is not an exactly-once guarantee. If M supplies a stable key, never credit its generation to the harness."
+    },
+    {
+      "id": "K03",
+      "references": [
+        "P05",
+        "H11"
+      ],
+      "conditions": [
+        "allow",
+        "deny",
+        "revoke_before_dispatch"
+      ],
+      "repetitions": 2,
+      "question": "Which component enforces execution authority, and when?",
+      "alternative_explanations": "UI-only approval versus dispatch-time enforcement; session grant versus operation-bound grant.",
+      "required_observations": [
+        "approved object and scope",
+        "native policy effective event",
+        "actual dispatch parameters",
+        "independent effect ledger"
+      ],
+      "intervention": "Use the same harmless synthetic write and policy, changing the native approval decision or revoking before dispatch.",
+      "inference_rule": "Reached attempts and effects identify the observed enforcement boundary. Unsupported revocation is a capability result.",
+      "limit_and_tradeoff": "Central authorization can improve consistency while adding coordination; these probes cannot establish general security."
+    },
+    {
+      "id": "K04",
+      "references": [
+        "H03",
+        "H04"
+      ],
+      "conditions": [
+        "same_history_uncompacted",
+        "same_history_compacted"
+      ],
+      "repetitions": 2,
+      "question": "How does context maintenance change the information actually sent to the model?",
+      "alternative_explanations": "Preserved authoritative constraints versus lossy transformation or downstream reassembly.",
+      "required_observations": [
+        "identical input-history hash",
+        "native compaction event",
+        "transformed component output",
+        "next independent model request",
+        "KEEP/DROP and updated-rule retention"
+      ],
+      "intervention": "Use identical long history with a documented native compaction toggle or trigger; inspect the next model request, not only component output.",
+      "inference_rule": "A changed component output counts as integration only if the next request contains the change. If matched uncompressed history cannot run, mark the causal comparison unresolved.",
+      "limit_and_tradeoff": "Fewer input tokens trade against retention. Scripted summaries expose plumbing only; real summarization quality requires a separately declared real-model result."
+    },
+    {
+      "id": "K05",
+      "references": [
+        "H08"
+      ],
+      "conditions": [
+        "one_read",
+        "four_independent_reads"
+      ],
+      "repetitions": 3,
+      "question": "Where are calls serialized, and who owns concurrency?",
+      "alternative_explanations": "Concurrent dispatch versus harness serialization versus fixture/service serialization.",
+      "required_observations": [
+        "model call-batch event",
+        "tool start/end intervals",
+        "call/result identity",
+        "native dispatch trace",
+        "fixture-only concurrency control"
+      ],
+      "intervention": "Deliver four independent reads together in one model response; compare with one read and confirm T itself handles overlap.",
+      "inference_rule": "Overlapping T intervals support concurrent dispatch. No overlap alone does not locate the bottleneck: require dispatch traces or source corroboration.",
+      "limit_and_tradeoff": "Concurrency reduces critical path but adds ordering/cancellation work. Do not claim dependent scheduling from provider-imposed ordering."
+    },
+    {
+      "id": "K06",
+      "references": [
+        "P03",
+        "P04"
+      ],
+      "conditions": [
+        "idle",
+        "one_task",
+        "four_tasks"
+      ],
+      "repetitions": 2,
+      "question": "What is the fixed and marginal cost of the chosen execution lifecycle?",
+      "alternative_explanations": "Resident shared service versus per-invocation processes; shared resource contention versus isolated task cost.",
+      "required_observations": [
+        "30-second idle RSS/CPU",
+        "cold-start timing",
+        "process count",
+        "one/four-task integrated resources",
+        "task correctness",
+        "fixture and observer overhead"
+      ],
+      "intervention": "Use a short fixed workload and at most 30 seconds of observation per condition; model delay and host remain matched.",
+      "inference_rule": "Report fixed footprint and descriptive marginal changes alongside process ownership; four-task contention is a short-window observation.",
+      "limit_and_tradeoff": "This identifies lifecycle costs, not maximum sustainable throughput, memory leaks or long-run stability."
+    },
+    {
+      "id": "K07",
+      "references": [
+        "H14"
+      ],
+      "conditions": [
+        "normal_extension",
+        "extension_fault"
+      ],
+      "repetitions": 3,
+      "question": "Which responsibilities cross an extension boundary, and how does its failure propagate?",
+      "alternative_explanations": "External protocol/service isolation versus in-process callback coupling; host-owned versus extension-owned lifecycle.",
+      "required_observations": [
+        "public interface and adapter surface",
+        "extension process ownership",
+        "fault boundary",
+        "native error or recovery",
+        "healthy control and retained product state"
+      ],
+      "intervention": "Select one common read-only tool extension boundary per product; inject one fault through the extension itself and keep the native host control available.",
+      "inference_rule": "Combine native interface/source evidence with fault propagation; a successful plugin call alone does not prove extensibility or isolation.",
+      "limit_and_tradeoff": "Broad in-process hooks may reduce integration work but couple failures; attribute protection to actual process/exception boundaries."
+    },
+    {
+      "id": "K08",
+      "references": [
+        "H18"
+      ],
+      "conditions": [
+        "normal_task",
+        "one_tool_failure"
+      ],
+      "repetitions": 3,
+      "question": "Does an observed mechanism matter to task delivery?",
+      "alternative_explanations": "Mechanism-level recovery that helps completion versus an apparent mechanism with no demonstrated task benefit.",
+      "required_observations": [
+        "accepted final artifact",
+        "independent task oracle",
+        "native retry trace",
+        "usage completeness",
+        "link to K01-K07 mechanism evidence"
+      ],
+      "intervention": "Use three distinct small task instances, pairing each normal run with one reached tool failure under the same real-model configuration.",
+      "inference_rule": "Three pairs are illustrative task validation, not a population benchmark. If model access, budget or acceptance is unavailable, leave this study untested.",
+      "limit_and_tradeoff": "Do not use scripted-model success as evidence of real task quality."
+    }
+  ]
+}

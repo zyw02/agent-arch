@@ -1,5 +1,8 @@
 # Cross-product evaluation
 
+Start with the [architecture-first core plan](architecture-core.md). The default planner is limited to four aggregate runner-hours across all three product configurations, including setup; long-soak and full-factor experiments are deferred.
+
+
 This workspace compares Codex, DeepSeek Harness (DSH), and OpenClaw at the platform and harness layers. The [experiment catalogue](experiment-index.md) brings together all scenarios, measurements, and readiness; the [execution protocol](execution-protocol.md) specifies the full two-layer, six-dimension campaign; the [execution plan](plan.md) describes scope and priorities; [first-wave protocols](first-wave-protocol.md) define concrete interventions, observations, and limits. The [progress ledger](progress.json) records per-product work items. The [frozen OpenClaw campaign](../evaluation/README.md) and [V6 archive](../v6/) preserve their original evidence.
 
 ## Progress maintenance

@@ -124,8 +124,15 @@ def expand(campaign, freeze=None):
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('--profile', choices=('core', 'full'), default='core')
     parser.add_argument('--load-freeze', type=Path)
     args = parser.parse_args()
+    if args.profile == 'core':
+        if args.load_freeze:
+            parser.error('--load-freeze belongs to the explicitly selected full profile')
+        from plan_core import plan_core
+        print(json.dumps(plan_core(json.loads(Path(__file__).with_name('architecture-core.json').read_text())), indent=2))
+        raise SystemExit(0)
     campaign = json.loads(Path(__file__).with_name('campaign.json').read_text())
     freeze = validate_load_freeze(args.load_freeze) if args.load_freeze else None
     print(json.dumps(expand(campaign, freeze), indent=2))

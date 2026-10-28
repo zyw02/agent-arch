@@ -1,5 +1,8 @@
 # Cloud design review controls — 2026-10-28
 
+**Default execution scope:** the [architecture-first core campaign](architecture-core.md) supersedes full-matrix execution and repetition defaults. It allocates 144 bounded units across three product configurations, with at most four aggregate runner-hours including setup. Long soak and full-factor sweeps are deferred reference work.
+
+
 Revision `cloud-review-20261028-r1` amends the cross-product design at baseline `b243db1f1b03a5e24d9434716076067427670c46`. These rules take precedence over conflicting first-wave statements. They specify required execution behavior; adapters and hosted formal runs remain implementation work. The expanded matrix is a plan, not evidence of completed experiments.
 
 ## 1. Scheduling claims
@@ -18,7 +21,7 @@ Freeze numeric capacity criteria before running pilots: maximum generator delay,
 
 Select one common sustainable and one common overload level from the candidate set using a predeclared completion/queue-growth criterion. If no common pair exists, redesign the ladder and re-calibrate before freezing. Use the same selection and freeze evidence for every product/profile in the matched comparison. Six formal units per selected level, tool condition and admission mode yield 48 sustained-load units per eligible product/profile: at least 25.6 runner-hours including the two-minute warmup, before setup and draining. Confirm total cost across actual profiles before launching.
 
-`expand_campaign.py --load-freeze FILE` validates the freeze record and evidence hashes. Without it, C4/C5 rows have `load_gate_satisfied=false`. Unselected candidates remain visible and gated. The freeze JSON requires:
+`expand_campaign.py --profile full --load-freeze FILE` validates the freeze record and evidence hashes. Without it, C4/C5 rows have `load_gate_satisfied=false`. Unselected candidates remain visible and gated. The freeze JSON requires:
 
 - `selected_arrival_intervals_s`: two distinct strings from `2`, `0.5`, `0.1`;
 - `capacity_controls_passed: true`, and `selection_rationale` linking the frozen selection criterion and all product pilots;

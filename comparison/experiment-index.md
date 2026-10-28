@@ -1,5 +1,8 @@
 # Cross-product experiment catalogue
 
+**Default execution scope:** the [architecture-first core campaign](architecture-core.md) supersedes full-matrix execution and repetition defaults. It allocates 144 bounded units across three product configurations, with at most four aggregate runner-hours including setup. Long soak and full-factor sweeps are deferred reference work.
+
+
 This catalogue is the shared reference for comparing Codex, DeepSeek Harness (DSH), and OpenClaw. Each entry specifies the architectural mechanism, a common scenario, the observations to collect, and the interpretation the comparison supports. The [dashboard](../README.md#research-progress) tracks each product separately.
 
 ## Readiness

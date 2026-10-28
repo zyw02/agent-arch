@@ -1,5 +1,8 @@
 # Two-layer, six-dimension execution protocol
 
+**Default execution scope:** the [architecture-first core campaign](architecture-core.md) supersedes full-matrix execution and repetition defaults. It allocates 144 bounded units across three product configurations, with at most four aggregate runner-hours including setup. Long soak and full-factor sweeps are deferred reference work.
+
+
 This protocol defines the initial cross-product campaign for Codex, DeepSeek Harness (DSH), and OpenClaw. The [catalogue](experiment-index.md) explains the purpose of each experiment; the scenarios below define the inputs, operations, measurements, and acceptance rules. The [progress table](../README.md#research-progress) records implementation and execution status. The [campaign manifest](campaign.json) lists every case, condition, repetition baseline, and implementation state.
 
 Revision `cloud-review-20261028-r2`: [review controls](review-controls.md) are normative for capacity calibration, statistical analysis, required observations and failure classification. The matrix remains calibration-required.
@@ -194,6 +197,6 @@ Acceptance and metrics: independently test repository changes, compare data resu
 
 ## 7. Execution matrix
 
-`campaign.json` specifies the condition factors. Run `python3 comparison/expand_campaign.py` to enumerate stable scenario-unit identifiers. The expansion is a plan; each adapter must still confirm its native fault and observation boundaries during calibration. H18 task fixtures and hidden acceptance files are implementation work and must be committed with hashes before the formal batch.
+`campaign.json` specifies the condition factors. Run `python3 comparison/expand_campaign.py --profile full` to enumerate the reference full-matrix identifiers; the command defaults to the bounded core plan. The expansion is a plan; each adapter must still confirm its native fault and observation boundaries during calibration. H18 task fixtures and hidden acceptance files are implementation work and must be committed with hashes before the formal batch.
 
 The expanded plan now includes explicit control IDs, required observations and load-gate labels. It remains a product-independent plan; product/profile binding, calibrated adapters and runner preflight must be frozen before any formal scheduling.

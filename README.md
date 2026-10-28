@@ -1,5 +1,8 @@
 # Agent Platform and Harness Architecture Evaluation
 
+**Default research plan:** [architecture-first core campaign](comparison/architecture-core.md), focused on responsibility boundaries and design tradeoffs. Total experiment runtime is budgeted at at most four aggregate runner-hours across three configurations, including setup. Runtime enforcement and adapters remain implementation work; the full catalogue is reference-only.
+
+
 Architecture research for **Codex, DeepSeek Harness (DSH), and OpenClaw**, across two complementary layers: how a system hosts agent work, and how its harness manages each execution. Six dimensions—reliability, security, performance, cost, extensibility, and observability—apply to both layers.
 
 ## Six dimensions, two architecture layers
