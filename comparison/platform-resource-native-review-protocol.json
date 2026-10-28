@@ -1,0 +1,14 @@
+{
+  "study": "PC-HTTP-01 native-only automated reconstruction",
+  "freeze_timing": "Question set prepared after formal execution started, before inspecting formal outcomes and before any PC native-only reviewer request; secondary observability analysis, not a changed resource outcome",
+  "reviewer": "One isolated deepseek-flash request per randomized arm; thinking disabled, temperature 0, max_tokens 2048. Same investigator method as PA, scored separately because questions differ",
+  "packet": "Selected native stdout tail and full public native terminal response JSON, workload input markers and optional priming marker. Omit condition/block labels, external task acceptance summaries, timings, process/cgroup samples, fixture truth and native-binding derivations. Sanitize condition-bearing owned paths",
+  "questions": {
+    "accepted_workload_tasks": {"question": "How many WORKLOAD tasks have an exact matching assistant PLATFORM_ACK of their task marker in the supplied native records? Exclude the separately labeled priming task. Count only native assistant terminal output, not an echoed user marker.", "choices": ["0", "1", "2", "3", "4", "unknown"]},
+    "ownership": {"question": "Which process executes admitted workload model work: the external result client or a persistent native service? Return unknown if native records do not establish an ownership link or there was no workload task.", "choices": ["client", "service", "unknown"]},
+    "simultaneous_model_requests": {"question": "What was the maximum number of overlapping actual model requests for WORKLOAD tasks? Exclude priming and auxiliary title calls. Close assistant completion times alone do not establish request overlap. Return unknown unless native records establish the number.", "choices": ["0", "1", "2", "3", "4", "unknown"]}
+  },
+  "answer_format": "JSON object with exactly the three question keys. Each value is {answer: one allowed choice, evidence_path: packet path or null, quote: exact native-record substring or null, reason: brief statement}. Unknown is allowed and preferred to unsupported inference",
+  "scoring": "Freeze answers/packets/request/response hashes and usage before reading independent key. Count exact values correct/incorrect/unknown; idle ownership has no admitted-work truth and is unscorable. Audit literal citations separately and identify unsupported matching guesses. No retry to improve scores",
+  "limits": "One automated investigator of selected public responses and bounded stdout; no human or multi-investigator claim, complete native logging inventory or benchmark ranking. This is a secondary diagnostic-value assessment, not the authoritative resource measurement"
+}

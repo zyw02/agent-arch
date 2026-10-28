@@ -24,7 +24,7 @@ def digest(raw):return hashlib.sha256(raw).hexdigest()
 def sanitize_native(value):
     raw=json.dumps(value)
     # The test root embeds condition labels, which are not native causal facts.
-    raw=re.sub(r'/[^\s"\\]*platform-fault-[^/\s"\\]+/[0-9]+-(?:DSH|OpenClaw)-(?:healthy|client_exit|owner_exit)', '<owned-root>',raw)
+    raw=re.sub(r'/[^\s"\\]*platform-(?:fault|resource)-[^/\s"\\]+/[0-9]+-(?:DSH|OpenClaw)-(?:healthy|client_exit|owner_exit|idle|cold_single|warm_single|four_sequential|four_concurrent)', '<owned-root>',raw)
     return json.loads(raw)
 
 
@@ -66,11 +66,11 @@ def prepare(report,output):
     return manifest_obj
 
 
-def review(packets,output):
+def review(packets,output,protocol_path=PROTOCOL):
     if os.environ.get('GITHUB_ACTIONS')!='true':raise ValueError('Paid automated review runs only on disposable hosted worker')
     key=os.environ.get('DEEPSEEK_API_KEY')
     if not key:raise ValueError('Configured provider secret required')
-    output.mkdir(parents=True,exist_ok=True);protocol=json.loads(PROTOCOL.read_bytes());opener=urllib.request.build_opener(NoRedirect())
+    output.mkdir(parents=True,exist_ok=True);protocol=json.loads(protocol_path.read_bytes());opener=urllib.request.build_opener(NoRedirect())
     for file in sorted(packets.glob('*.json')):
         destination=output/file.name
         if destination.exists():raise ValueError('Refusing to replace a frozen review answer')
@@ -112,11 +112,11 @@ def quote_exists(packet,path,quote):
     return quote in text
 
 
-def score(dataset,reviews):
+def score(dataset,reviews,protocol_path=PROTOCOL):
     manifest=json.loads((dataset/'manifest.json').read_bytes());key_raw=(dataset/'withheld-answer-key.json').read_bytes()
     if digest(key_raw)!=manifest['withheld_key_sha256']:raise ValueError('Withheld answer key changed after packet freeze')
-    key=json.loads(key_raw);protocol=json.loads(PROTOCOL.read_bytes());rows=[]
-    if digest(PROTOCOL.read_bytes())!=manifest['protocol_sha256']:raise ValueError('Review question protocol changed')
+    key=json.loads(key_raw);protocol=json.loads(protocol_path.read_bytes());rows=[]
+    if digest(protocol_path.read_bytes())!=manifest['protocol_sha256']:raise ValueError('Review question protocol changed')
     for case in manifest['packets']:
         packet_raw=(dataset/'packets'/(case['case_id']+'.json')).read_bytes();record_raw=(reviews/(case['case_id']+'.json')).read_bytes();record=json.loads(record_raw)
         if digest(packet_raw)!=case['packet_sha256'] or record['packet_sha256']!=case['packet_sha256']:raise ValueError('Packet changed after review freeze')
@@ -132,15 +132,15 @@ def score(dataset,reviews):
             rows.append(dict(case_id=case['case_id'],product=key[case['case_id']]['product'],condition=key[case['case_id']]['condition'],block=key[case['case_id']]['block'],question=question,
                 expected=expected,answer=value,classification=classification,citation_substring_present=quote_exists(packet,actual.get('evidence_path'),actual.get('quote')) if isinstance(actual,dict) else False,
                 answer_record_sha256=digest(record_raw),review_latency_ms=record['elapsed_ms'],automated_investigator=True))
-    return dict(study='PA native-only automated reconstruction',rows=rows,
+    return dict(study=protocol['study'],rows=rows,
         totals={label:sum(r['classification']==label for r in rows) for label in ('correct','incorrect','unknown','invalid_answer','unscorable')},
         caveat='Answer correctness and exact quote existence are separate. They do not by themselves establish that a cited event supports a causal interpretation. Audit reasons/citations; report unsupported matching guesses. One automated reviewer, not human or inter-reviewer reliability evidence.')
 
 
 def main():
-    p=argparse.ArgumentParser();p.add_argument('mode',choices=['prepare','review','score']);p.add_argument('--report',type=Path);p.add_argument('--dataset',type=Path);p.add_argument('--packets',type=Path);p.add_argument('--reviews',type=Path);p.add_argument('--output',type=Path,required=True);args=p.parse_args()
+    p=argparse.ArgumentParser();p.add_argument('mode',choices=['prepare','review','score']);p.add_argument('--report',type=Path);p.add_argument('--dataset',type=Path);p.add_argument('--packets',type=Path);p.add_argument('--reviews',type=Path);p.add_argument('--protocol',type=Path,default=PROTOCOL);p.add_argument('--output',type=Path,required=True);args=p.parse_args()
     if args.mode=='prepare':prepare(json.loads(gzip.decompress(args.report.read_bytes()) if args.report.suffix=='.gz' else args.report.read_bytes()),args.output)
-    elif args.mode=='review':review(args.packets,args.output)
-    else:args.output.write_text(json.dumps(score(args.dataset,args.reviews),indent=2)+'\n')
+    elif args.mode=='review':review(args.packets,args.output,args.protocol)
+    else:args.output.write_text(json.dumps(score(args.dataset,args.reviews,args.protocol),indent=2)+'\n')
 
 if __name__=='__main__':main()
