@@ -8,7 +8,7 @@ import zipfile
 
 sys.path.insert(0,str(Path(__file__).resolve().parents[1]))
 from inspect_reuse_archives import inspect
-from native_read_probe import choose_response
+from native_read_probe import choose_response,final_receipt_matches
 from export_reuse_metrics import row_from
 
 
@@ -49,6 +49,18 @@ class NativeReadCalibrationTests(unittest.TestCase):
     def test_missing_receipt_is_not_accepted_after_tool_failure(self):
         body={'messages':[{'role':'tool','content':'Error: read failed'}]}
         self.assertNotEqual(choose_response(body,Path('/synthetic/input'),'SECRET_RECEIPT').get('text'),'VERIFIED:SECRET_RECEIPT')
+
+
+class FinalReceiptTests(unittest.TestCase):
+    def test_terminal_receipt_allows_marker_whitespace(self):
+        output=json.dumps(dict(type='final',text='VERIFIED: SECRET_RECEIPT'))
+        self.assertTrue(final_receipt_matches('DSH',output,'SECRET_RECEIPT'))
+        self.assertTrue(final_receipt_matches('OpenClaw',json.dumps(dict(payloads=[dict(text='VERIFIED:SECRET_RECEIPT')])), 'SECRET_RECEIPT'))
+
+    def test_tool_output_or_wrong_final_cannot_fake_completion(self):
+        output=json.dumps(dict(type='tool_result',result='VERIFIED:SECRET_RECEIPT'))+'\n'+json.dumps(dict(type='final',text='not completed'))
+        self.assertFalse(final_receipt_matches('DSH',output,'SECRET_RECEIPT'))
+        self.assertFalse(final_receipt_matches('OpenClaw',json.dumps(dict(meta=dict(finalAssistantVisibleText='VERIFIED:SECRET_RECEIPT'),payloads=[])), 'SECRET_RECEIPT'))
 
 
 class ReuseMetricTests(unittest.TestCase):

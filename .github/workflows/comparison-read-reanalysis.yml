@@ -1,0 +1,48 @@
+name: Revalidate retained read pilot and render resources
+on:
+  workflow_dispatch:
+    inputs:
+      artifact_id:
+        description: Original read-pilot artifact ID
+        required: true
+        default: '12803531356'
+      zip_sha256:
+        description: Original artifact digest from GitHub
+        required: true
+        default: a1d5ffc0217ff055c9ec0c8c0909d8cf2f05e597ab4821c9e128a0f975628ae6
+permissions:
+  contents: read
+  actions: read
+jobs:
+  revalidate:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - name: Fetch exact retained source archive
+        env:
+          GH_TOKEN: ${{ github.token }}
+          ARTIFACT_ID: ${{ inputs.artifact_id }}
+        run: |
+          [[ "$ARTIFACT_ID" =~ ^[0-9]+$ ]]
+          gh api "repos/$GITHUB_REPOSITORY/actions/artifacts/$ARTIFACT_ID/zip" > "$RUNNER_TEMP/original-read-pilot.zip"
+      - name: Recheck native terminal fields without new model calls
+        env:
+          ARTIFACT_ID: ${{ inputs.artifact_id }}
+          ZIP_SHA256: ${{ inputs.zip_sha256 }}
+        run: |
+          python3 comparison/revalidate_read_report.py --archive "$RUNNER_TEMP/original-read-pilot.zip" --sha256 "$ZIP_SHA256" --artifact-id "$ARTIFACT_ID" --output "$RUNNER_TEMP/read-pilot-reanalysis"
+      - name: Export measured request usage and resource timelines
+        run: |
+          python3 -m venv "$RUNNER_TEMP/read-plot-env"
+          "$RUNNER_TEMP/read-plot-env/bin/pip" install matplotlib==3.10.8
+          "$RUNNER_TEMP/read-plot-env/bin/python" comparison/export_read_metrics.py --report "$RUNNER_TEMP/read-pilot-reanalysis/revalidated-read-report.json" --output "$RUNNER_TEMP/read-pilot-reanalysis" --plot
+      - name: Retain source-linked reanalysis
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: read-pilot-reanalysis
+          path: ${{ runner.temp }}/read-pilot-reanalysis/
+          if-no-files-found: error
+          retention-days: 30

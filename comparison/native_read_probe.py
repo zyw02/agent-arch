@@ -93,6 +93,21 @@ class Provider:
     def close(self):self.server.shutdown();self.server.server_close()
 
 
+def final_receipt_matches(product,stdout,receipt):
+    """Read the actual terminal field; diagnostic/tool text cannot satisfy completion."""
+    try:
+        if product=='DSH':
+            finals=[json.loads(line).get('text','') for line in stdout.splitlines() if line.startswith('{') and json.loads(line).get('type')=='final']
+            if len(finals)!=1:return False
+            text=finals[0]
+        else:
+            payload=json.loads(stdout).get('payloads',[])
+            text='\n'.join(v.get('text','') for v in payload)
+    except (ValueError,TypeError,AttributeError):return False
+    prefix='VERIFIED:'
+    return text.startswith(prefix) and text[len(prefix):].strip()==receipt
+
+
 def run_product(product,runtime,root,route='native',live=False):
     workspace=root/'workspace';workspace.mkdir();input_file=workspace/'receipt.txt'
     receipt='OWNED_NATIVE_READ_'+uuid.uuid4().hex;input_file.write_text(receipt+'\n')
@@ -151,7 +166,7 @@ def run_product(product,runtime,root,route='native',live=False):
     else:
         visible=any(v['decision'].get('text')=='VERIFIED:'+receipt for v in provider.requests)
         native_attempt=any(v['decision'].get('tool')==target_tool for v in provider.requests)
-    final_receipt=('VERIFIED:'+receipt) in result.get('stdout','')
+    final_receipt=final_receipt_matches(product,result.get('stdout',''),receipt)
     unchanged=hashlib.sha256(input_file.read_bytes()).hexdigest()==original
     mcp_events=[json.loads(line) for line in ledger.read_text().splitlines()] if ledger.exists() else []
     result.update(product=product,route=route,target_tool=target_tool,mcp_events=mcp_events,phase='live-read-pilot' if live else 'adapter-calibration-only',paid_model_calls=len(provider.requests) if live else 0,

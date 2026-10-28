@@ -7,6 +7,7 @@ import unittest
 sys.path.insert(0,str(Path(__file__).resolve().parents[1]))
 from resource_collector import counters, disk_inventory
 from live_read_provider import observe_event,real_usage
+from export_read_metrics import normalized_usage
 
 
 class ResourceAccountingTests(unittest.TestCase):
@@ -27,6 +28,15 @@ class ResourceAccountingTests(unittest.TestCase):
         self.assertEqual(counters('usage_usec 123\nuser_usec 100\nsystem_usec 23\n'),
                          dict(usage_usec=123,user_usec=100,system_usec=23))
         self.assertEqual(counters('Pss: 42\nRss: 84\n'),dict(Pss=42,Rss=84))
+
+class TokenProtocolAccountingTests(unittest.TestCase):
+    def test_protocol_cache_semantics_are_not_conflated(self):
+        anthropic=normalized_usage('/v1/messages',dict(input_tokens=10,cache_read_input_tokens=90,cache_creation_input_tokens=0,output_tokens=5))
+        openai=normalized_usage('/v1/chat/completions',dict(prompt_tokens=100,prompt_cache_hit_tokens=90,prompt_cache_miss_tokens=10,completion_tokens=5,total_tokens=105))
+        self.assertEqual(anthropic['input_tokens'],openai['input_tokens'])
+        self.assertEqual(openai['input_tokens'],100)
+        self.assertIsNone(normalized_usage('/v1/messages',dict(input_tokens=10,output_tokens=5)))
+
 
 class StreamAccountingTests(unittest.TestCase):
     def test_anthropic_cumulative_output_is_merged_not_summed(self):
