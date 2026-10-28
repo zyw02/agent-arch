@@ -105,7 +105,46 @@
       ],
       "independent_units_per_condition": 3,
       "track": "model_and_scripted",
-      "implementation": "planned"
+      "implementation": "planned",
+      "tracks": [
+        "D",
+        "N",
+        "C"
+      ],
+      "track_factors": {
+        "N": {
+          "instance": [
+            1,
+            2,
+            3,
+            4,
+            5
+          ]
+        },
+        "C": {
+          "instance": [
+            1,
+            2,
+            3,
+            4,
+            5
+          ]
+        }
+      },
+      "condition_factors": {
+        "C4": {
+          "arm": [
+            "compacted",
+            "uncompacted"
+          ]
+        }
+      },
+      "condition_tracks": {
+        "C4": [
+          "N",
+          "C"
+        ]
+      }
     },
     {
       "id": "H04",
@@ -123,6 +162,31 @@
           64,
           256
         ]
+      },
+      "tracks": [
+        "D",
+        "N",
+        "C"
+      ],
+      "track_factors": {
+        "N": {
+          "instance": [
+            1,
+            2,
+            3,
+            4,
+            5
+          ]
+        },
+        "C": {
+          "instance": [
+            1,
+            2,
+            3,
+            4,
+            5
+          ]
+        }
       }
     },
     {
@@ -170,6 +234,12 @@
             "off",
             "on"
           ]
+        },
+        "C0": {
+          "idempotency": [
+            "off",
+            "on"
+          ]
         }
       }
     },
@@ -198,7 +268,32 @@
       ],
       "independent_units_per_condition": 3,
       "track": "model_and_scripted",
-      "implementation": "planned"
+      "implementation": "planned",
+      "tracks": [
+        "D",
+        "N",
+        "C"
+      ],
+      "track_factors": {
+        "N": {
+          "instance": [
+            1,
+            2,
+            3,
+            4,
+            5
+          ]
+        },
+        "C": {
+          "instance": [
+            1,
+            2,
+            3,
+            4,
+            5
+          ]
+        }
+      }
     },
     {
       "id": "H11",
@@ -269,7 +364,11 @@
           4,
           5
         ]
-      }
+      },
+      "tracks": [
+        "N",
+        "C"
+      ]
     }
   ]
 }
