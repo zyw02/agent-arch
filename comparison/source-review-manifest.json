@@ -381,6 +381,36 @@
       "bytes": 1982,
       "review_copy": "newline-normalized; local review only",
       "url": "https://github.com/openclaw/openclaw/blob/157d8c2bc3ea2fa183afdc11088e69690bf8e64e/src/agents/system-prompt-skills.ts"
+    },
+    {
+      "product": "dsh",
+      "path": "docs/user/guide/mcp-memory.md",
+      "ref": "f3803c96974ad4a94195fb97e5c637e9c2a3afe3",
+      "repo": "deepseek-ai/deepseek-harness",
+      "blob_sha": "2bc3c6be49b78224932c66e7d0d832dcc026816b",
+      "bytes": 6695,
+      "review_copy": "newline-normalized; local review only",
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/docs/user/guide/mcp-memory.md"
+    },
+    {
+      "product": "dsh",
+      "path": ".agents/skills/agent-experience/SKILL.md",
+      "ref": "f3803c96974ad4a94195fb97e5c637e9c2a3afe3",
+      "repo": "deepseek-ai/deepseek-harness",
+      "blob_sha": "fb40f7ffce2d5b4c13f844c962da35dc771caec0",
+      "bytes": 2093,
+      "review_copy": "newline-normalized; local review only",
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/.agents/skills/agent-experience/SKILL.md"
+    },
+    {
+      "product": "dsh",
+      "path": "docs/subsystems/feedback.md",
+      "ref": "f3803c96974ad4a94195fb97e5c637e9c2a3afe3",
+      "repo": "deepseek-ai/deepseek-harness",
+      "blob_sha": "1fa8631c2c262351e320d0e8642bdad96474214d",
+      "bytes": 19803,
+      "review_copy": "newline-normalized; local review only",
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/docs/subsystems/feedback.md"
     }
   ]
 }
