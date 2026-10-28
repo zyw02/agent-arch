@@ -36,3 +36,7 @@ htmlcov/
 *.tar.gz
 *.tar.zst
 *.zip
+
+# Immutable native-review inputs, verified by adjacent SHA-256 provenance.
+!/comparison/evidence/platform-fault-20261028/native-review/original-artifact.zip
+!/comparison/evidence/platform-resource-20261028/native-review/original-artifact.zip
