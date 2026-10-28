@@ -36,7 +36,7 @@ Explore the [experiment protocols](comparison/first-wave-protocol.md) for the pl
 | Harness · H11 Approval binding | Security, Observability | Planned | Planned | Planned |
 | Harness · H17 Execution trace | Observability | Planned | Planned | Planned |
 
-**Latest session calibration:** success (three independent calibration units). [View calibration evidence](https://github.com/zyw02/openclaw-hermes-architecture-evaluation/actions/runs/40623428889).
+**Latest session calibration:** success (three independent calibration units). [View calibration evidence](https://github.com/zyw02/openclaw-hermes-architecture-evaluation/actions/runs/40624966995).
 
 [OpenClaw architecture study](evaluation/reports/full-20261026-architecture.md) · [Experiment details](comparison/README.md)
 <!-- comparison-dashboard:end -->
