@@ -2,6 +2,7 @@
 
 **Default execution scope:** the [focused two-layer, six-dimension plan](architecture-core.md) defines ten complete studies: three platform and seven harness studies. Duration is controlled by scope and pilot-based admission of complete comparison blocks, without a universal task cutoff or campaign kill budget. Long soak and full-factor sweeps are deferred reference work.
 
+For the current harness scope, the [measurement and visualization contract](harness-evaluation.md) specifies architecture/coupling evidence, native contrasts, quantitative metrics and figures. The common task/time/token/CPU/memory/disk ledger applies to every arm; legacy catalogue details below do not replace it.
 
 This catalogue is the shared reference for comparing Codex, DeepSeek Harness (DSH), and OpenClaw. Each entry specifies the architectural mechanism, a common scenario, the observations to collect, and the interpretation the comparison supports. The [dashboard](../README.md#research-progress) tracks each product separately.
 

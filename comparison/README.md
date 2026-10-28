@@ -3,6 +3,8 @@
 Start with the [focused two-layer, six-dimension plan](architecture-core.md): three platform and seven harness studies. Admit complete comparison blocks using pilot estimates; no universal task cutoff or campaign kill budget. Long soak and full-factor experiments are deferred.
 
 
+The [Harness measurement and visualization contract](harness-evaluation.md) requires source-backed component maps, controlled interactions, task/resource metrics and evidence-linked figures for all seven harness studies. The same runs measure completion time, detailed token usage, CPU, memory and disk, with task acceptance as the quality guard.
+
 This workspace compares Codex, DeepSeek Harness (DSH), and OpenClaw at the platform and harness layers. The [experiment catalogue](experiment-index.md) brings together all scenarios, measurements, and readiness; the [execution protocol](execution-protocol.md) specifies the full two-layer, six-dimension campaign; the [execution plan](plan.md) describes scope and priorities; [first-wave protocols](first-wave-protocol.md) define concrete interventions, observations, and limits. The [progress ledger](progress.json) records per-product work items. The [frozen OpenClaw campaign](../evaluation/README.md) and [V6 archive](../v6/) preserve their original evidence.
 
 ## Progress maintenance

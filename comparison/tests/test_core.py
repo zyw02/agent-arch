@@ -5,7 +5,7 @@ import subprocess
 import sys
 import unittest
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
-from plan_core import plan_core, DIMENSIONS, MECHANISMS, CROSS_CUTTING_CHECKS, REQUIRED_CONTROLS
+from plan_core import plan_core, DIMENSIONS, MECHANISMS, CROSS_CUTTING_CHECKS, REQUIRED_CONTROLS, MEASUREMENT_AXES
 ROOT = Path(__file__).resolve().parents[1]
 
 
@@ -17,7 +17,7 @@ class CoreTests(unittest.TestCase):
         plan = plan_core(self.config)
         self.assertEqual(plan['scope']['studies'], 10)
         self.assertEqual(plan['scope']['complete_blocks'], 60)
-        self.assertEqual(plan['scope']['planned_arms'], 264)
+        self.assertEqual(plan['scope']['planned_arms'], 318)
         for layer in ('platform', 'harness'):
             self.assertEqual({d for s in plan['studies'] if s['layer'] == layer for d in s['primary_dimensions']}, DIMENSIONS)
         self.assertFalse(plan['runtime_ready'])
@@ -105,7 +105,7 @@ class CoreTests(unittest.TestCase):
                 plan_core(c)
 
     def test_recovery_budget_and_update_arms_keep_their_matched_controls(self):
-        for study_id in ('HC', 'HE', 'HF', 'HG'):
+        for study_id in ('HC', 'HD', 'HE', 'HF', 'HG'):
             for arm, control in REQUIRED_CONTROLS[study_id].items():
                 c = copy.deepcopy(self.config)
                 study = next(s for s in c['studies'] if s['id'] == study_id)
@@ -118,6 +118,56 @@ class CoreTests(unittest.TestCase):
             c = copy.deepcopy(self.config)
             c['cross_cutting_evidence'][field] = ''
             with self.subTest(field=field), self.assertRaisesRegex(ValueError, 'cross-cutting evidence'):
+                plan_core(c)
+
+
+    def test_every_block_keeps_common_task_resource_measurement(self):
+        plan = plan_core(self.config)
+        self.assertEqual(plan['measurement_contract'], self.config['measurement_contract'])
+        for block in plan['blocks']:
+            self.assertEqual(block['measurement_contract_id'], 'common')
+            if block['layer'] == 'harness':
+                self.assertEqual(block['evaluation_contract_id'], block['study'])
+        for axis in MEASUREMENT_AXES:
+            c = copy.deepcopy(self.config)
+            c['measurement_contract']['required_axes'].remove(axis)
+            with self.subTest(axis=axis), self.assertRaisesRegex(ValueError, 'measurement axis'):
+                plan_core(c)
+
+    def test_harness_claims_need_architecture_coupling_and_contrasts(self):
+        for field in ('source_binding', 'architecture_questions', 'coupling_edges', 'causal_contrasts'):
+            c = copy.deepcopy(self.config)
+            study = next(s for s in c['studies'] if s['id'] == 'HF')
+            study['evaluation_contract'][field] = []
+            with self.subTest(field=field), self.assertRaisesRegex(ValueError, 'evaluation contract'):
+                plan_core(c)
+
+    def test_metrics_require_denominators_evidence_and_missing_policy(self):
+        for field in ('definition', 'denominator', 'evidence', 'missing_policy'):
+            c = copy.deepcopy(self.config)
+            study = next(s for s in c['studies'] if s['id'] == 'HE')
+            study['evaluation_contract']['metrics'][0][field] = ''
+            with self.subTest(field=field), self.assertRaisesRegex(ValueError, 'metric contract'):
+                plan_core(c)
+
+    def test_charts_cannot_reference_unknown_metrics_or_leave_metrics_unmapped(self):
+        c = copy.deepcopy(self.config)
+        study = next(s for s in c['studies'] if s['id'] == 'HG')
+        study['evaluation_contract']['visualizations'][0]['metric_ids'].append('invented_score')
+        with self.assertRaisesRegex(ValueError, 'undefined metric'):
+            plan_core(c)
+        c = copy.deepcopy(self.config)
+        study = next(s for s in c['studies'] if s['id'] == 'HE')
+        for chart in study['evaluation_contract']['visualizations']:
+            chart['metric_ids'] = [m for m in chart['metric_ids'] if m != 'affected_footprint']
+        with self.assertRaisesRegex(ValueError, 'visualization mapping'):
+            plan_core(c)
+
+    def test_event_comparison_requires_semantics_and_independent_evidence(self):
+        for field in ('architecture', 'probes', 'metrics', 'evidence_rules', 'visualizations'):
+            c = copy.deepcopy(self.config)
+            c['cross_cutting_evidence']['event_contract'][field] = []
+            with self.subTest(field=field), self.assertRaisesRegex(ValueError, 'event contract'):
                 plan_core(c)
 
 

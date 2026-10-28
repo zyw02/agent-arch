@@ -1,6 +1,6 @@
 # Agent Platform and Harness Architecture Evaluation
 
-**Default research plan:** [two layers, six dimensions, ten focused studies](comparison/architecture-core.md). Three platform studies and seven harness studies explain architecture mechanisms and tradeoffs, including memory, collaboration, sandbox/authority, snapshots/rollback, token budgets and feedback-driven self-improvement. Native logging and observability are assessed throughout. Complete comparison groups are scheduled using pilot estimates; no universal task cutoff or campaign kill budget. Adapters and runtime execution remain implementation work; the full catalogue is reference-only.
+**Default research plan:** [two layers, six dimensions, ten focused studies](comparison/architecture-core.md). Three platform studies and seven harness studies explain architecture mechanisms and tradeoffs, including memory, collaboration, sandbox/authority, snapshots/rollback, token budgets and feedback-driven self-improvement. Each study connects architecture and component interactions to measured task effects and visual evidence. Completion time, detailed tokens, CPU, memory and disk are collected together; native event/log semantics and recording overhead are evaluated throughout. Complete comparison groups are scheduled using pilot estimates; no universal task cutoff or campaign kill budget. Adapters and runtime execution remain implementation work; the full catalogue is reference-only.
 
 
 Architecture research for **Codex, DeepSeek Harness (DSH), and OpenClaw**, across two complementary layers: how a system hosts agent work, and how its harness manages each execution. Six dimensions—reliability, security, performance, cost, extensibility, and observability—apply to both layers.
@@ -17,6 +17,8 @@ The platform layer examines how each system hosts and operates agent work. The h
 | **Resource & cost** | Fixed and marginal lifecycle cost | Memory/context cost and enforced token budgets | PC, HA, HF |
 | **Extensibility** | Public control integration | Public tool integration and native behavioral updates | PB, HD, HG |
 | **Observability** | Ownership and interruption reconstruction | Native causal logs, security, execution and restoration | PA, HC, HD, HE |
+
+Read the [Harness measurement and visualization design](comparison/harness-evaluation.md) for rollback impact, budget–skill–context coupling, self-improvement and event mechanisms.
 
 Explore the [experiment catalogue](comparison/experiment-index.md) and [execution protocol](comparison/execution-protocol.md) for scenarios, measurements, acceptance, and readiness.
 

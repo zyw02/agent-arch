@@ -7,32 +7,126 @@ DIMENSIONS = {'Reliability', 'Security', 'Performance', 'Resource & cost', 'Exte
 STUDIES = {'platform': {'PA', 'PB', 'PC'}, 'harness': {'HA', 'HB', 'HC', 'HD', 'HE', 'HF', 'HG'}}
 
 
-MECHANISMS = {
-    'HA': {'context_adoption', 'native_memory_write_update', 'cross_session_persistence', 'native_memory_retrieval', 'current_instruction_precedence'},
-    'HB': {'native_delegation', 'result_join', 'partial_failure', 'parent_child_cancellation'},
-    'HC': {'approval_dispatch_binding', 'untrusted_content_boundary', 'child_authority_attenuation', 'cross_session_memory_isolation',
-           'sandbox_filesystem_enforcement', 'sandbox_network_enforcement', 'sandbox_descendant_inheritance'},
-    'HD': {'public_tool_integration', 'tool_dispatch_and_partial_failure', 'native_trace_reconstruction'},
-    'HE': {'restored_state_adoption', 'native_snapshot_scope', 'rollback_state_consistency', 'external_effect_boundary'},
-    'HF': {'parent_child_budget_accounting', 'budget_overshoot_and_inflight', 'native_cumulative_budget', 'budget_dispatch_enforcement'},
-    'HG': {'persistent_behavior_version', 'update_authorization_and_validation', 'native_update_reversal', 'native_feedback_update', 'heldout_transfer_and_regression'},
-}
+MECHANISMS = {'HA': {'context_adoption',
+        'context_retention_cost_effect',
+        'context_skill_memory_assembly',
+        'cross_session_persistence',
+        'current_instruction_precedence',
+        'native_memory_retrieval',
+        'native_memory_write_update'},
+ 'HB': {'coordination_ownership_graph',
+        'coordination_quality_cost_effect',
+        'native_delegation',
+        'parent_child_cancellation',
+        'partial_failure',
+        'result_join'},
+ 'HC': {'approval_dispatch_binding',
+        'boundary_false_denial_and_collateral_effect',
+        'child_authority_attenuation',
+        'cross_session_memory_isolation',
+        'policy_to_os_enforcement_graph',
+        'sandbox_descendant_inheritance',
+        'sandbox_filesystem_enforcement',
+        'sandbox_network_enforcement',
+        'untrusted_content_boundary'},
+ 'HD': {'extension_dispatch_ownership_graph',
+        'extension_overhead_and_failure_effect',
+        'logging_observer_overhead',
+        'native_event_delivery_semantics',
+        'native_trace_reconstruction',
+        'public_tool_integration',
+        'tool_dispatch_and_partial_failure'},
+ 'HE': {'cross_agent_session_os_blast_radius',
+        'external_effect_boundary',
+        'native_snapshot_scope',
+        'restored_state_adoption',
+        'rollback_granularity',
+        'rollback_state_consistency'},
+ 'HF': {'budget_dispatch_enforcement',
+        'budget_overshoot_and_inflight',
+        'budget_skill_context_coupling',
+        'native_cumulative_budget',
+        'parent_child_budget_accounting',
+        'quality_cost_interaction'},
+ 'HG': {'feedback_update_adoption_graph',
+        'heldout_transfer_and_regression',
+        'native_feedback_update',
+        'native_update_reversal',
+        'persistent_behavior_version',
+        'quality_gain_cost_and_regression',
+        'update_authorization_and_validation'}}
 
 
-REQUIRED_CONTROLS = {
-    'HA': {'history_compacted': 'history_uncompacted', 'fresh_session_memory_enabled': 'fresh_session_memory_disabled'},
-    'HB': {'native_two_children': 'single_agent_same_work', 'one_child_failure': 'native_two_children', 'parent_cancellation': 'native_two_children'},
-    'HC': {'binding_violation': 'binding_control', 'untrusted_content_injection': 'untrusted_content_control',
-           'child_scope_escalation': 'child_scope_control', 'memory_scope_cross_access': 'memory_scope_control', 'sandbox_denied': 'sandbox_allowed'},
-    'HD': {'public_extension_tool': 'native_tool', 'four_extension_reads_batched': 'four_extension_reads_serial_reference',
-           'four_extension_reads_one_failure': 'four_extension_reads_batched'},
-    'HE': {'interrupted_native_resume': 'uninterrupted_state_control', 'interrupted_snapshot_restore': 'interrupted_native_resume'},
-    'HF': {'single_budget_exhausted': 'single_budget_sufficient', 'children_budget_exhausted': 'children_budget_sufficient'},
-    'HG': {'native_policy_update': 'frozen_policy', 'native_update_reverted': 'native_policy_update'},
-}
+REQUIRED_CONTROLS = {'HA': {'fresh_session_memory_enabled': 'fresh_session_memory_disabled',
+        'history_compacted': 'history_uncompacted'},
+ 'HB': {'native_two_children': 'single_agent_same_work',
+        'one_child_failure': 'native_two_children',
+        'parent_cancellation': 'native_two_children'},
+ 'HC': {'binding_violation': 'binding_control',
+        'child_scope_escalation': 'child_scope_control',
+        'memory_scope_cross_access': 'memory_scope_control',
+        'sandbox_denied': 'sandbox_allowed',
+        'untrusted_content_injection': 'untrusted_content_control'},
+ 'HD': {'four_extension_reads_batched': 'four_extension_reads_serial_reference',
+        'four_extension_reads_diagnostic_logging': 'four_extension_reads_batched',
+        'four_extension_reads_event_consumer_stalled': 'four_extension_reads_batched',
+        'four_extension_reads_one_failure': 'four_extension_reads_batched',
+        'four_extension_reads_serial_reference': 'public_extension_tool',
+        'public_extension_tool': 'native_tool'},
+ 'HE': {'interrupted_coarse_restore': 'interrupted_snapshot_restore',
+        'interrupted_native_resume': 'uninterrupted_state_control',
+        'interrupted_snapshot_restore': 'interrupted_native_resume'},
+ 'HF': {'children_budget_exhausted': 'children_budget_sufficient',
+        'effect_roomy_context_fixed': 'effect_roomy_adaptive',
+        'effect_roomy_skill_fixed': 'effect_roomy_adaptive',
+        'effect_tight_adaptive': 'effect_roomy_adaptive',
+        'effect_tight_context_fixed': 'effect_roomy_context_fixed',
+        'effect_tight_skill_fixed': 'effect_roomy_skill_fixed',
+        'single_budget_exhausted': 'single_budget_sufficient'},
+ 'HG': {'native_policy_update': 'frozen_policy', 'native_update_reverted': 'native_policy_update'}}
 
 
-CROSS_CUTTING_CHECKS = {'native_log_durability', 'causal_trace_reconstruction', 'usage_reconciliation', 'synthetic_secret_redaction'}
+CROSS_CUTTING_CHECKS = {'common_task_resource_accounting', 'usage_reconciliation', 'native_log_durability', 'synthetic_secret_redaction', 'native_event_semantics', 'causal_trace_reconstruction'}
+
+
+MEASUREMENT_AXES = {'task_quality', 'completion_time', 'token_usage', 'cpu', 'memory', 'disk', 'log_event_semantics'}
+
+
+def validate_measurement_contract(contract):
+    if not MEASUREMENT_AXES <= set(contract.get('required_axes', [])):
+        raise ValueError('Missing common task/resource measurement axis')
+    for field in ('application', 'record_keys', 'time', 'tokens', 'cpu', 'memory', 'disk',
+                  'quality', 'statistics', 'visualizations', 'missing_policy'):
+        if not contract.get(field):
+            raise ValueError(f'Missing measurement contract: {field}')
+
+
+def validate_evaluation_contract(contract):
+    for field in ('architecture_questions', 'coupling_edges', 'source_binding', 'causal_contrasts',
+                  'measurement_unit', 'metrics', 'visualizations', 'artifact_contract', 'coupling_checks'):
+        if not contract.get(field):
+            raise ValueError(f'Missing harness evaluation contract: {field}')
+    metric_ids = set()
+    for metric in contract['metrics']:
+        for field in ('id', 'unit', 'definition', 'evidence', 'denominator', 'missing_policy'):
+            if not metric.get(field):
+                raise ValueError(f'Missing metric contract: {field}')
+        if metric['id'] in metric_ids:
+            raise ValueError('Duplicate metric ID')
+        metric_ids.add(metric['id'])
+    chart_ids, plotted_metrics = set(), set()
+    for chart in contract['visualizations']:
+        for field in ('id', 'kind', 'metric_ids', 'group_by', 'interpretation'):
+            if not chart.get(field):
+                raise ValueError(f'Missing visualization contract: {field}')
+        if chart['id'] in chart_ids:
+            raise ValueError('Duplicate visualization ID')
+        if not set(chart['metric_ids']) <= metric_ids:
+            raise ValueError('Visualization references an undefined metric')
+        chart_ids.add(chart['id'])
+        plotted_metrics.update(chart['metric_ids'])
+    if plotted_metrics != metric_ids:
+        raise ValueError('Metric lacks a visualization mapping')
 
 
 def plan_core(config):
@@ -55,6 +149,12 @@ def plan_core(config):
     for field in ('required_observations', 'inference_rule', 'limit_and_tradeoff'):
         if not evidence.get(field):
             raise ValueError(f'Missing cross-cutting evidence contract: {field}')
+    validate_measurement_contract(config.get('measurement_contract', {}))
+    if not evidence.get('event_contract') or not evidence.get('quantitative_rules'):
+        raise ValueError('Missing event mechanism or quantitative reporting contract')
+    for field in ('architecture', 'probes', 'metrics', 'evidence_rules', 'visualizations'):
+        if not evidence['event_contract'].get(field):
+            raise ValueError(f'Missing event contract: {field}')
     rows, blocks = [], []
     for layer, ids in STUDIES.items():
         selected = [s for s in config['studies'] if s['layer'] == layer]
@@ -76,8 +176,10 @@ def plan_core(config):
                 raise ValueError(f'Missing evidence contract: {study["id"]}/{field}')
         if not MECHANISMS.get(study['id'], set()) <= set(study.get('mechanism_checks', [])):
             raise ValueError(f'Missing required harness mechanism: {study["id"]}')
+        if study['layer'] == 'harness':
+            validate_evaluation_contract(study.get('evaluation_contract', {}))
         conditions = study['conditions']
-        if not 2 <= len(conditions) <= (10 if study['id'] == 'HC' else 5) or len(set(conditions)) != len(conditions):
+        if not 2 <= len(conditions) <= {'HC': 10, 'HD': 7, 'HF': 10}.get(study['id'], 5) or len(set(conditions)) != len(conditions):
             raise ValueError('Unexpected or duplicate study arms')
         if type(study['complete_blocks']) is not int or study['complete_blocks'] != 2:
             raise ValueError('Default is two complete blocks; extra repetitions need a separate extension plan')
@@ -96,7 +198,10 @@ def plan_core(config):
                                'unit_ids': unit_ids, 'admission': 'requires_calibration_and_whole_block_estimate',
                                'completion_requirements': study['completion_requirements'],
                                'mechanism_checks': study.get('mechanism_checks', []),
-                               'cross_cutting_evidence': evidence, 'plan_only': True})
+                               'cross_cutting_evidence': evidence,
+                               'measurement_contract_id': 'common',
+                               'evaluation_contract_id': study['id'] if study['layer'] == 'harness' else None,
+                               'plan_only': True})
                 for condition, unit_id in zip(conditions, unit_ids):
                     rows.append({'unit_id': unit_id, 'block_id': block_id, 'product': product,
                                  'study': study['id'], 'layer': study['layer'], 'condition': condition,
@@ -105,6 +210,7 @@ def plan_core(config):
     return {'revision': config['revision'], 'plan_only': True, 'runtime_ready': False,
             'scope': {'studies': len(config['studies']), 'complete_blocks': len(blocks), 'planned_arms': len(rows),
                       'duration_estimate': 'pending pilot; not a fixed runtime promise'},
+            'measurement_contract': config['measurement_contract'],
             'cross_cutting_evidence': evidence, 'execution_policy': policy, 'studies': config['studies'], 'blocks': blocks, 'units': rows}
 
 

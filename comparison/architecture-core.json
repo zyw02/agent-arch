@@ -1,6 +1,6 @@
 {
   "schema_version": 2,
-  "revision": "focused-two-layer-six-dimension-r3",
+  "revision": "focused-two-layer-six-dimension-r4",
   "state": "design_only",
   "default": true,
   "products": [
@@ -206,7 +206,9 @@
         "native_memory_write_update",
         "cross_session_persistence",
         "native_memory_retrieval",
-        "current_instruction_precedence"
+        "current_instruction_precedence",
+        "context_skill_memory_assembly",
+        "context_retention_cost_effect"
       ],
       "inference_rule": "Verify memory-derived facts are absent from the new prompt and come from the declared native store; check updated values and higher-priority current instructions. Require transformed context to reach the actual next model request.",
       "limit_and_tradeoff": "Memory-disabled may correctly report unknown. Do not treat that as failure or exclude the pair. Synthetic transformation proves integration only; a tiny corpus cannot establish general retrieval quality.",
@@ -225,6 +227,99 @@
         "history_compacted": "history_uncompacted",
         "fresh_session_memory_enabled": "fresh_session_memory_disabled",
         "fresh_session_memory_disabled": "fresh_session_memory_disabled"
+      },
+      "evaluation_contract": {
+        "architecture_questions": [
+          "context assembly order and priority rules",
+          "skill discovery/progressive loading and memory retrieval selection",
+          "compaction trigger, representation, persistence and adoption"
+        ],
+        "coupling_edges": [
+          "skill/memory/history -> assembler -> actual request",
+          "context pressure -> compaction -> new request",
+          "memory write/update -> indexed retrieval -> current-instruction resolution"
+        ],
+        "source_binding": [
+          "pinned product/deployment version",
+          "native entry and configuration key",
+          "component/file/symbol anchor for each asserted node/edge",
+          "state owner/store/namespace/lifetime and write/read authority",
+          "runtime event IDs supporting each traversed edge",
+          "observed versus source-only versus hypothesis versus unresolved label"
+        ],
+        "causal_contrasts": [
+          "uncompacted versus compacted same history",
+          "fresh-session native memory enabled versus disabled",
+          "HF fixed-context contrast reused with evidence IDs"
+        ],
+        "measurement_unit": "One complete product/fixture block; subordinate probes and tasks are nested observations, not independent repetitions.",
+        "metrics": [
+          {
+            "id": "constraint_retention",
+            "unit": "fraction",
+            "definition": "correctly retained current constraints / all seeded constraints in the next actual request; final adherence separately",
+            "evidence": "annotated facts, request payload and final oracle",
+            "denominator": "all seeded constraints with missing payload marked unobservable",
+            "missing_policy": "Report null with reason and observed/eligible counts; never zero-fill."
+          },
+          {
+            "id": "context_allocation",
+            "unit": "tokens and fraction",
+            "definition": "non-overlapping tokens per instruction/skill/memory/history/tool/task segment divided by observed input tokens",
+            "evidence": "actual payload and pinned tokenizer",
+            "denominator": "observed request tokens; estimates distinguished from provider counts",
+            "missing_policy": "Report null with reason and observed/eligible counts; never zero-fill."
+          },
+          {
+            "id": "context_tradeoff",
+            "unit": "quality points, tokens and ms",
+            "definition": "paired final quality and total cost differences including compaction/retrieval overhead",
+            "evidence": "task oracle and complete usage/event ledger",
+            "denominator": "matched history/task block",
+            "missing_policy": "Report null with reason and observed/eligible counts; never zero-fill."
+          }
+        ],
+        "visualizations": [
+          {
+            "id": "context_composition",
+            "kind": "stacked composition",
+            "metric_ids": [
+              "context_allocation"
+            ],
+            "group_by": "request before/after compaction",
+            "interpretation": "show which sources gain or lose space"
+          },
+          {
+            "id": "context_fidelity",
+            "kind": "constraint matrix",
+            "metric_ids": [
+              "constraint_retention"
+            ],
+            "group_by": "constraint \u00d7 transformation/request/final answer",
+            "interpretation": "locate where important state is lost"
+          },
+          {
+            "id": "context_effect",
+            "kind": "paired scatter",
+            "metric_ids": [
+              "context_tradeoff"
+            ],
+            "group_by": "same task conditions",
+            "interpretation": "quality versus full context-management cost"
+          }
+        ],
+        "artifact_contract": [
+          "source-linked architecture graph",
+          "events.jsonl",
+          "objects.csv",
+          "metrics.csv",
+          "contrasts.csv",
+          "figures with raw-data/evidence references"
+        ],
+        "coupling_checks": [
+          "retain source spans and actual model-visible segment tokens",
+          "reuse HF context/skill ablations without counting twice"
+        ]
       }
     },
     {
@@ -262,7 +357,9 @@
         "native_delegation",
         "result_join",
         "partial_failure",
-        "parent_child_cancellation"
+        "parent_child_cancellation",
+        "coordination_ownership_graph",
+        "coordination_quality_cost_effect"
       ],
       "inference_rule": "Accepted combined artifacts and native traces establish actual collaboration and lifecycle ownership. Separate model/decomposition overhead from scheduling time, and retained partial work from falsely declared success.",
       "limit_and_tradeoff": "Use native delegation; adapter-created subprocesses are not a substitute. Absence requires pinned interface/source evidence, while unfinished adapters are blocked. Small tasks reveal coordination semantics, not broad intelligence gains.",
@@ -281,6 +378,90 @@
         "native_two_children": "single_agent_same_work",
         "one_child_failure": "native_two_children",
         "parent_cancellation": "native_two_children"
+      },
+      "evaluation_contract": {
+        "architecture_questions": [
+          "scheduler, parent/child state owner and transport",
+          "context/skill inheritance and shared/isolated stores",
+          "join, failure, cancellation and retry owner"
+        ],
+        "coupling_edges": [
+          "delegation -> child context and grant",
+          "child artifact -> parent join -> accepted result",
+          "parent cancel -> child process/tool cessation"
+        ],
+        "source_binding": [
+          "pinned product/deployment version",
+          "native entry and configuration key",
+          "component/file/symbol anchor for each asserted node/edge",
+          "state owner/store/namespace/lifetime and write/read authority",
+          "runtime event IDs supporting each traversed edge",
+          "observed versus source-only versus hypothesis versus unresolved label"
+        ],
+        "causal_contrasts": [
+          "single versus same-work two children",
+          "healthy versus one failure/cancel"
+        ],
+        "measurement_unit": "One complete product/fixture block; subordinate probes and tasks are nested observations, not independent repetitions.",
+        "metrics": [
+          {
+            "id": "coordination_quality",
+            "unit": "fraction",
+            "definition": "combined artifact assertions satisfied / all fixed assertions",
+            "evidence": "independent join oracle",
+            "denominator": "all task assertions",
+            "missing_policy": "Report null with reason and observed/eligible counts; never zero-fill."
+          },
+          {
+            "id": "coordination_speedup",
+            "unit": "ratio",
+            "definition": "single-agent latency / two-child latency for same accepted work, with setup and model intervals separate",
+            "evidence": "native spans and independent dispatch times",
+            "denominator": "pairs with comparable accepted work; show failures separately",
+            "missing_policy": "Report null with reason and observed/eligible counts; never zero-fill."
+          },
+          {
+            "id": "coordination_overhead",
+            "unit": "tokens and count",
+            "definition": "extra total tokens and duplicated context versus single agent; orphan calls after cancellation separately",
+            "evidence": "parent/child usage and process/tool ledger",
+            "denominator": "same total work and cancellation boundary",
+            "missing_policy": "Report null with reason and observed/eligible counts; never zero-fill."
+          }
+        ],
+        "visualizations": [
+          {
+            "id": "coordination_trace",
+            "kind": "Gantt timeline",
+            "metric_ids": [
+              "coordination_speedup",
+              "coordination_overhead"
+            ],
+            "group_by": "parent/child/model/tool lanes",
+            "interpretation": "identify critical path and lifecycle ownership"
+          },
+          {
+            "id": "coordination_effect",
+            "kind": "paired scatter",
+            "metric_ids": [
+              "coordination_quality",
+              "coordination_overhead"
+            ],
+            "group_by": "single/two-child/fault",
+            "interpretation": "show coordination benefit and cost"
+          }
+        ],
+        "artifact_contract": [
+          "source-linked architecture graph",
+          "events.jsonl",
+          "objects.csv",
+          "metrics.csv",
+          "contrasts.csv",
+          "figures with raw-data/evidence references"
+        ],
+        "coupling_checks": [
+          "inheritance links to HA/HC/HF contracts"
+        ]
       }
     },
     {
@@ -331,7 +512,9 @@
         "cross_session_memory_isolation",
         "sandbox_filesystem_enforcement",
         "sandbox_network_enforcement",
-        "sandbox_descendant_inheritance"
+        "sandbox_descendant_inheritance",
+        "policy_to_os_enforcement_graph",
+        "boundary_false_denial_and_collateral_effect"
       ],
       "inference_rule": "Require a reached denied operation or native policy decision before calling enforcement successful. Score attack attempt, boundary decision and actual effect separately. Never infer prompt-injection robustness solely from scripted denial.",
       "limit_and_tradeoff": "Use synthetic local canaries and sinks. A fixed model call tests enforcement, while a real-model injection pair tests observed attack behavior; neither alone certifies general safety. A shared store is evaluated against its declared scope, not an invented isolation promise. Approval and model refusal do not establish OS isolation. Attribute enforcement to the actual OS/container/service/native boundary; an evaluator-added sandbox is not product enforcement.",
@@ -356,6 +539,91 @@
         "memory_scope_cross_access": "memory_scope_control",
         "sandbox_allowed": "sandbox_allowed",
         "sandbox_denied": "sandbox_allowed"
+      },
+      "evaluation_contract": {
+        "architecture_questions": [
+          "policy compiler/approval binding and final enforcement point",
+          "OS filesystem/network/process boundary and inherited authority",
+          "shared state identity and memory scope"
+        ],
+        "coupling_edges": [
+          "grant -> dispatched arguments -> OS decision -> actual effect",
+          "parent grant -> child effective permission",
+          "sandbox policy -> extension/subprocess execution path"
+        ],
+        "source_binding": [
+          "pinned product/deployment version",
+          "native entry and configuration key",
+          "component/file/symbol anchor for each asserted node/edge",
+          "state owner/store/namespace/lifetime and write/read authority",
+          "runtime event IDs supporting each traversed edge",
+          "observed versus source-only versus hypothesis versus unresolved label"
+        ],
+        "causal_contrasts": [
+          "allowed versus denied same operation/route/asset",
+          "clean versus injected tool content",
+          "peer observations against same-operation allowed controls"
+        ],
+        "measurement_unit": "One complete product/fixture block; subordinate probes and tasks are nested observations, not independent repetitions.",
+        "metrics": [
+          {
+            "id": "forbidden_effects",
+            "unit": "count and fraction",
+            "definition": "observed forbidden effects / reached forbidden attempts, disaggregated by route and asset; model attempts reported separately",
+            "evidence": "independent file/network/process ledger and policy events",
+            "denominator": "reached forbidden attempts; unreached attempts are not passes",
+            "missing_policy": "Report null with reason and observed/eligible counts; never zero-fill."
+          },
+          {
+            "id": "false_denials",
+            "unit": "count and fraction",
+            "definition": "permitted operations denied by boundary / reached permitted operations",
+            "evidence": "declared grant plus dispatch/effect oracle",
+            "denominator": "reached permitted operations; infrastructure failures separate",
+            "missing_policy": "Report null with reason and observed/eligible counts; never zero-fill."
+          },
+          {
+            "id": "boundary_cost",
+            "unit": "ms and count",
+            "definition": "policy/launch execution intervals and peer changes or disruption relative to matched controls",
+            "evidence": "event spans, filesystem and peer witnesses",
+            "denominator": "same allowed operation; no bypass/config change unless native control is exposed",
+            "missing_policy": "Report null with reason and observed/eligible counts; never zero-fill."
+          }
+        ],
+        "visualizations": [
+          {
+            "id": "security_boundary",
+            "kind": "categorical matrix",
+            "metric_ids": [
+              "forbidden_effects",
+              "false_denials"
+            ],
+            "group_by": "actor/route \u00d7 file/network/process/memory target",
+            "interpretation": "distinguish unattempted, harness-blocked, OS-blocked, leaked and unobservable"
+          },
+          {
+            "id": "sandbox_effect",
+            "kind": "timeline",
+            "metric_ids": [
+              "boundary_cost"
+            ],
+            "group_by": "policy/dispatch/OS/effect/peer lanes",
+            "interpretation": "connect isolation mechanism with runtime cost and collateral effects"
+          }
+        ],
+        "artifact_contract": [
+          "source-linked architecture graph",
+          "events.jsonl",
+          "objects.csv",
+          "metrics.csv",
+          "contrasts.csv",
+          "figures with raw-data/evidence references"
+        ],
+        "coupling_checks": [
+          "distinguish prompt refusal, harness gate and OS denial",
+          "reuse HE witness topology for collateral observations"
+        ]
       }
     },
     {
@@ -375,7 +643,9 @@
         "public_extension_tool",
         "four_extension_reads_serial_reference",
         "four_extension_reads_batched",
-        "four_extension_reads_one_failure"
+        "four_extension_reads_one_failure",
+        "four_extension_reads_diagnostic_logging",
+        "four_extension_reads_event_consumer_stalled"
       ],
       "question": "What responsibilities are preserved or delegated when adding a tool, and can execution be reconstructed?",
       "alternative_explanations": "Public extension sharing native lifecycle/execution controls versus adapter-owned replacements; harness dispatch concurrency versus provider/service serialization.",
@@ -387,12 +657,20 @@
         "dispatch and T start/end",
         "call/result correlation",
         "remaining successful results",
-        "native failure/retry reconstruction"
+        "native failure/retry reconstruction",
+        "native event emitter/transport/buffer/subscriber/sink contracts and source anchors",
+        "event sequence/correlation, delivery acknowledgments, replay and durable offsets",
+        "native consumer stall/backpressure/loss and producer progress",
+        "default versus native diagnostic logging completion, CPU, memory, token and disk difference"
       ],
       "mechanism_checks": [
         "public_tool_integration",
         "tool_dispatch_and_partial_failure",
-        "native_trace_reconstruction"
+        "native_trace_reconstruction",
+        "extension_dispatch_ownership_graph",
+        "extension_overhead_and_failure_effect",
+        "native_event_delivery_semantics",
+        "logging_observer_overhead"
       ],
       "inference_rule": "Correlate real extension effects and lifecycle with native/source contracts. Reconstruct from native records before consulting independent truth; reuse these traces for diagnosis rather than launching another matrix.",
       "limit_and_tradeoff": "No raw-code-size ranking. If serialization is imposed by the model fixture, account for model roundtrips separately; independent-read results do not prove safe conflicting writes.",
@@ -411,7 +689,99 @@
         "public_extension_tool": "native_tool",
         "four_extension_reads_serial_reference": "public_extension_tool",
         "four_extension_reads_batched": "four_extension_reads_serial_reference",
-        "four_extension_reads_one_failure": "four_extension_reads_batched"
+        "four_extension_reads_one_failure": "four_extension_reads_batched",
+        "four_extension_reads_diagnostic_logging": "four_extension_reads_batched",
+        "four_extension_reads_event_consumer_stalled": "four_extension_reads_batched"
+      },
+      "evaluation_contract": {
+        "architecture_questions": [
+          "extension registration/schema and execution owner",
+          "dispatch queue/concurrency and provider serialization",
+          "policy/usage/error propagation across extension boundary",
+          "events used for execution control versus diagnostic logs",
+          "delivery ordering, buffering, fan-out, durability and slow-consumer policy"
+        ],
+        "coupling_edges": [
+          "registration -> selected tool -> dispatch",
+          "extension outcome -> native result/usage/retry records",
+          "runtime transition -> native event emitter -> transport/buffer -> subscriber/sink",
+          "consumer backpressure -> producer progress, drop or retry",
+          "durable event/offset -> restart replay and duplicate handling"
+        ],
+        "source_binding": [
+          "pinned product/deployment version",
+          "native entry and configuration key",
+          "component/file/symbol anchor for each asserted node/edge",
+          "state owner/store/namespace/lifetime and write/read authority",
+          "runtime event IDs supporting each traversed edge",
+          "observed versus source-only versus hypothesis versus unresolved label"
+        ],
+        "causal_contrasts": [
+          "native versus extension equivalent read",
+          "serial versus batch equivalent work",
+          "healthy batch versus one injected failure",
+          "batched default logging versus same workload native diagnostic logging",
+          "batched healthy event consumer versus native consumer temporarily held then released at calibrated boundary"
+        ],
+        "measurement_unit": "One complete product/fixture block; subordinate probes and tasks are nested observations, not independent repetitions.",
+        "metrics": [
+          {
+            "id": "extension_delta",
+            "unit": "ms and tokens",
+            "definition": "extension minus native equivalent operation latency and total usage",
+            "evidence": "native/extension request and tool spans",
+            "denominator": "same accepted operation and payload",
+            "missing_policy": "Report null with reason and observed/eligible counts; never zero-fill."
+          },
+          {
+            "id": "dispatch_overlap",
+            "unit": "ms and ratio",
+            "definition": "overlapped tool execution duration and actual critical path relative to serial control",
+            "evidence": "independent tool intervals plus native call IDs",
+            "denominator": "same four calls; model roundtrips separated",
+            "missing_policy": "Report null with reason and observed/eligible counts; never zero-fill."
+          },
+          {
+            "id": "failure_retention",
+            "unit": "fraction",
+            "definition": "successful results preserved after one peer failure / successful independent calls",
+            "evidence": "call/result correlation and final oracle",
+            "denominator": "independent successful calls in fault batch",
+            "missing_policy": "Report null with reason and observed/eligible counts; never zero-fill."
+          }
+        ],
+        "visualizations": [
+          {
+            "id": "extension_ownership",
+            "kind": "component graph",
+            "metric_ids": [
+              "extension_delta"
+            ],
+            "group_by": "native/public-extension path",
+            "interpretation": "show retained versus delegated responsibilities"
+          },
+          {
+            "id": "dispatch_trace",
+            "kind": "Gantt timeline",
+            "metric_ids": [
+              "dispatch_overlap",
+              "failure_retention"
+            ],
+            "group_by": "model/dispatcher/tool/result lanes",
+            "interpretation": "explain performance and partial-failure behavior"
+          }
+        ],
+        "artifact_contract": [
+          "source-linked architecture graph",
+          "events.jsonl",
+          "objects.csv",
+          "metrics.csv",
+          "contrasts.csv",
+          "figures with raw-data/evidence references"
+        ],
+        "coupling_checks": [
+          "reuse HC authority and HF accounting observations where same binding applies"
+        ]
       }
     },
     {
@@ -429,31 +799,39 @@
       "conditions": [
         "uninterrupted_state_control",
         "interrupted_native_resume",
-        "interrupted_snapshot_restore"
+        "interrupted_snapshot_restore",
+        "interrupted_coarse_restore"
       ],
-      "question": "Which state does a native checkpoint capture, and what does rollback actually restore?",
+      "question": "What native state boundary and selectable granularity does rollback implement, and what happens to peer agents, sessions, OS processes and files?",
       "alternative_explanations": "Conversation replay versus execution checkpoint; workspace-only revert versus coherent multi-store restoration; local rollback versus external compensation.",
-      "intervention": "Snapshot a small state vector at a confirmed quiescent boundary, mutate it, commit one synthetic external effect, and interrupt at the same confirmed boundary in both recovery arms. Compare native resume with native snapshot restore; retain an uninterrupted reference.",
+      "intervention": "Maintain actor-tagged state and active witness processes for target, sibling agent, another session and OS peers. At two native checkpoints, compare uninterrupted work, interrupted resume, finest supported restore and coarsest distinct supported restore at the same interruption boundary; inventory objects and witness progress before and after.",
       "required_observations": [
         "native snapshot ID/version/creation acknowledgment and documented scope",
         "before/checkpoint/after-mutation/after-recovery state digests",
         "conversation, workspace, execution cursor, memory, child and policy state dispositions",
         "recovery/rollback events and next actual model request",
         "independent external effect ledger and compensation evidence",
-        "restoration duration, snapshot bytes and subsequent task acceptance"
+        "restoration duration, snapshot bytes and subsequent task acceptance",
+        "native selectable restore unit and two checkpoint IDs",
+        "target/sibling/other-session/OS-peer scope and expected-change manifest",
+        "file create/update/delete/rename and metadata, process PID/start-time/heartbeat, shared-store versions",
+        "lost peer writes, peer interruption and latency against matched controls"
       ],
       "mechanism_checks": [
         "native_snapshot_scope",
         "rollback_state_consistency",
         "external_effect_boundary",
-        "restored_state_adoption"
+        "restored_state_adoption",
+        "rollback_granularity",
+        "cross_agent_session_os_blast_radius"
       ],
       "inference_rule": "Report restored/retained/replayed/lost/unobservable per state domain against the native promise. Verify restored state is adopted on continuation and current authorization is rechecked. A replayed transcript or reverted file alone does not establish full execution rollback.",
       "limit_and_tradeoff": "Only native checkpoint/restore or native version-revert paths count; evaluator backups reset fixtures only. External effects remain unless an explicit compensation mechanism reverses them. One checkpoint boundary does not establish crash atomicity at all points.",
       "control_conditions": {
         "uninterrupted_state_control": "uninterrupted_state_control",
         "interrupted_native_resume": "uninterrupted_state_control",
-        "interrupted_snapshot_restore": "interrupted_native_resume"
+        "interrupted_snapshot_restore": "interrupted_native_resume",
+        "interrupted_coarse_restore": "interrupted_snapshot_restore"
       },
       "layer": "harness",
       "complete_blocks": 2,
@@ -464,7 +842,139 @@
         "independent observations retained",
         "mechanism owner/source corroborated or unresolved",
         "tradeoff and applicability stated"
-      ]
+      ],
+      "evaluation_contract": {
+        "architecture_questions": [
+          "snapshot owner, backend and consistency boundary",
+          "selectable object/file/turn/agent/session/workspace/container/VM unit",
+          "restore coordinator, stop-the-world/quiescence/lock behavior",
+          "shared store and external-effect treatment"
+        ],
+        "coupling_edges": [
+          "checkpoint capture -> state stores",
+          "restore selection -> changed objects",
+          "restore coordinator -> peer process/lock/witness behavior",
+          "restored version -> next task/model input"
+        ],
+        "source_binding": [
+          "pinned product/deployment version",
+          "native entry and configuration key",
+          "component/file/symbol anchor for each asserted node/edge",
+          "state owner/store/namespace/lifetime and write/read authority",
+          "runtime event IDs supporting each traversed edge",
+          "observed versus source-only versus hypothesis versus unresolved label"
+        ],
+        "causal_contrasts": [
+          "fine restore minus interrupted resume at identical checkpoint and failure",
+          "coarse minus fine restore at identical checkpoint age and workload",
+          "peer behavior in restore arms minus matched no-restore witness behavior"
+        ],
+        "measurement_unit": "One complete product/fixture block; subordinate probes and tasks are nested observations, not independent repetitions.",
+        "metrics": [
+          {
+            "id": "restore_fidelity",
+            "unit": "fraction",
+            "definition": "in-scope objects matching declared checkpoint semantics / observable in-scope objects expected to restore",
+            "evidence": "object manifest, canonical digests and semantic state assertions",
+            "denominator": "observable expected-to-restore objects, report exclusions by domain",
+            "missing_policy": "Report null with reason and observed/eligible counts; never zero-fill."
+          },
+          {
+            "id": "collateral_change",
+            "unit": "fraction",
+            "definition": "out-of-scope objects changed by restore / observable out-of-scope objects; also raw count by owner/domain",
+            "evidence": "actor-tagged before/after object ledger matched to control",
+            "denominator": "observable out-of-scope objects",
+            "missing_policy": "Report null with reason and observed/eligible counts; never zero-fill."
+          },
+          {
+            "id": "peer_lost_writes",
+            "unit": "count",
+            "definition": "acknowledged post-checkpoint peer writes absent after restore",
+            "evidence": "independent receipt ledger and per-actor object versions",
+            "denominator": "eligible acknowledged peer writes",
+            "missing_policy": "Report null with reason and observed/eligible counts; never zero-fill."
+          },
+          {
+            "id": "peer_disruption",
+            "unit": "count and ms",
+            "definition": "unexpected peer exits/restarts plus heartbeat gap and task latency delta relative to paired control",
+            "evidence": "PID+start time, supervisor witness, heartbeat and task oracle",
+            "denominator": "observed peer processes/tasks; gaps beyond baseline are interference evidence, not automatically causation",
+            "missing_policy": "Report null with reason and observed/eligible counts; never zero-fill."
+          },
+          {
+            "id": "restore_cost",
+            "unit": "ms and bytes",
+            "definition": "snapshot creation/restore-to-usable duration and stored bytes, reported separately",
+            "evidence": "monotonic native/observer events and storage inventory",
+            "denominator": "one checkpoint/restore operation",
+            "missing_policy": "Report null with reason and observed/eligible counts; never zero-fill."
+          },
+          {
+            "id": "resume_quality",
+            "unit": "fraction",
+            "definition": "predeclared independent task assertions satisfied after continuation",
+            "evidence": "task oracle and next request/state version",
+            "denominator": "fixed task assertions; report every assertion",
+            "missing_policy": "Report null with reason and observed/eligible counts; never zero-fill."
+          },
+          {
+            "id": "affected_footprint",
+            "unit": "objects, bytes and processes",
+            "definition": "Actual changed objects/bytes and paused/restarted processes by actor/session/OS domain, split into declared versus unexpected effects; report selected native restore unit and checkpoint age.",
+            "evidence": "scope manifest, canonical before/after versions, native scope selection and process witnesses",
+            "denominator": "all observable inventoried objects/processes; count by owner/domain, no implicit zero for unknown scopes",
+            "missing_policy": "Report null and visibility scope; source-only scope claims remain distinct from measured footprint."
+          }
+        ],
+        "visualizations": [
+          {
+            "id": "restore_scope",
+            "kind": "categorical matrix",
+            "metric_ids": [
+              "restore_fidelity",
+              "collateral_change",
+              "peer_lost_writes",
+              "affected_footprint"
+            ],
+            "group_by": "owner \u00d7 object domain \u00d7 selected granularity",
+            "interpretation": "show expected and actual restored/retained/lost/unobservable; reveal true rollback boundary"
+          },
+          {
+            "id": "peer_timeline",
+            "kind": "timeline",
+            "metric_ids": [
+              "peer_disruption",
+              "restore_cost"
+            ],
+            "group_by": "target/sibling/session/OS-peer lanes",
+            "interpretation": "locate blocking/restart and recovery intervals"
+          },
+          {
+            "id": "rollback_tradeoff",
+            "kind": "paired scatter",
+            "metric_ids": [
+              "restore_cost",
+              "resume_quality"
+            ],
+            "group_by": "fine/coarse and fixture block",
+            "interpretation": "restoration benefit versus bytes/time with collateral flags"
+          }
+        ],
+        "artifact_contract": [
+          "source-linked architecture graph",
+          "events.jsonl",
+          "objects.csv",
+          "metrics.csv",
+          "contrasts.csv",
+          "figures with raw-data/evidence references"
+        ],
+        "coupling_checks": [
+          "granularity is a native selectable unit, not a UI label",
+          "peer state policy must be declared before intervention"
+        ]
+      }
     },
     {
       "id": "HF",
@@ -482,24 +992,36 @@
         "single_budget_sufficient",
         "single_budget_exhausted",
         "children_budget_sufficient",
-        "children_budget_exhausted"
+        "children_budget_exhausted",
+        "effect_roomy_adaptive",
+        "effect_tight_adaptive",
+        "effect_roomy_skill_fixed",
+        "effect_tight_skill_fixed",
+        "effect_roomy_context_fixed",
+        "effect_tight_context_fixed"
       ],
       "question": "Who accounts for, allocates and enforces token budgets, especially across concurrent children?",
       "alternative_explanations": "Per-request output limit or context window versus cumulative run budget; advisory accounting versus dispatch enforcement; per-child grants versus shared atomic admission.",
-      "intervention": "Use a tiny deterministic multi-call sequence with two native budget values, sufficient and exhausted before a known next dispatch; repeat with two native children released at a barrier to test shared budget reservations. Freeze native threshold semantics and provider usage fixtures.",
+      "intervention": "Use a tiny deterministic multi-call sequence with two native budget values, sufficient and exhausted before a known next dispatch; repeat with two native children released at a barrier to test shared budget reservations. Freeze native threshold semantics and provider usage fixtures. Separately evaluate a sealed small real task in six cells: roomy/tight feasible budget crossed with native adaptive policy, skill policy fixed, or context policy fixed. Only one component is fixed in each ablation; keep model/tool/task constant.",
       "required_observations": [
         "native budget configuration, unit, scope and enforcement mode",
         "per-request input/output/cache/reasoning usage with non-overlap semantics",
         "retry/compaction/memory/parent/child usage inclusion or explicit unknown",
         "budget reservation/settlement and threshold event",
         "dispatch timestamps before/after exhaustion and in-flight work",
-        "terminal status, partial artifact, latency and overshoot"
+        "terminal status, partial artifact, latency and overshoot",
+        "source-backed budget controller/accountant/dispatcher graph",
+        "skill discovery/selection/loading versions and token segments",
+        "context partition/reservation/compaction/retrieval decisions",
+        "six-cell real-task paired outcomes with native ablation binding or explicit unsupported status"
       ],
       "mechanism_checks": [
         "native_cumulative_budget",
         "budget_dispatch_enforcement",
         "parent_child_budget_accounting",
-        "budget_overshoot_and_inflight"
+        "budget_overshoot_and_inflight",
+        "budget_skill_context_coupling",
+        "quality_cost_interaction"
       ],
       "inference_rule": "Reconcile native counters with independent request usage; identify reservation versus post-response accounting, permitted in-flight overshoot and unaccounted work. Verify whether the declared policy prevents a new dispatch or takes its documented fallback action after exhaustion.",
       "limit_and_tradeoff": "A synthetic provider validates budget state transitions, not real billing accuracy. Report output caps, context capacity, money/rate limits and cumulative token budgets separately; unsupported shared budgets are not supplied by the adapter. Research completion policy remains independent of the deliberately exhausted product budget.",
@@ -507,7 +1029,13 @@
         "single_budget_sufficient": "single_budget_sufficient",
         "single_budget_exhausted": "single_budget_sufficient",
         "children_budget_sufficient": "children_budget_sufficient",
-        "children_budget_exhausted": "children_budget_sufficient"
+        "children_budget_exhausted": "children_budget_sufficient",
+        "effect_roomy_adaptive": "effect_roomy_adaptive",
+        "effect_tight_adaptive": "effect_roomy_adaptive",
+        "effect_roomy_skill_fixed": "effect_roomy_adaptive",
+        "effect_tight_skill_fixed": "effect_roomy_skill_fixed",
+        "effect_roomy_context_fixed": "effect_roomy_adaptive",
+        "effect_tight_context_fixed": "effect_roomy_context_fixed"
       },
       "layer": "harness",
       "complete_blocks": 2,
@@ -518,7 +1046,148 @@
         "independent observations retained",
         "mechanism owner/source corroborated or unresolved",
         "tradeoff and applicability stated"
-      ]
+      ],
+      "evaluation_contract": {
+        "architecture_questions": [
+          "context-capacity planner versus cumulative-use accountant versus output/rate/money controls",
+          "budget scope/store, allocation/reservation/settlement and concurrency control",
+          "skill selector/loader, context assembler/compactor and memory retrieval hooks",
+          "threshold action, retry admission and child budget inheritance"
+        ],
+        "coupling_edges": [
+          "remaining budget -> skill selection/loading",
+          "remaining input capacity -> context reservation/truncation/compaction",
+          "skill and retrieved-memory payload -> actual model request segments",
+          "provider usage -> counter settlement -> next dispatch/child reservation"
+        ],
+        "source_binding": [
+          "pinned product/deployment version",
+          "native entry and configuration key",
+          "component/file/symbol anchor for each asserted node/edge",
+          "state owner/store/namespace/lifetime and write/read authority",
+          "runtime event IDs supporting each traversed edge",
+          "observed versus source-only versus hypothesis versus unresolved label"
+        ],
+        "causal_contrasts": [
+          "sufficient/exhausted single and shared-child pairs for deterministic enforcement",
+          "roomy/tight \u00d7 adaptive/skill-fixed/context-fixed six-cell real-task design",
+          "difference-in-differences for each separately fixed component; no claim about joint three-way interaction"
+        ],
+        "measurement_unit": "One complete product/fixture block; subordinate probes and tasks are nested observations, not independent repetitions.",
+        "metrics": [
+          {
+            "id": "task_quality",
+            "unit": "fraction",
+            "definition": "sum of fixed oracle assertion weights satisfied / sum of all weights; paired by same task",
+            "evidence": "sealed task oracle with weights frozen before pilot",
+            "denominator": "all predeclared task assertions; failures remain in the denominator",
+            "missing_policy": "Report null with reason and observed/eligible counts; never zero-fill."
+          },
+          {
+            "id": "token_components",
+            "unit": "tokens",
+            "definition": "non-overlapping input segments: system/instructions, skill, memory, history, tool results, current task; output and overhead stages separately",
+            "evidence": "actual model payload tokenizer/version plus independent usage ledger",
+            "denominator": "all observed requests; tokenizer estimates labeled separately from provider usage",
+            "missing_policy": "Report null with reason and observed/eligible counts; never zero-fill."
+          },
+          {
+            "id": "budget_error",
+            "unit": "tokens",
+            "definition": "native counted total minus independently reconciled usage under the same accounting contract",
+            "evidence": "counter, reservation, settlement and provider ledger",
+            "denominator": "same run/scope/category inclusion; unknown categories prevent exact total",
+            "missing_policy": "Report null with reason and observed/eligible counts; never zero-fill."
+          },
+          {
+            "id": "budget_overshoot",
+            "unit": "tokens",
+            "definition": "max(0, accounted consumption minus native limit), separating in-flight and post-exhaustion new dispatch",
+            "evidence": "threshold and request event ledger",
+            "denominator": "one budget scope; excludes incomparable money/context limits",
+            "missing_policy": "Report null with reason and observed/eligible counts; never zero-fill."
+          },
+          {
+            "id": "cost_latency",
+            "unit": "tokens and ms",
+            "definition": "total tokens including retries/compaction/skill/memory/children, and completion time; report separately",
+            "evidence": "per-stage usage and monotonic events",
+            "denominator": "all stages of same matched task, including failure costs",
+            "missing_policy": "Report null with reason and observed/eligible counts; never zero-fill."
+          },
+          {
+            "id": "coupling_effect",
+            "unit": "quality points and tokens",
+            "definition": "(adaptive_tight - fixed_tight) - (adaptive_roomy - fixed_roomy), separately for skill and context and for quality/token outcomes",
+            "evidence": "six paired cells, configuration and trace verification",
+            "denominator": "complete six-cell block; missing cell means contrast unavailable",
+            "missing_policy": "Report null with reason and observed/eligible counts; never zero-fill."
+          },
+          {
+            "id": "useful_context",
+            "unit": "fraction",
+            "definition": "required task facts and constraints surviving in next request / required facts and constraints",
+            "evidence": "annotated source facts and actual request segments",
+            "denominator": "frozen required facts/constraints; critical violations listed separately",
+            "missing_policy": "Report null with reason and observed/eligible counts; never zero-fill."
+          }
+        ],
+        "visualizations": [
+          {
+            "id": "budget_flow",
+            "kind": "annotated component graph",
+            "metric_ids": [
+              "token_components",
+              "budget_error"
+            ],
+            "group_by": "budget/skill/context/memory/dispatcher edges",
+            "interpretation": "verify coupling using evidence-backed edges; absent edges stay absent"
+          },
+          {
+            "id": "budget_timeline",
+            "kind": "step timeline",
+            "metric_ids": [
+              "budget_overshoot",
+              "token_components"
+            ],
+            "group_by": "request/child/stage",
+            "interpretation": "show reservation, remaining balance, compaction, skill loads and dispatch"
+          },
+          {
+            "id": "budget_effect",
+            "kind": "paired cost-quality plot",
+            "metric_ids": [
+              "task_quality",
+              "cost_latency",
+              "useful_context"
+            ],
+            "group_by": "roomy/tight \u00d7 policy with block points",
+            "interpretation": "show observed tradeoff, not an extrapolated Pareto frontier"
+          },
+          {
+            "id": "budget_interactions",
+            "kind": "paired interaction plot",
+            "metric_ids": [
+              "coupling_effect"
+            ],
+            "group_by": "skill-fixed/context-fixed",
+            "interpretation": "separate pressure-specific contribution from generic strategy effects"
+          }
+        ],
+        "artifact_contract": [
+          "source-linked architecture graph",
+          "events.jsonl",
+          "objects.csv",
+          "metrics.csv",
+          "contrasts.csv",
+          "figures with raw-data/evidence references"
+        ],
+        "coupling_checks": [
+          "budget and context-capacity channels must be distinguished",
+          "absent budget-to-skill hook is an architectural finding",
+          "native independent controls required for attribution"
+        ]
+      }
     },
     {
       "id": "HG",
@@ -547,14 +1216,20 @@
         "training and sealed holdout provenance",
         "fresh-session loaded policy/skill/configuration version",
         "held-out task oracle, regression outcome and per-stage cost",
-        "native rejection or rollback mechanism and subsequent version adoption"
+        "native rejection or rollback mechanism and subsequent version adoption",
+        "feedback-to-update-to-validation-to-promotion-to-fresh-session-loading source/trace links",
+        "per-instance before/after/revert quality and regression flags",
+        "adaptation cost, recurring savings and conditional break-even uses",
+        "version scope and peer-session adoption or contamination"
       ],
       "mechanism_checks": [
         "native_feedback_update",
         "persistent_behavior_version",
         "heldout_transfer_and_regression",
         "update_authorization_and_validation",
-        "native_update_reversal"
+        "native_update_reversal",
+        "feedback_update_adoption_graph",
+        "quality_gain_cost_and_regression"
       ],
       "inference_rule": "Require a native persistent behavioral artifact and its actual loading in a fresh session. Compare frozen/updated/reverted behavior on the same sealed holdouts, separating mechanism operation, transfer quality and regressions. Quality improvement is not assumed from an accepted update.",
       "limit_and_tradeoff": "One update and tiny holdouts reveal mechanisms, not long-term autonomous evolution. Ordinary memory storage or an evaluator-written patch is not self-improvement. If native feedback, update, promotion or reversal is absent, record that stage as unsupported with pinned evidence; never invent it in an adapter.",
@@ -572,7 +1247,131 @@
         "independent observations retained",
         "mechanism owner/source corroborated or unresolved",
         "tradeoff and applicability stated"
-      ]
+      ],
+      "evaluation_contract": {
+        "architecture_questions": [
+          "feedback source and trust/attribution",
+          "update proposer and mutable behavioral artifact",
+          "validation, selection/promotion and version registry",
+          "fresh-session loader scope, propagation and rollback owner"
+        ],
+        "coupling_edges": [
+          "feedback -> proposed diff",
+          "candidate -> native validation -> promotion or rejection",
+          "promoted artifact -> skill/context loader -> actual next-session behavior",
+          "rollback -> adopted base version and peer/session scope"
+        ],
+        "source_binding": [
+          "pinned product/deployment version",
+          "native entry and configuration key",
+          "component/file/symbol anchor for each asserted node/edge",
+          "state owner/store/namespace/lifetime and write/read authority",
+          "runtime event IDs supporting each traversed edge",
+          "observed versus source-only versus hypothesis versus unresolved label"
+        ],
+        "causal_contrasts": [
+          "frozen versus updated on sealed transfer and regression tasks",
+          "same candidate updated versus reverted on identical heldouts",
+          "paired results by fixture; no adaptive retry on heldout failures"
+        ],
+        "measurement_unit": "One complete product/fixture block; subordinate probes and tasks are nested observations, not independent repetitions.",
+        "metrics": [
+          {
+            "id": "transfer_gain",
+            "unit": "quality points",
+            "definition": "updated quality minus frozen quality on sealed transfer cases",
+            "evidence": "fixed independent weighted oracle and version binding",
+            "denominator": "same fixed assertions for every version",
+            "missing_policy": "Report null with reason and observed/eligible counts; never zero-fill."
+          },
+          {
+            "id": "regression",
+            "unit": "count and fraction",
+            "definition": "assertions passed by frozen version but failed by updated version / assertions passed by frozen version",
+            "evidence": "paired per-assertion oracle outcomes",
+            "denominator": "baseline-passing eligible assertions; zero denominator is N/A",
+            "missing_policy": "Report null with reason and observed/eligible counts; never zero-fill."
+          },
+          {
+            "id": "reversal",
+            "unit": "fraction",
+            "definition": "evaluated state/behavior assertions restored to base expectations after native reversal",
+            "evidence": "version digest, next-session load trace and task oracle",
+            "denominator": "predeclared reversible assertions, with unsupported/missing separately",
+            "missing_policy": "Report null with reason and observed/eligible counts; never zero-fill."
+          },
+          {
+            "id": "adaptation_cost",
+            "unit": "tokens and ms",
+            "definition": "feedback processing + proposal + validation + promotion costs, including rejected candidate work",
+            "evidence": "stage usage/event ledger",
+            "denominator": "one allowed native candidate/update cycle",
+            "missing_policy": "Report null with reason and observed/eligible counts; never zero-fill."
+          },
+          {
+            "id": "amortization",
+            "unit": "uses or N/A",
+            "definition": "ceil(adaptation_tokens / (frozen_per_use_tokens - updated_per_use_tokens)) only if savings>0 and fixed quality/regression guard is met",
+            "evidence": "adaptation and heldout usage, predeclared quality guard",
+            "denominator": "matched observed task workload; conditional projection, not observed lifetime gain",
+            "missing_policy": "Report null with reason and observed/eligible counts; never zero-fill."
+          },
+          {
+            "id": "adoption_scope",
+            "unit": "count",
+            "definition": "intended and unintended sessions loading the changed version, separately",
+            "evidence": "namespace/version manifest and next-session loader events",
+            "denominator": "all declared target and witness sessions",
+            "missing_policy": "Report null with reason and observed/eligible counts; never zero-fill."
+          }
+        ],
+        "visualizations": [
+          {
+            "id": "evolution_lineage",
+            "kind": "version/decision graph",
+            "metric_ids": [
+              "adaptation_cost",
+              "adoption_scope"
+            ],
+            "group_by": "feedback/candidate/validation/promotion/loader/revert",
+            "interpretation": "source-backed update architecture plus actual decision path"
+          },
+          {
+            "id": "evolution_effect",
+            "kind": "paired slope plot",
+            "metric_ids": [
+              "transfer_gain",
+              "regression",
+              "reversal"
+            ],
+            "group_by": "frozen/updated/reverted \u00d7 holdout case",
+            "interpretation": "show improvement, regression and reversibility per task"
+          },
+          {
+            "id": "evolution_economics",
+            "kind": "stage bars and conditional projection",
+            "metric_ids": [
+              "adaptation_cost",
+              "amortization"
+            ],
+            "group_by": "adaptation stages and repeated-use scenario",
+            "interpretation": "separate measured setup/per-use cost from projected break-even"
+          }
+        ],
+        "artifact_contract": [
+          "source-linked architecture graph",
+          "events.jsonl",
+          "objects.csv",
+          "metrics.csv",
+          "contrasts.csv",
+          "figures with raw-data/evidence references"
+        ],
+        "coupling_checks": [
+          "candidate generation, native promotion and independent evaluation are separate stages",
+          "ordinary memory and model changes must be controlled",
+          "one candidate shared by updated and reverted arms"
+        ]
+      }
     }
   ],
   "cross_cutting_evidence": {
@@ -580,7 +1379,9 @@
       "native_log_durability",
       "causal_trace_reconstruction",
       "usage_reconciliation",
-      "synthetic_secret_redaction"
+      "synthetic_secret_redaction",
+      "native_event_semantics",
+      "common_task_resource_accounting"
     ],
     "required_observations": [
       "native log source and collection configuration",
@@ -590,9 +1391,184 @@
       "log persistence after the study lifecycle transition",
       "synthetic secret redaction result",
       "native-only reconstruction before independent ledger reveal",
-      "usage totals and missing categories"
+      "usage totals and missing categories",
+      "task acceptance with start/terminal/cleanup boundaries",
+      "fine-grained request and stage token ledger with category overlap semantics",
+      "owned process tree and shared-service attribution boundary",
+      "CPU core-seconds, sampled memory, retained/peak disk and I/O",
+      "event transport ordering/delivery/durability/backpressure and diagnostic overhead"
     ],
     "inference_rule": "Evaluate all studies from native records before revealing independent truth. Record reconstructable facts, wrong conclusions, missing links and diagnosis time. External instrumentation establishes truth but cannot be credited as native observability.",
-    "limit_and_tradeoff": "Reuse the same runs; no separate log-load matrix. Missing telemetry is unobservable, not a zero count. Record logging configuration, retention, access scope and collection overhead; synthetic secrets only."
+    "limit_and_tradeoff": "Reuse the same runs; no separate log-load matrix. Missing telemetry is unobservable, not a zero count. Record logging configuration, retention, access scope and collection overhead; synthetic secrets only.",
+    "quantitative_rules": [
+      "publish raw numerator/denominator and per-block paired values",
+      "unsupported, blocked and unobservable are distinct from zero or success",
+      "no statistical population claim from two blocks",
+      "record fixture/task/candidate nesting and all model calls; do not label probes independent repeats",
+      "show mechanism map, intervention, effect and evidence links together; no composite radar ranking"
+    ],
+    "metric_contract": [
+      {
+        "id": "trace_reconstruction",
+        "unit": "fraction",
+        "definition": "correct predeclared facts reconstructed from native logs / eligible truth facts; wrong assertions and missing links separate",
+        "evidence": "blinded reconstruction frozen before independent ledger reveal",
+        "denominator": "predeclared facts relevant to this study",
+        "missing_policy": "Report null with reason and observed/eligible counts; never zero-fill."
+      },
+      {
+        "id": "diagnosis_time",
+        "unit": "ms",
+        "definition": "elapsed time to frozen native-only reconstruction",
+        "evidence": "reviewer session timer",
+        "denominator": "one fixed investigation question, same information access",
+        "missing_policy": "Report null with reason and observed/eligible counts; never zero-fill."
+      }
+    ],
+    "visualization_contract": "Event timeline with native source links, missing links and independent-truth comparison; cross-study mechanism maps carry observed/source-only/hypothesis/unresolved edge labels.",
+    "event_contract": {
+      "architecture": [
+        "event source and semantic type: control/state/audit/diagnostic",
+        "public subscription/export boundary and identity",
+        "in-process callback/queue/IPC/broker/storage owner as evidenced",
+        "buffer limit, retention, ordering domain, fan-out and delivery contract",
+        "event ID/causal parent/sequence and acknowledgment/replay/dedup behavior"
+      ],
+      "probes": [
+        "HB/HD known call/failure/cancel transitions for causal correlation and ordering",
+        "HE existing interruption/restart for durable history and replay semantics",
+        "HD native diagnostic mode versus default on same four-read task",
+        "HD one native consumer held and released at declared boundary, with healthy consumer/producer progress witnesses"
+      ],
+      "metrics": [
+        "eligible native events generated/delivered/persisted/replayed, with distinct denominators",
+        "missing and duplicate IDs, causal order violations within declared order domain",
+        "generation-to-delivery lag where both clocks are comparable",
+        "buffer occupancy/high-water, dropped count, producer stall duration and drain completion",
+        "native-only reconstruction correct/wrong/missing facts and diagnosis time",
+        "default-to-diagnostic CPU/memory/disk/token/completion-time deltas"
+      ],
+      "evidence_rules": [
+        "independent action ledger establishes expected transitions but does not prove native events were generated",
+        "if emitter/sequence is unobservable report action coverage, not fabricated event delivery loss",
+        "consumer-stall hook must be native/public; do not block a stdout pipe and generalize to an internal event bus",
+        "if only logs exist, record log semantics; do not presume an event bus or replay capability",
+        "ordering is per documented scope; cross-clock uncertainty cannot establish violations",
+        "extra subscriber is used only where native fan-out exists; inability is an explicit scope result",
+        "slow-consumer interval frozen from pilot is an experimental intervention, not campaign truncation; release and collect terminal/drain outcome",
+        "crash durability is judged from existing native records; external collection is independent truth only"
+      ],
+      "visualizations": [
+        "emitter-transport-buffer-subscriber-store architecture graph with source evidence",
+        "causal swimlane marking gaps/duplicates/replay and ordering domains",
+        "queue/delivery/producer-progress timeline",
+        "paired diagnostic overhead table/plots using common resource ledger"
+      ]
+    }
+  },
+  "measurement_contract": {
+    "required_axes": [
+      "task_quality",
+      "completion_time",
+      "token_usage",
+      "cpu",
+      "memory",
+      "disk",
+      "log_event_semantics"
+    ],
+    "application": "Required on every platform and harness arm; primary dimensions are reporting priorities, not restrictions on collected metrics.",
+    "record_keys": [
+      "product_version",
+      "deployment_id",
+      "study",
+      "block_id",
+      "condition",
+      "task_instance",
+      "run_id",
+      "actor_id",
+      "parent_id",
+      "stage",
+      "source_ref",
+      "measurement_status"
+    ],
+    "time": {
+      "start": "external task admission/request submission before harness startup or queueing; record cold/warm explicitly",
+      "end": "independent required artifact acceptance or classified failure/cancel/budget terminal event",
+      "fields": [
+        "completion_wall_ms",
+        "queue_ms",
+        "startup_ms",
+        "model_wait_ms",
+        "tool_ms",
+        "policy_context_skill_memory_ms",
+        "recovery_ms",
+        "cleanup_ms"
+      ],
+      "rule": "End-to-end wall time is authoritative. Overlapping spans form a critical-path diagram; do not sum concurrent spans. Cleanup is separate and also included in total experimental duration. Failure latency is not a completed-task latency."
+    },
+    "tokens": {
+      "dimensions": [
+        "request_id",
+        "attempt",
+        "parent_or_child",
+        "stage: task/skill_selection/skill_generation/memory/compaction/retry/validation",
+        "input_segment: system/skill/memory/history/tool/current_task",
+        "input_output_cached_reasoning"
+      ],
+      "rule": "Retain raw provider usage plus a normalized non-overlapping ledger. Cached input and reasoning are often subsets: pin each provider semantics, never add nested fields twice. Payload segment counts from a pinned tokenizer are estimates, separate from provider counts; report unknown/residual and visibility coverage. Attribute every request once to an actor and stage; phase and payload-segment views are alternative decompositions, not additive totals. Include failed/retried/adaptation calls.",
+      "billing": "Report tokens and cache usage directly. Optional money conversion requires pinned model/pricing/date and actual billable-category contract; unknown billing is not zero."
+    },
+    "cpu": {
+      "fields": [
+        "harness_core_seconds",
+        "tool_child_core_seconds",
+        "shared_service_core_seconds",
+        "fixture_observer_core_seconds"
+      ],
+      "rule": "Capture process/cgroup lifetime deltas including exited children; track process identity with PID+start time. Report CPU core-seconds and scope, not only instantaneous percent. For shared services give whole-service totals and attributable deltas separately; do not invent exact per-agent ownership. CPU/wall implies average cores only for the stated scope."
+    },
+    "memory": {
+      "fields": [
+        "harness_peak_bytes",
+        "tool_child_peak_bytes",
+        "shared_service_peak_bytes",
+        "sampled_pss_or_rss_bytes",
+        "memory_byte_seconds",
+        "sampling_interval_ms"
+      ],
+      "rule": "Prefer cgroup peak or PSS with named semantics; summed RSS may double-count shared pages and must be labeled. Report measurement method, sample cadence, baseline and unavailable peaks. Separate whole-service resident memory from attributed work increments. Do not compare PSS and RSS as the same measure."
+    },
+    "disk": {
+      "fields": [
+        "initial_allocated_bytes",
+        "peak_incremental_allocated_bytes",
+        "retained_incremental_bytes",
+        "logical_bytes",
+        "read_bytes",
+        "write_bytes"
+      ],
+      "categories": [
+        "workspace",
+        "logs_events",
+        "snapshots",
+        "memory_index",
+        "skills_generated_assets",
+        "cache"
+      ],
+      "rule": "Measure same task-owned paths/volumes before, during, at terminal and after native cleanup; do not cleanup before measuring retained state. Distinguish logical size, allocated blocks and I/O; filesystem snapshots/COW/dedup require explicit backend accounting. Avoid summing overlapping directories or shared stores twice. Writes from witnesses and observers are separate."
+    },
+    "quality": {
+      "rule": "Freeze independent oracle assertions/weights and critical constraints before pilot; show task acceptance, partial quality, safety violations and failure disposition alongside costs. Same model/version/task/grants/native settings within contrasts; variants are explicit interventions. Include failed work cost; report task cost per accepted artifact only with numerator/denominator and zero-success as N/A."
+    },
+    "statistics": {
+      "rule": "Publish per-block paired differences and raw numerator/denominator. No p95/p99 or significance claim from two blocks. Repeated calls/probes inside one run are not independent samples. One study can answer performance and resource/cost without extra executions."
+    },
+    "visualizations": [
+      "per-task wall-time critical-path timeline",
+      "request/actor/stage token composition with cache/unknown annotations",
+      "aligned CPU/memory/disk time series and retained-state bars",
+      "paired task-quality versus time/token/CPU/memory/disk small multiples"
+    ],
+    "missing_policy": "Each metric has observed/estimated/unobservable/unsupported/blocked status, reason, source and scope; do not replace unavailable measurements with zero."
   }
 }
