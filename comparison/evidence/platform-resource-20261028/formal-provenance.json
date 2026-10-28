@@ -1,0 +1,30 @@
+{
+  "run_id": 40675688132,
+  "controller_commit": "703ca122b13ed0168dc796d89067f2cda322ea12",
+  "artifact_id": 12811071464,
+  "artifact_zip_sha256": "997dc79e4b0887c60dbfe90ca925b278944fb928bd9399726c4b7bedbfca6c1e",
+  "original_report_sha256": "32a4f76a7943fbcdda6850f8fba3da0c69bebc9578139b4126a014ea11f6ba5e",
+  "execution_scripts_sha256": {
+    "platform_resource_probe.py": "c0a577f1d2713102c8791e8f46ad33aa2753bacd4eaeb7c0d93fcbe2ee21927b",
+    "platform_api_probe.py": "aa1887c5b9eb4783c4d26677ad37551c2272689d35b76faa85f9b33eaf7a83d2",
+    "resource_collector.py": "6e6bcb3a22cdc42ab54c0e2ebd11cb5f014dfd7a6a57e9e7f4f35fd4cd567e01",
+    "resource_launcher.py": "f0fd58ea10f2d2805752dfbffcfdef3cedfbe3d791bfdac4f9d7eefde45bfe8d",
+    "resource_memory_reader.py": "7e3049e9f3d13aa061fcdf3e1431830a48c6e25ef449be4b9f0f6e46a8474222",
+    "native_read_probe.py": "3eb6e86c555dccb2be02f320224d0333fb6ccdd254f1f31bcaad91886e5daff8",
+    "context_skill_probe.py": "f589d40f76e1824d8edcdd343a25a2eda75e3cddf107c5cb5e57e9ea92b3edb3"
+  },
+  "analysis_scripts_sha256": {
+    "summarize_platform_resource.py": "a6ca45944137885b8e190ab62734979dab08cf2402878aa94a33f68ecff5c8f8"
+  },
+  "disposition": "Two complete formal blocks, 20 valid arms. Exact assistant ACK, distinct native sessions/provider contexts, CPU and sampled-memory integrals independently recomputed offline. Original outcomes unchanged. One OpenClaw concurrent batch was slower than its sequential pair; retain that valid result, do not repeat to improve it.",
+  "retained_files_sha256": {
+    "formal-summary.json": "0af6204047f7166cb6874d1f06816ad64552db04fd0812a7920a6075feff7a7b",
+    "formal-original-report.json.gz": "64edbd914e972acdf3b673063b97e48646af412bc2404d962a3f2ec673afaba1",
+    "formal-node-version.txt": "249baf635bb43877fcb9422efa1a4904b702d0ddf14d3949b7cd0950d5229c81",
+    "formal-os-release.txt": "87458b3b1f1ca0e5c693ade771de7007c3783bdc692fa6b39eb6414bf2af2763",
+    "formal-package-lock.json.gz": "831dd021da80e55d9dc7da78b6ad3e8117f68969b131a8f837e5a6d646e1aebf",
+    "formal-source-bindings.json": "662002486a76decf857be027ff552c4d21af5151a182dc2f527003200bdc5eaf",
+    "formal-protocol.json": "400f6fb113fbc4fa7312e598960aacdce50092e1331235469532fd5f744e3f21",
+    "formal-metrics.csv": "0f7654a4f3c15f7162cf3f0a71d4fe0f55098f7f93a2b63d60ee733733d47985"
+  }
+}

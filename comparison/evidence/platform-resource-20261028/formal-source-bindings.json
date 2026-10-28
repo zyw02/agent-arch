@@ -1,0 +1,186 @@
+{
+  "schema_version": 1,
+  "role": "Pinned platform native entry and lifecycle source owners; runtime activation requires calibration",
+  "sources": [
+    {
+      "product": "dsh",
+      "path": "docs/subsystems/web-server.md",
+      "owner": "HTTP carrier / composition and routes",
+      "repo": "deepseek-ai/deepseek-harness",
+      "ref": "f3803c96974ad4a94195fb97e5c637e9c2a3afe3",
+      "blob_sha": "2420b6713b851ce0d31636fd72993105f51c6a0d",
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/docs/subsystems/web-server.md"
+    },
+    {
+      "product": "dsh",
+      "path": "docs/api-gateway.md",
+      "owner": "Public RPC wire and invocation lookup",
+      "repo": "deepseek-ai/deepseek-harness",
+      "ref": "f3803c96974ad4a94195fb97e5c637e9c2a3afe3",
+      "blob_sha": "e5ccfb7ca6a433db23ac4871481fb87bdfd3843a",
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/docs/api-gateway.md"
+    },
+    {
+      "product": "dsh",
+      "path": "packages/client/connection/README.md",
+      "owner": "Browser/API Peer lifetime and disconnection",
+      "repo": "deepseek-ai/deepseek-harness",
+      "ref": "f3803c96974ad4a94195fb97e5c637e9c2a3afe3",
+      "blob_sha": "e6de487bdb7b66c6087f45a2b7df5fee12b0a0cc",
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/client/connection/README.md"
+    },
+    {
+      "product": "dsh",
+      "path": "packages/client/connection/src/rpc-schema.ts",
+      "owner": "Wire envelope validation",
+      "repo": "deepseek-ai/deepseek-harness",
+      "ref": "f3803c96974ad4a94195fb97e5c637e9c2a3afe3",
+      "blob_sha": "dc919a8187f45670abcdbfefed4342faf5b9036a",
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/client/connection/src/rpc-schema.ts"
+    },
+    {
+      "product": "dsh",
+      "path": "packages/api/session-controller/src/index.ts",
+      "owner": "Native prompt admission and passive wait public methods",
+      "repo": "deepseek-ai/deepseek-harness",
+      "ref": "f3803c96974ad4a94195fb97e5c637e9c2a3afe3",
+      "blob_sha": "94d08c77e367a4172d27448fd86fdf1301801675",
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/api/session-controller/src/index.ts"
+    },
+    {
+      "product": "dsh",
+      "path": "packages/api/session-controller/src/types.ts",
+      "owner": "Public create/prompt/wait contracts",
+      "repo": "deepseek-ai/deepseek-harness",
+      "ref": "f3803c96974ad4a94195fb97e5c637e9c2a3afe3",
+      "blob_sha": "9e399d8f3b08455139f144aa0dfa653e6ef1c8e4",
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/api/session-controller/src/types.ts"
+    },
+    {
+      "product": "dsh",
+      "path": "packages/api/session-controller/src/commands.ts",
+      "owner": "Followup admission detaches from caller cancellation after acceptance",
+      "repo": "deepseek-ai/deepseek-harness",
+      "ref": "f3803c96974ad4a94195fb97e5c637e9c2a3afe3",
+      "blob_sha": "5309872331989824b0f09b97840f913e96f74b8a",
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/api/session-controller/src/commands.ts"
+    },
+    {
+      "product": "dsh",
+      "path": "apps/cli/tests/web-auth.e2e.ts",
+      "owner": "Actual public web CLI and token exchange positive control",
+      "repo": "deepseek-ai/deepseek-harness",
+      "ref": "f3803c96974ad4a94195fb97e5c637e9c2a3afe3",
+      "blob_sha": "f75285fe5f1f10e5e9452749710950d779457597",
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/apps/cli/tests/web-auth.e2e.ts"
+    },
+    {
+      "product": "openclaw",
+      "path": "docs/cli/agent.md",
+      "owner": "Gateway/embedded profile boundary; signal-triggered chat.abort",
+      "repo": "openclaw/openclaw",
+      "ref": "dc2523e5a5c7a309517fd7fa834add938231d526",
+      "blob_sha": "1a58d9c512f2a2f111d6e3cdfe57538eb1917ff9",
+      "url": "https://github.com/openclaw/openclaw/blob/dc2523e5a5c7a309517fd7fa834add938231d526/docs/cli/agent.md"
+    },
+    {
+      "product": "openclaw",
+      "path": "src/commands/agent-via-gateway.ts",
+      "owner": "Native CLI cancellation vs abrupt transport loss",
+      "repo": "openclaw/openclaw",
+      "ref": "dc2523e5a5c7a309517fd7fa834add938231d526",
+      "blob_sha": "7adb039625c8769a012952fd2ac99b1f77d4fdc5",
+      "url": "https://github.com/openclaw/openclaw/blob/dc2523e5a5c7a309517fd7fa834add938231d526/src/commands/agent-via-gateway.ts"
+    },
+    {
+      "product": "openclaw",
+      "path": "src/gateway/openai-http.ts",
+      "owner": "Public HTTP inference preparation and run request",
+      "repo": "openclaw/openclaw",
+      "ref": "dc2523e5a5c7a309517fd7fa834add938231d526",
+      "blob_sha": "cfcc4fd4140022d780b3eaf9034d5a31afd1e879",
+      "url": "https://github.com/openclaw/openclaw/blob/dc2523e5a5c7a309517fd7fa834add938231d526/src/gateway/openai-http.ts"
+    },
+    {
+      "product": "openclaw",
+      "path": "src/gateway/openai-compatible-agent-run.ts",
+      "owner": "HTTP agent run ownership/abort contract",
+      "repo": "openclaw/openclaw",
+      "ref": "dc2523e5a5c7a309517fd7fa834add938231d526",
+      "blob_sha": "ca7743a70896960bf6b45d53592f3a9bcbae2e2b",
+      "url": "https://github.com/openclaw/openclaw/blob/dc2523e5a5c7a309517fd7fa834add938231d526/src/gateway/openai-compatible-agent-run.ts"
+    },
+    {
+      "product": "dsh",
+      "path": "apps/cli/src/args.ts",
+      "owner": "Launcher flags end at first application flag; profile/patch must precede Web options",
+      "repo": "deepseek-ai/deepseek-harness",
+      "ref": "f3803c96974ad4a94195fb97e5c637e9c2a3afe3",
+      "blob_sha": "41d4ebeaa832473b25952af1b185e02a7c182844",
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/apps/cli/src/args.ts"
+    },
+    {
+      "product": "openclaw",
+      "path": "src/gateway/server-methods/chat-history-handler.ts",
+      "owner": "Native chat.history, in-flight/recovery read path",
+      "repo": "openclaw/openclaw",
+      "ref": "dc2523e5a5c7a309517fd7fa834add938231d526",
+      "blob_sha": "1b3bb2af93c333dcea7bad8dfe6e1277a8bb47b3",
+      "url": "https://github.com/openclaw/openclaw/blob/dc2523e5a5c7a309517fd7fa834add938231d526/src/gateway/server-methods/chat-history-handler.ts"
+    },
+    {
+      "product": "openclaw",
+      "path": "src/cli/gateway-cli/register.ts",
+      "owner": "Public gateway call flags and JSON output",
+      "repo": "openclaw/openclaw",
+      "ref": "dc2523e5a5c7a309517fd7fa834add938231d526",
+      "blob_sha": "7a6349f04c57fcc64e6a68148543a68e4ce9f937",
+      "url": "https://github.com/openclaw/openclaw/blob/dc2523e5a5c7a309517fd7fa834add938231d526/src/cli/gateway-cli/register.ts"
+    },
+    {
+      "product": "openclaw",
+      "path": "src/gateway/server-startup-post-attach.ts",
+      "owner": "Native Gateway startup schedules orphan recovery sidecar",
+      "repo": "openclaw/openclaw",
+      "ref": "dc2523e5a5c7a309517fd7fa834add938231d526",
+      "blob_sha": "f358df6f9f76549a0ef6ba8b27774272215ab42a",
+      "url": "https://github.com/openclaw/openclaw/blob/dc2523e5a5c7a309517fd7fa834add938231d526/src/gateway/server-startup-post-attach.ts"
+    },
+    {
+      "product": "openclaw",
+      "path": "src/agents/main-session-recovery/main-session-restart-recovery-runtime.ts",
+      "owner": "Generation-owned native startup/retry recovery scheduling",
+      "repo": "openclaw/openclaw",
+      "ref": "dc2523e5a5c7a309517fd7fa834add938231d526",
+      "blob_sha": "72dce4fdd5d776fbc10cc47f3edfb441e72e6850",
+      "url": "https://github.com/openclaw/openclaw/blob/dc2523e5a5c7a309517fd7fa834add938231d526/src/agents/main-session-recovery/main-session-restart-recovery-runtime.ts"
+    },
+    {
+      "product": "openclaw",
+      "path": "src/agents/main-session-recovery/main-session-restart-recovery-marking.ts",
+      "owner": "Live-owner checks and durable startup-orphan recovery marking",
+      "repo": "openclaw/openclaw",
+      "ref": "dc2523e5a5c7a309517fd7fa834add938231d526",
+      "blob_sha": "84456c31222b70bfc59972b3a2360c6237592b4c",
+      "url": "https://github.com/openclaw/openclaw/blob/dc2523e5a5c7a309517fd7fa834add938231d526/src/agents/main-session-recovery/main-session-restart-recovery-marking.ts"
+    },
+    {
+      "product": "openclaw",
+      "path": "src/gateway/server-methods/chat-history-recovery.ts",
+      "owner": "Public history unavailable/recovery response semantics",
+      "repo": "openclaw/openclaw",
+      "ref": "dc2523e5a5c7a309517fd7fa834add938231d526",
+      "blob_sha": "245bb6045d5d188a9228d3c829720c62dfa794e8",
+      "url": "https://github.com/openclaw/openclaw/blob/dc2523e5a5c7a309517fd7fa834add938231d526/src/gateway/server-methods/chat-history-recovery.ts"
+    },
+    {
+      "product": "openclaw",
+      "path": "src/gateway/server-methods/chat-history-session-read.ts",
+      "owner": "Public native history preparation and admission",
+      "repo": "openclaw/openclaw",
+      "ref": "dc2523e5a5c7a309517fd7fa834add938231d526",
+      "blob_sha": "722ae8e3d84239e4a4c66bc5ee088ef9e69b5069",
+      "url": "https://github.com/openclaw/openclaw/blob/dc2523e5a5c7a309517fd7fa834add938231d526/src/gateway/server-methods/chat-history-session-read.ts"
+    }
+  ]
+}
