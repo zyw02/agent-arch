@@ -16,6 +16,7 @@ import uuid
 from context_skill_probe import request_text
 from native_read_probe import schemas
 from platform_api_probe import NativeServer,redact
+from platform_resource_probe import phase_boundary
 from tool_lifecycle_provider import ToolProvider
 
 PROTOCOL=Path(__file__).with_name('tool-lifecycle-protocol.json')
@@ -78,7 +79,9 @@ class ToolPlan:
         self.indexes=[0] if health or condition in ('native_single','mcp_single') else list(range(4));self.native=condition=='native_single' and not health
         self.target='read' if self.native else ('mcp__probe__eval_read' if product=='DSH' else 'probe__eval_read')
         self.serial=condition=='mcp_four_serial';self.failed_index=2 if condition=='mcp_batch_failure' and not health else None
-        self.call_ids={i:'hd_'+self.marker[len('TOOL_INPUT_'):]+'_'+str(i) for i in self.indexes}
+        # OpenClaw's selected model transport strips punctuation from call IDs.
+        # Use IDs already in its stable alphabet so exact native correlation survives.
+        self.call_ids={i:'hd'+self.marker[len('TOOL_INPUT_'):]+str(i) for i in self.indexes}
         self.expected_values={str(i):'error:'+failure_marker if i==self.failed_index else values[i] for i in self.indexes}
         self.expected_text=self.format(self.expected_values)
         self.prompt=f'{self.marker}\nRead the fixed synthetic files at indexes {self.indexes} using {self.target}. File paths: '+json.dumps({str(i):str(files[i]) for i in self.indexes})+'. Return only the task receipt and observed values. Never read any other file or run shell commands.'
@@ -88,7 +91,7 @@ class ToolPlan:
     def decide(self,body):
         results={}
         for row in tool_results(body):
-            if row['call_id'] not in self.call_ids.values():continue
+            if row['call_id'] not in self.call_ids.values():return dict(text='FIXTURE_UNCORRELATED_NATIVE_RESULT_ID')
             if row['call_id'] in results:return dict(text='FIXTURE_DUPLICATE_CORRELATED_RESULT')
             results[row['call_id']]=row
         values={}
@@ -171,7 +174,9 @@ def run_arm(product,condition,block,runtime,root,values):
     provider=ToolProvider(decide);server=None;row=dict(product=product,condition=condition,block=block,task_marker=plan.marker,validity='adapter_error',handling_acceptance_met=False,paid_model_calls=0,started_ns=started,fixture_config=config,file_hashes=file_hashes,input_values=values)
     try:
         server=ToolServer(product,runtime,root,provider,sample_interval=.05,configure=extension_configure(product,root,config_path,'native' if plan.native else 'mcp'),resource_paths=dict(extension_ledger=ledger))
-        server.ready();row.update(carrier_ready_ns=server.ready_ns,command=server.command,processes_at_ready=server.process_map());server.collector.sample();row['task_phase_started_ns']=time.monotonic_ns()
+        server.ready();row.update(carrier_ready_ns=server.ready_ns,command=server.command,processes_at_ready=server.process_map())
+        config_file=root/('server.patch.yml' if product=='DSH' else 'openclaw.json');row['actual_native_config_text']=config_file.read_text()
+        row['phase_start']=phase_boundary(server,'start');row['task_phase_started_ns']=row['phase_start']['after_read_ns']
         if condition=='mcp_batch_cancel':
             holder={}
             thread=threading.Thread(target=lambda:holder.update(result=server.task_plan(plan)),daemon=True);thread.start()
@@ -198,7 +203,10 @@ def run_arm(product,condition,block,runtime,root,values):
             row['product_outcome']='safe_indeterminate' if row['handling_acceptance_met'] else 'failure'
         else:
             row['task']=server.task_plan(plan);row['handling_acceptance_met']=row['task'].get('exact_final',False);row['product_outcome']='failure' if condition=='mcp_batch_failure' else ('success' if row['handling_acceptance_met'] else 'failure')
-        row['task_phase_finished_ns']=time.monotonic_ns();server.collector.sample();row['processes_at_task_end']=server.process_map();row['native_history']=server.history(plan.session_id)
+        row['fixture_events']=read_ledger(ledger)
+        checked_hashes=all(hashlib.sha256(p.read_bytes()).hexdigest()==file_hashes[str(i)] for i,p in enumerate(files))
+        row['independent_delivery_check']=dict(checked_ns=time.monotonic_ns(),input_unchanged=checked_hashes,fixture_receipts_complete=fixture_receipts_complete(row),native_exact=row.get('task',{}).get('exact_final',False) if condition!='mcp_batch_cancel' else row.get('health_task',{}).get('exact_final',False))
+        row['phase_end']=phase_boundary(server,'end');row['task_phase_finished_ns']=row['phase_end']['before_read_ns'];row['processes_at_task_end']=row['phase_end']['process_map'];row['native_history']=server.history(plan.session_id)
         row['validity']='valid'
     except Exception as error:row['adapter_error']=dict(type=type(error).__name__,message=redact(str(error))[:2000])
     finally:

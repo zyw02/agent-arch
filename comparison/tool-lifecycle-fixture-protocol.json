@@ -1,0 +1,11 @@
+{
+  "study": "HD-MCP-01 fixture preflight",
+  "freeze": "Before formal HD admission and before inspecting the first pilot outcomes",
+  "load": "One owned stdio MCP fixture, four simultaneous actual tools/call reads, no native product",
+  "delay_seconds": 0.25,
+  "max_release_overshoot_ms": 100,
+  "max_arrival_spread_ms": 100,
+  "response_safeguard_seconds": 5,
+  "acceptance": "Four exact correlated read values, file hashes and complete stop receipts; independently observed maximum four pending calls; all four native-free fixture requests admitted before first completion. Preflight must pass before formal native execution",
+  "limits": "Fixture protocol/capacity at fixed four-call load only. Does not disable observer, estimate native scheduler performance, remove native cgroup contention or establish sustained-load capacity"
+}

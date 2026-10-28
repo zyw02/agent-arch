@@ -89,7 +89,75 @@
       "ref": "f3803c96974ad4a94195fb97e5c637e9c2a3afe3",
       "blob_sha": "9e399d8f3b08455139f144aa0dfa653e6ef1c8e4",
       "url": "https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/api/session-controller/src/types.ts"
+    },
+    {
+      "product": "DSH",
+      "repo": "deepseek-ai/deepseek-harness",
+      "path": "packages/core/agent-loop/src/index.ts",
+      "ref": "f3803c96974ad4a94195fb97e5c637e9c2a3afe3",
+      "blob_sha": "381ef6e93a01eb06a7379f62a47b367f3e26dd0b",
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/core/agent-loop/src/index.ts"
+    },
+    {
+      "product": "DSH",
+      "repo": "deepseek-ai/deepseek-harness",
+      "path": "packages/core/agent-loop/src/constants.ts",
+      "ref": "f3803c96974ad4a94195fb97e5c637e9c2a3afe3",
+      "blob_sha": "3f5510967a045d2f3b3e566b50f971ade6ec1ecf",
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/core/agent-loop/src/constants.ts"
+    },
+    {
+      "product": "DSH",
+      "repo": "deepseek-ai/deepseek-harness",
+      "path": "packages/core/tool-executor-native/src/index.ts",
+      "ref": "f3803c96974ad4a94195fb97e5c637e9c2a3afe3",
+      "blob_sha": "457749152c004c3b61fe4981eb9c89718bdb1640",
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/core/tool-executor-native/src/index.ts"
+    },
+    {
+      "product": "DSH",
+      "repo": "deepseek-ai/deepseek-harness",
+      "path": "packages/core/tools/src/index.ts",
+      "ref": "f3803c96974ad4a94195fb97e5c637e9c2a3afe3",
+      "blob_sha": "d2d10d6b5be2d77696470e82164bda47322c2112",
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/core/tools/src/index.ts"
+    },
+    {
+      "product": "DSH",
+      "repo": "deepseek-ai/deepseek-harness",
+      "path": "packages/core/tools/src/pipeline.ts",
+      "ref": "f3803c96974ad4a94195fb97e5c637e9c2a3afe3",
+      "blob_sha": "56c68c6c59bb280ac0c96d1198cec6c1e8e7db49",
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/core/tools/src/pipeline.ts"
+    },
+    {
+      "product": "DSH",
+      "repo": "deepseek-ai/deepseek-harness",
+      "path": "packages/core/tools/src/batch.ts",
+      "ref": "f3803c96974ad4a94195fb97e5c637e9c2a3afe3",
+      "blob_sha": "e9a378d997e6a05c305e3bcc1ae6d2e124641f6d",
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/core/tools/src/batch.ts"
+    },
+    {
+      "product": "OpenClaw",
+      "repo": "openclaw/openclaw",
+      "path": "src/agents/tool-call-id.ts",
+      "ref": "dc2523e5a5c7a309517fd7fa834add938231d526",
+      "blob_sha": "a752f0f567b694fc1ba072d31c63036d4856d4a2",
+      "url": "https://github.com/openclaw/openclaw/blob/dc2523e5a5c7a309517fd7fa834add938231d526/src/agents/tool-call-id.ts"
+    },
+    {
+      "product": "OpenClaw",
+      "repo": "openclaw/openclaw",
+      "path": "src/agents/transcript-policy.ts",
+      "ref": "dc2523e5a5c7a309517fd7fa834add938231d526",
+      "blob_sha": "151b0af06a0cc8c8c54448ac54ad2428524da022",
+      "url": "https://github.com/openclaw/openclaw/blob/dc2523e5a5c7a309517fd7fa834add938231d526/src/agents/transcript-policy.ts"
     }
+  ],
+  "scheduling_source_findings": [
+    "DSH loop default maxParallelToolCalls is 10, but the shared pipeline classifies definitions without isConcurrencySafe as exclusive. The pinned MCP tool definition does not set that classifier or project MCP readOnlyHint into it. This predicts exclusive MCP dispatch in the selected stock bridge; actual activation/overlap still requires runtime evidence.",
+    "OpenClaw MCP materialization selects sequential by default and parallel only when the configured server declares supportsParallelToolCalls=true. This study explicitly selects true; it does not compare default settings or establish that close final outputs prove simultaneous execution."
   ]
 }
 

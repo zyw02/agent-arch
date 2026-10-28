@@ -36,6 +36,8 @@ jobs:
           echo '+cpu +memory +pids +io' | sudo tee "$task_group/cgroup.subtree_control" > /dev/null
           sudo chown "$(id -u):$(id -g)" "$task_group" "$task_group/cgroup.procs" "$task_group/cgroup.subtree_control"
           echo "AGENT_ARCH_CGROUP_ROOT=$task_group" >> "$GITHUB_ENV"
+      - name: Calibrate actual four-call stdio fixture before native work
+        run: python3 comparison/tool_lifecycle_fixture_check.py --output "$RUNNER_TEMP/tool-lifecycle-evidence/fixture-capacity.json"
       - name: Execute complete native condition blocks without paid provider keys
         env:
           STUDY_PHASE: ${{ inputs.phase }}

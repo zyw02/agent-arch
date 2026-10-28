@@ -1,0 +1,34 @@
+{
+  "run_id": 40681051511,
+  "controller_commit": "607e8f09b4b8c6257ddaaf762ec4a659f9c1f18c",
+  "artifact_id": 12813416589,
+  "artifact_zip_sha256": "03fb348c85efc90a176141ac853bacac41226bf5be07b91658718eb2317244a1",
+  "original_members_sha256": {
+    "node-version.txt": "249baf635bb43877fcb9422efa1a4904b702d0ddf14d3949b7cd0950d5229c81",
+    "os-release.txt": "87458b3b1f1ca0e5c693ade771de7007c3783bdc692fa6b39eb6414bf2af2763",
+    "package-lock.json": "a6ebbd0a07aae1adbee7483b03dc0a22bd12fd4afcd7735c871f838f22037428",
+    "tool-lifecycle-protocol.json": "15c33123e7ff9dbae73e55bf2ce6839c4dcb289308c919a6522ae410e19cf1c7",
+    "tool-lifecycle-report.json": "c2b31534d7a1c7cfd05b813b61a1e89767551a3dedacc821be0af087810e91e4",
+    "tool-lifecycle-source-bindings.json": "81ef8e028f22152630dd36de16413fc7f50146e73cdf87ae9682ab4a2c661930"
+  },
+  "disposition": "Adapter calibration failure, not formal product failure. OpenClaw normalizes punctuation-bearing call IDs; the scripted provider failed exact correlation and reissued reads until its own request cap. All four OpenClaw healthy arms are excluded from product failure/performance comparisons; dependent failure/cancel arms were correctly unexecuted. DSH six original arms are retained but not promoted to formal repetitions. Original validity flags/terminal judgments and raw bytes remain unchanged. Corrected pilot uses stable alphanumeric IDs and refuses any uncorrelated result without retrying. No paid native-task model requests.",
+  "execution_scripts_sha256": {
+    "tool_lifecycle_probe.py": "609890ae5e1cfac7d6779bf779e7eac164322a3505574e127b6890992e7a5162",
+    "tool_lifecycle_provider.py": "0c9b1276b2f81ea7cb0590fd1f0d9e61e854b73b7d2f662548911ddbd6ee04f2",
+    "tool_lifecycle_mcp.py": "0ca044c47de657e4f03f4f1b054bc417d95f63a7746f0c61843adf8918dc474c",
+    "platform_api_probe.py": "1bc4ccc146a0528a4df2cb2c2cd80467c73219b2df1f087a725d3cf6f4835ccb",
+    "resource_collector.py": "6e6bcb3a22cdc42ab54c0e2ebd11cb5f014dfd7a6a57e9e7f4f35fd4cd567e01"
+  },
+  "offline_summarizer_sha256": "9f086a6250cca72b878853a6c478132c198318c25673f22d8657c576bdedacdb",
+  "retained_files_sha256": {
+    "attempt-1-node-version.txt": "249baf635bb43877fcb9422efa1a4904b702d0ddf14d3949b7cd0950d5229c81",
+    "attempt-1-request-payloads.json": "3611eb1c3369ccc9d71188f5cc73d99e46e7dec67952809db8c2c99912452555",
+    "attempt-1-os-release.txt": "87458b3b1f1ca0e5c693ade771de7007c3783bdc692fa6b39eb6414bf2af2763",
+    "attempt-1-metrics.csv": "b595d67a8b9c7cf4b8dbdc7cc1996c857d0ec8662e6124d2e3be04307f652c43",
+    "attempt-1-tool-lifecycle-source-bindings.json": "81ef8e028f22152630dd36de16413fc7f50146e73cdf87ae9682ab4a2c661930",
+    "attempt-1-summary.json": "e795ecc48d00e96dfce60094793a07d5b84ba05ba402ee2578e57dad0add8bb9",
+    "attempt-1-package-lock.json.gz": "459f6fddfe92aa121af5e0e7da27d26aa413bacca9cb8474161578a218f24145",
+    "attempt-1-tool-lifecycle-protocol.json": "15c33123e7ff9dbae73e55bf2ce6839c4dcb289308c919a6522ae410e19cf1c7",
+    "attempt-1-tool-lifecycle-report.json.gz": "b7b34dc0afb7a5f6eacbc6f19d182a4ff5883a226a3aea02a636d649a5e36240"
+  }
+}

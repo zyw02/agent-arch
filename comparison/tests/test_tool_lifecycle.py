@@ -1,5 +1,6 @@
 import hashlib
 import json
+import re
 from pathlib import Path
 import sys
 import tempfile
@@ -16,6 +17,7 @@ class ToolLifecycleTests(unittest.TestCase):
         plan=ToolPlan('DSH','native_single',[Path('/owned/'+str(i)) for i in range(4)],['VALUE_'+str(i) for i in range(4)],'failure')
         body=dict(tools=[dict(name='read',input_schema=dict(type='object',properties=dict(path=dict(type='string'))))],messages=[dict(role='user',content=plan.prompt+' VALUE_0')])
         decision=plan.decide(body)
+        self.assertTrue(all(re.fullmatch('[A-Za-z0-9]+',identifier) for identifier in plan.call_ids.values()))
         self.assertEqual(decision['calls'][0]['arguments'],dict(path='/owned/0'))
         self.assertNotIn('text',decision)
 
@@ -26,6 +28,8 @@ class ToolLifecycleTests(unittest.TestCase):
         self.assertNotIn(values[2],plan.expected_text)
         messages[0]['tool_call_id'],messages[1]['tool_call_id']=messages[1]['tool_call_id'],messages[0]['tool_call_id']
         self.assertTrue(plan.decide(dict(messages=messages))['text'].startswith('FIXTURE_RESULT_WITHOUT_MATCHING_VALUE'))
+        messages[0]['tool_call_id']='unexpected_normalized_id'
+        self.assertEqual(plan.decide(dict(messages=messages))['text'],'FIXTURE_UNCORRELATED_NATIVE_RESULT_ID')
 
     def test_protocol_streams_preserve_all_four_call_ids_and_arguments(self):
         calls=[dict(id='call_'+str(i),name='probe__eval_read',arguments=dict(index=i)) for i in range(4)]
