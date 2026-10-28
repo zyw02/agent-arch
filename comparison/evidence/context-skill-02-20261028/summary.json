@@ -1,0 +1,592 @@
+{
+  "study_id": "CTX-02",
+  "protocol_sha256": "72865b2670d343cd9b461c23fb160c7c46d941b870e724639687697c6c438157",
+  "run_id": "40665504454",
+  "controller_commit": "0354952caef3cfff59df51fd2c002814049830d2",
+  "blocks": 2,
+  "arms": 20,
+  "calibration_controls": 10,
+  "provider_calls": 37,
+  "provider_errors": 0,
+  "adapter_errors": 0,
+  "resources_complete": 20,
+  "usage_complete": 20,
+  "delivered": 19,
+  "exact": 9,
+  "full_success": 7,
+  "rows": [
+    {
+      "product": "DSH",
+      "condition": "ample_skill",
+      "independent_blocks": 2,
+      "delivered": 2,
+      "exact": 2,
+      "constraints_satisfied": 2,
+      "constraints_unobserved": 0,
+      "full_success": 2,
+      "initial_rule_visible": 2,
+      "skill_load_attempts": 2,
+      "rule_in_tool_followup": 2,
+      "known_real_provider_tokens": [
+        16423,
+        16431
+      ],
+      "independent_delivery_seconds": [
+        4.755004258,
+        4.692332398
+      ],
+      "cpu_core_seconds": [
+        2.924739,
+        2.958119
+      ],
+      "sampled_peak_pss_bytes": [
+        331431936,
+        331694080
+      ],
+      "sampled_peak_disk_increment_bytes": [
+        77824,
+        77824
+      ],
+      "observer_total_cpu_seconds": [
+        0.2491159999999836,
+        0.24356399999999767
+      ]
+    },
+    {
+      "product": "DSH",
+      "condition": "ample_no_skill",
+      "independent_blocks": 2,
+      "delivered": 1,
+      "exact": 1,
+      "constraints_satisfied": 1,
+      "constraints_unobserved": 0,
+      "full_success": 0,
+      "initial_rule_visible": 2,
+      "skill_load_attempts": 1,
+      "rule_in_tool_followup": 0,
+      "known_real_provider_tokens": [
+        7586,
+        15117
+      ],
+      "independent_delivery_seconds": [
+        3.906646343,
+        4.654282183
+      ],
+      "cpu_core_seconds": [
+        2.96194,
+        2.935299
+      ],
+      "sampled_peak_pss_bytes": [
+        331535360,
+        331398144
+      ],
+      "sampled_peak_disk_increment_bytes": [
+        73728,
+        73728
+      ],
+      "observer_total_cpu_seconds": [
+        0.21701500000000568,
+        0.2542070000000296
+      ]
+    },
+    {
+      "product": "DSH",
+      "condition": "tight_skill",
+      "independent_blocks": 2,
+      "delivered": 2,
+      "exact": 2,
+      "constraints_satisfied": 2,
+      "constraints_unobserved": 0,
+      "full_success": 2,
+      "initial_rule_visible": 0,
+      "skill_load_attempts": 2,
+      "rule_in_tool_followup": 2,
+      "known_real_provider_tokens": [
+        13223,
+        13227
+      ],
+      "independent_delivery_seconds": [
+        4.591226789,
+        4.596615012999999
+      ],
+      "cpu_core_seconds": [
+        2.931176,
+        2.828496
+      ],
+      "sampled_peak_pss_bytes": [
+        331408384,
+        319056896
+      ],
+      "sampled_peak_disk_increment_bytes": [
+        77824,
+        77824
+      ],
+      "observer_total_cpu_seconds": [
+        0.23740699999999587,
+        0.22260699999998634
+      ]
+    },
+    {
+      "product": "DSH",
+      "condition": "tight_no_skill",
+      "independent_blocks": 2,
+      "delivered": 2,
+      "exact": 0,
+      "constraints_satisfied": 0,
+      "constraints_unobserved": 0,
+      "full_success": 0,
+      "initial_rule_visible": 0,
+      "skill_load_attempts": 2,
+      "rule_in_tool_followup": 0,
+      "known_real_provider_tokens": [
+        11890,
+        11890
+      ],
+      "independent_delivery_seconds": [
+        4.250594224,
+        4.384663322000001
+      ],
+      "cpu_core_seconds": [
+        2.88088,
+        2.773865
+      ],
+      "sampled_peak_pss_bytes": [
+        326046720,
+        316606464
+      ],
+      "sampled_peak_disk_increment_bytes": [
+        73728,
+        73728
+      ],
+      "observer_total_cpu_seconds": [
+        0.229835999999993,
+        0.2071220000000169
+      ]
+    },
+    {
+      "product": "DSH",
+      "condition": "tight_required_no_skill",
+      "independent_blocks": 2,
+      "delivered": 2,
+      "exact": 0,
+      "constraints_satisfied": 1,
+      "constraints_unobserved": 0,
+      "full_success": 0,
+      "initial_rule_visible": 0,
+      "skill_load_attempts": 1,
+      "rule_in_tool_followup": 0,
+      "known_real_provider_tokens": [
+        11894,
+        5897
+      ],
+      "independent_delivery_seconds": [
+        4.107218027,
+        3.456669934
+      ],
+      "cpu_core_seconds": [
+        2.924756,
+        2.80289
+      ],
+      "sampled_peak_pss_bytes": [
+        330506240,
+        330382336
+      ],
+      "sampled_peak_disk_increment_bytes": [
+        73728,
+        73728
+      ],
+      "observer_total_cpu_seconds": [
+        0.2102369999999878,
+        0.17066700000005697
+      ]
+    },
+    {
+      "product": "OpenClaw",
+      "condition": "ample_skill",
+      "independent_blocks": 2,
+      "delivered": 2,
+      "exact": 2,
+      "constraints_satisfied": 2,
+      "constraints_unobserved": 0,
+      "full_success": 2,
+      "initial_rule_visible": 2,
+      "skill_load_attempts": 2,
+      "rule_in_tool_followup": 2,
+      "known_real_provider_tokens": [
+        10141,
+        10155
+      ],
+      "independent_delivery_seconds": [
+        25.547399653,
+        23.187953247000003
+      ],
+      "cpu_core_seconds": [
+        36.319108,
+        32.621501
+      ],
+      "sampled_peak_pss_bytes": [
+        1590272000,
+        1609490432
+      ],
+      "sampled_peak_disk_increment_bytes": [
+        4976640,
+        5287936
+      ],
+      "observer_total_cpu_seconds": [
+        3.4915650000000094,
+        2.731937999999976
+      ]
+    },
+    {
+      "product": "OpenClaw",
+      "condition": "ample_no_skill",
+      "independent_blocks": 2,
+      "delivered": 2,
+      "exact": 0,
+      "constraints_satisfied": 1,
+      "constraints_unobserved": 0,
+      "full_success": 0,
+      "initial_rule_visible": 2,
+      "skill_load_attempts": 1,
+      "rule_in_tool_followup": 0,
+      "known_real_provider_tokens": [
+        13870,
+        4503
+      ],
+      "independent_delivery_seconds": [
+        25.509212326,
+        23.045684196
+      ],
+      "cpu_core_seconds": [
+        34.251804,
+        34.110025
+      ],
+      "sampled_peak_pss_bytes": [
+        1570767872,
+        1605324800
+      ],
+      "sampled_peak_disk_increment_bytes": [
+        4976640,
+        4976640
+      ],
+      "observer_total_cpu_seconds": [
+        3.2293610000000017,
+        2.8856550000000203
+      ]
+    },
+    {
+      "product": "OpenClaw",
+      "condition": "tight_skill",
+      "independent_blocks": 2,
+      "delivered": 2,
+      "exact": 1,
+      "constraints_satisfied": 2,
+      "constraints_unobserved": 0,
+      "full_success": 1,
+      "initial_rule_visible": 0,
+      "skill_load_attempts": 2,
+      "rule_in_tool_followup": 2,
+      "known_real_provider_tokens": [
+        7075,
+        7079
+      ],
+      "independent_delivery_seconds": [
+        24.30568718,
+        23.873664289
+      ],
+      "cpu_core_seconds": [
+        34.064361,
+        33.788356
+      ],
+      "sampled_peak_pss_bytes": [
+        1590620160,
+        1582543872
+      ],
+      "sampled_peak_disk_increment_bytes": [
+        5140480,
+        5029888
+      ],
+      "observer_total_cpu_seconds": [
+        3.104032999999998,
+        2.8479739999999483
+      ]
+    },
+    {
+      "product": "OpenClaw",
+      "condition": "tight_no_skill",
+      "independent_blocks": 2,
+      "delivered": 2,
+      "exact": 0,
+      "constraints_satisfied": 0,
+      "constraints_unobserved": 0,
+      "full_success": 0,
+      "initial_rule_visible": 0,
+      "skill_load_attempts": 0,
+      "rule_in_tool_followup": 0,
+      "known_real_provider_tokens": [
+        6072,
+        6044
+      ],
+      "independent_delivery_seconds": [
+        24.115488459,
+        24.115644103999998
+      ],
+      "cpu_core_seconds": [
+        34.305327,
+        34.410119
+      ],
+      "sampled_peak_pss_bytes": [
+        1563042816,
+        1570732032
+      ],
+      "sampled_peak_disk_increment_bytes": [
+        5029888,
+        5140480
+      ],
+      "observer_total_cpu_seconds": [
+        2.8795860000000086,
+        2.955559999999978
+      ]
+    },
+    {
+      "product": "OpenClaw",
+      "condition": "tight_required_no_skill",
+      "independent_blocks": 2,
+      "delivered": 2,
+      "exact": 1,
+      "constraints_satisfied": 1,
+      "constraints_unobserved": 0,
+      "full_success": 0,
+      "initial_rule_visible": 2,
+      "skill_load_attempts": 0,
+      "rule_in_tool_followup": 0,
+      "known_real_provider_tokens": [
+        3019,
+        6183
+      ],
+      "independent_delivery_seconds": [
+        22.121027582,
+        23.63979515
+      ],
+      "cpu_core_seconds": [
+        32.777443,
+        33.014543
+      ],
+      "sampled_peak_pss_bytes": [
+        1659843584,
+        1593591808
+      ],
+      "sampled_peak_disk_increment_bytes": [
+        5369856,
+        5197824
+      ],
+      "observer_total_cpu_seconds": [
+        2.632896000000003,
+        2.795826000000008
+      ]
+    }
+  ],
+  "native_provider_accounting": [
+    {
+      "product": "OpenClaw",
+      "block": 1,
+      "condition": "ample_skill",
+      "native_task_tokens": 10141,
+      "provider_task_tokens": 10141,
+      "totals_agree": true,
+      "auxiliary_requests": 0,
+      "auxiliary_tokens": 0
+    },
+    {
+      "product": "OpenClaw",
+      "block": 1,
+      "condition": "tight_required_no_skill",
+      "native_task_tokens": 3019,
+      "provider_task_tokens": 3019,
+      "totals_agree": true,
+      "auxiliary_requests": 0,
+      "auxiliary_tokens": 0
+    },
+    {
+      "product": "OpenClaw",
+      "block": 1,
+      "condition": "tight_skill",
+      "native_task_tokens": 7075,
+      "provider_task_tokens": 7075,
+      "totals_agree": true,
+      "auxiliary_requests": 0,
+      "auxiliary_tokens": 0
+    },
+    {
+      "product": "OpenClaw",
+      "block": 1,
+      "condition": "ample_no_skill",
+      "native_task_tokens": 13870,
+      "provider_task_tokens": 13870,
+      "totals_agree": true,
+      "auxiliary_requests": 0,
+      "auxiliary_tokens": 0
+    },
+    {
+      "product": "DSH",
+      "block": 1,
+      "condition": "ample_skill",
+      "native_task_tokens": 16423,
+      "provider_task_tokens": 16423,
+      "totals_agree": true,
+      "auxiliary_requests": 0,
+      "auxiliary_tokens": 0
+    },
+    {
+      "product": "DSH",
+      "block": 1,
+      "condition": "ample_no_skill",
+      "native_task_tokens": 7586,
+      "provider_task_tokens": 7586,
+      "totals_agree": true,
+      "auxiliary_requests": 0,
+      "auxiliary_tokens": 0
+    },
+    {
+      "product": "DSH",
+      "block": 1,
+      "condition": "tight_skill",
+      "native_task_tokens": 13223,
+      "provider_task_tokens": 13223,
+      "totals_agree": true,
+      "auxiliary_requests": 0,
+      "auxiliary_tokens": 0
+    },
+    {
+      "product": "OpenClaw",
+      "block": 1,
+      "condition": "tight_no_skill",
+      "native_task_tokens": 6072,
+      "provider_task_tokens": 6072,
+      "totals_agree": true,
+      "auxiliary_requests": 0,
+      "auxiliary_tokens": 0
+    },
+    {
+      "product": "DSH",
+      "block": 1,
+      "condition": "tight_no_skill",
+      "native_task_tokens": 11890,
+      "provider_task_tokens": 11890,
+      "totals_agree": true,
+      "auxiliary_requests": 0,
+      "auxiliary_tokens": 0
+    },
+    {
+      "product": "DSH",
+      "block": 1,
+      "condition": "tight_required_no_skill",
+      "native_task_tokens": 11894,
+      "provider_task_tokens": 11894,
+      "totals_agree": true,
+      "auxiliary_requests": 0,
+      "auxiliary_tokens": 0
+    },
+    {
+      "product": "DSH",
+      "block": 2,
+      "condition": "ample_skill",
+      "native_task_tokens": 16431,
+      "provider_task_tokens": 16431,
+      "totals_agree": true,
+      "auxiliary_requests": 0,
+      "auxiliary_tokens": 0
+    },
+    {
+      "product": "OpenClaw",
+      "block": 2,
+      "condition": "tight_required_no_skill",
+      "native_task_tokens": 6183,
+      "provider_task_tokens": 6183,
+      "totals_agree": true,
+      "auxiliary_requests": 0,
+      "auxiliary_tokens": 0
+    },
+    {
+      "product": "OpenClaw",
+      "block": 2,
+      "condition": "ample_no_skill",
+      "native_task_tokens": 4503,
+      "provider_task_tokens": 4503,
+      "totals_agree": true,
+      "auxiliary_requests": 0,
+      "auxiliary_tokens": 0
+    },
+    {
+      "product": "OpenClaw",
+      "block": 2,
+      "condition": "ample_skill",
+      "native_task_tokens": 10155,
+      "provider_task_tokens": 10155,
+      "totals_agree": true,
+      "auxiliary_requests": 0,
+      "auxiliary_tokens": 0
+    },
+    {
+      "product": "DSH",
+      "block": 2,
+      "condition": "tight_no_skill",
+      "native_task_tokens": 11890,
+      "provider_task_tokens": 11890,
+      "totals_agree": true,
+      "auxiliary_requests": 0,
+      "auxiliary_tokens": 0
+    },
+    {
+      "product": "DSH",
+      "block": 2,
+      "condition": "tight_required_no_skill",
+      "native_task_tokens": 5897,
+      "provider_task_tokens": 5897,
+      "totals_agree": true,
+      "auxiliary_requests": 0,
+      "auxiliary_tokens": 0
+    },
+    {
+      "product": "DSH",
+      "block": 2,
+      "condition": "tight_skill",
+      "native_task_tokens": 13227,
+      "provider_task_tokens": 13227,
+      "totals_agree": true,
+      "auxiliary_requests": 0,
+      "auxiliary_tokens": 0
+    },
+    {
+      "product": "OpenClaw",
+      "block": 2,
+      "condition": "tight_skill",
+      "native_task_tokens": 7079,
+      "provider_task_tokens": 7079,
+      "totals_agree": true,
+      "auxiliary_requests": 0,
+      "auxiliary_tokens": 0
+    },
+    {
+      "product": "DSH",
+      "block": 2,
+      "condition": "ample_no_skill",
+      "native_task_tokens": 15117,
+      "provider_task_tokens": 15117,
+      "totals_agree": true,
+      "auxiliary_requests": 0,
+      "auxiliary_tokens": 0
+    },
+    {
+      "product": "OpenClaw",
+      "block": 2,
+      "condition": "tight_no_skill",
+      "native_task_tokens": 6044,
+      "provider_task_tokens": 6044,
+      "totals_agree": true,
+      "auxiliary_requests": 0,
+      "auxiliary_tokens": 0
+    }
+  ],
+  "interpretation": "Every original judgment retained and terminal oracle independently recomputed. Two constructed matched blocks support bounded mechanism observations. Null is a delivered incomplete answer, including expected missing-parameter controls. Full acceptance additionally requires task constraints. No broad product ranking, hard task-tree quota, full compaction, independent component token count or invoice-cost claim."
+}

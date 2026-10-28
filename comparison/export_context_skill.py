@@ -72,7 +72,7 @@ def plot(rows,report,output):
     import numpy as np
     conditions=list(LABELS);products=('DSH','OpenClaw')
     fig,axes=plt.subplots(1,2,figsize=(13,4.7),layout='constrained')
-    columns=[('input_rule_visible','Rule in initial\nrequest'),('native_skill_load','Native skill\nload'),('rule_adopted_from_tool','Rule from tool\nin next request'),('quality_correct','Exact task\nresult')]
+    columns=[('input_rule_visible','Rule in initial\nrequest'),('native_skill_load','Native skill\nload attempt'),('rule_adopted_from_tool','Rule from tool\nin next request'),('quality_correct','Exact task\nresult')]
     for axis,product in zip(axes,products):
         selected=[r for r in rows if r['product']==product];matrix=[];counts=[]
         for condition in conditions:

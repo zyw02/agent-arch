@@ -1,0 +1,1099 @@
+{
+  "run_id": "40665504454",
+  "report_sha256": "b0a3437831a64954e04ccf32d2ebe120e9ca0657f907e16d6906534a9ac0bf02",
+  "requests": [
+    {
+      "product": "OpenClaw",
+      "block": 1,
+      "condition": "ample_skill",
+      "index": 0,
+      "stage": "task_initial",
+      "endpoint": "/v1/chat/completions",
+      "synthetic": false,
+      "raw_usage": {
+        "prompt_tokens": 4549,
+        "completion_tokens": 40,
+        "total_tokens": 4589,
+        "prompt_tokens_details": {
+          "cached_tokens": 896
+        },
+        "prompt_cache_hit_tokens": 896,
+        "prompt_cache_miss_tokens": 3653
+      },
+      "normalized_usage": {
+        "input_tokens": 4549,
+        "output_tokens": 40,
+        "cache_hit_input_tokens": 896,
+        "cache_created_input_tokens": null
+      },
+      "complete": true,
+      "model": "deepseek-flash",
+      "thinking": {
+        "type": "disabled"
+      },
+      "request_sha256": "c0184a1bbbbb7db69a6e168c562540bd674d22c77d6f62ecd967bd682c75706b"
+    },
+    {
+      "product": "OpenClaw",
+      "block": 1,
+      "condition": "ample_skill",
+      "index": 1,
+      "stage": "task_tool_followup",
+      "endpoint": "/v1/chat/completions",
+      "synthetic": false,
+      "raw_usage": {
+        "prompt_tokens": 5526,
+        "completion_tokens": 26,
+        "total_tokens": 5552,
+        "prompt_tokens_details": {
+          "cached_tokens": 4480
+        },
+        "prompt_cache_hit_tokens": 4480,
+        "prompt_cache_miss_tokens": 1046
+      },
+      "normalized_usage": {
+        "input_tokens": 5526,
+        "output_tokens": 26,
+        "cache_hit_input_tokens": 4480,
+        "cache_created_input_tokens": null
+      },
+      "complete": true,
+      "model": "deepseek-flash",
+      "thinking": {
+        "type": "disabled"
+      },
+      "request_sha256": "538c90e93909ca9c7185de05f8ba5c51c835450998fc8f53d662a55807d83cdb"
+    },
+    {
+      "product": "OpenClaw",
+      "block": 1,
+      "condition": "tight_required_no_skill",
+      "index": 0,
+      "stage": "task_initial",
+      "endpoint": "/v1/chat/completions",
+      "synthetic": false,
+      "raw_usage": {
+        "prompt_tokens": 2993,
+        "completion_tokens": 26,
+        "total_tokens": 3019,
+        "prompt_tokens_details": {
+          "cached_tokens": 896
+        },
+        "prompt_cache_hit_tokens": 896,
+        "prompt_cache_miss_tokens": 2097
+      },
+      "normalized_usage": {
+        "input_tokens": 2993,
+        "output_tokens": 26,
+        "cache_hit_input_tokens": 896,
+        "cache_created_input_tokens": null
+      },
+      "complete": true,
+      "model": "deepseek-flash",
+      "thinking": {
+        "type": "disabled"
+      },
+      "request_sha256": "6b401e1d5b6f6b2568d3233e7bfa33c86fb1f9a194a0873cae4dff213b77c596"
+    },
+    {
+      "product": "OpenClaw",
+      "block": 1,
+      "condition": "tight_skill",
+      "index": 0,
+      "stage": "task_initial",
+      "endpoint": "/v1/chat/completions",
+      "synthetic": false,
+      "raw_usage": {
+        "prompt_tokens": 3016,
+        "completion_tokens": 40,
+        "total_tokens": 3056,
+        "prompt_tokens_details": {
+          "cached_tokens": 896
+        },
+        "prompt_cache_hit_tokens": 896,
+        "prompt_cache_miss_tokens": 2120
+      },
+      "normalized_usage": {
+        "input_tokens": 3016,
+        "output_tokens": 40,
+        "cache_hit_input_tokens": 896,
+        "cache_created_input_tokens": null
+      },
+      "complete": true,
+      "model": "deepseek-flash",
+      "thinking": {
+        "type": "disabled"
+      },
+      "request_sha256": "b73d6079d7cbbf2e581da6f6b4ba53cbb8e044c88959634482b21cce76945771"
+    },
+    {
+      "product": "OpenClaw",
+      "block": 1,
+      "condition": "tight_skill",
+      "index": 1,
+      "stage": "task_tool_followup",
+      "endpoint": "/v1/chat/completions",
+      "synthetic": false,
+      "raw_usage": {
+        "prompt_tokens": 3993,
+        "completion_tokens": 26,
+        "total_tokens": 4019,
+        "prompt_tokens_details": {
+          "cached_tokens": 2944
+        },
+        "prompt_cache_hit_tokens": 2944,
+        "prompt_cache_miss_tokens": 1049
+      },
+      "normalized_usage": {
+        "input_tokens": 3993,
+        "output_tokens": 26,
+        "cache_hit_input_tokens": 2944,
+        "cache_created_input_tokens": null
+      },
+      "complete": true,
+      "model": "deepseek-flash",
+      "thinking": {
+        "type": "disabled"
+      },
+      "request_sha256": "8c08fc2db963c74d2d279adb5ee046a4f942cef37dba4b2b4ef1842f14de1e59"
+    },
+    {
+      "product": "OpenClaw",
+      "block": 1,
+      "condition": "ample_no_skill",
+      "index": 0,
+      "stage": "task_initial",
+      "endpoint": "/v1/chat/completions",
+      "synthetic": false,
+      "raw_usage": {
+        "prompt_tokens": 4475,
+        "completion_tokens": 40,
+        "total_tokens": 4515,
+        "prompt_tokens_details": {
+          "cached_tokens": 896
+        },
+        "prompt_cache_hit_tokens": 896,
+        "prompt_cache_miss_tokens": 3579
+      },
+      "normalized_usage": {
+        "input_tokens": 4475,
+        "output_tokens": 40,
+        "cache_hit_input_tokens": 896,
+        "cache_created_input_tokens": null
+      },
+      "complete": true,
+      "model": "deepseek-flash",
+      "thinking": {
+        "type": "disabled"
+      },
+      "request_sha256": "17715a338803156684d35ad38f4625a787c0d7a4a85d70e745d5db8cd26b60a5"
+    },
+    {
+      "product": "OpenClaw",
+      "block": 1,
+      "condition": "ample_no_skill",
+      "index": 1,
+      "stage": "task_tool_followup",
+      "endpoint": "/v1/chat/completions",
+      "synthetic": false,
+      "raw_usage": {
+        "prompt_tokens": 4568,
+        "completion_tokens": 87,
+        "total_tokens": 4655,
+        "prompt_tokens_details": {
+          "cached_tokens": 4352
+        },
+        "prompt_cache_hit_tokens": 4352,
+        "prompt_cache_miss_tokens": 216
+      },
+      "normalized_usage": {
+        "input_tokens": 4568,
+        "output_tokens": 87,
+        "cache_hit_input_tokens": 4352,
+        "cache_created_input_tokens": null
+      },
+      "complete": true,
+      "model": "deepseek-flash",
+      "thinking": {
+        "type": "disabled"
+      },
+      "request_sha256": "8b03703cc2a3a626c59cc9ced9d05d58a202e125b589465bb3a95f62ccab0a19"
+    },
+    {
+      "product": "OpenClaw",
+      "block": 1,
+      "condition": "ample_no_skill",
+      "index": 2,
+      "stage": "task_tool_followup",
+      "endpoint": "/v1/chat/completions",
+      "synthetic": false,
+      "raw_usage": {
+        "prompt_tokens": 4674,
+        "completion_tokens": 26,
+        "total_tokens": 4700,
+        "prompt_tokens_details": {
+          "cached_tokens": 4480
+        },
+        "prompt_cache_hit_tokens": 4480,
+        "prompt_cache_miss_tokens": 194
+      },
+      "normalized_usage": {
+        "input_tokens": 4674,
+        "output_tokens": 26,
+        "cache_hit_input_tokens": 4480,
+        "cache_created_input_tokens": null
+      },
+      "complete": true,
+      "model": "deepseek-flash",
+      "thinking": {
+        "type": "disabled"
+      },
+      "request_sha256": "7127711dbf4b4fd0bacfb2d5838a72a46ba37ef75d0699b15726f7af678e4ec1"
+    },
+    {
+      "product": "DSH",
+      "block": 1,
+      "condition": "ample_skill",
+      "index": 0,
+      "stage": "task_initial",
+      "endpoint": "/v1/messages",
+      "synthetic": false,
+      "raw_usage": {
+        "input_tokens": 2405,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 5248,
+        "output_tokens": 39,
+        "service_tier": "standard"
+      },
+      "normalized_usage": {
+        "input_tokens": 7653,
+        "output_tokens": 39,
+        "cache_hit_input_tokens": 5248,
+        "cache_created_input_tokens": 0
+      },
+      "complete": true,
+      "model": "deepseek-flash",
+      "thinking": {
+        "type": "disabled"
+      },
+      "request_sha256": "b2fd7d0a760bff2b1f6c3f8da2712a07754fbb9b86131976340c45df7bcbb144"
+    },
+    {
+      "product": "DSH",
+      "block": 1,
+      "condition": "ample_skill",
+      "index": 1,
+      "stage": "task_tool_followup",
+      "endpoint": "/v1/messages",
+      "synthetic": false,
+      "raw_usage": {
+        "input_tokens": 1025,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 7680,
+        "output_tokens": 26,
+        "service_tier": "standard"
+      },
+      "normalized_usage": {
+        "input_tokens": 8705,
+        "output_tokens": 26,
+        "cache_hit_input_tokens": 7680,
+        "cache_created_input_tokens": 0
+      },
+      "complete": true,
+      "model": "deepseek-flash",
+      "thinking": {
+        "type": "disabled"
+      },
+      "request_sha256": "39a320b46ac672a07c30c8e3cd12945d7aca42cc0213b87b685e2b670feb3041"
+    },
+    {
+      "product": "DSH",
+      "block": 1,
+      "condition": "ample_no_skill",
+      "index": 0,
+      "stage": "task_initial",
+      "endpoint": "/v1/messages",
+      "synthetic": false,
+      "raw_usage": {
+        "input_tokens": 322,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 7168,
+        "output_tokens": 96,
+        "service_tier": "standard"
+      },
+      "normalized_usage": {
+        "input_tokens": 7490,
+        "output_tokens": 96,
+        "cache_hit_input_tokens": 7168,
+        "cache_created_input_tokens": 0
+      },
+      "complete": true,
+      "model": "deepseek-flash",
+      "thinking": {
+        "type": "disabled"
+      },
+      "request_sha256": "0d1a175504f6171dd223c446a18cdf942d3a1a948ebfa2ee7d9057e4cda7a2df"
+    },
+    {
+      "product": "DSH",
+      "block": 1,
+      "condition": "tight_skill",
+      "index": 0,
+      "stage": "task_initial",
+      "endpoint": "/v1/messages",
+      "synthetic": false,
+      "raw_usage": {
+        "input_tokens": 677,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 5376,
+        "output_tokens": 39,
+        "service_tier": "standard"
+      },
+      "normalized_usage": {
+        "input_tokens": 6053,
+        "output_tokens": 39,
+        "cache_hit_input_tokens": 5376,
+        "cache_created_input_tokens": 0
+      },
+      "complete": true,
+      "model": "deepseek-flash",
+      "thinking": {
+        "type": "disabled"
+      },
+      "request_sha256": "3da7d8cac1343b0afd3ad94515d705478793fb89f1564392c486b2cd67fa4633"
+    },
+    {
+      "product": "DSH",
+      "block": 1,
+      "condition": "tight_skill",
+      "index": 1,
+      "stage": "task_tool_followup",
+      "endpoint": "/v1/messages",
+      "synthetic": false,
+      "raw_usage": {
+        "input_tokens": 1089,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 6016,
+        "output_tokens": 26,
+        "service_tier": "standard"
+      },
+      "normalized_usage": {
+        "input_tokens": 7105,
+        "output_tokens": 26,
+        "cache_hit_input_tokens": 6016,
+        "cache_created_input_tokens": 0
+      },
+      "complete": true,
+      "model": "deepseek-flash",
+      "thinking": {
+        "type": "disabled"
+      },
+      "request_sha256": "829b6dfaad1d1b14e5d2c60967016755b1aea6bc6d94827d96a66d12cb83272c"
+    },
+    {
+      "product": "OpenClaw",
+      "block": 1,
+      "condition": "tight_no_skill",
+      "index": 0,
+      "stage": "task_initial",
+      "endpoint": "/v1/chat/completions",
+      "synthetic": false,
+      "raw_usage": {
+        "prompt_tokens": 2937,
+        "completion_tokens": 87,
+        "total_tokens": 3024,
+        "prompt_tokens_details": {
+          "cached_tokens": 896
+        },
+        "prompt_cache_hit_tokens": 896,
+        "prompt_cache_miss_tokens": 2041
+      },
+      "normalized_usage": {
+        "input_tokens": 2937,
+        "output_tokens": 87,
+        "cache_hit_input_tokens": 896,
+        "cache_created_input_tokens": null
+      },
+      "complete": true,
+      "model": "deepseek-flash",
+      "thinking": {
+        "type": "disabled"
+      },
+      "request_sha256": "488e735c9384e4fb487fb1cc1b68d3ec17f8deca23102403a395fbabf8c4ae73"
+    },
+    {
+      "product": "OpenClaw",
+      "block": 1,
+      "condition": "tight_no_skill",
+      "index": 1,
+      "stage": "task_tool_followup",
+      "endpoint": "/v1/chat/completions",
+      "synthetic": false,
+      "raw_usage": {
+        "prompt_tokens": 3043,
+        "completion_tokens": 5,
+        "total_tokens": 3048,
+        "prompt_tokens_details": {
+          "cached_tokens": 2816
+        },
+        "prompt_cache_hit_tokens": 2816,
+        "prompt_cache_miss_tokens": 227
+      },
+      "normalized_usage": {
+        "input_tokens": 3043,
+        "output_tokens": 5,
+        "cache_hit_input_tokens": 2816,
+        "cache_created_input_tokens": null
+      },
+      "complete": true,
+      "model": "deepseek-flash",
+      "thinking": {
+        "type": "disabled"
+      },
+      "request_sha256": "b5ffba99f2b5ef561a7185effa510b1e6331ba8c0a7cc1e2904701c0e1b89d04"
+    },
+    {
+      "product": "DSH",
+      "block": 1,
+      "condition": "tight_no_skill",
+      "index": 0,
+      "stage": "task_initial",
+      "endpoint": "/v1/messages",
+      "synthetic": false,
+      "raw_usage": {
+        "input_tokens": 258,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 5632,
+        "output_tokens": 39,
+        "service_tier": "standard"
+      },
+      "normalized_usage": {
+        "input_tokens": 5890,
+        "output_tokens": 39,
+        "cache_hit_input_tokens": 5632,
+        "cache_created_input_tokens": 0
+      },
+      "complete": true,
+      "model": "deepseek-flash",
+      "thinking": {
+        "type": "disabled"
+      },
+      "request_sha256": "38e3a0421d54fb61d4a58a38fc43dfda0b9a77a5638900b03f88d6e7310d3353"
+    },
+    {
+      "product": "DSH",
+      "block": 1,
+      "condition": "tight_no_skill",
+      "index": 1,
+      "stage": "task_tool_followup",
+      "endpoint": "/v1/messages",
+      "synthetic": false,
+      "raw_usage": {
+        "input_tokens": 196,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 5760,
+        "output_tokens": 5,
+        "service_tier": "standard"
+      },
+      "normalized_usage": {
+        "input_tokens": 5956,
+        "output_tokens": 5,
+        "cache_hit_input_tokens": 5760,
+        "cache_created_input_tokens": 0
+      },
+      "complete": true,
+      "model": "deepseek-flash",
+      "thinking": {
+        "type": "disabled"
+      },
+      "request_sha256": "c29d3a749b403487a1dc89a7aecad849983056b0d65b2491c169e16aba0723d9"
+    },
+    {
+      "product": "DSH",
+      "block": 1,
+      "condition": "tight_required_no_skill",
+      "index": 0,
+      "stage": "task_initial",
+      "endpoint": "/v1/messages",
+      "synthetic": false,
+      "raw_usage": {
+        "input_tokens": 516,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 5376,
+        "output_tokens": 39,
+        "service_tier": "standard"
+      },
+      "normalized_usage": {
+        "input_tokens": 5892,
+        "output_tokens": 39,
+        "cache_hit_input_tokens": 5376,
+        "cache_created_input_tokens": 0
+      },
+      "complete": true,
+      "model": "deepseek-flash",
+      "thinking": {
+        "type": "disabled"
+      },
+      "request_sha256": "65bd9978efed655f18a7583c72ae445f59d60c3df96354f91c4626af46b11387"
+    },
+    {
+      "product": "DSH",
+      "block": 1,
+      "condition": "tight_required_no_skill",
+      "index": 1,
+      "stage": "task_tool_followup",
+      "endpoint": "/v1/messages",
+      "synthetic": false,
+      "raw_usage": {
+        "input_tokens": 198,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 5760,
+        "output_tokens": 5,
+        "service_tier": "standard"
+      },
+      "normalized_usage": {
+        "input_tokens": 5958,
+        "output_tokens": 5,
+        "cache_hit_input_tokens": 5760,
+        "cache_created_input_tokens": 0
+      },
+      "complete": true,
+      "model": "deepseek-flash",
+      "thinking": {
+        "type": "disabled"
+      },
+      "request_sha256": "7e5f1b4750605e233925a5de8501898edd4dea072ad7b07d1ecec858526d21ba"
+    },
+    {
+      "product": "DSH",
+      "block": 2,
+      "condition": "ample_skill",
+      "index": 0,
+      "stage": "task_initial",
+      "endpoint": "/v1/messages",
+      "synthetic": false,
+      "raw_usage": {
+        "input_tokens": 2279,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 5376,
+        "output_tokens": 39,
+        "service_tier": "standard"
+      },
+      "normalized_usage": {
+        "input_tokens": 7655,
+        "output_tokens": 39,
+        "cache_hit_input_tokens": 5376,
+        "cache_created_input_tokens": 0
+      },
+      "complete": true,
+      "model": "deepseek-flash",
+      "thinking": {
+        "type": "disabled"
+      },
+      "request_sha256": "da8330552be278ffced1df0a8d0a27e4cba3f475127abd8ea0892cb9bd323622"
+    },
+    {
+      "product": "DSH",
+      "block": 2,
+      "condition": "ample_skill",
+      "index": 1,
+      "stage": "task_tool_followup",
+      "endpoint": "/v1/messages",
+      "synthetic": false,
+      "raw_usage": {
+        "input_tokens": 1029,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 7680,
+        "output_tokens": 28,
+        "service_tier": "standard"
+      },
+      "normalized_usage": {
+        "input_tokens": 8709,
+        "output_tokens": 28,
+        "cache_hit_input_tokens": 7680,
+        "cache_created_input_tokens": 0
+      },
+      "complete": true,
+      "model": "deepseek-flash",
+      "thinking": {
+        "type": "disabled"
+      },
+      "request_sha256": "521fef13cacf436f0e406537dd39a13c800d5399781b917f24b2bd631d2da2d4"
+    },
+    {
+      "product": "OpenClaw",
+      "block": 2,
+      "condition": "tight_required_no_skill",
+      "index": 0,
+      "stage": "task_initial",
+      "endpoint": "/v1/chat/completions",
+      "synthetic": false,
+      "raw_usage": {
+        "prompt_tokens": 2995,
+        "completion_tokens": 73,
+        "total_tokens": 3068,
+        "prompt_tokens_details": {
+          "cached_tokens": 896
+        },
+        "prompt_cache_hit_tokens": 896,
+        "prompt_cache_miss_tokens": 2099
+      },
+      "normalized_usage": {
+        "input_tokens": 2995,
+        "output_tokens": 73,
+        "cache_hit_input_tokens": 896,
+        "cache_created_input_tokens": null
+      },
+      "complete": true,
+      "model": "deepseek-flash",
+      "thinking": {
+        "type": "disabled"
+      },
+      "request_sha256": "3cf2a22b4d9f37b150c2e92813190686ad1ca81844f8478b8bbf71840fd14d53"
+    },
+    {
+      "product": "OpenClaw",
+      "block": 2,
+      "condition": "tight_required_no_skill",
+      "index": 1,
+      "stage": "task_tool_followup",
+      "endpoint": "/v1/chat/completions",
+      "synthetic": false,
+      "raw_usage": {
+        "prompt_tokens": 3087,
+        "completion_tokens": 28,
+        "total_tokens": 3115,
+        "prompt_tokens_details": {
+          "cached_tokens": 2944
+        },
+        "prompt_cache_hit_tokens": 2944,
+        "prompt_cache_miss_tokens": 143
+      },
+      "normalized_usage": {
+        "input_tokens": 3087,
+        "output_tokens": 28,
+        "cache_hit_input_tokens": 2944,
+        "cache_created_input_tokens": null
+      },
+      "complete": true,
+      "model": "deepseek-flash",
+      "thinking": {
+        "type": "disabled"
+      },
+      "request_sha256": "481ba147cc9fd216259903461531bcb07733d68eef54cf4187cf255946ece72d"
+    },
+    {
+      "product": "OpenClaw",
+      "block": 2,
+      "condition": "ample_no_skill",
+      "index": 0,
+      "stage": "task_initial",
+      "endpoint": "/v1/chat/completions",
+      "synthetic": false,
+      "raw_usage": {
+        "prompt_tokens": 4475,
+        "completion_tokens": 28,
+        "total_tokens": 4503,
+        "prompt_tokens_details": {
+          "cached_tokens": 896
+        },
+        "prompt_cache_hit_tokens": 896,
+        "prompt_cache_miss_tokens": 3579
+      },
+      "normalized_usage": {
+        "input_tokens": 4475,
+        "output_tokens": 28,
+        "cache_hit_input_tokens": 896,
+        "cache_created_input_tokens": null
+      },
+      "complete": true,
+      "model": "deepseek-flash",
+      "thinking": {
+        "type": "disabled"
+      },
+      "request_sha256": "af9e9e836ab437f4008f83f2b1cd85b1cccb85539c7d2ef2c369aa97853a250c"
+    },
+    {
+      "product": "OpenClaw",
+      "block": 2,
+      "condition": "ample_skill",
+      "index": 0,
+      "stage": "task_initial",
+      "endpoint": "/v1/chat/completions",
+      "synthetic": false,
+      "raw_usage": {
+        "prompt_tokens": 4554,
+        "completion_tokens": 40,
+        "total_tokens": 4594,
+        "prompt_tokens_details": {
+          "cached_tokens": 896
+        },
+        "prompt_cache_hit_tokens": 896,
+        "prompt_cache_miss_tokens": 3658
+      },
+      "normalized_usage": {
+        "input_tokens": 4554,
+        "output_tokens": 40,
+        "cache_hit_input_tokens": 896,
+        "cache_created_input_tokens": null
+      },
+      "complete": true,
+      "model": "deepseek-flash",
+      "thinking": {
+        "type": "disabled"
+      },
+      "request_sha256": "c26dfe9303fea8dcc5a92e4c3163ad2dd648a84b3158ca3ed3ab7a769b62f427"
+    },
+    {
+      "product": "OpenClaw",
+      "block": 2,
+      "condition": "ample_skill",
+      "index": 1,
+      "stage": "task_tool_followup",
+      "endpoint": "/v1/chat/completions",
+      "synthetic": false,
+      "raw_usage": {
+        "prompt_tokens": 5533,
+        "completion_tokens": 28,
+        "total_tokens": 5561,
+        "prompt_tokens_details": {
+          "cached_tokens": 4480
+        },
+        "prompt_cache_hit_tokens": 4480,
+        "prompt_cache_miss_tokens": 1053
+      },
+      "normalized_usage": {
+        "input_tokens": 5533,
+        "output_tokens": 28,
+        "cache_hit_input_tokens": 4480,
+        "cache_created_input_tokens": null
+      },
+      "complete": true,
+      "model": "deepseek-flash",
+      "thinking": {
+        "type": "disabled"
+      },
+      "request_sha256": "66af278ad87470335aac4fb4de0628454950a8a1ac14e48239d8a6efa50fba0e"
+    },
+    {
+      "product": "DSH",
+      "block": 2,
+      "condition": "tight_no_skill",
+      "index": 0,
+      "stage": "task_initial",
+      "endpoint": "/v1/messages",
+      "synthetic": false,
+      "raw_usage": {
+        "input_tokens": 514,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 5376,
+        "output_tokens": 39,
+        "service_tier": "standard"
+      },
+      "normalized_usage": {
+        "input_tokens": 5890,
+        "output_tokens": 39,
+        "cache_hit_input_tokens": 5376,
+        "cache_created_input_tokens": 0
+      },
+      "complete": true,
+      "model": "deepseek-flash",
+      "thinking": {
+        "type": "disabled"
+      },
+      "request_sha256": "72d4e050e05c4d5f32aa25cdc8a9d64e5bd94b721e38d91597326dff7fd4f571"
+    },
+    {
+      "product": "DSH",
+      "block": 2,
+      "condition": "tight_no_skill",
+      "index": 1,
+      "stage": "task_tool_followup",
+      "endpoint": "/v1/messages",
+      "synthetic": false,
+      "raw_usage": {
+        "input_tokens": 196,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 5760,
+        "output_tokens": 5,
+        "service_tier": "standard"
+      },
+      "normalized_usage": {
+        "input_tokens": 5956,
+        "output_tokens": 5,
+        "cache_hit_input_tokens": 5760,
+        "cache_created_input_tokens": 0
+      },
+      "complete": true,
+      "model": "deepseek-flash",
+      "thinking": {
+        "type": "disabled"
+      },
+      "request_sha256": "363c4be74510861afce12ec3fb8f47a90f1b73fb665c02d346b923c7350796c5"
+    },
+    {
+      "product": "DSH",
+      "block": 2,
+      "condition": "tight_required_no_skill",
+      "index": 0,
+      "stage": "task_initial",
+      "endpoint": "/v1/messages",
+      "synthetic": false,
+      "raw_usage": {
+        "input_tokens": 516,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 5376,
+        "output_tokens": 5,
+        "service_tier": "standard"
+      },
+      "normalized_usage": {
+        "input_tokens": 5892,
+        "output_tokens": 5,
+        "cache_hit_input_tokens": 5376,
+        "cache_created_input_tokens": 0
+      },
+      "complete": true,
+      "model": "deepseek-flash",
+      "thinking": {
+        "type": "disabled"
+      },
+      "request_sha256": "63ef5287d98913b4aba721855b1e3ba034eef4049ec9dc389864c98460ce1e91"
+    },
+    {
+      "product": "DSH",
+      "block": 2,
+      "condition": "tight_skill",
+      "index": 0,
+      "stage": "task_initial",
+      "endpoint": "/v1/messages",
+      "synthetic": false,
+      "raw_usage": {
+        "input_tokens": 421,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 5632,
+        "output_tokens": 39,
+        "service_tier": "standard"
+      },
+      "normalized_usage": {
+        "input_tokens": 6053,
+        "output_tokens": 39,
+        "cache_hit_input_tokens": 5632,
+        "cache_created_input_tokens": 0
+      },
+      "complete": true,
+      "model": "deepseek-flash",
+      "thinking": {
+        "type": "disabled"
+      },
+      "request_sha256": "f0115fcf037b7f9e3f30ad63f1cf43a4f164d71b57d2571c7891532ea376733e"
+    },
+    {
+      "product": "DSH",
+      "block": 2,
+      "condition": "tight_skill",
+      "index": 1,
+      "stage": "task_tool_followup",
+      "endpoint": "/v1/messages",
+      "synthetic": false,
+      "raw_usage": {
+        "input_tokens": 1091,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 6016,
+        "output_tokens": 28,
+        "service_tier": "standard"
+      },
+      "normalized_usage": {
+        "input_tokens": 7107,
+        "output_tokens": 28,
+        "cache_hit_input_tokens": 6016,
+        "cache_created_input_tokens": 0
+      },
+      "complete": true,
+      "model": "deepseek-flash",
+      "thinking": {
+        "type": "disabled"
+      },
+      "request_sha256": "7a44702a6ec87ddebb620ebce8f16622a64153e365c304411b190b1b9011a2ce"
+    },
+    {
+      "product": "OpenClaw",
+      "block": 2,
+      "condition": "tight_skill",
+      "index": 0,
+      "stage": "task_initial",
+      "endpoint": "/v1/chat/completions",
+      "synthetic": false,
+      "raw_usage": {
+        "prompt_tokens": 3016,
+        "completion_tokens": 40,
+        "total_tokens": 3056,
+        "prompt_tokens_details": {
+          "cached_tokens": 896
+        },
+        "prompt_cache_hit_tokens": 896,
+        "prompt_cache_miss_tokens": 2120
+      },
+      "normalized_usage": {
+        "input_tokens": 3016,
+        "output_tokens": 40,
+        "cache_hit_input_tokens": 896,
+        "cache_created_input_tokens": null
+      },
+      "complete": true,
+      "model": "deepseek-flash",
+      "thinking": {
+        "type": "disabled"
+      },
+      "request_sha256": "f54d47c2006e5826c4e1107d4e907acc866dfd4755b628c036229ce83c2ad3fa"
+    },
+    {
+      "product": "OpenClaw",
+      "block": 2,
+      "condition": "tight_skill",
+      "index": 1,
+      "stage": "task_tool_followup",
+      "endpoint": "/v1/chat/completions",
+      "synthetic": false,
+      "raw_usage": {
+        "prompt_tokens": 3995,
+        "completion_tokens": 28,
+        "total_tokens": 4023,
+        "prompt_tokens_details": {
+          "cached_tokens": 2944
+        },
+        "prompt_cache_hit_tokens": 2944,
+        "prompt_cache_miss_tokens": 1051
+      },
+      "normalized_usage": {
+        "input_tokens": 3995,
+        "output_tokens": 28,
+        "cache_hit_input_tokens": 2944,
+        "cache_created_input_tokens": null
+      },
+      "complete": true,
+      "model": "deepseek-flash",
+      "thinking": {
+        "type": "disabled"
+      },
+      "request_sha256": "fcd43376cf1bb92201b050c30a4d5139a90ff91e4e9f1f00a25f09bda4957e63"
+    },
+    {
+      "product": "DSH",
+      "block": 2,
+      "condition": "ample_no_skill",
+      "index": 0,
+      "stage": "task_initial",
+      "endpoint": "/v1/messages",
+      "synthetic": false,
+      "raw_usage": {
+        "input_tokens": 324,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 7168,
+        "output_tokens": 39,
+        "service_tier": "standard"
+      },
+      "normalized_usage": {
+        "input_tokens": 7492,
+        "output_tokens": 39,
+        "cache_hit_input_tokens": 7168,
+        "cache_created_input_tokens": 0
+      },
+      "complete": true,
+      "model": "deepseek-flash",
+      "thinking": {
+        "type": "disabled"
+      },
+      "request_sha256": "5995a6030a6ef65b94a15229dbf42b2933247abd3fc94bb7c3a922320d20ee10"
+    },
+    {
+      "product": "DSH",
+      "block": 2,
+      "condition": "ample_no_skill",
+      "index": 1,
+      "stage": "task_tool_followup",
+      "endpoint": "/v1/messages",
+      "synthetic": false,
+      "raw_usage": {
+        "input_tokens": 134,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 7424,
+        "output_tokens": 28,
+        "service_tier": "standard"
+      },
+      "normalized_usage": {
+        "input_tokens": 7558,
+        "output_tokens": 28,
+        "cache_hit_input_tokens": 7424,
+        "cache_created_input_tokens": 0
+      },
+      "complete": true,
+      "model": "deepseek-flash",
+      "thinking": {
+        "type": "disabled"
+      },
+      "request_sha256": "632ff4b02cdf38f8ddb5b9e9e3cf4c14d9cb60ab0a8c299ad8c149fafa4de898"
+    },
+    {
+      "product": "OpenClaw",
+      "block": 2,
+      "condition": "tight_no_skill",
+      "index": 0,
+      "stage": "task_initial",
+      "endpoint": "/v1/chat/completions",
+      "synthetic": false,
+      "raw_usage": {
+        "prompt_tokens": 2939,
+        "completion_tokens": 71,
+        "total_tokens": 3010,
+        "prompt_tokens_details": {
+          "cached_tokens": 896
+        },
+        "prompt_cache_hit_tokens": 896,
+        "prompt_cache_miss_tokens": 2043
+      },
+      "normalized_usage": {
+        "input_tokens": 2939,
+        "output_tokens": 71,
+        "cache_hit_input_tokens": 896,
+        "cache_created_input_tokens": null
+      },
+      "complete": true,
+      "model": "deepseek-flash",
+      "thinking": {
+        "type": "disabled"
+      },
+      "request_sha256": "23e3a54eb2402ed6e811a662d40c7a564d755653719d77534fd29282ee3c2799"
+    },
+    {
+      "product": "OpenClaw",
+      "block": 2,
+      "condition": "tight_no_skill",
+      "index": 1,
+      "stage": "task_tool_followup",
+      "endpoint": "/v1/chat/completions",
+      "synthetic": false,
+      "raw_usage": {
+        "prompt_tokens": 3029,
+        "completion_tokens": 5,
+        "total_tokens": 3034,
+        "prompt_tokens_details": {
+          "cached_tokens": 2816
+        },
+        "prompt_cache_hit_tokens": 2816,
+        "prompt_cache_miss_tokens": 213
+      },
+      "normalized_usage": {
+        "input_tokens": 3029,
+        "output_tokens": 5,
+        "cache_hit_input_tokens": 2816,
+        "cache_created_input_tokens": null
+      },
+      "complete": true,
+      "model": "deepseek-flash",
+      "thinking": {
+        "type": "disabled"
+      },
+      "request_sha256": "7adab58606be3f33573fb5b0717be4a61a8837267d65c4099ad8c11b63aa9c73"
+    }
+  ]
+}

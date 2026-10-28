@@ -77,7 +77,7 @@ Token normalization respects protocol semantics. Anthropic's `input_tokens` excl
 
 ![First live read resource traces](evidence/source-informed-20261028/read-resource-timeline.png)
 
-This figure is a measurement-chain check, **not a product ranking**. There is one observation per route, in fixed order. Product contexts, exposed tools, protocol and thinking settings differ; DSH retains its shipped headless behavior and OpenClaw uses an explicit local tool allowlist with bootstrap disabled. Installation/cache state and CPU/memory caps are recorded. Ordinary startup dominates this tiny task and has not been separated from steady-state execution.
+This figure is a measurement-chain check, **not a product ranking**. There is one observation per route, in fixed order. Product contexts, exposed tools, protocol and thinking settings differ; DSH retains its shipped headless behavior and OpenClaw uses an explicit local tool allowlist with workspace bootstrap creation skipped. Installation/cache state and CPU/memory caps are recorded. Ordinary startup dominates this tiny task and has not been separated from steady-state execution.
 
 The cgroup measures the product and inherited tool/MCP processes. A short privileged launcher migrates only that invocation, then drops to the original worker UID/GID before executing the product. The relay/controller and sampling thread remain outside; their full process cost is not yet attributed. PSS/RSS samples, kernel memory charge peak and disk allocation are separate quantities. Shared file-page charging can make process PSS exceed this cgroup's charged peak. Sampled peaks can miss short-lived changes. Raw cgroup I/O records do not imply flushed physical writes; shared installation, cleanup and retained evidence are separately scoped. Wall time currently means invocation start to process exit; a separately timestamped independent acceptance event remains to be added for formal task-delivery latency. Fine-grained context-source token attribution remains unobserved; payload bytes are not tokens.
 
@@ -91,11 +91,48 @@ Inspection found two evaluator/fixture problems. The ample no-skill arm supplied
 
 [CTX-02 preregistration](context-skill-protocol.json) supplies the algorithm in the identical user prompt for every arm, leaving random parameters absent from the prompt. It binds both exact native loaders and exact advertised paths, with negative checks for other reads/names. OpenClaw's [pinned installed-skill implementation](https://github.com/openclaw/openclaw/blob/dc2523e5a5c7a309517fd7fa834add938231d526/src/agents/tools/installed-skill-tools.ts) and actual model-visible schema establish the loader contract. Fresh random blocks are required; CTX-01 calls will not be repurposed as CTX-02 outcomes. Both studies are bootstrap/instruction-cap experiments and do not complete full-window compaction, dynamic skill optimization, hard task-tree quotas or self-improvement.
 
+## CTX-02: observed instruction projection, skill route and task effects
+
+The corrected [CTX-02 hosted run](https://github.com/zyw02/agent-arch/actions/runs/40665504454) completed ten calibration controls and **20 real-model arms in two complete randomized blocks**. It made 37 real provider calls, with zero provider/adapter errors. All 20 resource and provider-usage records are complete. The [offline summary](evidence/context-skill-02-20261028/summary.json) independently recomputes the original exact terminal judgments and reconciles **20/20 native task token totals** with normalized provider task totals. No extra model calls or native execution were used for that check. [Provenance and permanent raw reports](evidence/context-skill-02-20261028/provenance.json) bind the original ZIP, controller, preregistration, package lock and derived hashes.
+
+Each entry below is a count out of two independent blocks. Exact answer and full acceptance are separate: the latter additionally requires valid delivery and allowed tool use. A null answer is a format delivery with incomplete task quality; it is the expected safe response when parameters are absent. These intentionally missing-parameter controls are not counted as product malfunctions.
+
+| Condition | DSH initial rule | DSH exact / full | OpenClaw initial rule | OpenClaw exact / full |
+| --- | --- | --- | --- | --- |
+| Ample instructions + skill | 2/2 | 2/2 / 2/2 | 2/2 | 2/2 / 2/2 |
+| Ample instructions, skill disabled | 2/2 | 1/2 / 0/2 | 2/2 | 0/2 / 0/2 |
+| Tight instructions + skill | 0/2 | 2/2 / 2/2 | 0/2 | 1/2 / 1/2 |
+| Tight instructions, skill disabled | 0/2 | 0/2 / 0/2 | 0/2 | 0/2 / 0/2 |
+| Tight instructions, Required keyword, skill disabled | 0/2 | 0/2 / 0/2 | 2/2 | 1/2 / 0/2 |
+
+The actual native request projection agrees with the pinned owners. Under the ASCII fixture's ample cap (16384), both products include the middle rule. Under the tight cap (1024), both omit the neutral rule. OpenClaw's keyword-sensitive policy digest retains the Required variant; DSH's prefix-based instruction-chain projection omits it. The limits have different native semantics—UTF-8 bytes per DSH rendered chain versus UTF-16 characters per OpenClaw bootstrap file—so ASCII source length does not make their renderers identical.
+
+In all eight skill-enabled arms, the product-native loader returns the random rule and the next actual model request contains it. DSH uses `skill`; OpenClaw uses `skills_read`. The skill restores **parameter availability** in all four tight/skill arms, while exact task quality is 3/4: OpenClaw block 2 returns checksum 352 instead of 328 despite receiving the rule. Source projection and successful tool loading therefore do not imply correct model computation. The skill-disabled ample controls also show model/format/tool-use failures; their poor outcomes prevent a broad claim that skill loading reliably improves arbitrary tasks. One DSH exact ample/no-skill answer and one OpenClaw exact Required answer violate tool constraints and receive no full acceptance. Unavailable skill attempts and unrelated BOOTSTRAP reads remain charged and classified as violations.
+
+![Native rule projection, load attempts and exact results](evidence/context-skill-02-20261028/context-skill-mechanism.png)
+
+The native skill-loading instruction is explicit in the common task, and the same rule is deliberately duplicated into the optional skill. This identifies two native context routes; it is not evidence of an independently optimized adaptive skill selector. The column labeled load attempt includes attempts to load a disabled/unknown skill. Original figure files are retained; its label was clarified offline without changing any values or judgments.
+
+| Same-product paired skill-enabled condition | Actual input + output tokens, blocks 1 / 2 | Delivery check seconds, blocks 1 / 2 | Exact / full outcomes |
+| --- | --- | --- | --- |
+| DSH ample + skill | 16,423 / 16,431 | 4.755 / 4.692 | 2/2 / 2/2 |
+| DSH tight + skill | 13,223 / 13,227 | 4.591 / 4.597 | 2/2 / 2/2 |
+| OpenClaw ample + skill | 10,141 / 10,155 | 25.547 / 23.188 | 2/2 / 2/2 |
+| OpenClaw tight + skill | 7,075 / 7,079 | 24.306 / 23.874 | 1/2 / 1/2 |
+
+Tight versus ample with the skill available removes 3200/3204 observed tokens in the two DSH pairs (about 19.5%), and 3066/3076 in the OpenClaw pairs (about 30.2–30.3%). Those token savings coexist with the quality outcomes shown above; they are not invoice savings or a population estimate. All failed work is included. The [37 per-request counter records](evidence/context-skill-02-20261028/context-skill-request-usage.json) and [20 task-resource rows](evidence/context-skill-02-20261028/context-skill-metrics.csv) retain every condition, rather than filtering for accepted answers.
+
+![All paired context/skill task-resource points](evidence/context-skill-02-20261028/context-skill-resources.png)
+
+For the tight/skill points, DSH product CPU is 2.828/2.931 core-seconds and sampled PSS 304.3/316.1 MiB; OpenClaw is 33.788/34.064 core-seconds and 1509.2/1516.9 MiB (ranges across the two points, not confidence intervals). Every arm uses a fresh CLI process and task-owned state with the recorded common two-core/3-GiB cgroup limits. Shared installation and OS caches are not reset between arms. These profiles still expose different native context/catalogs and wire protocols, and CLI startup is included; the figures do not rank steady-state platforms or isolate which subsystem causes the cross-product resource difference. The observer/relay and read-only memory-helper CPU are outside the product cgroup and reported separately, without double-counting the sampling thread. Disk sampling can miss brief peaks; shared package installation and cleanup are outside task-path increments. Delivery check time includes the independent check after process exit and is not first-token latency. Component-specific source token counts and actual invoice charges remain unknown.
+
+CTX-02 completes this bounded instruction-projection/skill-route comparison. HA still needs full-window compaction and persistent-memory interventions; HF still needs its supported budget-enforcement and independent-policy contrasts. Native self-improvement, rollback, collaboration and platform fault/concurrency experiments remain separate work.
+
 ## Next native work, informed by these findings
 
-1. **Context and budgets:** bind DSH profile overlays and OpenClaw context-engine/skill controls, establish equal task constraints, then measure native request changes and retained constraints under context pressure. Keep session goal targets, request/context reserves, bootstrap byte caps and hard task-tree quotas separate. Add source attribution only when independently measurable.
+1. **Context and budgets:** extend the validated CTX-02 instruction/skill controls to full-window compaction and persistent memory, binding the actual native/provider owners and retained constraints. Independent adaptive-policy switches remain to be verified. Keep session goal targets, request/context reserves, bootstrap byte caps and hard task-tree quotas separate. Add source attribution only when independently measurable.
 2. **Continuation and rollback:** reuse existing continuation/backup evidence, then add target/peer-session/OS witnesses around each actual restore operation. Test staged archive activation and managed-worktree restoration under their own state domains; do not label DSH semantic checkpoints filesystem rollback.
 3. **Collaboration and authority:** bind both native delegation interfaces and verify complete parent/child accounting before failure/cancel or permission-attenuation probes. Reuse matching OpenClaw accepted evidence where the question and version scope agree.
 4. **Self-improvement and events:** exercise native Workshop review/version adoption separately from COST-03 guide reuse; continue verifying DSH's supported update path. Reuse telemetry-outage evidence while separating notification listeners, control middleware, state persistence and OTLP export.
 
-Formal paired repetitions, source-specific token counters, independent acceptance timestamps, observer/service cost attribution and the remaining interventions are still implementation work. The focused design is not marked complete by this read pilot; H14 is in progress for DSH/OpenClaw in the [progress ledger](progress.json).
+The read pilot still needs formal paired repetitions, independent acceptance timestamps and its remaining lifecycle interventions. CTX-02 adds two complete paired instruction/skill blocks, an independently timestamped post-exit delivery check, and separate observer CPU accounting. Source-specific token counts and external service costs remain unobserved. The ten-study design is not marked complete by these slices; H03 and H14 are in progress for DSH/OpenClaw in the [progress ledger](progress.json).

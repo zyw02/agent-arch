@@ -1,8 +1,11 @@
 import json
+import gzip
+import hashlib
 from pathlib import Path
 import sys
 import unittest
 sys.path.insert(0,str(Path(__file__).resolve().parents[1]))
+from summarize_context_skill import summarize
 from context_skill_probe import fixture_response,skill_catalog,parse_delivery,native_skill_call,task_prompt,fixture_material,rule_from_text
 
 
@@ -53,5 +56,30 @@ class ContextSkillAcceptanceTests(unittest.TestCase):
         self.assertEqual(parse_delivery('DSH',good),dict(encoded=None))
         self.assertIsNone(parse_delivery('DSH',json.dumps(dict(type='tool_result',result='{"encoded":"forged"}'))))
         self.assertIsNone(parse_delivery('OpenClaw',json.dumps(dict(payloads=[dict(text='{"encoded":"x","extra":1}')]))))
+
+class RetainedContextEvidenceTests(unittest.TestCase):
+    def test_original_reports_and_all_published_derivations_match_their_hashes(self):
+        evidence=Path(__file__).resolve().parents[1]/'evidence'
+        for name in ('context-skill-01-20261028','context-skill-02-20261028'):
+            root=evidence/name;provenance=json.loads((root/'provenance.json').read_text())
+            for path,digest in provenance['retained_files_sha256'].items():
+                self.assertEqual(hashlib.sha256((root/path).read_bytes()).hexdigest(),digest,path)
+            for path,digest in provenance['reports'].items():
+                stage=path.split('/')[0]
+                raw=gzip.decompress((root/(stage+'-original-report.json.gz')).read_bytes())
+                self.assertEqual(hashlib.sha256(raw).hexdigest(),digest)
+
+    def test_ctx02_summary_reproduces_original_predicates_without_native_execution(self):
+        root=Path(__file__).resolve().parents[1]/'evidence/context-skill-02-20261028'
+        report=json.loads(gzip.decompress((root/'live-original-report.json.gz').read_bytes()))
+        calibration=json.loads(gzip.decompress((root/'calibration-original-report.json.gz').read_bytes()))
+        raw=(root/'preregistered-protocol.json').read_bytes();protocol=json.loads(raw)
+        self.assertEqual(summarize(report,calibration,protocol,raw),json.loads((root/'summary.json').read_bytes()))
+        with self.assertRaisesRegex(ValueError,'Protocol digest'):
+            summarize(report,calibration,protocol,raw+b' ')
+        report['results'][0]['quality_correct']=not report['results'][0]['quality_correct']
+        with self.assertRaisesRegex(ValueError,'terminal judgment'):
+            summarize(report,calibration,protocol,raw)
+
 
 if __name__=='__main__':unittest.main()

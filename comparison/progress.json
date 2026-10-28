@@ -146,14 +146,20 @@
           "note": ""
         },
         "DSH": {
-          "status": "planned",
-          "evidence": [],
-          "note": ""
+          "status": "in_progress",
+          "evidence": [
+            "comparison/evidence/context-skill-02-20261028/summary.json",
+            "comparison/evidence/context-skill-02-20261028/provenance.json"
+          ],
+          "note": "CTX-02 bounded native instruction-cap/skill-route study completed: 10 controls + 20 real arms in two paired blocks, complete usage/resources and source projection. Exact/full outcomes including failures retained; 20/20 native/provider task token totals reconcile. This does not complete full-window compaction, persistent memory, dynamic skill selection or shared task-tree quota enforcement. CTX-01 input/scorer defects remain exploratory. See source-informed-comparison.md."
         },
         "OpenClaw": {
-          "status": "planned",
-          "evidence": [],
-          "note": ""
+          "status": "in_progress",
+          "evidence": [
+            "comparison/evidence/context-skill-02-20261028/summary.json",
+            "comparison/evidence/context-skill-02-20261028/provenance.json"
+          ],
+          "note": "CTX-02 bounded native instruction-cap/skill-route study completed: 10 controls + 20 real arms in two paired blocks, complete usage/resources and source projection. Exact/full outcomes including failures retained; 20/20 native/provider task token totals reconcile. This does not complete full-window compaction, persistent memory, dynamic skill selection or shared task-tree quota enforcement. CTX-01 input/scorer defects remain exploratory. See source-informed-comparison.md."
         }
       },
       "dimensions": [
