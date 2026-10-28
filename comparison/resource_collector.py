@@ -53,7 +53,8 @@ class ResourceCollector:
     def command(self,command):
         if self.group is None:return command
         import sys
-        return [sys.executable,str(Path(__file__).with_name('resource_launcher.py')),str(self.group),*command]
+        prefix=[] if os.geteuid()==0 else ['sudo','-n','--preserve-env=PATH,HOME,TMPDIR,DSH_HOME,DEEPSEEK_BASE_URL,DEEPSEEK_API_KEY,DSH_PERMISSION_MODE,OPENCLAW_STATE_DIR,OPENCLAW_CONFIG_PATH,AGENT_ARCH_CGROUP_ROOT']
+        return [*prefix,sys.executable,str(Path(__file__).with_name('resource_launcher.py')),str(self.group),str(os.getuid()),str(os.getgid()),*command]
 
     def sample(self):
         row=dict(monotonic_ns=time.monotonic_ns(),disk=disk_inventory(self.paths))
