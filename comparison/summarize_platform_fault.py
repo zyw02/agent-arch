@@ -61,7 +61,7 @@ def main():
     report=json.loads(args.report.read_bytes());summary=summarize(report);summary['original_report_sha256']=hashlib.sha256(args.report.read_bytes()).hexdigest();args.output.mkdir(parents=True,exist_ok=True)
     (args.output/'summary.json').write_text(json.dumps(summary,indent=2)+'\n')
     with (args.output/'metrics.csv').open('w') as file:
-        writer=csv.DictWriter(file,fieldnames=list(summary['rows'][0]));writer.writeheader();writer.writerows(summary['rows'])
+        writer=csv.DictWriter(file,fieldnames=list(summary['rows'][0]),lineterminator='\n');writer.writeheader();writer.writerows(summary['rows'])
     print(json.dumps({k:v for k,v in summary.items() if k!='rows'}))
 
 if __name__=='__main__':main()

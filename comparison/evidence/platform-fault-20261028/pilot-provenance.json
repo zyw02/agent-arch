@@ -4,14 +4,14 @@
   "artifact_id": 12808731957,
   "artifact_zip_sha256": "4bdcb438980c284481b224a7a3c59a74429e925852d1ef3be7a14fc691d841a9",
   "original_report_sha256": "e70738bb8a649b67c8f8ad3bb483c7adc6cfd2a23d49fcf548ef2c192d29f3ec",
-  "summary_script_sha256": "c44022ec79f809448a4ea872d6b6379c92b8fcbaee7e261a07fd5ae5ce0d6f3a",
+  "summary_script_sha256": "5b2b59ed50fbb0169b86947feba77c2b55c061c9b03621c127ec60b276576e12",
   "disposition": "Complete calibration/pilot only, separated from formal repetitions. One initial OpenClaw post-crash history read returned startup UNAVAILABLE; service log retained native error, original pilot adapter retained only CLI stderr. Later passive reads succeeded; formal adapter retains complete failed CLI response. Original raw judgments unchanged.",
   "retained_files_sha256": {
     "pilot-protocol.json": "610269fff47775eac7ecd78fb4c173a1c76f4060118289c33ee7e0b77b11faea",
     "pilot-os-release.txt": "87458b3b1f1ca0e5c693ade771de7007c3783bdc692fa6b39eb6414bf2af2763",
     "pilot-summary.json": "2b3175a4b36b7b072512aa761a31d7fefe8f8226dd0f863f78e39eabbe11ea89",
     "pilot-node-version.txt": "249baf635bb43877fcb9422efa1a4904b702d0ddf14d3949b7cd0950d5229c81",
-    "pilot-metrics.csv": "9353a72bdcc1429fb8298826a35fe200888baec3da4395143364e20966543d42",
+    "pilot-metrics.csv": "3fc24844983e0670e17b366166a4fe1f38c6dcb4079ea0b343f1da89ae5facda",
     "pilot-source-bindings.json": "28917a8b3262dab26e8677b3ed87eb60487b4cde3397a1125730be32f5510582",
     "pilot-package-lock.json.gz": "f61a3eb07cad672ebc2d19841e2e4c38dad2a44045dd714fed9a9a799f461f65",
     "pilot-original-report.json.gz": "921af69109a00ab7236a3f2d1d0e23a8f7b9ea2181893c1cb70b928791ed00ed"
