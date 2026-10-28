@@ -1,0 +1,75 @@
+{
+  "study": "PC native-only automated reconstruction",
+  "source_run_id": "40675688132",
+  "source_controller_commit": "703ca122b13ed0168dc796d89067f2cda322ea12",
+  "original_artifact_sha256": "3c0a3f283390a4746d1bc647429b50595bbaa56f07f19dfff503b178a8ef6920",
+  "source_report_sha256": "32a4f76a7943fbcdda6850f8fba3da0c69bebc9578139b4126a014ea11f6ba5e",
+  "protocol_sha256": "ae4bc596c36b22cc8aa698dc479f01c8db2122cb9b6064fc242e55cc81e0c25d",
+  "case_count": 20,
+  "fact_count": 60,
+  "original_counts": {
+    "correct": 16,
+    "incorrect": 0,
+    "unknown": 40,
+    "invalid_answer": 0,
+    "unscorable": 4
+  },
+  "counts_by_product": {
+    "DSH": {
+      "correct": 8,
+      "unknown": 20,
+      "unscorable": 2
+    },
+    "OpenClaw": {
+      "correct": 8,
+      "unknown": 20,
+      "unscorable": 2
+    }
+  },
+  "by_question": {
+    "accepted_workload_tasks": {
+      "DSH": {
+        "correct": 8,
+        "unknown": 2
+      },
+      "OpenClaw": {
+        "correct": 8,
+        "unknown": 2
+      }
+    },
+    "ownership": {
+      "DSH": {
+        "unknown": 8,
+        "unscorable": 2
+      },
+      "OpenClaw": {
+        "unknown": 8,
+        "unscorable": 2
+      }
+    },
+    "simultaneous_model_requests": {
+      "DSH": {
+        "unknown": 10
+      },
+      "OpenClaw": {
+        "unknown": 10
+      }
+    }
+  },
+  "exact_citation_substring_present": 15,
+  "correct_value_and_exact_citation": 15,
+  "original_judgments_unchanged": true,
+  "all_actual_packets_equal_declared_native_projection": true,
+  "all_actual_questions_equal_frozen_protocol": true,
+  "all_answers_started_after_packet_and_key_freeze": true,
+  "actual_paid_requests": 20,
+  "provider_complete": 20,
+  "known_input_tokens": 124290,
+  "known_output_tokens": 4292,
+  "known_total_tokens": 128582,
+  "known_cached_input_subset_tokens": 2432,
+  "usage_coverage": 20,
+  "automated_review_elapsed_seconds": 37.771238385,
+  "actual_invoice_charge": null,
+  "interpretation": "Raw value matches are not proof of evidentiary support. Exact quotation may still concern the wrong phase or cause. Audit reasons/citations separately, preserve unsupported matching guesses and unknowns. One automated investigator of selected native surfaces, not a product-wide observability ranking or human diagnosis time. Review tokens are separate from native task usage; cached input is a subset, not added again."
+}

@@ -14,7 +14,8 @@
     "context_skill_probe.py": "f589d40f76e1824d8edcdd343a25a2eda75e3cddf107c5cb5e57e9ea92b3edb3"
   },
   "analysis_scripts_sha256": {
-    "summarize_platform_resource.py": "a6ca45944137885b8e190ab62734979dab08cf2402878aa94a33f68ecff5c8f8"
+    "summarize_platform_resource.py": "a6ca45944137885b8e190ab62734979dab08cf2402878aa94a33f68ecff5c8f8",
+    "plot_platform_resource.py": "ca3d8213e90aa4dae070d37d0bc172362fe0268852c8dc21d2c3640de7396fca"
   },
   "disposition": "Two complete formal blocks, 20 valid arms. Exact assistant ACK, distinct native sessions/provider contexts, CPU and sampled-memory integrals independently recomputed offline. Original outcomes unchanged. One OpenClaw concurrent batch was slower than its sequential pair; retain that valid result, do not repeat to improve it.",
   "retained_files_sha256": {
@@ -25,6 +26,10 @@
     "formal-package-lock.json.gz": "831dd021da80e55d9dc7da78b6ad3e8117f68969b131a8f837e5a6d646e1aebf",
     "formal-source-bindings.json": "662002486a76decf857be027ff552c4d21af5151a182dc2f527003200bdc5eaf",
     "formal-protocol.json": "400f6fb113fbc4fa7312e598960aacdce50092e1331235469532fd5f744e3f21",
-    "formal-metrics.csv": "0f7654a4f3c15f7162cf3f0a71d4fe0f55098f7f93a2b63d60ee733733d47985"
+    "formal-metrics.csv": "0f7654a4f3c15f7162cf3f0a71d4fe0f55098f7f93a2b63d60ee733733d47985",
+    "formal-resource-phases.png": "3da851b4f2f0ad2e1deb5d5ee38ddcf7511f26b1be6266d6f6ae1923d15f7339",
+    "formal-resource-phases.svg": "65de1cf145a94a75f2e153710ee2a9ba8481a01d825f08ab4d9741a1f3e5764a",
+    "formal-four-task-pairs.png": "85bf78c2f820d205af7a47ac658e857e80e53d54d3e8ad6f1fc54d2087e03665",
+    "formal-four-task-pairs.svg": "35d023ee55a3d464d72d7a2aee5cec198704f008f8cf5f0bbb7bed5bd3ea9388"
   }
 }

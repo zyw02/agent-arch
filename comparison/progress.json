@@ -19,22 +19,22 @@
         "DSH": {
           "status": "in_progress",
           "evidence": [
-            "comparison/evidence/platform-api-20261028/attempt-2-summary.json",
-            "comparison/evidence/platform-api-20261028/attempt-2-provenance.json",
-            "comparison/evidence/platform-fault-20261028/pilot-summary.json",
-            "comparison/evidence/platform-fault-20261028/pilot-provenance.json"
+            "comparison/evidence/platform-fault-20261028/formal-summary.json",
+            "comparison/evidence/platform-fault-20261028/formal-provenance.json",
+            "comparison/evidence/platform-fault-20261028/native-review/provenance.json",
+            "comparison/evidence/platform-fault-20261028/native-review/informed-audit.json"
           ],
-          "note": "Complete PA public-HTTP pilot: all six arms (healthy/client/owner exit with independent companion), real native owner identity, restart/passive history/new followup and complete native resources. Pilot results retain client-linked cancellation versus native orphan recovery differences. Two formal blocks admitted at measured 12\u201316 min; formal repetitions and blind native-only reconstruction pending. Pilot is not formal completion."
+          "note": "PA-HTTP-01 bounded study complete: two formal blocks/12 valid arms, public-HTTP client versus native-owner exit with independent companions, original-ACK observation cut, passive restart and same-session new followups. Selected native-only automated reconstruction retained: 52 value matches/6 incorrect/14 unknown; 12 matches have incomplete support, separately audited without rescoring. Broader deployment/fault and exactly-once effects remain untested."
         },
         "OpenClaw": {
           "status": "in_progress",
           "evidence": [
-            "comparison/evidence/platform-api-20261028/attempt-2-summary.json",
-            "comparison/evidence/platform-api-20261028/attempt-2-provenance.json",
-            "comparison/evidence/platform-fault-20261028/pilot-summary.json",
-            "comparison/evidence/platform-fault-20261028/pilot-provenance.json"
+            "comparison/evidence/platform-fault-20261028/formal-summary.json",
+            "comparison/evidence/platform-fault-20261028/formal-provenance.json",
+            "comparison/evidence/platform-fault-20261028/native-review/provenance.json",
+            "comparison/evidence/platform-fault-20261028/native-review/informed-audit.json"
           ],
-          "note": "Complete PA public-HTTP pilot: all six arms (healthy/client/owner exit with independent companion), real native owner identity, restart/passive history/new followup and complete native resources. Pilot results retain client-linked cancellation versus native orphan recovery differences. Two formal blocks admitted at measured 12\u201316 min; formal repetitions and blind native-only reconstruction pending. Pilot is not formal completion."
+          "note": "PA-HTTP-01 bounded study complete: two formal blocks/12 valid arms, public-HTTP client versus native-owner exit with independent companions, original-ACK observation cut, passive restart and same-session new followups. Selected native-only automated reconstruction retained: 52 value matches/6 incorrect/14 unknown; 12 matches have incomplete support, separately audited without rescoring. Broader deployment/fault and exactly-once effects remain untested."
         }
       },
       "dimensions": [
@@ -81,18 +81,22 @@
         "DSH": {
           "status": "in_progress",
           "evidence": [
-            "comparison/evidence/platform-resource-20261028/pilot-summary.json",
-            "comparison/evidence/platform-resource-20261028/pilot-provenance.json"
+            "comparison/evidence/platform-resource-20261028/formal-summary.json",
+            "comparison/evidence/platform-resource-20261028/formal-provenance.json",
+            "comparison/evidence/platform-resource-20261028/native-review/provenance.json",
+            "comparison/evidence/platform-resource-20261028/native-review/informed-audit.json"
           ],
-          "note": "Complete PC pilot: all ten conditions (post-ready no-task, cold/warm single, four sequential/concurrent), exact native ACK/session/provider bindings and complete native resources. Early no-task window includes post-ready initialization; not steady idle power. Two formal blocks admitted from measured 177.4 s complete native work, 8\u201311 min job estimate. Pilot is excluded from formal counts."
+          "note": "PC-HTTP-01 bounded study complete: two formal blocks/20 valid arms, 40 accepted workload + 12 priming tasks, full lifecycle and fixed four-task sequential/concurrent resources. OpenClaw concurrent result slower in one block is retained. Selected native-only secondary review has 16 supported task-count matches/40 unknown/4 inapplicable. No sustainable capacity, steady idle power, per-agent marginal memory or broad ranking claim."
         },
         "OpenClaw": {
           "status": "in_progress",
           "evidence": [
-            "comparison/evidence/platform-resource-20261028/pilot-summary.json",
-            "comparison/evidence/platform-resource-20261028/pilot-provenance.json"
+            "comparison/evidence/platform-resource-20261028/formal-summary.json",
+            "comparison/evidence/platform-resource-20261028/formal-provenance.json",
+            "comparison/evidence/platform-resource-20261028/native-review/provenance.json",
+            "comparison/evidence/platform-resource-20261028/native-review/informed-audit.json"
           ],
-          "note": "Complete PC pilot: all ten conditions (post-ready no-task, cold/warm single, four sequential/concurrent), exact native ACK/session/provider bindings and complete native resources. Early no-task window includes post-ready initialization; not steady idle power. Two formal blocks admitted from measured 177.4 s complete native work, 8\u201311 min job estimate. Pilot is excluded from formal counts."
+          "note": "PC-HTTP-01 bounded study complete: two formal blocks/20 valid arms, 40 accepted workload + 12 priming tasks, full lifecycle and fixed four-task sequential/concurrent resources. OpenClaw concurrent result slower in one block is retained. Selected native-only secondary review has 16 supported task-count matches/40 unknown/4 inapplicable. No sustainable capacity, steady idle power, per-agent marginal memory or broad ranking claim."
         }
       },
       "dimensions": [

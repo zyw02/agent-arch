@@ -56,8 +56,11 @@ Explore the [experiment catalogue](comparison/experiment-index.md) and [executio
 
 ## Research and evidence
 
+The [current DSH/OpenClaw results](comparison/source-informed-comparison.md) include the historical reuse audit, two real-model instruction/skill blocks, two formal public-HTTP fault/recovery blocks, two fixed-load lifecycle/resource blocks and isolated native-record reconstruction. All original failures and uncertain diagnostic answers are retained with raw evidence, usage, resource rows and figures. These bounded studies do not complete the ten-study plan.
+
 | Start here | Contents |
 | --- | --- |
+| [Current DSH/OpenClaw results](comparison/source-informed-comparison.md) | Source bindings, evidence reuse, measured task/resource effects and native-record reconstruction |
 | [Three-product workspace](comparison/README.md) | Scope, dashboard maintenance and evidence rules |
 | [Experiment catalogue](comparison/experiment-index.md) | Shared scenarios, measurements, architecture evidence and readiness |
 | [Execution protocol](comparison/execution-protocol.md) | Two-layer, six-dimension scenarios and acceptance |

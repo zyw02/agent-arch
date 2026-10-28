@@ -1,0 +1,23 @@
+{
+  "run_id": 40677470322,
+  "controller_commit": "81b7a1e39fec8ba866bb282404aa77098d909477",
+  "artifact_id": 12810079237,
+  "artifact_zip_sha256": "3c0a3f283390a4746d1bc647429b50595bbaa56f07f19dfff503b178a8ef6920",
+  "source_native_run_id": 40675688132,
+  "execution_scripts_sha256": {
+    "review_platform_native.py": "00882b9006afa92d233eaf39308a2ea557603d270467c16d4b56e99008ebe939",
+    "prepare_platform_resource_review.py": "617bae72ba9903d0bf0d5f9d5629f885f488fa51c796f572ac399d2ed770ebdc"
+  },
+  "offline_export_script_sha256": "f10502d6c6c4fbcc5668afa53a501fa3933234c63759e2e83c327f94ccb4fee2",
+  "disposition": "Original randomized native packets, actual requests, full provider responses/usage, key/manifest and original scores retained in the immutable original artifact ZIP. Offline export verifies source projection, actual frozen questions, request/response/key hashes and freeze ordering. Question set was frozen after formal execution started, before examining formal outcomes or native-only review; secondary analysis, no resource-outcome change. No repeat to improve answers.",
+  "retained_files_sha256": {
+    "protocol.json": "ae4bc596c36b22cc8aa698dc479f01c8db2122cb9b6064fc242e55cc81e0c25d",
+    "score-original.json": "2d77355e5d7f25b25c124b18eafc15e94d5afc539b2713c5072324c6f0bb8837",
+    "facts.csv": "9065a7e01aa329ecf0445b33280da62704cb0011d8f00e90bb54a6eb102a1304",
+    "usage.json": "8ec6df34921e27329870ebb9b9d4c84a384349c93fd34350574f7b7b8801f303",
+    "manifest-original.json": "47406b66e42f67075a128e762aa1334ef844fbe41e5a9794352af76a07033aa4",
+    "original-artifact.zip": "3c0a3f283390a4746d1bc647429b50595bbaa56f07f19dfff503b178a8ef6920",
+    "informed-audit.json": "9b1e532903d9bc8c13401accce40f4be6f0d75fce9dee614ddbe16747efd61a4",
+    "summary.json": "80bacfcf715ff0e36f9795938a24784009c2954fd15ed9a63e85803bea1181a6"
+  }
+}

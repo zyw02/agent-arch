@@ -1,0 +1,17 @@
+{
+  "study": "PA-HTTP-01 native-only automated reconstruction",
+  "reviewer": "One isolated deepseek-flash request per randomized case; thinking disabled, temperature 0, max_tokens 2048; reviewer sees only questions, native records and the original task identifiers",
+  "packet": "Native carrier log generations and public native history response values in observation order. Omit independent controller/client/process/provider records, all condition/block/run labels and evaluator history fact summaries. Sanitize owned paths and synthetic launch credentials. Hash native packet before model request",
+  "questions": {
+    "ownership": {"question": "Which process executes admitted model work: the external HTTP result client or a persistent native service? This asks the execution owner, separately from whether a disconnect triggers cancellation. Return unknown if native records do not establish an ownership link.", "choices": ["client", "service", "unknown"]},
+    "interruption": {"question": "Was the intervention no process termination, abrupt external result-client termination, or native execution-owner termination? Return unknown if native records cannot establish the cause.", "choices": ["none", "client_exit", "owner_exit", "unknown"]},
+    "primary_retained_ack": {"question": "Do the last native history records before the explicitly labeled NEW followup phase show an assistant acknowledgment of the ORIGINAL primary task?", "choices": ["yes", "no", "unknown"]},
+    "companion_retained_ack": {"question": "Do those same pre-followup history records show an assistant acknowledgment of the ORIGINAL companion task?", "choices": ["yes", "no", "unknown"]},
+    "repeated_original_request": {"question": "After the new carrier generation starts and before NEW followup, did the product issue another actual model request for the ORIGINAL primary task? Native history persistence alone does not prove another request.", "choices": ["yes", "no", "unknown"]},
+    "new_followup_completed": {"question": "Did NEW followup produce its own assistant acknowledgment in the existing primary session?", "choices": ["yes", "no", "unknown"]}
+  },
+  "answer_format": "JSON object with exactly the six question keys. Each value is {answer: one allowed choice, evidence_path: packet path or null, quote: exact native-record substring or null, reason: brief statement}. Unknown is allowed and preferred to an unsupported inference",
+  "scoring": "Freeze all raw answers, packet/request/response hashes and usage before opening independent key. Per fact classify exact answer as correct/incorrect/unknown, separately report whether an exact native quote exists at cited path. A matching answer alone is not proof that its causal claim is supported; audit cited evidence and report unsupported guesses separately. No repeated requests to improve a score",
+  "timing": "Provider request elapsed time is automated review latency, not human investigator time",
+  "scope": "One automated investigator; no human-blind-review or multi-investigator reliability claim"
+}

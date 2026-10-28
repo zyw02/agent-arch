@@ -1,0 +1,27 @@
+{
+  "run_id": 40676509034,
+  "controller_commit": "ba437979446ba929818010d4fab8669943580b8c",
+  "artifact_id": 12810767439,
+  "artifact_zip_sha256": "5f27cae82a13a6cec813e0db8e75396fcc02ec8cf1089cc9e21aa7ba6f2a3045",
+  "source_native_run_id": 40673794999,
+  "review_script_sha256": "e4682d2214a24de9270f81bfbef30d0c3fe7e83255feb73550500f4b06ba4619",
+  "offline_export_script_sha256": "f10502d6c6c4fbcc5668afa53a501fa3933234c63759e2e83c327f94ccb4fee2",
+  "disposition": "Original native-only packets, full actual requests, raw provider responses/usage, withheld key, manifest and original score retained unchanged in the original artifact ZIP. Offline exporter verifies every packet equals the declared native-only source projection, actual questions exactly equal frozen protocol, no extra truth fields, all request/response hashes, coverage and key-before-answer ordering. No further model/native calls for verification or informed audit.",
+  "retained_files_sha256": {
+    "protocol.json": "c3d3daed91deb155488db42c71d214326ffda8587dbcbbe539f4b73b686f5566",
+    "score-original.json": "3cbb8285553c917b6a31e64aba8c3c3a636e53938043d6dbb72beda3a81356a7",
+    "facts.csv": "67d5b1b711759dc186bf591ea6925c0c695432973a5c03d3b12184b1a76eafcd",
+    "usage.json": "45a4473cdb9ce3b80165b4c531439a5f3d4d7d8b533618f4abd5a73c751e1804",
+    "manifest-original.json": "0981a66ecd52dc4beca9af5190bd99be13b825d71801ec432f0ff98dd90bcbb3",
+    "original-artifact.zip": "5f27cae82a13a6cec813e0db8e75396fcc02ec8cf1089cc9e21aa7ba6f2a3045",
+    "informed-audit.json": "0cabd54807545937341372aa395d13b0248dfdd13e61cefb6ffb1ce6a37ee56b",
+    "summary.json": "66ba677ea66be4da26cce2616541eb5f12d6cbf296ec548e2bd72bf70b7d23c9",
+    "native-review-audit.png": "e01a36a20e5e103258c71e3fbed59d6151ab3c818819f0fc6052881dc59fb6f3",
+    "native-review-audit.svg": "613d12287bd7724b1169c155a15f60928bfb7a60c6bf1fedc4164b4e5c290b70"
+  },
+  "offline_plot_script_sha256": "4419fb8952f09effcb000f8dd46619e38fa32707720b4bc894710cb6ab47b559",
+  "plot_other_input": {
+    "path": "comparison/evidence/platform-resource-20261028/native-review/informed-audit.json",
+    "sha256": "9b1e532903d9bc8c13401accce40f4be6f0d75fce9dee614ddbe16747efd61a4"
+  }
+}

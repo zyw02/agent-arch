@@ -4,10 +4,12 @@ import hashlib
 import json
 from pathlib import Path
 import sys
+import tempfile
 import unittest
 sys.path.insert(0,str(Path(__file__).resolve().parents[1]))
 from review_platform_native import make_packet,quote_exists
 from summarize_platform_fault import summarize
+from export_native_review import export
 
 
 class NativeOnlyPacketTests(unittest.TestCase):
@@ -40,5 +42,35 @@ class NativeOnlyPacketTests(unittest.TestCase):
         self.assertFalse(quote_exists(packet,'$.native_carrier_logs[0][0]','SIGKILL'))
         self.assertFalse(quote_exists(packet,'$.owner.pid','started'))
         self.assertFalse(quote_exists(packet,None,None))
+
+    def test_retained_reviews_reproduce_scores_native_packets_and_complete_usage(self):
+        comparison=Path(__file__).resolve().parents[1]
+        for study,kind in [('PA','fault'),('PC','resource')]:
+            root=comparison/('evidence/platform-'+kind+'-20261028');review=root/'native-review'
+            provenance=json.loads((review/'provenance.json').read_bytes())
+            for name,expected in provenance['retained_files_sha256'].items():
+                self.assertEqual(hashlib.sha256((review/name).read_bytes()).hexdigest(),expected,name)
+            with tempfile.TemporaryDirectory() as tmp:
+                summary=export(review/'original-artifact.zip',provenance['artifact_zip_sha256'],root/'formal-original-report.json.gz',review/'protocol.json',study,Path(tmp)/'derived')
+                self.assertEqual(summary,json.loads((review/'summary.json').read_bytes()))
+                self.assertEqual(summary['actual_paid_requests'],summary['provider_complete'])
+                self.assertEqual(summary['known_input_tokens']+summary['known_output_tokens'],summary['known_total_tokens'])
+
+    def test_export_rejects_archive_protocol_and_native_projection_changes(self):
+        comparison=Path(__file__).resolve().parents[1];root=comparison/'evidence/platform-fault-20261028';review=root/'native-review'
+        provenance=json.loads((review/'provenance.json').read_bytes())
+        with tempfile.TemporaryDirectory() as tmp:
+            tmp=Path(tmp)
+            with self.assertRaisesRegex(ValueError,'digest mismatch'):
+                export(review/'original-artifact.zip','0'*64,root/'formal-original-report.json.gz',review/'protocol.json','PA',tmp/'bad-archive')
+            protocol=json.loads((review/'protocol.json').read_bytes());protocol['questions']['ownership']['question']='Altered question'
+            (tmp/'protocol.json').write_text(json.dumps(protocol))
+            with self.assertRaisesRegex(ValueError,'protocol changed'):
+                export(review/'original-artifact.zip',provenance['artifact_zip_sha256'],root/'formal-original-report.json.gz',tmp/'protocol.json','PA',tmp/'bad-protocol')
+            report=json.loads(gzip.decompress((root/'formal-original-report.json.gz').read_bytes()))
+            report['results'][0]['cycles'][0]['sanitized_native_log'].append('Altered native record')
+            (tmp/'source.json').write_text(json.dumps(report))
+            with self.assertRaisesRegex(ValueError,'exact declared native-only projection'):
+                export(review/'original-artifact.zip',provenance['artifact_zip_sha256'],tmp/'source.json',review/'protocol.json','PA',tmp/'bad-source')
 
 if __name__=='__main__':unittest.main()

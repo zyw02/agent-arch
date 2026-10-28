@@ -1,0 +1,618 @@
+{
+  "role": "Informed post-review audit, not another blind investigator or change to raw scores",
+  "original_counts": {
+    "correct": 16,
+    "incorrect": 0,
+    "unknown": 40,
+    "invalid_answer": 0,
+    "unscorable": 4
+  },
+  "support_counts": {
+    "native_terminal_ACK_count_supported": 16,
+    "unknown_retained": 40,
+    "idle_ownership_unscorable": 4
+  },
+  "interpretation": "All 16 matching values are nonempty workload completion counts supported by exact native assistant ACKs; no matching inference about process ownership or actual request overlap was offered. Forty unknowns are retained, including idle completion counts and every request-overlap question. Four idle ownership facts are inapplicable. This selected public-response/stdout record does not establish absence of richer native observability elsewhere.",
+  "rows": [
+    {
+      "case_id": "48a1efeb4939448ca6832b3090dcf7c7",
+      "product": "OpenClaw",
+      "condition": "cold_single",
+      "block": 2,
+      "question": "accepted_workload_tasks",
+      "original_classification": "correct",
+      "citation_substring_present": true,
+      "support": "native_terminal_ACK_count_supported"
+    },
+    {
+      "case_id": "48a1efeb4939448ca6832b3090dcf7c7",
+      "product": "OpenClaw",
+      "condition": "cold_single",
+      "block": 2,
+      "question": "ownership",
+      "original_classification": "unknown",
+      "citation_substring_present": false,
+      "support": "unknown_retained"
+    },
+    {
+      "case_id": "48a1efeb4939448ca6832b3090dcf7c7",
+      "product": "OpenClaw",
+      "condition": "cold_single",
+      "block": 2,
+      "question": "simultaneous_model_requests",
+      "original_classification": "unknown",
+      "citation_substring_present": false,
+      "support": "unknown_retained"
+    },
+    {
+      "case_id": "1ac70afff1ee4676be6e648dacf1f723",
+      "product": "OpenClaw",
+      "condition": "four_concurrent",
+      "block": 2,
+      "question": "accepted_workload_tasks",
+      "original_classification": "correct",
+      "citation_substring_present": true,
+      "support": "native_terminal_ACK_count_supported"
+    },
+    {
+      "case_id": "1ac70afff1ee4676be6e648dacf1f723",
+      "product": "OpenClaw",
+      "condition": "four_concurrent",
+      "block": 2,
+      "question": "ownership",
+      "original_classification": "unknown",
+      "citation_substring_present": false,
+      "support": "unknown_retained"
+    },
+    {
+      "case_id": "1ac70afff1ee4676be6e648dacf1f723",
+      "product": "OpenClaw",
+      "condition": "four_concurrent",
+      "block": 2,
+      "question": "simultaneous_model_requests",
+      "original_classification": "unknown",
+      "citation_substring_present": false,
+      "support": "unknown_retained"
+    },
+    {
+      "case_id": "737cc24b7572473c88c872c08538c7dd",
+      "product": "OpenClaw",
+      "condition": "cold_single",
+      "block": 1,
+      "question": "accepted_workload_tasks",
+      "original_classification": "correct",
+      "citation_substring_present": true,
+      "support": "native_terminal_ACK_count_supported"
+    },
+    {
+      "case_id": "737cc24b7572473c88c872c08538c7dd",
+      "product": "OpenClaw",
+      "condition": "cold_single",
+      "block": 1,
+      "question": "ownership",
+      "original_classification": "unknown",
+      "citation_substring_present": false,
+      "support": "unknown_retained"
+    },
+    {
+      "case_id": "737cc24b7572473c88c872c08538c7dd",
+      "product": "OpenClaw",
+      "condition": "cold_single",
+      "block": 1,
+      "question": "simultaneous_model_requests",
+      "original_classification": "unknown",
+      "citation_substring_present": false,
+      "support": "unknown_retained"
+    },
+    {
+      "case_id": "201edd581afd4c5b863b3e9f2091167e",
+      "product": "DSH",
+      "condition": "cold_single",
+      "block": 1,
+      "question": "accepted_workload_tasks",
+      "original_classification": "correct",
+      "citation_substring_present": false,
+      "support": "native_terminal_ACK_count_supported"
+    },
+    {
+      "case_id": "201edd581afd4c5b863b3e9f2091167e",
+      "product": "DSH",
+      "condition": "cold_single",
+      "block": 1,
+      "question": "ownership",
+      "original_classification": "unknown",
+      "citation_substring_present": false,
+      "support": "unknown_retained"
+    },
+    {
+      "case_id": "201edd581afd4c5b863b3e9f2091167e",
+      "product": "DSH",
+      "condition": "cold_single",
+      "block": 1,
+      "question": "simultaneous_model_requests",
+      "original_classification": "unknown",
+      "citation_substring_present": false,
+      "support": "unknown_retained"
+    },
+    {
+      "case_id": "11f5db81b536471cbf0522915de5cbde",
+      "product": "DSH",
+      "condition": "four_sequential",
+      "block": 1,
+      "question": "accepted_workload_tasks",
+      "original_classification": "correct",
+      "citation_substring_present": true,
+      "support": "native_terminal_ACK_count_supported"
+    },
+    {
+      "case_id": "11f5db81b536471cbf0522915de5cbde",
+      "product": "DSH",
+      "condition": "four_sequential",
+      "block": 1,
+      "question": "ownership",
+      "original_classification": "unknown",
+      "citation_substring_present": false,
+      "support": "unknown_retained"
+    },
+    {
+      "case_id": "11f5db81b536471cbf0522915de5cbde",
+      "product": "DSH",
+      "condition": "four_sequential",
+      "block": 1,
+      "question": "simultaneous_model_requests",
+      "original_classification": "unknown",
+      "citation_substring_present": false,
+      "support": "unknown_retained"
+    },
+    {
+      "case_id": "1040b4c163254e91a625d7df5e0e3b7f",
+      "product": "OpenClaw",
+      "condition": "idle",
+      "block": 2,
+      "question": "accepted_workload_tasks",
+      "original_classification": "unknown",
+      "citation_substring_present": false,
+      "support": "unknown_retained"
+    },
+    {
+      "case_id": "1040b4c163254e91a625d7df5e0e3b7f",
+      "product": "OpenClaw",
+      "condition": "idle",
+      "block": 2,
+      "question": "ownership",
+      "original_classification": "unscorable",
+      "citation_substring_present": false,
+      "support": "idle_ownership_unscorable"
+    },
+    {
+      "case_id": "1040b4c163254e91a625d7df5e0e3b7f",
+      "product": "OpenClaw",
+      "condition": "idle",
+      "block": 2,
+      "question": "simultaneous_model_requests",
+      "original_classification": "unknown",
+      "citation_substring_present": false,
+      "support": "unknown_retained"
+    },
+    {
+      "case_id": "5799307a69e74959bdd7eb0a45521782",
+      "product": "DSH",
+      "condition": "four_concurrent",
+      "block": 1,
+      "question": "accepted_workload_tasks",
+      "original_classification": "correct",
+      "citation_substring_present": true,
+      "support": "native_terminal_ACK_count_supported"
+    },
+    {
+      "case_id": "5799307a69e74959bdd7eb0a45521782",
+      "product": "DSH",
+      "condition": "four_concurrent",
+      "block": 1,
+      "question": "ownership",
+      "original_classification": "unknown",
+      "citation_substring_present": false,
+      "support": "unknown_retained"
+    },
+    {
+      "case_id": "5799307a69e74959bdd7eb0a45521782",
+      "product": "DSH",
+      "condition": "four_concurrent",
+      "block": 1,
+      "question": "simultaneous_model_requests",
+      "original_classification": "unknown",
+      "citation_substring_present": false,
+      "support": "unknown_retained"
+    },
+    {
+      "case_id": "494a5202a6864082876e525eef02632d",
+      "product": "OpenClaw",
+      "condition": "warm_single",
+      "block": 1,
+      "question": "accepted_workload_tasks",
+      "original_classification": "correct",
+      "citation_substring_present": true,
+      "support": "native_terminal_ACK_count_supported"
+    },
+    {
+      "case_id": "494a5202a6864082876e525eef02632d",
+      "product": "OpenClaw",
+      "condition": "warm_single",
+      "block": 1,
+      "question": "ownership",
+      "original_classification": "unknown",
+      "citation_substring_present": false,
+      "support": "unknown_retained"
+    },
+    {
+      "case_id": "494a5202a6864082876e525eef02632d",
+      "product": "OpenClaw",
+      "condition": "warm_single",
+      "block": 1,
+      "question": "simultaneous_model_requests",
+      "original_classification": "unknown",
+      "citation_substring_present": false,
+      "support": "unknown_retained"
+    },
+    {
+      "case_id": "30fab2fb426d4458b742f06b3d29bd22",
+      "product": "DSH",
+      "condition": "warm_single",
+      "block": 1,
+      "question": "accepted_workload_tasks",
+      "original_classification": "correct",
+      "citation_substring_present": true,
+      "support": "native_terminal_ACK_count_supported"
+    },
+    {
+      "case_id": "30fab2fb426d4458b742f06b3d29bd22",
+      "product": "DSH",
+      "condition": "warm_single",
+      "block": 1,
+      "question": "ownership",
+      "original_classification": "unknown",
+      "citation_substring_present": false,
+      "support": "unknown_retained"
+    },
+    {
+      "case_id": "30fab2fb426d4458b742f06b3d29bd22",
+      "product": "DSH",
+      "condition": "warm_single",
+      "block": 1,
+      "question": "simultaneous_model_requests",
+      "original_classification": "unknown",
+      "citation_substring_present": false,
+      "support": "unknown_retained"
+    },
+    {
+      "case_id": "6d6a4f1932ea4a6fad143f971a8adc76",
+      "product": "OpenClaw",
+      "condition": "four_sequential",
+      "block": 1,
+      "question": "accepted_workload_tasks",
+      "original_classification": "correct",
+      "citation_substring_present": true,
+      "support": "native_terminal_ACK_count_supported"
+    },
+    {
+      "case_id": "6d6a4f1932ea4a6fad143f971a8adc76",
+      "product": "OpenClaw",
+      "condition": "four_sequential",
+      "block": 1,
+      "question": "ownership",
+      "original_classification": "unknown",
+      "citation_substring_present": false,
+      "support": "unknown_retained"
+    },
+    {
+      "case_id": "6d6a4f1932ea4a6fad143f971a8adc76",
+      "product": "OpenClaw",
+      "condition": "four_sequential",
+      "block": 1,
+      "question": "simultaneous_model_requests",
+      "original_classification": "unknown",
+      "citation_substring_present": false,
+      "support": "unknown_retained"
+    },
+    {
+      "case_id": "52d9974992434039a2fd2b9956312e0a",
+      "product": "OpenClaw",
+      "condition": "warm_single",
+      "block": 2,
+      "question": "accepted_workload_tasks",
+      "original_classification": "correct",
+      "citation_substring_present": true,
+      "support": "native_terminal_ACK_count_supported"
+    },
+    {
+      "case_id": "52d9974992434039a2fd2b9956312e0a",
+      "product": "OpenClaw",
+      "condition": "warm_single",
+      "block": 2,
+      "question": "ownership",
+      "original_classification": "unknown",
+      "citation_substring_present": false,
+      "support": "unknown_retained"
+    },
+    {
+      "case_id": "52d9974992434039a2fd2b9956312e0a",
+      "product": "OpenClaw",
+      "condition": "warm_single",
+      "block": 2,
+      "question": "simultaneous_model_requests",
+      "original_classification": "unknown",
+      "citation_substring_present": false,
+      "support": "unknown_retained"
+    },
+    {
+      "case_id": "aa7b7b96540b4c81af54f04739f31e81",
+      "product": "DSH",
+      "condition": "four_concurrent",
+      "block": 2,
+      "question": "accepted_workload_tasks",
+      "original_classification": "correct",
+      "citation_substring_present": true,
+      "support": "native_terminal_ACK_count_supported"
+    },
+    {
+      "case_id": "aa7b7b96540b4c81af54f04739f31e81",
+      "product": "DSH",
+      "condition": "four_concurrent",
+      "block": 2,
+      "question": "ownership",
+      "original_classification": "unknown",
+      "citation_substring_present": false,
+      "support": "unknown_retained"
+    },
+    {
+      "case_id": "aa7b7b96540b4c81af54f04739f31e81",
+      "product": "DSH",
+      "condition": "four_concurrent",
+      "block": 2,
+      "question": "simultaneous_model_requests",
+      "original_classification": "unknown",
+      "citation_substring_present": false,
+      "support": "unknown_retained"
+    },
+    {
+      "case_id": "6a3ddfa845b24dd99c6e195a0be86ecc",
+      "product": "DSH",
+      "condition": "idle",
+      "block": 2,
+      "question": "accepted_workload_tasks",
+      "original_classification": "unknown",
+      "citation_substring_present": false,
+      "support": "unknown_retained"
+    },
+    {
+      "case_id": "6a3ddfa845b24dd99c6e195a0be86ecc",
+      "product": "DSH",
+      "condition": "idle",
+      "block": 2,
+      "question": "ownership",
+      "original_classification": "unscorable",
+      "citation_substring_present": false,
+      "support": "idle_ownership_unscorable"
+    },
+    {
+      "case_id": "6a3ddfa845b24dd99c6e195a0be86ecc",
+      "product": "DSH",
+      "condition": "idle",
+      "block": 2,
+      "question": "simultaneous_model_requests",
+      "original_classification": "unknown",
+      "citation_substring_present": false,
+      "support": "unknown_retained"
+    },
+    {
+      "case_id": "dd0433f3b2c247278e25475c9118560a",
+      "product": "DSH",
+      "condition": "warm_single",
+      "block": 2,
+      "question": "accepted_workload_tasks",
+      "original_classification": "correct",
+      "citation_substring_present": true,
+      "support": "native_terminal_ACK_count_supported"
+    },
+    {
+      "case_id": "dd0433f3b2c247278e25475c9118560a",
+      "product": "DSH",
+      "condition": "warm_single",
+      "block": 2,
+      "question": "ownership",
+      "original_classification": "unknown",
+      "citation_substring_present": false,
+      "support": "unknown_retained"
+    },
+    {
+      "case_id": "dd0433f3b2c247278e25475c9118560a",
+      "product": "DSH",
+      "condition": "warm_single",
+      "block": 2,
+      "question": "simultaneous_model_requests",
+      "original_classification": "unknown",
+      "citation_substring_present": false,
+      "support": "unknown_retained"
+    },
+    {
+      "case_id": "4a12891033ba46f3989547e2fc3a1b11",
+      "product": "DSH",
+      "condition": "four_sequential",
+      "block": 2,
+      "question": "accepted_workload_tasks",
+      "original_classification": "correct",
+      "citation_substring_present": true,
+      "support": "native_terminal_ACK_count_supported"
+    },
+    {
+      "case_id": "4a12891033ba46f3989547e2fc3a1b11",
+      "product": "DSH",
+      "condition": "four_sequential",
+      "block": 2,
+      "question": "ownership",
+      "original_classification": "unknown",
+      "citation_substring_present": false,
+      "support": "unknown_retained"
+    },
+    {
+      "case_id": "4a12891033ba46f3989547e2fc3a1b11",
+      "product": "DSH",
+      "condition": "four_sequential",
+      "block": 2,
+      "question": "simultaneous_model_requests",
+      "original_classification": "unknown",
+      "citation_substring_present": false,
+      "support": "unknown_retained"
+    },
+    {
+      "case_id": "f3157dd95bef4fe0be70d91412b8d288",
+      "product": "DSH",
+      "condition": "cold_single",
+      "block": 2,
+      "question": "accepted_workload_tasks",
+      "original_classification": "correct",
+      "citation_substring_present": true,
+      "support": "native_terminal_ACK_count_supported"
+    },
+    {
+      "case_id": "f3157dd95bef4fe0be70d91412b8d288",
+      "product": "DSH",
+      "condition": "cold_single",
+      "block": 2,
+      "question": "ownership",
+      "original_classification": "unknown",
+      "citation_substring_present": false,
+      "support": "unknown_retained"
+    },
+    {
+      "case_id": "f3157dd95bef4fe0be70d91412b8d288",
+      "product": "DSH",
+      "condition": "cold_single",
+      "block": 2,
+      "question": "simultaneous_model_requests",
+      "original_classification": "unknown",
+      "citation_substring_present": false,
+      "support": "unknown_retained"
+    },
+    {
+      "case_id": "faf435a8c93343328c32d45e8e749c86",
+      "product": "OpenClaw",
+      "condition": "four_sequential",
+      "block": 2,
+      "question": "accepted_workload_tasks",
+      "original_classification": "correct",
+      "citation_substring_present": true,
+      "support": "native_terminal_ACK_count_supported"
+    },
+    {
+      "case_id": "faf435a8c93343328c32d45e8e749c86",
+      "product": "OpenClaw",
+      "condition": "four_sequential",
+      "block": 2,
+      "question": "ownership",
+      "original_classification": "unknown",
+      "citation_substring_present": false,
+      "support": "unknown_retained"
+    },
+    {
+      "case_id": "faf435a8c93343328c32d45e8e749c86",
+      "product": "OpenClaw",
+      "condition": "four_sequential",
+      "block": 2,
+      "question": "simultaneous_model_requests",
+      "original_classification": "unknown",
+      "citation_substring_present": false,
+      "support": "unknown_retained"
+    },
+    {
+      "case_id": "364071af588d4e3fb5a0c61ae4b24507",
+      "product": "OpenClaw",
+      "condition": "idle",
+      "block": 1,
+      "question": "accepted_workload_tasks",
+      "original_classification": "unknown",
+      "citation_substring_present": false,
+      "support": "unknown_retained"
+    },
+    {
+      "case_id": "364071af588d4e3fb5a0c61ae4b24507",
+      "product": "OpenClaw",
+      "condition": "idle",
+      "block": 1,
+      "question": "ownership",
+      "original_classification": "unscorable",
+      "citation_substring_present": false,
+      "support": "idle_ownership_unscorable"
+    },
+    {
+      "case_id": "364071af588d4e3fb5a0c61ae4b24507",
+      "product": "OpenClaw",
+      "condition": "idle",
+      "block": 1,
+      "question": "simultaneous_model_requests",
+      "original_classification": "unknown",
+      "citation_substring_present": false,
+      "support": "unknown_retained"
+    },
+    {
+      "case_id": "27632e164c5649f79c67b394117250ad",
+      "product": "DSH",
+      "condition": "idle",
+      "block": 1,
+      "question": "accepted_workload_tasks",
+      "original_classification": "unknown",
+      "citation_substring_present": false,
+      "support": "unknown_retained"
+    },
+    {
+      "case_id": "27632e164c5649f79c67b394117250ad",
+      "product": "DSH",
+      "condition": "idle",
+      "block": 1,
+      "question": "ownership",
+      "original_classification": "unscorable",
+      "citation_substring_present": false,
+      "support": "idle_ownership_unscorable"
+    },
+    {
+      "case_id": "27632e164c5649f79c67b394117250ad",
+      "product": "DSH",
+      "condition": "idle",
+      "block": 1,
+      "question": "simultaneous_model_requests",
+      "original_classification": "unknown",
+      "citation_substring_present": false,
+      "support": "unknown_retained"
+    },
+    {
+      "case_id": "757b708737df4d61a0ca2f029da7b1f1",
+      "product": "OpenClaw",
+      "condition": "four_concurrent",
+      "block": 1,
+      "question": "accepted_workload_tasks",
+      "original_classification": "correct",
+      "citation_substring_present": true,
+      "support": "native_terminal_ACK_count_supported"
+    },
+    {
+      "case_id": "757b708737df4d61a0ca2f029da7b1f1",
+      "product": "OpenClaw",
+      "condition": "four_concurrent",
+      "block": 1,
+      "question": "ownership",
+      "original_classification": "unknown",
+      "citation_substring_present": false,
+      "support": "unknown_retained"
+    },
+    {
+      "case_id": "757b708737df4d61a0ca2f029da7b1f1",
+      "product": "OpenClaw",
+      "condition": "four_concurrent",
+      "block": 1,
+      "question": "simultaneous_model_requests",
+      "original_classification": "unknown",
+      "citation_substring_present": false,
+      "support": "unknown_retained"
+    }
+  ]
+}

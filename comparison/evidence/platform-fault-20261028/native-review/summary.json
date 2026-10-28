@@ -1,0 +1,98 @@
+{
+  "study": "PA native-only automated reconstruction",
+  "source_run_id": "40673794999",
+  "source_controller_commit": "bedde73742c1400b83d1e45b19c081c48cfea8ba",
+  "original_artifact_sha256": "5f27cae82a13a6cec813e0db8e75396fcc02ec8cf1089cc9e21aa7ba6f2a3045",
+  "source_report_sha256": "ea6ce1ebec2a29339a725b0c20f3e2045f4730f5eb1df5f13434c5ef48b9ab15",
+  "protocol_sha256": "c3d3daed91deb155488db42c71d214326ffda8587dbcbbe539f4b73b686f5566",
+  "case_count": 12,
+  "fact_count": 72,
+  "original_counts": {
+    "correct": 52,
+    "incorrect": 6,
+    "unknown": 14,
+    "invalid_answer": 0,
+    "unscorable": 0
+  },
+  "counts_by_product": {
+    "DSH": {
+      "unknown": 12,
+      "correct": 24
+    },
+    "OpenClaw": {
+      "correct": 28,
+      "incorrect": 6,
+      "unknown": 2
+    }
+  },
+  "by_question": {
+    "ownership": {
+      "DSH": {
+        "unknown": 6
+      },
+      "OpenClaw": {
+        "correct": 6
+      }
+    },
+    "interruption": {
+      "DSH": {
+        "unknown": 6
+      },
+      "OpenClaw": {
+        "correct": 4,
+        "incorrect": 2
+      }
+    },
+    "primary_retained_ack": {
+      "DSH": {
+        "correct": 6
+      },
+      "OpenClaw": {
+        "incorrect": 2,
+        "correct": 4
+      }
+    },
+    "companion_retained_ack": {
+      "DSH": {
+        "correct": 6
+      },
+      "OpenClaw": {
+        "incorrect": 2,
+        "correct": 4
+      }
+    },
+    "repeated_original_request": {
+      "DSH": {
+        "correct": 6
+      },
+      "OpenClaw": {
+        "correct": 4,
+        "unknown": 2
+      }
+    },
+    "new_followup_completed": {
+      "DSH": {
+        "correct": 6
+      },
+      "OpenClaw": {
+        "correct": 6
+      }
+    }
+  },
+  "exact_citation_substring_present": 48,
+  "correct_value_and_exact_citation": 42,
+  "original_judgments_unchanged": true,
+  "all_actual_packets_equal_declared_native_projection": true,
+  "all_actual_questions_equal_frozen_protocol": true,
+  "all_answers_started_after_packet_and_key_freeze": true,
+  "actual_paid_requests": 12,
+  "provider_complete": 12,
+  "known_input_tokens": 842979,
+  "known_output_tokens": 7147,
+  "known_total_tokens": 850126,
+  "known_cached_input_subset_tokens": 2816,
+  "usage_coverage": 12,
+  "automated_review_elapsed_seconds": 53.709773941,
+  "actual_invoice_charge": null,
+  "interpretation": "Raw value matches are not proof of evidentiary support. Exact quotation may still concern the wrong phase or cause. Audit reasons/citations separately, preserve unsupported matching guesses and unknowns. One automated investigator of selected native surfaces, not a product-wide observability ranking or human diagnosis time. Review tokens are separate from native task usage; cached input is a subset, not added again."
+}
