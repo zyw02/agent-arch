@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "protocol": "comparison/execution-protocol.md",
-  "state": "specified",
+  "state": "calibration_required",
   "cases": [
     {
       "id": "P01",
@@ -14,7 +14,15 @@
       ],
       "independent_units_per_condition": 3,
       "track": "scripted",
-      "implementation": "planned"
+      "implementation": "planned",
+      "required_observations": [
+        "native_outcome",
+        "independent_oracle",
+        "healthy_session_baseline",
+        "healthy_session_outcome",
+        "collateral_impact"
+      ],
+      "control_match_factors": []
     },
     {
       "id": "P02",
@@ -26,7 +34,24 @@
       ],
       "independent_units_per_condition": 3,
       "track": "scripted",
-      "implementation": "planned"
+      "implementation": "planned",
+      "required_observations": [
+        "native_outcome",
+        "independent_oracle",
+        "instruction_retention",
+        "completed_receipt",
+        "pending_operation",
+        "repeat_count"
+      ],
+      "control_match_factors": [
+        "state_contract"
+      ],
+      "factors": {
+        "state_contract": [
+          "conversation",
+          "state_consistency"
+        ]
+      }
     },
     {
       "id": "P03",
@@ -65,7 +90,23 @@
             "external_fifo"
           ]
         }
-      }
+      },
+      "required_observations": [
+        "native_outcome",
+        "independent_oracle"
+      ],
+      "control_match_factors": [],
+      "condition_controls": {
+        "C2": "C1",
+        "C3": "C1",
+        "C4": "C1",
+        "C5": "C1"
+      },
+      "gated_conditions": {
+        "C4": "capacity_and_load_freeze",
+        "C5": "capacity_and_load_freeze"
+      },
+      "load_level_status": "calibration_candidates"
     },
     {
       "id": "P04",
@@ -77,7 +118,12 @@
       ],
       "independent_units_per_condition": 3,
       "track": "scripted",
-      "implementation": "planned"
+      "implementation": "planned",
+      "required_observations": [
+        "native_outcome",
+        "independent_oracle"
+      ],
+      "control_match_factors": []
     },
     {
       "id": "P05",
@@ -91,7 +137,12 @@
       ],
       "independent_units_per_condition": 3,
       "track": "scripted",
-      "implementation": "planned"
+      "implementation": "planned",
+      "required_observations": [
+        "native_outcome",
+        "independent_oracle"
+      ],
+      "control_match_factors": []
     },
     {
       "id": "H03",
@@ -144,7 +195,12 @@
           "N",
           "C"
         ]
-      }
+      },
+      "required_observations": [
+        "native_outcome",
+        "independent_oracle"
+      ],
+      "control_match_factors": []
     },
     {
       "id": "H04",
@@ -161,6 +217,10 @@
           8,
           64,
           256
+        ],
+        "task_kind": [
+          "markers",
+          "distributed_aggregate"
         ]
       },
       "tracks": [
@@ -187,7 +247,15 @@
             5
           ]
         }
-      }
+      },
+      "required_observations": [
+        "native_outcome",
+        "independent_oracle"
+      ],
+      "control_match_factors": [
+        "size_kib",
+        "task_kind"
+      ]
     },
     {
       "id": "H05",
@@ -241,7 +309,14 @@
             "on"
           ]
         }
-      }
+      },
+      "required_observations": [
+        "native_outcome",
+        "independent_oracle"
+      ],
+      "control_match_factors": [
+        "idempotency"
+      ]
     },
     {
       "id": "H07",
@@ -254,7 +329,12 @@
       ],
       "independent_units_per_condition": 3,
       "track": "scripted",
-      "implementation": "planned"
+      "implementation": "planned",
+      "required_observations": [
+        "native_outcome",
+        "independent_oracle"
+      ],
+      "control_match_factors": []
     },
     {
       "id": "H08",
@@ -293,6 +373,19 @@
             5
           ]
         }
+      },
+      "required_observations": [
+        "native_outcome",
+        "independent_oracle"
+      ],
+      "control_match_factors": [],
+      "track_repetitions": {
+        "D": 6,
+        "N": 3,
+        "C": 3
+      },
+      "condition_claims": {
+        "C1": "Cross-turn result propagation; dependency order is imposed by the provider fixture, not inferred by the harness."
       }
     },
     {
@@ -307,7 +400,12 @@
       ],
       "independent_units_per_condition": 3,
       "track": "scripted",
-      "implementation": "planned"
+      "implementation": "planned",
+      "required_observations": [
+        "native_outcome",
+        "independent_oracle"
+      ],
+      "control_match_factors": []
     },
     {
       "id": "H14",
@@ -324,7 +422,36 @@
       ],
       "independent_units_per_condition": 3,
       "track": "scripted",
-      "implementation": "planned"
+      "implementation": "planned",
+      "required_observations": [
+        "native_outcome",
+        "independent_oracle",
+        "state_policy_usage_owner"
+      ],
+      "control_match_factors": [],
+      "condition_factors": {
+        "C5": {
+          "integration_state": [
+            "normal",
+            "failure",
+            "cancel"
+          ]
+        },
+        "C6": {
+          "integration_state": [
+            "normal",
+            "failure",
+            "cancel"
+          ]
+        },
+        "C7": {
+          "integration_state": [
+            "normal",
+            "failure",
+            "cancel"
+          ]
+        }
+      }
     },
     {
       "id": "H17",
@@ -335,7 +462,12 @@
       ],
       "independent_units_per_condition": 3,
       "track": "scripted",
-      "implementation": "planned"
+      "implementation": "planned",
+      "required_observations": [
+        "native_outcome",
+        "independent_oracle"
+      ],
+      "control_match_factors": []
     },
     {
       "id": "H18",
@@ -368,7 +500,16 @@
       "tracks": [
         "N",
         "C"
+      ],
+      "required_observations": [
+        "native_outcome",
+        "independent_oracle"
+      ],
+      "control_match_factors": [
+        "family",
+        "instance"
       ]
     }
-  ]
+  ],
+  "revision": "cloud-review-20261028-r1"
 }

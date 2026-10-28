@@ -7,7 +7,7 @@ Use English for repository documentation, issue descriptions, and pull request d
 Before submitting a change:
 
 1. Run `python3 tools/check_repository.py` from the repository root.
-2. Run `python3 evaluation/tools/check_design.py` and `python3 -m unittest discover -s evaluation/tests -v`.
+2. Run `python3 evaluation/tools/check_design.py`, `python3 -m unittest discover -s evaluation/tests -v`, and `python3 -m unittest discover -s comparison/tests -v`.
 3. If the matrix changes, regenerate the catalogue with `python3 evaluation/tools/suite.py catalogue > evaluation/experiment-catalogue.md` before running the design check.
 4. Explain the problem, the changed behavior or documentation, and the validation performed. A selected plan or passing fixture test is not a completed OpenClaw experiment.
 5. Keep runtime installations, logs, databases, generated results, and credentials out of the commit.

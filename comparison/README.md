@@ -7,3 +7,7 @@ This workspace compares Codex, DeepSeek Harness (DSH), and OpenClaw at the platf
 Update each cell's status, evidence paths, and notes in `progress.json`, then run `python3 comparison/dashboard.py` and commit the ledger and generated README. `python3 comparison/dashboard.py --check` detects drift. GitHub Actions shows live job steps. When session calibration finishes, its aggregation job writes the latest run link and outcome to the active branch and regenerates the README. Other experiment states are maintained by their owners.
 
 Statuses are `planned`, `in_progress`, `blocked`, `done`, and `not_applicable`. The last two require an evidence file in the repository. Record the protocol and supporting evidence for each completed item, including any failed acceptance conditions.
+
+## Design revision
+
+Revision `cloud-review-20261028-r1` addresses the cloud design review through [review controls](review-controls.md): bounded scheduling claims, capacity baselines, explicit extension coverage, matched controls, analysis rules and separate failure classifications. Product experiments remain pending.

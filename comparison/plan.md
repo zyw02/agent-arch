@@ -18,7 +18,7 @@ Freeze product version, commit when available, entry point, operating system, co
 
 ## Initial work items
 
-[First-wave protocols](first-wave-protocol.md) specify the first four scenarios and their limits. The remaining entries are research candidates awaiting cross-product calibration. Run a feasibility check first, then freeze a formal protocol. Invalid units include unreached faults, adapter errors, and failed positive controls; retain genuine product failures.
+[First-wave protocols](first-wave-protocol.md) specify the first four scenarios and their limits. The remaining entries are research candidates awaiting cross-product calibration. Run a feasibility check first, then freeze a formal protocol. Invalid units include unreached faults and fixture/adapter errors. A product failure on a reached positive control is a valid negative result; retain it and do not execute dependent fault units. Apply the [review controls](review-controls.md) result classification.
 
 | Layer | Work item | Minimum observation | Architecture value and boundary |
 | --- | --- | --- | --- |

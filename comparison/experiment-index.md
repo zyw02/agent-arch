@@ -101,7 +101,7 @@ Use three complementary tracks: **native product** configurations for operationa
 
 **Scenario:** Provide four independent reads, a read dependency chain, conflicting writes to the same record, and one failed call among successful calls. Use a fixed call sequence when a product supports a deterministic model adapter, and a separate real-model task where the model chooses the calls.
 
-**Measure:** Dispatch and completion times, overlap, call/result ID alignment, order of dependent operations, final external state, and handling of partial failures.
+**Measure:** Dispatch and completion times, overlap, call/result ID alignment, cross-turn result propagation (C1 uses provider-imposed ordering), final external state, and handling of partial failures.
 
 **Architecture evidence:** Relates concurrency and ordering decisions to correctness and completion time. **Calibration needed:** common tool access, fixed-call support, and independent event timestamps.
 
@@ -128,3 +128,5 @@ The [execution protocol](execution-protocol.md) contains scenario conditions, co
 ## Evidence and reporting
 
 The first-wave protocol starts deterministic scenarios with three independent units and the resource baseline with six; freeze additional sample sizes after calibration. Mark adapter errors and unreached faults separately, retain valid product failures, and link each observation to its fixture and configuration. The [evaluation plan](plan.md) defines the six-dimensional assessment and evidence reuse.
+
+The [review controls](review-controls.md) define capacity preflight, analysis units, failure classification and mandatory extension coverage for the revised matrix.

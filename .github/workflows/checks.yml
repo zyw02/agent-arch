@@ -34,3 +34,5 @@ jobs:
         run: python3 evaluation/tools/check_design.py
       - name: Test campaign gates, fixture acceptance and cost accounting
         run: python3 -m unittest discover -s evaluation/tests -v
+      - name: Validate comparison coverage, controls and load freeze
+        run: python3 -m unittest discover -s comparison/tests -v
