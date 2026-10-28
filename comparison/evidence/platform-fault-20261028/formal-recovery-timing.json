@@ -1,0 +1,127 @@
+{
+  "study": "PA-HTTP-01",
+  "role": "Additional descriptive post-cut timing from original raw records; not formal-window success or an extra repetition",
+  "rows": [
+    {
+      "product": "DSH",
+      "block": 1,
+      "role": "primary",
+      "session_id": "5929c575-8073-4a9f-a5b0-996b45fe96c5",
+      "before_followup_ack": false,
+      "first_original_request_seconds_after_restart_ready": null,
+      "first_original_request_seconds_after_new_followup_phase": null,
+      "original_requests_after_restart": 0,
+      "final_original_ack": false,
+      "native_recovery_lines": []
+    },
+    {
+      "product": "DSH",
+      "block": 1,
+      "role": "companion",
+      "session_id": "72e19c4b-2f77-49b8-bc52-3326564d3791",
+      "before_followup_ack": false,
+      "first_original_request_seconds_after_restart_ready": null,
+      "first_original_request_seconds_after_new_followup_phase": null,
+      "original_requests_after_restart": 0,
+      "final_original_ack": false,
+      "native_recovery_lines": []
+    },
+    {
+      "product": "OpenClaw",
+      "block": 1,
+      "role": "primary",
+      "session_id": "480e5206-a1db-429e-b66b-3cc0f94186b0",
+      "before_followup_ack": false,
+      "first_original_request_seconds_after_restart_ready": 18.186815953,
+      "first_original_request_seconds_after_new_followup_phase": 1.490460061,
+      "original_requests_after_restart": 1,
+      "final_original_ack": true,
+      "native_recovery_lines": [
+        "2026-10-28T10:46:04.250+00:00 [main-session-restart-recovery] marked 2 startup-orphaned main session(s) for restart recovery",
+        "2026-10-28T10:46:08.061+00:00 [main-session-restart-recovery] started interrupted main session: agent:main:platform:480e5206-a1db-429e-b66b-3cc0f94186b0",
+        "2026-10-28T10:46:08.063+00:00 [main-session-restart-recovery] main-session restart recovery candidate {\"boot\":\"6a7771e2-9e79-4c92-a0a6-4788d681e0d5\",\"pass\":\"e00f8716-7f2d-47d0-bf22-da7c4c513524\",\"agentId\":\"main\",\"storePath\":\"/home/runner/work/_temp/platform-fault-9k3688yq/1-OpenClaw-owner_exit/state/agents/main/sessions/sessions.json\",\"sessionKey\":\"agent:main:platform:480e5206-a1db-429e-b66b-3cc0f94186b0\",\"sessionId\":\"31edebae-93a1-4253-978a-88cb138a2c45\",\"sourceRunId\":\"chatcmpl_0c7ce953-f866-4b3f-91c6-bf159f029346\",\"interruptedRunIds\":[\"chatcmpl_0c7ce953-f866-4b3f-91c6-bf159f029346\"],\"decision\":\"started\",\"reason\":\"dispatch_started\",\"nextOwner\":\"main-lane\"}",
+        "2026-10-28T10:46:09.665+00:00 [main-session-restart-recovery] main-session restart recovery startup complete: started=2 settled=0 failed=0 skipped=0 boot=6a7771e2-9e79-4c92-a0a6-4788d681e0d5 pass=e00f87\u20263524",
+        "2026-10-28T10:46:13.881+00:00 [main-session-restart-recovery] main-session restart recovery terminal: session=agent:main:platform:480e5206-a1db-429e-b66b-3cc0f94186b0 run=40ad4e03-aad9-472c-8057-b4b677c97ec4 status=ok reason=completed"
+      ]
+    },
+    {
+      "product": "OpenClaw",
+      "block": 1,
+      "role": "companion",
+      "session_id": "597aba63-068e-4dea-9c88-7fb8dffa9191",
+      "before_followup_ack": false,
+      "first_original_request_seconds_after_restart_ready": 20.243748739,
+      "first_original_request_seconds_after_new_followup_phase": 3.547392847,
+      "original_requests_after_restart": 1,
+      "final_original_ack": true,
+      "native_recovery_lines": [
+        "2026-10-28T10:46:04.250+00:00 [main-session-restart-recovery] marked 2 startup-orphaned main session(s) for restart recovery",
+        "2026-10-28T10:46:09.646+00:00 [main-session-restart-recovery] started interrupted main session: agent:main:platform:597aba63-068e-4dea-9c88-7fb8dffa9191",
+        "2026-10-28T10:46:09.648+00:00 [main-session-restart-recovery] main-session restart recovery candidate {\"boot\":\"6a7771e2-9e79-4c92-a0a6-4788d681e0d5\",\"pass\":\"e00f8716-7f2d-47d0-bf22-da7c4c513524\",\"agentId\":\"main\",\"storePath\":\"/home/runner/work/_temp/platform-fault-9k3688yq/1-OpenClaw-owner_exit/state/agents/main/sessions/sessions.json\",\"sessionKey\":\"agent:main:platform:597aba63-068e-4dea-9c88-7fb8dffa9191\",\"sessionId\":\"1428c968-ee08-4ccd-8516-74d04f267a5a\",\"sourceRunId\":\"chatcmpl_bbca5d58-2c60-43e4-8d5f-b02246e96ee5\",\"interruptedRunIds\":[\"chatcmpl_bbca5d58-2c60-43e4-8d5f-b02246e96ee5\"],\"decision\":\"started\",\"reason\":\"dispatch_started\",\"nextOwner\":\"main-lane\"}",
+        "2026-10-28T10:46:09.665+00:00 [main-session-restart-recovery] main-session restart recovery startup complete: started=2 settled=0 failed=0 skipped=0 boot=6a7771e2-9e79-4c92-a0a6-4788d681e0d5 pass=e00f87\u20263524",
+        "2026-10-28T10:46:15.841+00:00 [main-session-restart-recovery] main-session restart recovery terminal: session=agent:main:platform:597aba63-068e-4dea-9c88-7fb8dffa9191 run=afbcc22b-93a7-446c-84f0-0f15cbed6b3f status=ok reason=completed"
+      ]
+    },
+    {
+      "product": "OpenClaw",
+      "block": 2,
+      "role": "primary",
+      "session_id": "4c2e388d-e9bf-4aa2-a561-a426ace2cbe0",
+      "before_followup_ack": false,
+      "first_original_request_seconds_after_restart_ready": 20.219591518,
+      "first_original_request_seconds_after_new_followup_phase": 3.395966946,
+      "original_requests_after_restart": 1,
+      "final_original_ack": true,
+      "native_recovery_lines": [
+        "2026-10-28T10:51:39.308+00:00 [main-session-restart-recovery] marked 2 startup-orphaned main session(s) for restart recovery",
+        "2026-10-28T10:51:44.562+00:00 [main-session-restart-recovery] started interrupted main session: agent:main:platform:4c2e388d-e9bf-4aa2-a561-a426ace2cbe0",
+        "2026-10-28T10:51:44.565+00:00 [main-session-restart-recovery] main-session restart recovery candidate {\"boot\":\"911a1785-2f0d-4498-89b5-4c10750563f2\",\"pass\":\"ef5ff06e-70d9-4af1-a5dc-73991fe7a245\",\"agentId\":\"main\",\"storePath\":\"/home/runner/work/_temp/platform-fault-9k3688yq/2-OpenClaw-owner_exit/state/agents/main/sessions/sessions.json\",\"sessionKey\":\"agent:main:platform:4c2e388d-e9bf-4aa2-a561-a426ace2cbe0\",\"sessionId\":\"1775a428-3da1-4c50-a11b-09dd8a433b08\",\"sourceRunId\":\"chatcmpl_d0e239b3-fc6a-4217-8dbb-751da6076774\",\"interruptedRunIds\":[\"chatcmpl_d0e239b3-fc6a-4217-8dbb-751da6076774\"],\"decision\":\"started\",\"reason\":\"dispatch_started\",\"nextOwner\":\"main-lane\"}",
+        "2026-10-28T10:51:44.578+00:00 [main-session-restart-recovery] main-session restart recovery startup complete: started=2 settled=0 failed=0 skipped=0 boot=911a1785-2f0d-4498-89b5-4c10750563f2 pass=ef5ff0\u2026a245",
+        "2026-10-28T10:51:50.979+00:00 [main-session-restart-recovery] main-session restart recovery terminal: session=agent:main:platform:4c2e388d-e9bf-4aa2-a561-a426ace2cbe0 run=7c50630b-f3a4-4f6e-be44-0ca8e0e2f1a6 status=ok reason=completed"
+      ]
+    },
+    {
+      "product": "OpenClaw",
+      "block": 2,
+      "role": "companion",
+      "session_id": "0cf87689-6554-4e19-9f3a-0f65f7586001",
+      "before_followup_ack": false,
+      "first_original_request_seconds_after_restart_ready": 18.06635456,
+      "first_original_request_seconds_after_new_followup_phase": 1.242729988,
+      "original_requests_after_restart": 1,
+      "final_original_ack": true,
+      "native_recovery_lines": [
+        "2026-10-28T10:51:39.308+00:00 [main-session-restart-recovery] marked 2 startup-orphaned main session(s) for restart recovery",
+        "2026-10-28T10:51:43.044+00:00 [main-session-restart-recovery] started interrupted main session: agent:main:platform:0cf87689-6554-4e19-9f3a-0f65f7586001",
+        "2026-10-28T10:51:43.045+00:00 [main-session-restart-recovery] main-session restart recovery candidate {\"boot\":\"911a1785-2f0d-4498-89b5-4c10750563f2\",\"pass\":\"ef5ff06e-70d9-4af1-a5dc-73991fe7a245\",\"agentId\":\"main\",\"storePath\":\"/home/runner/work/_temp/platform-fault-9k3688yq/2-OpenClaw-owner_exit/state/agents/main/sessions/sessions.json\",\"sessionKey\":\"agent:main:platform:0cf87689-6554-4e19-9f3a-0f65f7586001\",\"sessionId\":\"3b8ff219-9480-49a1-87e4-c846211f970a\",\"sourceRunId\":\"chatcmpl_eca6af68-cbc6-410b-98c9-5f8f6b9b9dc9\",\"interruptedRunIds\":[\"chatcmpl_eca6af68-cbc6-410b-98c9-5f8f6b9b9dc9\"],\"decision\":\"started\",\"reason\":\"dispatch_started\",\"nextOwner\":\"main-lane\"}",
+        "2026-10-28T10:51:44.578+00:00 [main-session-restart-recovery] main-session restart recovery startup complete: started=2 settled=0 failed=0 skipped=0 boot=911a1785-2f0d-4498-89b5-4c10750563f2 pass=ef5ff0\u2026a245",
+        "2026-10-28T10:51:48.959+00:00 [main-session-restart-recovery] main-session restart recovery terminal: session=agent:main:platform:0cf87689-6554-4e19-9f3a-0f65f7586001 run=bd8e8ffe-44dc-48bc-8921-004707ad9042 status=ok reason=completed"
+      ]
+    },
+    {
+      "product": "DSH",
+      "block": 2,
+      "role": "primary",
+      "session_id": "8674fd31-7180-459f-9750-69f837a49960",
+      "before_followup_ack": false,
+      "first_original_request_seconds_after_restart_ready": null,
+      "first_original_request_seconds_after_new_followup_phase": null,
+      "original_requests_after_restart": 0,
+      "final_original_ack": false,
+      "native_recovery_lines": []
+    },
+    {
+      "product": "DSH",
+      "block": 2,
+      "role": "companion",
+      "session_id": "e0a73afe-4f97-46a5-88cd-7b05e70452ec",
+      "before_followup_ack": false,
+      "first_original_request_seconds_after_restart_ready": null,
+      "first_original_request_seconds_after_new_followup_phase": null,
+      "original_requests_after_restart": 0,
+      "final_original_ack": false,
+      "native_recovery_lines": []
+    }
+  ],
+  "interpretation": "Model request arrival is independently observed. Native startup scheduling/dispatch can precede that arrival. Requests after the new-followup phase begins cannot earn pre-followup recovery credit. Source/native recovery labels corroborate autonomous ownership, but no no-followup counterfactual was executed beyond the frozen window."
+}

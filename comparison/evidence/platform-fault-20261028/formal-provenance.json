@@ -1,0 +1,39 @@
+{
+  "run_id": 40673794999,
+  "controller_commit": "bedde73742c1400b83d1e45b19c081c48cfea8ba",
+  "artifact_id": 12810965286,
+  "artifact_zip_sha256": "d6aac4732e71acb2f2fb3cfae3f66d97baf9788ef30cf83f74350d6968c968a2",
+  "original_report_sha256": "ea6ce1ebec2a29339a725b0c20f3e2045f4730f5eb1df5f13434c5ef48b9ab15",
+  "execution_scripts_sha256": {
+    "platform_fault_probe.py": "3d399bae8fb3abf7e19bc5aa032cd1677700b2666c67892470ef792be7af0bb9",
+    "platform_api_probe.py": "aa1887c5b9eb4783c4d26677ad37551c2272689d35b76faa85f9b33eaf7a83d2",
+    "resource_collector.py": "1d59b4204260645d9177a5d70965b99e70dffa12bc20e616846a6a4edc5d7ef7",
+    "resource_launcher.py": "f0fd58ea10f2d2805752dfbffcfdef3cedfbe3d791bfdac4f9d7eefde45bfe8d",
+    "resource_memory_reader.py": "7e3049e9f3d13aa061fcdf3e1431830a48c6e25ef449be4b9f0f6e46a8474222",
+    "native_read_probe.py": "8f0797368942ef0550b15c3c2ba2dce5bc29d72cee4235c2ee4a5b6713a6c30e",
+    "context_skill_probe.py": "f589d40f76e1824d8edcdd343a25a2eda75e3cddf107c5cb5e57e9ea92b3edb3",
+    "export_read_metrics.py": "8e052b5c187499d6c608c3221e00e3b555ea1bcbcc77d41a2a8f14b219e8bb8e"
+  },
+  "analysis_scripts_sha256": {
+    "summarize_platform_fault.py": "5b2b59ed50fbb0169b86947feba77c2b55c061c9b03621c127ec60b276576e12",
+    "plot_platform_fault.py": "ccc0441a4904bf41c5d3f26f396e783362032ef34a79bd37714034913e85839f",
+    "describe_platform_recovery.py": "e7b0c8ae7b59ad60f9dd5029c90f50ba252a15fe8e529a96cc71b7be26068e70"
+  },
+  "disposition": "Two complete formal blocks, 12 valid arms, all controls/resources/native boundaries verified. Original judgments retained. Independent primary old-request/ACK cut remains before ANY new followup phase. Additional post-cut recovery timing is descriptive only; no retrospective window extension or tie-breaking repeat.",
+  "native_capture_limit": "Public native histories at most 100 messages per read; stdout tail at most 150 lines/2400 characters per line per carrier. Omitted total stdout count unknown. Other native file-log surfaces not inventoried.",
+  "retained_files_sha256": {
+    "formal-summary.json": "a9a5dddc663174ad4881ea5c04cad3a7ed286aec3d843fd408997f608e003307",
+    "formal-original-report.json.gz": "cb46656a6a49218c982761609ec5d60c786b7709cd1625a3249a032f87c8ddca",
+    "formal-node-version.txt": "249baf635bb43877fcb9422efa1a4904b702d0ddf14d3949b7cd0950d5229c81",
+    "formal-os-release.txt": "87458b3b1f1ca0e5c693ade771de7007c3783bdc692fa6b39eb6414bf2af2763",
+    "formal-package-lock.json.gz": "f61a3eb07cad672ebc2d19841e2e4c38dad2a44045dd714fed9a9a799f461f65",
+    "formal-source-bindings.json": "662002486a76decf857be027ff552c4d21af5151a182dc2f527003200bdc5eaf",
+    "formal-fault-outcomes.svg": "32261b30f8a66d71d1a03eca92f6326f89b1df762de68c3522cbe2b4ace14bf2",
+    "formal-recovery-timing.json": "ad5316e25901b595adc30ea635b2431243d8e73b2d6890c00e0ed1d3ecdc9a9d",
+    "formal-fault-lifecycle.svg": "b213e715eb71fee2a298429d1973334142a8099e2943c5fafa9f49d062b04c4e",
+    "formal-fault-outcomes.png": "76643aa6027e01f4b4ec16d3dde5749c27ea8d8e870bb0129d9578131e4b0030",
+    "formal-protocol.json": "610269fff47775eac7ecd78fb4c173a1c76f4060118289c33ee7e0b77b11faea",
+    "formal-metrics.csv": "fcab7bc4efebdc19c86e4f61d71e006026700130089319e6ba4a2f335df30166",
+    "formal-fault-lifecycle.png": "04888fa9159a8f258a0fd5c990d0c3e3a71b7c55c26243808897ed4c639293e3"
+  }
+}
