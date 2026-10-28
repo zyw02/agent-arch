@@ -47,11 +47,19 @@ class Provider:
                 data=json.dumps(dict(object='list',data=[dict(id='fixture-model',object='model')])).encode()
                 self.send_response(200);self.send_header('Content-Length',str(len(data)));self.end_headers();self.wfile.write(data)
             def do_POST(self):
+                self.current_record=None
+                try:self.respond_post()
+                except (BrokenPipeError,ConnectionResetError) as error:
+                    if self.current_record is not None:self.current_record['fixture_transport_write_error']=type(error).__name__
+                finally:
+                    if self.current_record is not None:self.current_record['fixture_settled_ns']=time.monotonic_ns()
+            def respond_post(self):
                 size=int(self.headers.get('Content-Length',0))
                 if not 0<size<=4*1024**2:self.send_error(413);return
                 body=json.loads(self.rfile.read(size));decision=(decision_fn or choose_response)(body,owner.file_path,owner.receipt,target_tool)
                 owner.requests.append(dict(monotonic_ns=time.monotonic_ns(),endpoint=self.path,
                     schemas=schemas(body),request=body,decision=decision))
+                self.current_record=owner.requests[-1]
                 if len(owner.requests)>max_requests:self.send_error(429);return
                 anthropic=self.path.endswith('/messages');call=decision.get('tool')
                 text=decision.get('text','');callid='read_calibration_'+str(len(owner.requests))

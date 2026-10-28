@@ -15,7 +15,7 @@ import uuid
 from context_skill_probe import request_text
 from export_read_metrics import request_stage
 from native_read_probe import Provider
-from platform_api_probe import NativeServer,fixture_response,MARKER
+from platform_api_probe import NativeServer,fixture_response,MARKER,fresh_session_bindings
 
 PROTOCOL=Path(__file__).with_name('platform-fault-protocol.json')
 
@@ -125,6 +125,9 @@ def run_arm(product,condition,runtime,root,observation_seconds):
             if product=='DSH':task['session_id']=server.rpc('session/create',dict(request=dict(sessionId=task['session_id'],cwd=str(server.workspace))))['sessionId']
             clients[role]=Client(server,task['session_id'],task['marker'])
         row['boundary_ns']=wait_until(lambda:all(e.is_set() for e in gate.arrived.values()) and all(c.result_request_sent(product) for c in clients.values()),60,'Both admitted model requests and waiting result consumers')
+        binding_tasks=[dict(**task,session_key='agent:main:platform:'+task['session_id']) for task in tasks.values()]
+        row['session_bindings']=fresh_session_bindings(product,binding_tasks,gate.ledger)
+        if not row['session_bindings']['valid']:raise RuntimeError('Native session binding/context calibration failed at fault boundary')
         row['boundary_process_map']=server.process_map()
         if condition=='client_exit':
             target=clients['primary'].process
