@@ -1,10 +1,12 @@
 #!/usr/bin/env python3
 """PA public HTTP fault-domain pilot/formal blocks, hosted workers only."""
 import argparse
+import gzip
 import hashlib
 import json
 import os
 from pathlib import Path
+import resource
 import signal
 import subprocess
 import sys
@@ -109,18 +111,21 @@ def safe_histories(server,tasks):
     for role,task in tasks.items():
         start=time.monotonic_ns()
         try:
-            native=server.history(task['session_id']);rows[role]=dict(started_ns=start,finished_ns=time.monotonic_ns(),native=native,facts=history_facts(server.product,native,task['marker']))
+            native=server.history(task['session_id']);rows[role]=dict(started_ns=start,finished_ns=time.monotonic_ns(),native=native,
+                facts=None if 'history_error' in native else history_facts(server.product,native,task['marker']))
         except Exception as error:rows[role]=dict(started_ns=start,error=type(error).__name__+': '+str(error)[:1600])
     return rows
 
 
 def run_arm(product,condition,runtime,root,observation_seconds):
-    started=time.monotonic_ns();tasks={role:dict(session_id=str(uuid.uuid4()),marker='PLATFORM_INPUT_'+uuid.uuid4().hex) for role in ('primary','companion')}
+    started=time.monotonic_ns();observer_begin=resource.getrusage(resource.RUSAGE_SELF);clients_cpu_begin=None
+    tasks={role:dict(session_id=str(uuid.uuid4()),marker='PLATFORM_INPUT_'+uuid.uuid4().hex) for role in ('primary','companion')}
     gate=Gate([t['marker'] for t in tasks.values()]);provider=Provider(root/'unused','unused',decision_fn=gate.decide,max_requests=40)
     server=None;clients={};row=dict(product=product,condition=condition,tasks=tasks,validity='adapter_error',paid_model_calls=0,cycles=[])
     try:
         server=NativeServer(product,runtime,root,provider);server.ready();owner=server.service_owner()
         row.update(startup_ms=(server.ready_ns-server.started_ns)/1e6,initial_process_map=server.process_map(),owner=owner,command=server.command)
+        clients_cpu_begin=resource.getrusage(resource.RUSAGE_CHILDREN)
         for role,task in tasks.items():
             if product=='DSH':task['session_id']=server.rpc('session/create',dict(request=dict(sessionId=task['session_id'],cwd=str(server.workspace))))['sessionId']
             clients[role]=Client(server,task['session_id'],task['marker'])
@@ -142,6 +147,9 @@ def run_arm(product,condition,runtime,root,observation_seconds):
             if delay>0:time.sleep(delay)
             row['observation'].append(dict(seconds_after_release=seconds,ns=time.monotonic_ns(),process_map=server.process_map(),client_exit_codes={r:c.process.poll() for r,c in clients.items()}))
         row['clients']={r:c.finish() for r,c in clients.items()};clients={}
+        clients_cpu_end=resource.getrusage(resource.RUSAGE_CHILDREN)
+        row['http_clients_cpu_seconds']=clients_cpu_end.ru_utime+clients_cpu_end.ru_stime-clients_cpu_begin.ru_utime-clients_cpu_begin.ru_stime
+        row['http_clients_cpu_method']='RUSAGE_CHILDREN delta across both consumer launches and reaps, before any native carrier/helper/history-CLI reap; consumers stay outside native cgroup'
         if condition!='owner_exit':row['before_restart_histories']=safe_histories(server,tasks)
         row['cycles'].append(dict(resources=server.stop(),sanitized_native_log=list(server.logs),exit_code=server.process.returncode));server=None
         # This new carrier uses exactly the original product-owned state. No
@@ -165,11 +173,13 @@ def run_arm(product,condition,runtime,root,observation_seconds):
         if clients:row['clients']={r:c.finish() for r,c in clients.items()}
         if server is not None:row['cycles'].append(dict(resources=server.stop(),sanitized_native_log=list(server.logs),exit_code=server.process.returncode))
         provider.close();row.update(provider_requests=provider.requests,boundary_ledger=gate.ledger,elapsed_ms=(time.monotonic_ns()-started)/1e6)
+        observer_end=resource.getrusage(resource.RUSAGE_SELF)
+        row['observer_parent_cpu_seconds']=observer_end.ru_utime+observer_end.ru_stime-observer_begin.ru_utime-observer_begin.ru_stime
     row['resource_collection_complete']=bool(row['cycles']) and all(c['resources']['complete'] for c in row['cycles'])
     # Negative fault outcomes remain valid observations. Positive-control and
     # observer failure cannot be used to admit the formal study.
-    row['pilot_ready']=row['validity']=='valid' and row['resource_collection_complete'] and all('error' not in h for h in row.get('after_passive_window_histories',{}).values()) and len(row.get('after_passive_window_histories',{}))==2
-    if condition=='healthy':row['pilot_ready']=row['pilot_ready'] and all(h['facts']['assistant_ack'] for h in row.get('before_restart_histories',{}).values()) and all(f.get('result',{}).get('accepted') for f in row.get('followups',{}).values())
+    row['pilot_ready']=row['validity']=='valid' and row['resource_collection_complete'] and all(h.get('facts') is not None for h in row.get('after_passive_window_histories',{}).values()) and len(row.get('after_passive_window_histories',{}))==2
+    if condition=='healthy':row['pilot_ready']=row['pilot_ready'] and all((h.get('facts') or {}).get('assistant_ack') for h in row.get('before_restart_histories',{}).values()) and all(f.get('result',{}).get('accepted') for f in row.get('followups',{}).values())
     return row
 
 
@@ -179,9 +189,17 @@ def main():
     if os.environ.get('GITHUB_ACTIONS')!='true':raise SystemExit('Native fault execution requires a disposable hosted worker')
     protocol_raw=PROTOCOL.read_bytes();protocol=json.loads(protocol_raw)
     if args.phase=='pilot' and args.blocks!=1:raise ValueError('Pilot must be one complete block per product')
+    if args.phase=='formal':
+        admission=json.loads(Path(__file__).with_name('platform-fault-formal-admission.json').read_bytes())
+        pilot_raw=gzip.decompress((Path(__file__).parent/admission['pilot_report_gzip']).read_bytes());pilot=json.loads(pilot_raw)
+        if args.blocks!=2 or admission['status']!='admitted' or admission['protocol_sha256']!=hashlib.sha256(protocol_raw).hexdigest() or hashlib.sha256(pilot_raw).hexdigest()!=admission['pilot_report_sha256']:
+            raise ValueError('Formal PA admission/hash/two-block declaration mismatch')
+        expected={(p,c,1) for p in ('DSH','OpenClaw') for c in protocol['conditions']}
+        if {(r['product'],r['condition'],r['block']) for r in pilot['results']}!=expected or len(pilot['results'])!=6 or not all(r['pilot_ready'] for r in pilot['results']):
+            raise ValueError('Complete healthy/fault pilot not verified')
     versions={p:json.loads((args.runtime/'node_modules'/p/'package.json').read_text())['version'] for p in ('@deepseek-ai/dsh','openclaw')}
     if versions!={'@deepseek-ai/dsh':'0.2.2-alpha.2','openclaw':'2026.10.8'}:raise ValueError('Installed product versions differ')
-    args.output.mkdir(parents=True,exist_ok=True);results=[];report=dict(kind='native-platform-fault-domains',phase=args.phase,protocol_sha256=hashlib.sha256(protocol_raw).hexdigest(),protocol=protocol,
+    args.output.mkdir(parents=True,exist_ok=True);results=[];report=dict(kind='native-platform-fault-domains',phase=args.phase,blocks=args.blocks,protocol_sha256=hashlib.sha256(protocol_raw).hexdigest(),protocol=protocol,
         run_id=os.environ.get('GITHUB_RUN_ID'),controller_commit=os.environ.get('GITHUB_SHA'),installed_versions=versions,paid_model_calls=0,results=results)
     (args.output/'protocol.json').write_bytes(protocol_raw)
     with tempfile.TemporaryDirectory(prefix='platform-fault-',dir=os.environ['RUNNER_TEMP']) as tmp:

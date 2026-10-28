@@ -1,12 +1,26 @@
 import copy
+import gzip
+import hashlib
+import json
 from pathlib import Path
 import sys
 import unittest
 sys.path.insert(0,str(Path(__file__).resolve().parents[1]))
 from review_platform_native import make_packet,quote_exists
+from summarize_platform_fault import summarize
 
 
 class NativeOnlyPacketTests(unittest.TestCase):
+    def test_pilot_original_hashes_and_frozen_admission_recompute_without_native_execution(self):
+        comparison=Path(__file__).resolve().parents[1];root=comparison/'evidence/platform-fault-20261028'
+        admission=json.loads((comparison/'platform-fault-formal-admission.json').read_bytes());raw=gzip.decompress((comparison/admission['pilot_report_gzip']).read_bytes())
+        self.assertEqual(hashlib.sha256(raw).hexdigest(),admission['pilot_report_sha256'])
+        self.assertEqual(hashlib.sha256((comparison/'platform-fault-protocol.json').read_bytes()).hexdigest(),admission['protocol_sha256'])
+        report=json.loads(raw);summary=summarize(report);published=json.loads((root/'pilot-summary.json').read_bytes());published.pop('original_report_sha256')
+        self.assertEqual(summary,published);self.assertTrue(summary['complete_comparison_blocks'])
+        provenance=json.loads((root/'pilot-provenance.json').read_bytes())
+        for name,digest in provenance['retained_files_sha256'].items():self.assertEqual(hashlib.sha256((root/name).read_bytes()).hexdigest(),digest,name)
+
     def test_packet_excludes_external_truth_and_does_not_mutate_original_native_evidence(self):
         arm=dict(condition='owner_exit',block=1,owner=dict(pid=999),boundary_ledger=[dict(hidden='oracle')],
             tasks=dict(primary=dict(session_id='native-id',marker='PLATFORM_INPUT_'+'a'*32)),

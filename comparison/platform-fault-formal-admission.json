@@ -1,0 +1,29 @@
+{
+  "study": "PA-HTTP-01",
+  "status": "admitted",
+  "phase": "two_complete_formal_blocks",
+  "pilot_run_id": 40671831195,
+  "pilot_controller_commit": "de8d200bf661d890e72d760d0a22a70aea716053",
+  "pilot_report_gzip": "evidence/platform-fault-20261028/pilot-original-report.json.gz",
+  "pilot_report_sha256": "e70738bb8a649b67c8f8ad3bb483c7adc6cfd2a23d49fcf548ef2c192d29f3ec",
+  "protocol_sha256": "610269fff47775eac7ecd78fb4c173a1c76f4060118289c33ee7e0b77b11faea",
+  "measured_pilot_arm_seconds": 308.513191277,
+  "measured_pilot_by_product_seconds": {
+    "DSH": 81.664907425,
+    "OpenClaw": 226.848283852
+  },
+  "measured_setup_cleanup_seconds_approx": 99,
+  "estimated_two_block_runtime_minutes": [
+    12,
+    16
+  ],
+  "method": "Two complete product blocks per pilot, six arms in 308.5 s; double complete measured work for formal two blocks plus one installation/setup/cleanup, allow variation. This is a pilot-based planning range, not a deadline or confidence interval.",
+  "adapter_changes_after_pilot": [
+    "Guard native session binding at held boundary using existing calibrated checker; same pilot raw passes offline",
+    "Retain fixture write errors instead of traceback; no change to response semantics",
+    "Capture full failed native history CLI stdout/stderr; startup UNAVAILABLE remains an observation, not failed task",
+    "Refuse service execution if dedicated cgroup unavailable",
+    "Separately retain observer-parent and HTTP-consumer CPU; native boundaries and fault behavior unchanged"
+  ],
+  "blind_review": "Questions frozen before formal start; one isolated automated investigator; no human review claim"
+}

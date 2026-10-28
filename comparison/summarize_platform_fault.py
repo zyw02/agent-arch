@@ -21,13 +21,21 @@ def summarize(report):
             peak_native_pss_mib=max((c['resources'].get('sampled_peak_pss_bytes') or 0)/2**20 for c in arm['cycles']),
             native_processes_at_boundary=len(arm.get('boundary_process_map',[])),
             surviving_processes_at_end_of_fault_window=len(arm.get('observation',[{}])[-1].get('process_map',[])))
+        record['observer_parent_cpu_seconds']=arm.get('observer_parent_cpu_seconds')
+        record['http_clients_cpu_seconds']=arm.get('http_clients_cpu_seconds')
+        histories=[h for stage in ('before_restart_histories','passive_histories','after_passive_window_histories','final_histories') for h in arm.get(stage,{}).values()]
+        record['history_cli_cpu_seconds']=sum(h.get('native',{}).get('observer_cli',{}).get('cpu_seconds',0) for h in histories) if not any('error' in h for h in histories) else None
+        helpers=[c['resources'].get('memory_reader_cpu_seconds') for c in arm['cycles']]
+        record['memory_reader_cpu_seconds']=sum(helpers) if all(v is not None for v in helpers) else None
+        observer_parts=('observer_parent_cpu_seconds','http_clients_cpu_seconds','history_cli_cpu_seconds','memory_reader_cpu_seconds')
+        record['observer_total_core_seconds']=sum(record[k] for k in observer_parts) if all(record[k] is not None for k in observer_parts) else None
         for role,task in arm['tasks'].items():
             terminals=[e for e in arm.get('clients',{}).get(role,{}).get('events',[]) if e.get('kind')=='terminal']
             record[role+'_client_received_ack']=any(e['result'].get('accepted') for e in terminals)
             record[role+'_client_transport_error']=any(e.get('kind')=='transport_error' for e in arm.get('clients',{}).get(role,{}).get('events',[]))
             for stage,prefix in [('before_restart_histories','before_restart'),('passive_histories','restart_initial'),('after_passive_window_histories','restart_later')]:
                 h=arm.get(stage,{}).get(role,{})
-                facts=history_facts(arm['product'],h.get('native',{}),task['marker']) if 'native' in h else None
+                facts=history_facts(arm['product'],h.get('native',{}),task['marker']) if 'native' in h and 'history_error' not in h['native'] else None
                 if facts is not None and h.get('facts')!=facts:raise ValueError('Retained native-history judgment changed')
                 record[role+'_'+prefix+'_user_retained']=facts['user_retained'] if facts else None
                 record[role+'_'+prefix+'_ack']=facts['assistant_ack'] if facts else None

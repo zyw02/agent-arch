@@ -5,12 +5,20 @@ import unittest
 from unittest.mock import patch
 sys.path.insert(0,str(Path(__file__).resolve().parents[1]))
 from platform_api_probe import NativeServer,fixture_response,redact,fresh_session_bindings,select_service_owner
-from platform_fault_probe import Gate,history_facts
+from platform_fault_probe import Gate,history_facts,safe_histories
 import os
 import threading
+import subprocess
 
 
 class PlatformApiCalibrationTests(unittest.TestCase):
+    def test_native_history_unavailable_response_is_retained_and_is_not_a_missing_ack(self):
+        server=NativeServer.__new__(NativeServer);server.product='OpenClaw';server.port=1234;server.runtime=Path('/owned/runtime');server.workspace=Path('/owned/workspace');server.env={}
+        failure=subprocess.CompletedProcess([],1,stdout='{"error":"UNAVAILABLE: startup inspection pending"}',stderr='')
+        with patch('platform_api_probe.subprocess.run',return_value=failure):
+            result=safe_histories(server,dict(primary=dict(session_id='native-id',marker='PLATFORM_INPUT_'+'a'*32)))['primary']
+        self.assertIsNone(result['facts']);self.assertIn('UNAVAILABLE',result['native']['history_error']['stdout'])
+
     def test_owner_must_be_unique_native_root_with_worker_uid_and_start_identity(self):
         root=dict(pid=17,ppid=1,uid=os.getuid(),start_ticks=52,cmdline='openclaw-gateway')
         child=dict(pid=18,ppid=17,uid=os.getuid(),start_ticks=53,cmdline='node worker')

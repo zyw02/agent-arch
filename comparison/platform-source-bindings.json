@@ -136,6 +136,51 @@
       "ref": "dc2523e5a5c7a309517fd7fa834add938231d526",
       "blob_sha": "7a6349f04c57fcc64e6a68148543a68e4ce9f937",
       "url": "https://github.com/openclaw/openclaw/blob/dc2523e5a5c7a309517fd7fa834add938231d526/src/cli/gateway-cli/register.ts"
+    },
+    {
+      "product": "openclaw",
+      "path": "src/gateway/server-startup-post-attach.ts",
+      "owner": "Native Gateway startup schedules orphan recovery sidecar",
+      "repo": "openclaw/openclaw",
+      "ref": "dc2523e5a5c7a309517fd7fa834add938231d526",
+      "blob_sha": "f358df6f9f76549a0ef6ba8b27774272215ab42a",
+      "url": "https://github.com/openclaw/openclaw/blob/dc2523e5a5c7a309517fd7fa834add938231d526/src/gateway/server-startup-post-attach.ts"
+    },
+    {
+      "product": "openclaw",
+      "path": "src/agents/main-session-recovery/main-session-restart-recovery-runtime.ts",
+      "owner": "Generation-owned native startup/retry recovery scheduling",
+      "repo": "openclaw/openclaw",
+      "ref": "dc2523e5a5c7a309517fd7fa834add938231d526",
+      "blob_sha": "72dce4fdd5d776fbc10cc47f3edfb441e72e6850",
+      "url": "https://github.com/openclaw/openclaw/blob/dc2523e5a5c7a309517fd7fa834add938231d526/src/agents/main-session-recovery/main-session-restart-recovery-runtime.ts"
+    },
+    {
+      "product": "openclaw",
+      "path": "src/agents/main-session-recovery/main-session-restart-recovery-marking.ts",
+      "owner": "Live-owner checks and durable startup-orphan recovery marking",
+      "repo": "openclaw/openclaw",
+      "ref": "dc2523e5a5c7a309517fd7fa834add938231d526",
+      "blob_sha": "84456c31222b70bfc59972b3a2360c6237592b4c",
+      "url": "https://github.com/openclaw/openclaw/blob/dc2523e5a5c7a309517fd7fa834add938231d526/src/agents/main-session-recovery/main-session-restart-recovery-marking.ts"
+    },
+    {
+      "product": "openclaw",
+      "path": "src/gateway/server-methods/chat-history-recovery.ts",
+      "owner": "Public history unavailable/recovery response semantics",
+      "repo": "openclaw/openclaw",
+      "ref": "dc2523e5a5c7a309517fd7fa834add938231d526",
+      "blob_sha": "245bb6045d5d188a9228d3c829720c62dfa794e8",
+      "url": "https://github.com/openclaw/openclaw/blob/dc2523e5a5c7a309517fd7fa834add938231d526/src/gateway/server-methods/chat-history-recovery.ts"
+    },
+    {
+      "product": "openclaw",
+      "path": "src/gateway/server-methods/chat-history-session-read.ts",
+      "owner": "Public native history preparation and admission",
+      "repo": "openclaw/openclaw",
+      "ref": "dc2523e5a5c7a309517fd7fa834add938231d526",
+      "blob_sha": "722ae8e3d84239e4a4c66bc5ee088ef9e69b5069",
+      "url": "https://github.com/openclaw/openclaw/blob/dc2523e5a5c7a309517fd7fa834add938231d526/src/gateway/server-methods/chat-history-session-read.ts"
     }
   ]
 }

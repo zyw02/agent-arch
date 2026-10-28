@@ -20,17 +20,21 @@
           "status": "in_progress",
           "evidence": [
             "comparison/evidence/platform-api-20261028/attempt-2-summary.json",
-            "comparison/evidence/platform-api-20261028/attempt-2-provenance.json"
+            "comparison/evidence/platform-api-20261028/attempt-2-provenance.json",
+            "comparison/evidence/platform-fault-20261028/pilot-summary.json",
+            "comparison/evidence/platform-fault-20261028/pilot-provenance.json"
           ],
-          "note": "Long-lived native server public API calibrated: two distinct sessions per service, random input/provider/native-result chain and complete resource collection. Source/process bindings retained. Client/owner exit, companion impact, native restart recovery and blind-log reconstruction still require a complete pilot and formal blocks; this is not a completed fault-domain comparison."
+          "note": "Complete PA public-HTTP pilot: all six arms (healthy/client/owner exit with independent companion), real native owner identity, restart/passive history/new followup and complete native resources. Pilot results retain client-linked cancellation versus native orphan recovery differences. Two formal blocks admitted at measured 12\u201316 min; formal repetitions and blind native-only reconstruction pending. Pilot is not formal completion."
         },
         "OpenClaw": {
           "status": "in_progress",
           "evidence": [
             "comparison/evidence/platform-api-20261028/attempt-2-summary.json",
-            "comparison/evidence/platform-api-20261028/attempt-2-provenance.json"
+            "comparison/evidence/platform-api-20261028/attempt-2-provenance.json",
+            "comparison/evidence/platform-fault-20261028/pilot-summary.json",
+            "comparison/evidence/platform-fault-20261028/pilot-provenance.json"
           ],
-          "note": "Long-lived native server public API calibrated: two distinct sessions per service, random input/provider/native-result chain and complete resource collection. Source/process bindings retained. Client/owner exit, companion impact, native restart recovery and blind-log reconstruction still require a complete pilot and formal blocks; this is not a completed fault-domain comparison."
+          "note": "Complete PA public-HTTP pilot: all six arms (healthy/client/owner exit with independent companion), real native owner identity, restart/passive history/new followup and complete native resources. Pilot results retain client-linked cancellation versus native orphan recovery differences. Two formal blocks admitted at measured 12\u201316 min; formal repetitions and blind native-only reconstruction pending. Pilot is not formal completion."
         }
       },
       "dimensions": [

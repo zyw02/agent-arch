@@ -71,7 +71,7 @@ def select_service_owner(rows,product):
 
 
 class NativeServer:
-    def __init__(self,product,runtime,root,provider):
+    def __init__(self,product,runtime,root,provider,sample_interval=.2):
         self.product=product;self.root=root;self.runtime=runtime;self.port=free_port();self.launch_url=None;self.logs=deque(maxlen=150)
         self.workspace=root/'workspace';self.workspace.mkdir(exist_ok=True);(self.workspace/'.git').mkdir(exist_ok=True)
         self.state=root/'state';self.state.mkdir(exist_ok=True);env=dict(os.environ);env.pop('DEEPSEEK_API_KEY',None)
@@ -88,7 +88,10 @@ class NativeServer:
                 tools=dict(allow=['read'],toolSearch=False),cron=dict(enabled=False))))
             env.update(OPENCLAW_STATE_DIR=str(self.state),OPENCLAW_CONFIG_PATH=str(config),OPENCLAW_SKIP_CHANNELS='1',OPENCLAW_DISABLE_BUNDLED_PLUGINS='1')
             command=[str(runtime/'node_modules/.bin/openclaw'),'gateway','run','--bind','loopback','--port',str(self.port)]
-        self.env=env;self.command=command;self.collector=ResourceCollector(dict(workspace=self.workspace,product_state=self.state));self.started_ns=time.monotonic_ns()
+        self.env=env;self.command=command;self.collector=ResourceCollector(dict(workspace=self.workspace,product_state=self.state),interval=sample_interval);self.started_ns=time.monotonic_ns()
+        if self.collector.group is None:
+            self.collector.finish()
+            raise RuntimeError('Owned native service cgroup is unavailable; execution withheld')
         self.process=subprocess.Popen(self.collector.command(command),env=env,cwd=self.workspace,stdout=subprocess.PIPE,stderr=subprocess.STDOUT,text=True,start_new_session=True)
         self.reader=threading.Thread(target=self.read_log,daemon=True);self.reader.start();self.cookie=None
 
@@ -175,9 +178,12 @@ class NativeServer:
         before=resource.getrusage(resource.RUSAGE_CHILDREN);start=time.monotonic_ns()
         result=subprocess.run(command,env=self.env,cwd=self.workspace,capture_output=True,text=True,timeout=90)
         after=resource.getrusage(resource.RUSAGE_CHILDREN)
-        if result.returncode!=0:raise RuntimeError('Native history CLI failed: '+redact(result.stderr[-1500:]))
-        return dict(history=json.loads(result.stdout),observer_cli=dict(elapsed_ms=(time.monotonic_ns()-start)/1e6,
+        observation=dict(observer_cli=dict(elapsed_ms=(time.monotonic_ns()-start)/1e6,
             cpu_seconds=after.ru_utime+after.ru_stime-before.ru_utime-before.ru_stime))
+        if result.returncode!=0:
+            observation['history_error']=dict(exit_code=result.returncode,stdout=redact(result.stdout),stderr=redact(result.stderr))
+        else:observation['history']=json.loads(result.stdout)
+        return observation
 
     def service_owner(self):
         return select_service_owner(self.process_map(),self.product)

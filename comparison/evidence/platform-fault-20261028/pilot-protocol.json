@@ -1,0 +1,22 @@
+{
+  "study": "PA-HTTP-01",
+  "status": "complete_block_pilot_before_formal_admission",
+  "track": "D: scripted protocol provider; no model task-quality or billing claim",
+  "products": {"DSH": "0.2.2-alpha.2 Web server, cookie browser peer", "OpenClaw": "2026.10.8 Gateway, authenticated nonstreaming OpenAI HTTP endpoint"},
+  "conditions": ["healthy", "client_exit", "owner_exit"],
+  "unit": "one fresh native server/state/workspace with primary plus independent companion sessions; one synthetic ACK task each",
+  "pairing": "same marker format and response action, independently random markers per session; products interleaved per condition; reverse product order on even formal blocks",
+  "client": "external Python HTTP result consumer, outside product cgroup; DSH accepted prompt then session.wait; OpenClaw nonstreaming POST chat/completions. Abrupt SIGKILL closes transport, not a native CLI abort/UI-disconnect claim",
+  "boundary": "independent provider ledger records both actual task requests before blocking; both clients confirm result-request bytes sent; all gates release only after condition intervention",
+  "owner": "unique native root in owned cgroup; UID, command, PPID and /proc start ticks recorded and rechecked; SIGKILL only this PID, never whole cgroup as intervention",
+  "observation_seconds": 10,
+  "observation": "process/client witnesses at release, 0.5, 2 and 10 seconds; do not kill remaining product descendants until this window ends",
+  "recovery": "after window read native history if carrier survives; finish old cgroup (cleanup), restart same product state/workspace, passive native history immediately and after 10-second window, then one explicit NEW prompt per existing session without session.create; never replay original input in adapter",
+  "history": "DSH session.events + session.state; OpenClaw native gateway call chat.history. Reads remain separate from independent provider truth; report any read-triggered native recovery as observation-path recovery, not unconditional boot recovery",
+  "terminal": "client terminal fields, exact native assistant ACK and retained user record assessed independently; HTTP error/timeout never alone proves task failure. Native negative/uncertain fault outcomes stay valid",
+  "safeguards": {"startup_handshake_seconds": 90, "both_reached_boundary_seconds": 60, "fixture_gate_release_seconds": 90, "HTTP_operation_seconds": 60, "native_history_rpc_ms": 10000, "native_history_cli_process_seconds": 90, "meaning": "predeclared preparation/operation failure detection, not a generic real-task wall quota"},
+  "resource_scope": "two 2-CPU/3-GiB native service cgroup cycles per arm; server descendants included. Controller, synthetic provider, HTTP clients and history CLI outside; CLI CPU separately retained, PSS not attributed to server. Cleanup distinct from owner intervention",
+  "admission": "one complete pilot block per product, 6 arms total, all controls and passive history adapters usable. Publish measured full-block duration plus setup/cleanup uncertainty before a separately dispatched two-block formal run",
+  "native_observability": "freeze native-only packets, identifiers and question set; isolated automated investigator sees no condition labels/PID maps/provider ledger/controller truth; freeze answer before scoring against independent truth, retain unknown/incorrect/correct. Current informed controller cannot claim blind reconstruction",
+  "limits": ["single-user local authenticated deployment", "no tool side effects", "no whole-host crash", "no UI/native CLI cancellation claim", "no broad product ranking", "pilot is not formal replication", "PA incomplete until native-only blind reconstruction and complete formal blocks"]
+}
