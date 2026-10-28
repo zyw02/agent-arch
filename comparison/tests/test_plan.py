@@ -93,5 +93,60 @@ class PlanTests(unittest.TestCase):
                 validate_load_freeze(p)
 
 
+    def test_p03_tool_control_is_matched_and_reference_is_separate(self):
+        lookup = {r['unit_id']: r for r in self.rows}
+        controls = [r for r in self.rows if r['case'] == 'P03' and r['condition'] == 'C6']
+        self.assertEqual(len(controls), 12)
+        for row in self.rows:
+            if row['case'] == 'P03' and row['condition'] == 'C5':
+                control = lookup[row['control_unit_id']]
+                self.assertEqual(control['condition'], 'C6')
+                self.assertEqual(control['repeat'], row['repeat'])
+                self.assertEqual(control['factors']['admission'], row['factors']['admission'])
+                self.assertEqual(lookup[row['performance_reference_unit_id']]['condition'], 'C1')
+                self.assertTrue({'tool_call_receipt', 'tool_result_match'} <= set(control['required_observations']))
+
+    def test_model_only_control_cannot_replace_tool_control(self):
+        c = copy.deepcopy(self.campaign)
+        case = next(x for x in c['cases'] if x['id'] == 'P03')
+        case['condition_controls']['C5'] = 'C1'
+        with self.assertRaisesRegex(ValueError, 'tool positive control'):
+            expand(c)
+        c = copy.deepcopy(self.campaign)
+        next(x for x in c['cases'] if x['id'] == 'P03')['condition_required_observations']['C6'] = []
+        with self.assertRaisesRegex(ValueError, 'tool evidence'):
+            expand(c)
+
+    def test_h14_acceptance_is_state_specific(self):
+        rows = [r for r in self.rows if r['case'] == 'H14' and r['condition'] in ('C5', 'C6', 'C7')]
+        self.assertEqual(len(rows), 27)
+        for row in rows:
+            state, contract = row['factors']['integration_state'], row['acceptance_contract']
+            self.assertTrue(contract['boundary'])
+            self.assertTrue(contract['terminal_outcomes'])
+            self.assertIn('post_case_health_control', contract['required_evidence'])
+            if state == 'cancel':
+                self.assertEqual(contract['quiescence_deadline_s'], 10)
+                self.assertEqual(contract['followup_s'], [0.5, 2, 10])
+                self.assertIn('active_task_after_deadline', contract['forbidden_effects'])
+            if state != 'normal':
+                self.assertEqual(contract['hash_rule'], 'diagnostic_only')
+            elif row['condition'] == 'C6':
+                self.assertEqual(contract['hash_rule'], 'expected_transformed_content')
+
+    def test_missing_or_incorrect_h14_contract_rejected(self):
+        for mutation in ('missing', 'normal_hash', 'unbounded_cancel'):
+            c = copy.deepcopy(self.campaign)
+            contracts = next(x for x in c['cases'] if x['id'] == 'H14')['acceptance_contracts']['C6']
+            if mutation == 'missing':
+                del contracts['failure']['boundary']
+            elif mutation == 'normal_hash':
+                contracts['failure']['hash_rule'] = 'canonical_normal_baseline'
+            else:
+                contracts['cancel']['quiescence_deadline_s'] = None
+            with self.subTest(mutation=mutation), self.assertRaises(ValueError):
+                expand(c)
+
+
 if __name__ == '__main__':
     unittest.main()

@@ -49,6 +49,16 @@ def expand(campaign, freeze=None):
             for condition in ('C5', 'C6', 'C7'):
                 if set(case.get('condition_factors', {}).get(condition, {}).get('integration_state', [])) != {'normal', 'failure', 'cancel'}:
                     raise ValueError('Missing H14 integration variants')
+        if case['id'] == 'P03':
+            if case.get('condition_controls', {}).get('C5') != 'C6' or 'C6' not in case['conditions']:
+                raise ValueError('P03 C5 requires a tool positive control C6')
+            if set(case.get('condition_factors', {}).get('C6', {}).get('admission', [])) != {'direct', 'external_fifo'}:
+                raise ValueError('P03 tool control must cover both admission modes')
+            for condition in ('C5', 'C6'):
+                if not {'tool_call_receipt', 'tool_result_match'} <= set(case.get('condition_required_observations', {}).get(condition, [])):
+                    raise ValueError('P03 tool conditions require independent tool evidence')
+            if case.get('condition_control_match_factors', {}).get('C5') != ['admission']:
+                raise ValueError('P03 C5 must match its control admission mode')
         for condition in case['conditions']:
             for track in case.get('condition_tracks', {}).get(condition, case.get('tracks', ['D'])):
                 factors = dict(case.get('factors', {}))
@@ -62,9 +72,24 @@ def expand(campaign, freeze=None):
                     for repeat in range(1, repeats + 1):
                         gate = case.get('gated_conditions', {}).get(condition)
                         gate_satisfied = not gate or bool(freeze and chosen['arrival_interval_s'] in freeze['selected_arrival_intervals_s'])
+                        contract = None
+                        if case['id'] == 'H14' and condition in ('C5', 'C6', 'C7'):
+                            state = chosen['integration_state']
+                            contract = case.get('acceptance_contracts', {}).get(condition, {}).get(state)
+                            required = {'boundary', 'intervention', 'terminal_outcomes', 'task_timeout_s',
+                                        'quiescence_deadline_s', 'followup_s', 'hash_rule',
+                                        'required_evidence', 'forbidden_effects', 'allowed_residue', 'result_rule',
+                                        'cancellation_effective_deadline_s'}
+                            if not contract or not required <= contract.keys():
+                                raise ValueError(f'Missing H14 acceptance contract: {condition}/{state}')
+                            if state != 'normal' and contract['hash_rule'] != 'diagnostic_only':
+                                raise ValueError('Fault/cancel hashes must not use normal success acceptance')
+                            if state == 'cancel' and (contract['cancellation_effective_deadline_s'] != 10 or contract['quiescence_deadline_s'] != 10 or contract['followup_s'] != [0.5, 2, 10]):
+                                raise ValueError('H14 cancellation must have bounded follow-up')
+                        observations = list(dict.fromkeys(case['required_observations'] + case.get('condition_required_observations', {}).get(condition, [])))
                         rows.append(dict(unit_id=f"{case['id']}_{condition}_{track}{suffix}_r{repeat:02d}",
                                          case=case['id'], condition=condition, track=track, repeat=repeat,
-                                         factors=chosen, required_observations=case['required_observations'],
+                                         factors=chosen, required_observations=observations, acceptance_contract=contract,
                                          load_gate=gate, load_gate_satisfied=gate_satisfied, plan_only=True))
     if len({r['unit_id'] for r in rows}) != len(rows):
         raise ValueError('Duplicate IDs')
@@ -72,13 +97,18 @@ def expand(campaign, freeze=None):
     for row in rows:
         case = cases[row['case']]
         target = case.get('condition_controls', {}).get(row['condition'], 'C0')
-        match = set(case['control_match_factors']) | ({'instance'} if 'instance' in row['factors'] else set())
+        match = set(case.get('condition_control_match_factors', {}).get(row['condition'], case['control_match_factors'])) | ({'instance'} if 'instance' in row['factors'] else set())
         controls = [r for r in rows if r['case'] == row['case'] and r['track'] == row['track']
                     and r['condition'] == target and r['repeat'] == row['repeat']
                     and all(r['factors'].get(k) == row['factors'].get(k) for k in match)]
         if len(controls) != 1:
             raise ValueError(f"Missing or ambiguous control: {row['unit_id']}")
         row['control_unit_id'] = controls[0]['unit_id']
+        reference = case.get('performance_references', {}).get(row['condition'])
+        if reference:
+            row['performance_reference_unit_id'] = next(r['unit_id'] for r in rows
+                if r['case'] == row['case'] and r['condition'] == reference
+                and r['track'] == row['track'] and r['repeat'] == row['repeat'])
         if row['case'] == 'H14' and 'integration_state' in row['factors']:
             normal = dict(row['factors'], integration_state='normal')
             row['integration_control_unit_id'] = next(r['unit_id'] for r in rows if r['case'] == row['case']

@@ -51,7 +51,7 @@ Use three complementary tracks: **native product** configurations for operationa
 
 **Scenario:** On a matched host, measure a cold start and one task with a fixed synthetic model response. Measure Gateway idle cost and task increment separately; record the full process tree for every product. A subsequent concurrency subscenario will submit multiple independent tasks with fixed service delays.
 
-**Measure:** Startup-to-request time, sampled process-tree RSS, CPU, task completion, residual processes, and external-component cost. Six fresh units for the resource baseline; freeze the concurrency load after calibration.
+**Measure:** Startup-to-request time, sampled process-tree RSS, CPU, task completion, residual processes, and external-component cost. Six fresh units for the resource baseline; C6 additionally validates a single tool read and final answer under each admission mode before C5 sustained load. C1 remains a separate model-only performance reference. Freeze the concurrency load after calibration.
 
 **Architecture evidence:** Quantifies the cost of a long-lived shared service and per-invocation execution, alongside contention under a common workload. [Baseline protocol](first-wave-protocol.md#p03--execution-footprint-and-lifecycle).
 

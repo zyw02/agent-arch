@@ -62,7 +62,8 @@
         "C2",
         "C3",
         "C4",
-        "C5"
+        "C5",
+        "C6"
       ],
       "independent_units_per_condition": 6,
       "track": "scripted",
@@ -89,6 +90,12 @@
             "direct",
             "external_fifo"
           ]
+        },
+        "C6": {
+          "admission": [
+            "direct",
+            "external_fifo"
+          ]
         }
       },
       "required_observations": [
@@ -100,13 +107,36 @@
         "C2": "C1",
         "C3": "C1",
         "C4": "C1",
-        "C5": "C1"
+        "C5": "C6",
+        "C6": "C6"
       },
       "gated_conditions": {
         "C4": "capacity_and_load_freeze",
         "C5": "capacity_and_load_freeze"
       },
-      "load_level_status": "calibration_candidates"
+      "load_level_status": "calibration_candidates",
+      "condition_control_match_factors": {
+        "C5": [
+          "admission"
+        ],
+        "C6": [
+          "admission"
+        ]
+      },
+      "performance_references": {
+        "C5": "C1",
+        "C6": "C1"
+      },
+      "condition_required_observations": {
+        "C5": [
+          "tool_call_receipt",
+          "tool_result_match"
+        ],
+        "C6": [
+          "tool_call_receipt",
+          "tool_result_match"
+        ]
+      }
     },
     {
       "id": "P04",
@@ -451,6 +481,296 @@
             "cancel"
           ]
         }
+      },
+      "acceptance_contracts": {
+        "C5": {
+          "normal": {
+            "boundary": "No intervention; observe the corresponding component boundary",
+            "intervention": "none",
+            "terminal_outcomes": [
+              "verified_success"
+            ],
+            "task_timeout_s": 180,
+            "quiescence_deadline_s": null,
+            "followup_s": [],
+            "hash_rule": "canonical_normal_baseline",
+            "required_evidence": [
+              "boundary_event",
+              "native_terminal_event",
+              "model_tool_ledger",
+              "residual_state",
+              "post_case_health_control"
+            ],
+            "forbidden_effects": [
+              "unapproved_workspace_mutation",
+              "unverified_success"
+            ],
+            "allowed_residue": [
+              "native_session_and_error_records",
+              "configured_extension",
+              "idle_shared_service_at_baseline"
+            ],
+            "cancellation_effective_deadline_s": null,
+            "result_rule": "Expected provider answer delivered in native output"
+          },
+          "failure": {
+            "boundary": "M request_received before first response byte",
+            "intervention": "Return one HTTP 503, then restore normal responses; product owns retries",
+            "terminal_outcomes": [
+              "explicit_error",
+              "verified_native_recovery"
+            ],
+            "task_timeout_s": 180,
+            "quiescence_deadline_s": null,
+            "followup_s": [],
+            "hash_rule": "diagnostic_only",
+            "required_evidence": [
+              "boundary_event",
+              "native_terminal_event",
+              "model_tool_ledger",
+              "residual_state",
+              "post_case_health_control"
+            ],
+            "forbidden_effects": [
+              "unapproved_workspace_mutation",
+              "unverified_success"
+            ],
+            "allowed_residue": [
+              "native_session_and_error_records",
+              "configured_extension",
+              "idle_shared_service_at_baseline"
+            ],
+            "cancellation_effective_deadline_s": null,
+            "result_rule": "Explicit native error, or recovered expected answer with complete retry ledger"
+          },
+          "cancel": {
+            "boundary": "M request_received before first response byte",
+            "intervention": "Hold at boundary and invoke native cancellation; release only after cancellation observation",
+            "terminal_outcomes": [
+              "native_cancelled"
+            ],
+            "task_timeout_s": 180,
+            "quiescence_deadline_s": 10,
+            "followup_s": [
+              0.5,
+              2,
+              10
+            ],
+            "hash_rule": "diagnostic_only",
+            "required_evidence": [
+              "boundary_event",
+              "native_terminal_event",
+              "model_tool_ledger",
+              "residual_state",
+              "post_case_health_control"
+            ],
+            "forbidden_effects": [
+              "unapproved_workspace_mutation",
+              "unverified_success",
+              "new_dispatch_after_cancel_effective",
+              "active_task_after_deadline"
+            ],
+            "allowed_residue": [
+              "native_session_and_error_records",
+              "configured_extension",
+              "idle_shared_service_at_baseline"
+            ],
+            "cancellation_effective_deadline_s": 10,
+            "result_rule": "Native cancelled terminal, no new dispatch after effective cancellation, bounded cessation and clean residual/health controls"
+          }
+        },
+        "C6": {
+          "normal": {
+            "boundary": "No intervention; observe the corresponding component boundary",
+            "intervention": "none",
+            "terminal_outcomes": [
+              "verified_success"
+            ],
+            "task_timeout_s": 180,
+            "quiescence_deadline_s": null,
+            "followup_s": [],
+            "hash_rule": "expected_transformed_content",
+            "required_evidence": [
+              "boundary_event",
+              "native_terminal_event",
+              "model_tool_ledger",
+              "residual_state",
+              "post_case_health_control"
+            ],
+            "forbidden_effects": [
+              "unapproved_workspace_mutation",
+              "unverified_success"
+            ],
+            "allowed_residue": [
+              "native_session_and_error_records",
+              "configured_extension",
+              "idle_shared_service_at_baseline"
+            ],
+            "cancellation_effective_deadline_s": null,
+            "result_rule": "KEEP retained; DROP removed; expected transformed-content hash"
+          },
+          "failure": {
+            "boundary": "public context-component entry before transformed history is returned",
+            "intervention": "Raise one controlled exception before transformation returns; restore component for health control",
+            "terminal_outcomes": [
+              "explicit_error",
+              "verified_native_recovery"
+            ],
+            "task_timeout_s": 180,
+            "quiescence_deadline_s": null,
+            "followup_s": [],
+            "hash_rule": "diagnostic_only",
+            "required_evidence": [
+              "boundary_event",
+              "native_terminal_event",
+              "model_tool_ledger",
+              "residual_state",
+              "post_case_health_control"
+            ],
+            "forbidden_effects": [
+              "unapproved_workspace_mutation",
+              "unverified_success"
+            ],
+            "allowed_residue": [
+              "native_session_and_error_records",
+              "configured_extension",
+              "idle_shared_service_at_baseline"
+            ],
+            "cancellation_effective_deadline_s": null,
+            "result_rule": "Explicit native error, or native fallback preserving KEEP; report DROP presence"
+          },
+          "cancel": {
+            "boundary": "public context-component entry before transformed history is returned",
+            "intervention": "Hold at boundary and invoke native cancellation; release only after cancellation observation",
+            "terminal_outcomes": [
+              "native_cancelled"
+            ],
+            "task_timeout_s": 180,
+            "quiescence_deadline_s": 10,
+            "followup_s": [
+              0.5,
+              2,
+              10
+            ],
+            "hash_rule": "diagnostic_only",
+            "required_evidence": [
+              "boundary_event",
+              "native_terminal_event",
+              "model_tool_ledger",
+              "residual_state",
+              "post_case_health_control"
+            ],
+            "forbidden_effects": [
+              "unapproved_workspace_mutation",
+              "unverified_success",
+              "new_dispatch_after_cancel_effective",
+              "active_task_after_deadline"
+            ],
+            "allowed_residue": [
+              "native_session_and_error_records",
+              "configured_extension",
+              "idle_shared_service_at_baseline"
+            ],
+            "cancellation_effective_deadline_s": 10,
+            "result_rule": "Native cancelled terminal, no new dispatch after effective cancellation, bounded cessation and clean residual/health controls"
+          }
+        },
+        "C7": {
+          "normal": {
+            "boundary": "No intervention; observe the corresponding component boundary",
+            "intervention": "none",
+            "terminal_outcomes": [
+              "verified_success"
+            ],
+            "task_timeout_s": 180,
+            "quiescence_deadline_s": null,
+            "followup_s": [],
+            "hash_rule": "canonical_normal_baseline",
+            "required_evidence": [
+              "boundary_event",
+              "native_terminal_event",
+              "model_tool_ledger",
+              "residual_state",
+              "post_case_health_control"
+            ],
+            "forbidden_effects": [
+              "unapproved_workspace_mutation",
+              "unverified_success"
+            ],
+            "allowed_residue": [
+              "native_session_and_error_records",
+              "configured_extension",
+              "idle_shared_service_at_baseline"
+            ],
+            "cancellation_effective_deadline_s": null,
+            "result_rule": "One matching T read receipt and correct final answer"
+          },
+          "failure": {
+            "boundary": "public executor dispatch before read-only T receipt",
+            "intervention": "Return one controlled executor error before read-only T receipt; product owns retry/fallback",
+            "terminal_outcomes": [
+              "explicit_error",
+              "verified_native_recovery"
+            ],
+            "task_timeout_s": 180,
+            "quiescence_deadline_s": null,
+            "followup_s": [],
+            "hash_rule": "diagnostic_only",
+            "required_evidence": [
+              "boundary_event",
+              "native_terminal_event",
+              "model_tool_ledger",
+              "residual_state",
+              "post_case_health_control"
+            ],
+            "forbidden_effects": [
+              "unapproved_workspace_mutation",
+              "unverified_success"
+            ],
+            "allowed_residue": [
+              "native_session_and_error_records",
+              "configured_extension",
+              "idle_shared_service_at_baseline"
+            ],
+            "cancellation_effective_deadline_s": null,
+            "result_rule": "Explicit native error, or recovered read with matching T receipt and final answer"
+          },
+          "cancel": {
+            "boundary": "public executor dispatch before read-only T receipt",
+            "intervention": "Hold at boundary and invoke native cancellation; release only after cancellation observation",
+            "terminal_outcomes": [
+              "native_cancelled"
+            ],
+            "task_timeout_s": 180,
+            "quiescence_deadline_s": 10,
+            "followup_s": [
+              0.5,
+              2,
+              10
+            ],
+            "hash_rule": "diagnostic_only",
+            "required_evidence": [
+              "boundary_event",
+              "native_terminal_event",
+              "model_tool_ledger",
+              "residual_state",
+              "post_case_health_control"
+            ],
+            "forbidden_effects": [
+              "unapproved_workspace_mutation",
+              "unverified_success",
+              "new_dispatch_after_cancel_effective",
+              "active_task_after_deadline"
+            ],
+            "allowed_residue": [
+              "native_session_and_error_records",
+              "configured_extension",
+              "idle_shared_service_at_baseline"
+            ],
+            "cancellation_effective_deadline_s": 10,
+            "result_rule": "Native cancelled terminal, no new dispatch after effective cancellation, bounded cessation and clean residual/health controls"
+          }
+        }
       }
     },
     {
@@ -511,5 +831,5 @@
       ]
     }
   ],
-  "revision": "cloud-review-20261028-r1"
+  "revision": "cloud-review-20261028-r2"
 }

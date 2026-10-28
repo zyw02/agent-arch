@@ -2,7 +2,7 @@
 
 This protocol defines the initial cross-product campaign for Codex, DeepSeek Harness (DSH), and OpenClaw. The [catalogue](experiment-index.md) explains the purpose of each experiment; the scenarios below define the inputs, operations, measurements, and acceptance rules. The [progress table](../README.md#research-progress) records implementation and execution status. The [campaign manifest](campaign.json) lists every case, condition, repetition baseline, and implementation state.
 
-Revision `cloud-review-20261028-r1`: [review controls](review-controls.md) are normative for capacity calibration, statistical analysis, required observations and failure classification. The matrix remains calibration-required.
+Revision `cloud-review-20261028-r2`: [review controls](review-controls.md) are normative for capacity calibration, statistical analysis, required observations and failure classification. The matrix remains calibration-required.
 
 ## 1. Coverage
 
@@ -67,7 +67,7 @@ Acceptance and metrics: C0 and C1 pass when both turns succeed and all three ele
 
 ### P03 — Performance/resource & cost: workload and footprint
 
-Inputs: M `ack` with fixed 250 ms delay. Conditions C0 idle service for 30 s; C1 cold one-task; C2 four independent sessions concurrently; C3 eight independent sessions concurrently. For a command-only profile, C0 records no service baseline. Use six independent units per condition and randomize product order. Each task must return its own `ACK_<task_id>`; exact service delay is fixed.
+Inputs: M `ack` with fixed 250 ms delay. Conditions C0 idle service for 30 s; C1 cold one-task; C2 four independent sessions concurrently; C3 eight independent sessions concurrently; C6 one task with one tool read and a verified final answer, separately under direct and external-FIFO admission. C6 is the matched tool positive control for C5; C1 remains its separate model-only performance reference. For a command-only profile, C0 records no service baseline. Use six independent units per condition and randomize product order. Each task must return its own `ACK_<task_id>`; exact service delay is fixed.
 
 Steps: initialize a fresh profile; for C0 start only required resident components; for C1–C3 launch the declared tasks with a barrier, wait up to 180 s, then sample for 10 s after completion. O samples every 100 ms. Record retries and failed/unfinished tasks.
 
@@ -163,7 +163,7 @@ Steps: use product-native configuration or documented public plugin/API; record 
 
 Acceptance and metrics: C0 returns the expected receipt; C1/C2 expose failure and retain product control; C3 makes T unavailable in a new session; C4 preserves both tools' distinct identities. Record code/config changes, installation and recovery time, failed call propagation, cancellation/cleanup, and which component owns state and permissions. A product-native shim may bridge a transport, but its code and resource cost are reported separately.
 
-**Component extension:** C5 connects the same synthetic provider; C6 installs a context component over input `KEEP: output=results.json` and `DROP: distractor-7345`; its expected next request contains the KEEP line and omits the DROP line; C7 replaces the execution component using a public interface where available. Run three independent units per condition and compare the exact input and result hashes against the baseline. Inject failure and cancellation after integration; record ownership of state, policy, usage, cancellation and recovery, the public API used, and any core changes; verify that the preserved constraint reaches the next request and the distractor is absent in C6. Record unavailable extension points as capabilities.
+**Component extension:** C5 connects the same synthetic provider; C6 installs a context component over input `KEEP: output=results.json` and `DROP: distractor-7345`; its successful normal transformation contains KEEP and omits DROP; C7 replaces the execution component using a public interface where available. Run three independent units per condition/state using the [R2 acceptance table](review-controls.md#h14-c5c7-normal-failure-and-cancellation-acceptance). Compare canonical normal C5/C7 results with their normal oracle and C6 history with the transformed oracle; fault/cancel hashes are diagnostic only. Inject failure and cancellation at the declared public component boundary; record ownership of state, policy, usage, cancellation and recovery, the public API used, and any core changes; require KEEP retention in any successful C6 normal/fallback result, and DROP removal in the normal transformation; record a failed-transform native fallback separately. Record unavailable extension points as capabilities.
 
 ### H17 — Observability: causal reconstruction
 

@@ -11,3 +11,5 @@ Statuses are `planned`, `in_progress`, `blocked`, `done`, and `not_applicable`. 
 ## Design revision
 
 Revision `cloud-review-20261028-r1` addresses the cloud design review through [review controls](review-controls.md): bounded scheduling claims, capacity baselines, explicit extension coverage, matched controls, analysis rules and separate failure classifications. Product experiments remain pending.
+
+Revision `cloud-review-20261028-r2` adds the admission-matched P03 C6 tool control and explicit H14 C5–C7 normal/failure/cancel acceptance contracts; see [R2 details](review-controls.md#6-revision-r2-tool-control-and-component-acceptance).
