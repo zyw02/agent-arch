@@ -38,7 +38,7 @@ def choose_response(body, file_path, receipt, target_tool='read'):
 
 
 class Provider:
-    def __init__(self, file_path, receipt, target_tool='read'):
+    def __init__(self, file_path, receipt, target_tool='read', decision_fn=None):
         self.file_path=file_path;self.receipt=receipt;self.requests=[]
         owner=self
         class Handler(BaseHTTPRequestHandler):
@@ -49,7 +49,7 @@ class Provider:
             def do_POST(self):
                 size=int(self.headers.get('Content-Length',0))
                 if not 0<size<=4*1024**2:self.send_error(413);return
-                body=json.loads(self.rfile.read(size));decision=choose_response(body,owner.file_path,owner.receipt,target_tool)
+                body=json.loads(self.rfile.read(size));decision=(decision_fn or choose_response)(body,owner.file_path,owner.receipt,target_tool)
                 owner.requests.append(dict(monotonic_ns=time.monotonic_ns(),endpoint=self.path,
                     schemas=schemas(body),request=body,decision=decision))
                 if len(owner.requests)>10:self.send_error(429);return

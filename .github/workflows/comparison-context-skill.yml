@@ -1,0 +1,63 @@
+name: Native context budgets and skill adoption
+on:
+  workflow_dispatch:
+    inputs:
+      live_model:
+        description: Run two complete real-model blocks after native calibration
+        type: boolean
+        default: false
+permissions:
+  contents: read
+concurrency:
+  group: context-skill-${{ inputs.live_model }}
+  cancel-in-progress: false
+jobs:
+  context-skill:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '24.22.1'
+      - name: Install pinned native products on the disposable worker
+        env:
+          npm_config_cache: ${{ runner.temp }}/context-skill-cache
+        run: |
+          npm install --prefix "$RUNNER_TEMP/context-skill-runtime" --save-exact --no-audit --no-fund @deepseek-ai/dsh@0.2.2-alpha.2 openclaw@2026.10.8
+          mkdir -p "$RUNNER_TEMP/context-skill-evidence"
+          cp "$RUNNER_TEMP/context-skill-runtime/package-lock.json" "$RUNNER_TEMP/context-skill-evidence/"
+          node --version > "$RUNNER_TEMP/context-skill-evidence/node-version.txt"
+          cat /etc/os-release > "$RUNNER_TEMP/context-skill-evidence/os-release.txt"
+      - name: Delegate only this job's resource collection subtree
+        run: |
+          task_group="/sys/fs/cgroup/agent-arch-${GITHUB_RUN_ID}"
+          sudo mkdir "$task_group"
+          echo '+cpu +memory +pids +io' | sudo tee "$task_group/cgroup.subtree_control" > /dev/null
+          sudo chown "$(id -u):$(id -g)" "$task_group" "$task_group/cgroup.procs" "$task_group/cgroup.subtree_control"
+          echo "AGENT_ARCH_CGROUP_ROOT=$task_group" >> "$GITHUB_ENV"
+      - name: Calibrate all ten native context and skill controls
+        run: |
+          python3 comparison/context_skill_probe.py --runtime "$RUNNER_TEMP/context-skill-runtime" --output "$RUNNER_TEMP/context-skill-evidence/calibration"
+      - name: Run both complete held-out real-model blocks
+        if: inputs.live_model
+        env:
+          DEEPSEEK_API_KEY: ${{ secrets.DEEPSEEK_API_KEY }}
+        run: |
+          python3 comparison/context_skill_probe.py --runtime "$RUNNER_TEMP/context-skill-runtime" --output "$RUNNER_TEMP/context-skill-evidence/live" --live-model --calibration-report "$RUNNER_TEMP/context-skill-evidence/calibration/context-skill-report.json"
+      - name: Retain controls, native requests, actual usage and resource evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: context-skill-evidence
+          path: ${{ runner.temp }}/context-skill-evidence/
+          if-no-files-found: error
+          retention-days: 30
+      - name: Remove only this job's installation and collection subtree
+        if: always()
+        run: |
+          rm -rf -- "$RUNNER_TEMP/context-skill-runtime" "$RUNNER_TEMP/context-skill-cache"
+          if [ -d "/sys/fs/cgroup/agent-arch-${GITHUB_RUN_ID}" ]; then
+            sudo rmdir "/sys/fs/cgroup/agent-arch-${GITHUB_RUN_ID}"
+          fi

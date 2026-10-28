@@ -1,0 +1,132 @@
+{
+  "study_id": "CTX-01",
+  "role": "Pinned source bindings; native activation still requires calibration",
+  "sources": [
+    {
+      "product": "DSH",
+      "repo": "deepseek-ai/deepseek-harness",
+      "path": "packages/context/agent-instructions/src/config.ts",
+      "ref": "f3803c96974ad4a94195fb97e5c637e9c2a3afe3",
+      "blob_sha": "5ae3c3454c7f42dedf229467aed5d2df0da1b93e",
+      "owner": "instruction chain budget",
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/context/agent-instructions/src/config.ts"
+    },
+    {
+      "product": "DSH",
+      "repo": "deepseek-ai/deepseek-harness",
+      "path": "packages/context/agent-instructions/src/render.ts",
+      "ref": "f3803c96974ad4a94195fb97e5c637e9c2a3afe3",
+      "blob_sha": "59fe6d473b0da7e1ec1751ec6fd3534e616dab4d",
+      "owner": "budget projection and most-specific-file truncation",
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/context/agent-instructions/src/render.ts"
+    },
+    {
+      "product": "DSH",
+      "repo": "deepseek-ai/deepseek-harness",
+      "path": "packages/skill/skill-filesystem/src/index.ts",
+      "ref": "f3803c96974ad4a94195fb97e5c637e9c2a3afe3",
+      "blob_sha": "ea39cefb3d9f8e7b65150d64583360572fa6b346",
+      "owner": "native skill root control",
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/skill/skill-filesystem/src/index.ts"
+    },
+    {
+      "product": "DSH",
+      "repo": "deepseek-ai/deepseek-harness",
+      "path": "packages/skill/tool-skill/src/index.ts",
+      "ref": "f3803c96974ad4a94195fb97e5c637e9c2a3afe3",
+      "blob_sha": "f08fb8206433bb40ec415c65e9a50382386a3bd0",
+      "owner": "catalog and scoped skill loader",
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/skill/tool-skill/src/index.ts"
+    },
+    {
+      "product": "DSH",
+      "repo": "deepseek-ai/deepseek-harness",
+      "path": "packages/bundle/base/cordis.patch.yml",
+      "ref": "f3803c96974ad4a94195fb97e5c637e9c2a3afe3",
+      "blob_sha": "863d194bf5ae78d83e9473589e466744f05a76df",
+      "owner": "published profile owners",
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/bundle/base/cordis.patch.yml"
+    },
+    {
+      "product": "DSH",
+      "repo": "deepseek-ai/deepseek-harness",
+      "path": "packages/bundle/headless/cordis.patch.yml",
+      "ref": "f3803c96974ad4a94195fb97e5c637e9c2a3afe3",
+      "blob_sha": "0a0ea09b7fb5f41433fa80596f0ef1242b523ccd",
+      "owner": "headless overlay entry",
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/bundle/headless/cordis.patch.yml"
+    },
+    {
+      "product": "DSH",
+      "repo": "deepseek-ai/deepseek-harness",
+      "path": "packages/llm/llm-deepseek/src/config.ts",
+      "ref": "f3803c96974ad4a94195fb97e5c637e9c2a3afe3",
+      "blob_sha": "630ccea010c8216df0f24525eea4ecb26662bb3a",
+      "owner": "thinking and output cap",
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/packages/llm/llm-deepseek/src/config.ts"
+    },
+    {
+      "product": "OpenClaw",
+      "repo": "openclaw/openclaw",
+      "path": "src/agents/embedded-agent-helpers/bootstrap.ts",
+      "ref": "dc2523e5a5c7a309517fd7fa834add938231d526",
+      "blob_sha": "0134b3ca3ff998af33216707d8caf8c1e06514a8",
+      "owner": "per-file cap and AGENTS policy digest",
+      "url": "https://github.com/openclaw/openclaw/blob/dc2523e5a5c7a309517fd7fa834add938231d526/src/agents/embedded-agent-helpers/bootstrap.ts"
+    },
+    {
+      "product": "OpenClaw",
+      "repo": "openclaw/openclaw",
+      "path": "src/agents/bootstrap-budget.ts",
+      "ref": "dc2523e5a5c7a309517fd7fa834add938231d526",
+      "blob_sha": "4359b1da5c0c76e26ea73c0f9576f60c3ed561e8",
+      "owner": "projection telemetry",
+      "url": "https://github.com/openclaw/openclaw/blob/dc2523e5a5c7a309517fd7fa834add938231d526/src/agents/bootstrap-budget.ts"
+    },
+    {
+      "product": "OpenClaw",
+      "repo": "openclaw/openclaw",
+      "path": "src/skills/loading/config.ts",
+      "ref": "dc2523e5a5c7a309517fd7fa834add938231d526",
+      "blob_sha": "c34cdef3d6166631fc8443f18f0352ba3c4a3e40",
+      "owner": "eligibility and nonempty bundled allowlist",
+      "url": "https://github.com/openclaw/openclaw/blob/dc2523e5a5c7a309517fd7fa834add938231d526/src/skills/loading/config.ts"
+    },
+    {
+      "product": "OpenClaw",
+      "repo": "openclaw/openclaw",
+      "path": "src/skills/loading/workspace-skill-roots.ts",
+      "ref": "dc2523e5a5c7a309517fd7fa834add938231d526",
+      "blob_sha": "8082ea5b0eb51f179c4825acaa39e674ad6dabfa",
+      "owner": "project skill discovery",
+      "url": "https://github.com/openclaw/openclaw/blob/dc2523e5a5c7a309517fd7fa834add938231d526/src/skills/loading/workspace-skill-roots.ts"
+    },
+    {
+      "product": "OpenClaw",
+      "repo": "openclaw/openclaw",
+      "path": "src/skills/loading/workspace-skill-prompt.ts",
+      "ref": "dc2523e5a5c7a309517fd7fa834add938231d526",
+      "blob_sha": "19b6f2c2546b2bcbd505a893e7f25d6de4abc506",
+      "owner": "native catalog and context-budget compaction",
+      "url": "https://github.com/openclaw/openclaw/blob/dc2523e5a5c7a309517fd7fa834add938231d526/src/skills/loading/workspace-skill-prompt.ts"
+    },
+    {
+      "product": "OpenClaw",
+      "repo": "openclaw/openclaw",
+      "path": "src/config/zod-schema.agent-defaults-base.ts",
+      "ref": "dc2523e5a5c7a309517fd7fa834add938231d526",
+      "blob_sha": "c144457ee531c262394d7bab25bd317e4b5fe20f",
+      "owner": "public budget fields",
+      "url": "https://github.com/openclaw/openclaw/blob/dc2523e5a5c7a309517fd7fa834add938231d526/src/config/zod-schema.agent-defaults-base.ts"
+    },
+    {
+      "product": "OpenClaw",
+      "repo": "openclaw/openclaw",
+      "path": "src/agents/bootstrap-files.ts",
+      "ref": "dc2523e5a5c7a309517fd7fa834add938231d526",
+      "blob_sha": "0a5d8c4b2f3a51f446f83c1e1ee4e4e9540241ec",
+      "owner": "native bootstrap loading",
+      "url": "https://github.com/openclaw/openclaw/blob/dc2523e5a5c7a309517fd7fa834add938231d526/src/agents/bootstrap-files.ts"
+    }
+  ]
+}
