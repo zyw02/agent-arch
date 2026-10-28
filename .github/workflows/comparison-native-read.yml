@@ -6,6 +6,8 @@ on:
     paths:
       - 'comparison/native_read_probe.py'
       - 'comparison/read_mcp_fixture.py'
+      - 'comparison/resource_collector.py'
+      - 'comparison/resource_launcher.py'
       - '.github/workflows/comparison-native-read.yml'
 permissions:
   contents: read
@@ -27,6 +29,13 @@ jobs:
           mkdir -p "$RUNNER_TEMP/native-read-evidence"
           cp "$RUNNER_TEMP/native-read-runtime/package-lock.json" "$RUNNER_TEMP/native-read-evidence/"
           node --version > "$RUNNER_TEMP/native-read-evidence/node-version.txt"
+      - name: Delegate task-owned resource collection subtree
+        run: |
+          task_group="/sys/fs/cgroup/agent-arch-${GITHUB_RUN_ID}"
+          sudo mkdir "$task_group"
+          echo '+cpu +memory +pids +io' | sudo tee "$task_group/cgroup.subtree_control" > /dev/null
+          sudo chown "$(id -u):$(id -g)" "$task_group" "$task_group/cgroup.procs" "$task_group/cgroup.subtree_control"
+          echo "AGENT_ARCH_CGROUP_ROOT=$task_group" >> "$GITHUB_ENV"
       - name: Exercise real native tools with synthetic model responses
         run: python3 comparison/native_read_probe.py --runtime "$RUNNER_TEMP/native-read-runtime" --output "$RUNNER_TEMP/native-read-evidence"
       - name: Retain compact adapter calibration evidence
@@ -39,4 +48,8 @@ jobs:
           if-no-files-found: error
       - name: Remove task-owned installation and cache
         if: always()
-        run: rm -rf -- "$RUNNER_TEMP/native-read-runtime" "$RUNNER_TEMP/native-read-cache"
+        run: |
+          rm -rf -- "$RUNNER_TEMP/native-read-runtime" "$RUNNER_TEMP/native-read-cache"
+          if [ -d "/sys/fs/cgroup/agent-arch-${GITHUB_RUN_ID}" ]; then
+            sudo rmdir "/sys/fs/cgroup/agent-arch-${GITHUB_RUN_ID}"
+          fi

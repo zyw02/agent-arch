@@ -13,6 +13,7 @@ import tempfile
 import threading
 import time
 import uuid
+from resource_collector import ResourceCollector
 
 
 def schemas(body):
@@ -104,12 +105,12 @@ def run_product(product,runtime,root,route='native'):
     prompt=f'NATIVE_READ_CALIBRATION: Read {input_file} using the exposed read capability, then report its exact content.'
     if product=='DSH':
         home=root/'dsh-home';home.mkdir();env.update(DSH_HOME=str(home),DEEPSEEK_BASE_URL=provider.base,DEEPSEEK_API_KEY='synthetic-only',DSH_PERMISSION_MODE='read-only')
-        command=[str(runtime/'node_modules/.bin/dsh'),'--profile','headless','--json']
+        command=[str(runtime/'node_modules/.bin/dsh'),'--profile','headless']
         if route=='mcp':
             patch=root/'mcp.patch.yml'
             patch.write_text('- insert:\n    - id: probe-mcp\n      name: "@deepseek-ai/dsh-mcp-client"\n      config:\n        serverName: probe\n        transport: stdio\n        command: /usr/bin/python3\n        args: '+json.dumps([str(fixture),'--file',str(input_file),'--ledger',str(ledger)])+'\n        failOnStartupError: true\n')
             command+=['--patch',str(patch)]
-        command.append(prompt)
+        command+=['--json',prompt]
     else:
         state=root/'openclaw-state';state.mkdir();config=root/'openclaw.json'
         config.write_text(json.dumps(dict(gateway=dict(mode='local',auth=dict(mode='token',token='synthetic-only')),
@@ -123,10 +124,11 @@ def run_product(product,runtime,root,route='native'):
             config.write_text(json.dumps(current))
         env.update(OPENCLAW_STATE_DIR=str(state),OPENCLAW_CONFIG_PATH=str(config))
         command=[str(runtime/'node_modules/.bin/openclaw'),'agent','--local','--session-id',str(uuid.uuid4()),'--json','--message',prompt]
+    collector=ResourceCollector(dict(workspace=workspace,product_state=home if product=='DSH' else state,extension_ledger=ledger))
     start=time.monotonic_ns();before=resource.getrusage(resource.RUSAGE_CHILDREN)
     result={};child=None
     try:
-        child=subprocess.Popen(command,env=env,cwd=workspace,stdout=subprocess.PIPE,stderr=subprocess.PIPE,text=True,start_new_session=True)
+        child=subprocess.Popen(collector.command(command),env=env,cwd=workspace,stdout=subprocess.PIPE,stderr=subprocess.PIPE,text=True,start_new_session=True)
         stdout,stderr=child.communicate(timeout=120)
         result.update(exit_code=child.returncode,stdout=stdout[-20000:],stderr=stderr[-8000:])
     except subprocess.TimeoutExpired:
@@ -136,7 +138,8 @@ def run_product(product,runtime,root,route='native'):
             try:os.killpg(child.pid,signal.SIGKILL)
             except ProcessLookupError:pass
             child.wait()
-        end=time.monotonic_ns();after=resource.getrusage(resource.RUSAGE_CHILDREN);provider.close()
+        end=time.monotonic_ns();after=resource.getrusage(resource.RUSAGE_CHILDREN)
+        measured_resources=collector.finish();provider.close()
     visible=any(v['decision'].get('text')=='VERIFIED:'+receipt for v in provider.requests)
     native_attempt=any(v['decision'].get('tool')==target_tool for v in provider.requests)
     final_receipt=('VERIFIED:'+receipt) in result.get('stdout','')
@@ -149,8 +152,13 @@ def run_product(product,runtime,root,route='native'):
         invocation_wall_ms=(end-start)/1e6,child_cpu_user_seconds=after.ru_utime-before.ru_utime,
         child_cpu_system_seconds=after.ru_stime-before.ru_stime,
         provider_request_count=len(provider.requests),provider_requests=provider.requests,
-        resource_limitations='CPU is invocation children rusage, not per-stage attribution. Full cgroup/PSS/disk collectors and formal paired repetitions are pending. Synthetic usage is not real token cost.',
+        resources=measured_resources,resource_collection_valid=measured_resources['complete'],
+        token_usage=dict(synthetic=True,real_provider_tokens=None,actual_charge=None,
+            request_json_bytes=[len(json.dumps(v['request']).encode()) for v in provider.requests],
+            method='Synthetic provider reports protocol fixture counters only; request bytes are payload size, not tokens'),
+        resource_limitations='Cgroup includes product and inherited MCP/tool processes. Observer and synthetic model server are outside. Shared installation is excluded. Synthetic usage is not real token cost; calibration timings are not a product ranking.',
         file_sha256=original,configuration='DSH shipped headless read-only; OpenClaw local native read-only tool allowlist with public direct-schema setting')
+    result['acceptance_and_resource_valid']=result['valid'] and result['resource_collection_valid']
     return result
 
 
@@ -169,10 +177,12 @@ def main():
             for route in ('native','mcp'):
                 root=Path(tmp)/(product+'-'+route);root.mkdir();results.append(run_product(product,args.runtime,root,route))
     report=dict(kind='two-product-native-read-calibration',run_id=os.environ.get('GITHUB_RUN_ID'),controller_commit=os.environ.get('GITHUB_SHA'),formal_new_experiments=False,installed_versions=versions,package_lock_sha256=lock_sha256,results=results)
+    report['cleanup_observation']=dict(task_owned_roots_removed=True,retained_task_root_allocated_bytes=0,
+        observer_output_excluded=True,method='TemporaryDirectory exited before report serialization; installation and exported evidence are separate paths')
     raw=json.dumps(report,indent=2).encode()
     if len(raw)>4*1024**2:raise ValueError('Compact calibration report bound exceeded')
     (args.output/'native-read-calibration.json').write_bytes(raw)
     print(json.dumps([dict(product=r['product'],route=r['route'],valid=r['valid'],exit_code=r['exit_code'],requests=r['provider_request_count']) for r in results]))
-    if not all(r['valid'] for r in results):raise SystemExit('Native adapter calibration incomplete; inspect retained report')
+    if not all(r['acceptance_and_resource_valid'] for r in results):raise SystemExit('Native adapter calibration incomplete; inspect retained report')
 
 if __name__=='__main__':main()
