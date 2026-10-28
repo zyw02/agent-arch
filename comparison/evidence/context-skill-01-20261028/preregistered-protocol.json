@@ -1,0 +1,80 @@
+{
+  "schema_version": 1,
+  "study_id": "CTX-01",
+  "status": "preregistered_before_native_execution",
+  "parent_studies": [
+    "HA",
+    "HF"
+  ],
+  "question": "Which native instruction-budget projection preserves a rule, and can native lazy skill loading restore rule-dependent task quality after instruction omission?",
+  "products": {
+    "DSH": "0.2.2-alpha.2",
+    "OpenClaw": "2026.10.8"
+  },
+  "calibration_blocks": 1,
+  "real_model_blocks": 2,
+  "model_alias": "deepseek-flash",
+  "thinking": "disabled through public native configuration for both products",
+  "per_request_output_tokens": 2048,
+  "instruction_limits": {
+    "ample": 16384,
+    "tight": 1024
+  },
+  "limit_semantics": {
+    "DSH": "UTF-8 bytes per rendered instruction chain, framing included",
+    "OpenClaw": "UTF-16 characters per bootstrap file; total bootstrap cap separately fixed at 65536"
+  },
+  "fixture_alphabet": "ASCII, so source bytes and UTF-16 character counts agree; renderer framing and selection still differ",
+  "conditions": [
+    {
+      "id": "ample_skill",
+      "budget": "ample",
+      "skill": true,
+      "rule_line": "neutral"
+    },
+    {
+      "id": "ample_no_skill",
+      "budget": "ample",
+      "skill": false,
+      "rule_line": "neutral"
+    },
+    {
+      "id": "tight_skill",
+      "budget": "tight",
+      "skill": true,
+      "rule_line": "neutral"
+    },
+    {
+      "id": "tight_no_skill",
+      "budget": "tight",
+      "skill": false,
+      "rule_line": "neutral"
+    },
+    {
+      "id": "tight_required_no_skill",
+      "budget": "tight",
+      "skill": false,
+      "rule_line": "required_keyword"
+    }
+  ],
+  "fixture": "One random block-specific codec rule in the middle of a long AGENTS.md and in a matching skill; held-out integer inputs shared across every arm of that block. Same content except explicit Required keyword diagnostic. Rule absent from initial user prompt and skill description. Redundancy is deliberately constructed to identify recovery through a second native context route.",
+  "skill_control": {
+    "DSH": "skill-filesystem includeDefaultRoots=false; customSkillDirs selects the owned fixture root or an empty list; watch=false",
+    "OpenClaw": "skills.allowBundled=[probe-codec] (nonempty sentinel allowlist excludes unrelated bundled skills); skills.entries.probe-codec.enabled selects the owned project skill"
+  },
+  "task": "Compute codec from values using only supplied instructions or an advertised native skill. Load the skill if advertised. Do not read AGENTS.md directly, search, run shell commands or invent absent rules. Return JSON encoded string or null if unknown.",
+  "acceptance": {
+    "delivery": "Normal exit and a single JSON object with only encoded key, string or null; optional surrounding whitespace or Markdown JSON fence allowed by this preregistration",
+    "quality": "encoded exactly equals independently computed prefix plus (sum(values)*factor+offset) modulo 997; null is a delivered but incomplete result",
+    "constraint": "No tool except native skill loader or read of the advertised fixture SKILL.md; no direct AGENTS read or filesystem search",
+    "calibration_gate": "Actual ample neutral rule visible in both products, tight neutral omitted in both, required-keyword diagnostic retained by OpenClaw policy digest but omitted by DSH; advertised skill invoked and its actual result contains rule. Every arm has complete cgroup collection and expected fixture-derived delivery/quality.",
+    "real_run": "Record all quality/constraint outcomes, including failures. Do not change predicate after observing real outputs. Native resource or adapter errors remain separate from model task failure."
+  },
+  "analysis": "Publish all independent block points. Within-product paired contrasts: ample/tight with skill disabled; skill enabled/disabled at each budget; difference-in-differences for constructed redundancy; Required keyword diagnostic at tight/no-skill. Two blocks support mechanism observations only, not a broad quality/performance ranking or population-level significance claim.",
+  "measurement": "Task submission to independently timestamped delivery check; separate process exit; real per-request input/output/cache usage including title calls; cgroup CPU, PSS/RSS, kernel memory peak, sampled disk and raw I/O; controller+relay process CPU separately. Record source payload sizes as bytes, not tokens. Dedicated memory-reader command CPU is a disjoint observer child cost; sampling thread is an overlapping parent-process subset, never added twice.",
+  "ordering": "Randomized arm order per paired block, seed retained. Products share pinned installation; cache state is not reset globally.",
+  "exclusions": "This is instruction/bootstrap budgeting and skill availability/loading. It does not test cumulative task-tree hard quotas, dynamic skill policy optimization, full context-window compaction, native self-improvement, or rollback.",
+  "scheduling": "Admit complete comparison block; no generic real-task timeout. Synthetic protocol calibration has a declared 120-second settlement safeguard. Native configuration and transport bounds retained.",
+  "source_bindings": "context-skill-source-bindings.json",
+  "instrumentation_revision": "r2: exact named skill catalog entry, canonical advertised path comparison, privileged read-only PSS helper outside product group; original task/quality predicates and expected native control effects unchanged"
+}

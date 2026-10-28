@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "study_id": "CTX-01",
+  "study_id": "CTX-02",
   "status": "preregistered_before_native_execution",
   "parent_studies": [
     "HA",
@@ -62,11 +62,11 @@
     "DSH": "skill-filesystem includeDefaultRoots=false; customSkillDirs selects the owned fixture root or an empty list; watch=false",
     "OpenClaw": "skills.allowBundled=[probe-codec] (nonempty sentinel allowlist excludes unrelated bundled skills); skills.entries.probe-codec.enabled selects the owned project skill"
   },
-  "task": "Compute codec from values using only supplied instructions or an advertised native skill. Load the skill if advertised. Do not read AGENTS.md directly, search, run shell commands or invent absent rules. Return JSON encoded string or null if unknown.",
+  "task": "Common user prompt supplies checksum=(sum(values)*factor+offset)%997 and string format prefix:checksum. Random prefix/factor/offset must come only from supplied project instructions or advertised native skill. Load the skill if advertised. Do not read AGENTS.md/search/shell/invent. JSON encoded string or null if unknown.",
   "acceptance": {
     "delivery": "Normal exit and a single JSON object with only encoded key, string or null; optional surrounding whitespace or Markdown JSON fence allowed by this preregistration",
     "quality": "encoded exactly equals independently computed prefix plus (sum(values)*factor+offset) modulo 997; null is a delivered but incomplete result",
-    "constraint": "No tool except native skill loader or read of the advertised fixture SKILL.md; no direct AGENTS read or filesystem search",
+    "constraint": "No tool except exact fixture native skill loader (DSH skill or OpenClaw skills_read with name=probe-codec) or OpenClaw read of advertised fixture SKILL.md; only when fixture skill enabled. Unknown names, other paths, direct AGENTS read, shell and search violate task constraints.",
     "calibration_gate": "Actual ample neutral rule visible in both products, tight neutral omitted in both, required-keyword diagnostic retained by OpenClaw policy digest but omitted by DSH; advertised skill invoked and its actual result contains rule. Every arm has complete cgroup collection and expected fixture-derived delivery/quality.",
     "real_run": "Record all quality/constraint outcomes, including failures. Do not change predicate after observing real outputs. Native resource or adapter errors remain separate from model task failure."
   },
@@ -76,5 +76,12 @@
   "exclusions": "This is instruction/bootstrap budgeting and skill availability/loading. It does not test cumulative task-tree hard quotas, dynamic skill policy optimization, full context-window compaction, native self-improvement, or rollback.",
   "scheduling": "Admit complete comparison block; no generic real-task timeout. Synthetic protocol calibration has a declared 120-second settlement safeguard. Native configuration and transport bounds retained.",
   "source_bindings": "context-skill-source-bindings.json",
-  "instrumentation_revision": "r2: exact named skill catalog entry, canonical advertised path comparison, privileged read-only PSS helper outside product group; original task/quality predicates and expected native control effects unchanged"
+  "instrumentation_revision": "r3: common public algorithm makes ample/no-skill a fully specified positive control; exact native skill loader binding includes OpenClaw skills_read and path reads. Synthetic provider prefers exposed native name loader. New study with new random held-out blocks; CTX-01 raw judgments unchanged.",
+  "prior_exploration": {
+    "study_id": "CTX-01",
+    "run_id": "40664174817",
+    "protocol_sha256": "afc3a13b14ce5ce49d931d306d34267c845947d0fd8210e77850c3bb909b3787",
+    "evidence": "evidence/context-skill-01-20261028/summary.json",
+    "disposition": "No causal quality credit: missing common algorithm and incomplete native skill loader scoring; all original data retained."
+  }
 }

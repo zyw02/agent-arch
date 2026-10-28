@@ -1,0 +1,18 @@
+{
+  "study_id": "CTX-01",
+  "status": "exploratory_input_and_evaluator_defects; no causal quality credit",
+  "run_id": "40664174817",
+  "controller_commit": "38e3729cbad6db8200b08eaaaaae2b14b75e1f29",
+  "protocol_sha256": "afc3a13b14ce5ce49d931d306d34267c845947d0fd8210e77850c3bb909b3787",
+  "blocks": 2,
+  "arms": 20,
+  "native_calibration_passed": 10,
+  "resources_complete": 20,
+  "provider_errors": 0,
+  "delivered": 16,
+  "exact": 3,
+  "original_full_success": 1,
+  "input_defect": "AGENTS.md has prefix/factor/offset but no checksum algorithm; the user task also omits it. Only skill supplies formula. Ample/no-skill is underdetermined and invalid as quality positive control.",
+  "evaluator_defect": "OpenClaw native skills_read({name:probe-codec}) is advertised and successfully returns the fixture; original scorer recognizes read only. Original native_skill_load also counts unrelated reads. Original labels retained; loader observations are incomplete.",
+  "decisions": "Retain source projection/resource/usage evidence and every failed original judgment. Do not use paired quality/difference-in-differences for causal conclusions. CTX-02 will give formula in the common user prompt, bind actual native loader, and execute new sealed blocks; no original output is rescored as a formal success."
+}

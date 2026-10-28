@@ -1,0 +1,26 @@
+{
+  "source_run_url": "https://github.com/zyw02/agent-arch/actions/runs/40664174817",
+  "artifact_id": 12805986001,
+  "artifact_zip_sha256": "cbab6019012364caeb19dc52fa1ed048c75289aefaf8260d545bbe09f54bbe2d",
+  "reports": {
+    "live/context-skill-report.json": "350e2e6115c3ff48dec1caa782bf3681068ba698bf6a11907d8e67d4cec7a668",
+    "calibration/context-skill-report.json": "6365e3c88829687ee2665f38f8a32ce593041dd25d6bdec8f477d033d0b3c94f"
+  },
+  "retained_files_sha256": {
+    "context-skill-resources.svg": "2d636c2efd07e43aa78ddccf4d2e429aac286017ddde133628839bb2e2e84b7c",
+    "package-lock.json": "a4a3d8433dd5c4b4e95c5b5773c37c5838dd6c96578f46db5438b8c2c3651845",
+    "node-version.txt": "249baf635bb43877fcb9422efa1a4904b702d0ddf14d3949b7cd0950d5229c81",
+    "context-skill-metrics.csv": "e4afbc706bdb47830aab34373e072997c8a45166ea43e5fb4b7d0538ad680b7d",
+    "os-release.txt": "87458b3b1f1ca0e5c693ade771de7007c3783bdc692fa6b39eb6414bf2af2763",
+    "preregistered-protocol.json": "afc3a13b14ce5ce49d931d306d34267c845947d0fd8210e77850c3bb909b3787",
+    "context-skill-mechanism.svg": "124975c9e79c54b6183e712da3ee53867d6b8eb1dcdca56b3be85745ddba17ad",
+    "context-skill-mechanism.png": "8cf84d7a6b4edaa71023d2894872be280b6b16f05d97aceae0a0640bbd49b50e",
+    "context-skill-paired-effects.json": "5837e8abe56da1ce267f32095ffd26c870141d121c72384b0d41b12fd4c07472",
+    "context-skill-resources.png": "3b963de3d5fa51c5f21c70e81ed34445d1c6136068cd20d3e2c72bdc50918447",
+    "live-original-report.json.gz": "832057a647b4b57c73547dc7b26fb17ac909a0db733892496defb8a84523a2f6",
+    "context-skill-request-usage.json": "cc0e62768dc977306a443ca95b1d1467bb681275fff22f651131f597d82db624",
+    "calibration-original-report.json.gz": "2de480f34a95de90189c1d6e7495706984d59c936c6975e7c6408d63aa78a7ae",
+    "summary.json": "5a4e16ee96df2272420c2f7d73d4a125cef4963a55550952684882db316df93b"
+  },
+  "source_manifest": "comparison/context-skill-source-bindings.json"
+}

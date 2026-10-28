@@ -1,5 +1,5 @@
 {
-  "study_id": "CTX-01",
+  "study_id": "CTX-02",
   "role": "Pinned source bindings; native activation still requires calibration",
   "sources": [
     {
@@ -127,6 +127,15 @@
       "blob_sha": "0a5d8c4b2f3a51f446f83c1e1ee4e4e9540241ec",
       "owner": "native bootstrap loading",
       "url": "https://github.com/openclaw/openclaw/blob/dc2523e5a5c7a309517fd7fa834add938231d526/src/agents/bootstrap-files.ts"
+    },
+    {
+      "product": "OpenClaw",
+      "repo": "openclaw/openclaw",
+      "path": "src/agents/tools/installed-skill-tools.ts",
+      "ref": "dc2523e5a5c7a309517fd7fa834add938231d526",
+      "blob_sha": "536ad21da8a15383fdee72747732f7fefae14b64",
+      "owner": "Native skills_read exact-name complete instruction loader, observed in CTX-01 actual requests",
+      "url": "https://github.com/openclaw/openclaw/blob/dc2523e5a5c7a309517fd7fa834add938231d526/src/agents/tools/installed-skill-tools.ts"
     }
   ]
 }

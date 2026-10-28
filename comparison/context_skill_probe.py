@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""CTX-01 native bootstrap-budget/skill controls with independent task/resource evidence."""
+"""CTX-02 native bootstrap-budget/skill controls with independent task/resource evidence."""
 import argparse
 import hashlib
 import json
@@ -74,6 +74,23 @@ def calls_from_requests(requests):
     return list(calls.values())
 
 
+def native_skill_call(product,call,skill_file):
+    if not isinstance(call.get('arguments'),dict):return False
+    if product=='DSH':return call['name']=='skill' and call['arguments']=={'name':SKILL}
+    if call['name']=='skills_read':return call['arguments']=={'name':SKILL}
+    if call['name']!='read':return False
+    path=call['arguments'].get('file_path',call['arguments'].get('path',''))
+    return bool(path) and str(Path(path).expanduser().resolve())==str(skill_file.resolve())
+
+
+def task_prompt(values):
+    return ('Use the probe-codec workflow to encode the supplied values. If probe-codec is advertised in the native skill catalog, load it before reporting. '
+        'The algorithm is checksum=(sum(values)*factor+offset)%997, with encoded equal to prefix + ":" + decimal checksum. '
+        'Obtain prefix, factor and offset only from already supplied project instructions or the advertised skill. '
+        'Do not read AGENTS.md directly, search files, run a shell, or invent missing parameters. '
+        'If parameters remain unavailable, return null. Output only one JSON object with exactly the key encoded.\nVALUES_JSON='+json.dumps(values))
+
+
 def encoded(rule,values):
     return rule['prefix']+':'+str((sum(values)*rule['factor']+rule['offset'])%997) if rule else None
 
@@ -86,6 +103,7 @@ def fixture_response(body,file_path,receipt,target_tool):
     values=json.loads(values_match[1]);catalog=skill_catalog(body);results=tool_results(body);available=schemas(body)
     if catalog and not results:
         if 'skill' in available:return dict(tool='skill',arguments=dict(name=SKILL))
+        if 'skills_read' in available:return dict(tool='skills_read',arguments=dict(name=SKILL))
         location=re.search(r'<location>\s*(.*?)\s*</location>',catalog,re.S)
         if location and 'read' in available:
             props=available['read'].get('properties',{});key=next((k for k in ('file_path','path') if k in props),None)
@@ -133,9 +151,7 @@ def run_arm(product,runtime,root,condition,block,values,rule,live,sequence,limit
     before_files=manifest([agents_file,skill_file]);limit=limits[condition['budget']]
     provider=LiveProvider(skill_file,rule['prefix']) if live else Provider(skill_file,rule['prefix'],decision_fn=fixture_response)
     env=dict(os.environ);env.pop('DEEPSEEK_API_KEY',None)
-    prompt=('Use the probe-codec workflow to encode the supplied values. If probe-codec is advertised in the native skill catalog, load it before reporting. '
-        'Use only already supplied project instructions and the advertised skill. Do not read AGENTS.md directly, search files, run a shell, or invent missing parameters. '
-        'If parameters remain unavailable, return null. Output only one JSON object with exactly the key encoded.\nVALUES_JSON='+json.dumps(values))
+    prompt=task_prompt(values)
     config_paths=[]
     if product=='DSH':
         state=root/'dsh-home';state.mkdir();patch=root/'context.patch.yml'
@@ -174,18 +190,18 @@ def run_arm(product,runtime,root,condition,block,values,rule,live,sequence,limit
         checked_ns=time.monotonic_ns();resources=collector.finish();provider.close();after_self=resource.getrusage(resource.RUSAGE_SELF)
     requests=provider.requests;task_requests=[r for r in requests if 'Generate the session title from this JSON array' not in request_text(r['request'])]
     first=task_requests[0]['request'] if task_requests else {};actual_calls=calls_from_requests(requests)
-    permitted=lambda c:c['name']=='skill' and c['arguments']=={'name':SKILL} if product=='DSH' else c['name']=='read' and str(Path(c['arguments'].get('file_path',c['arguments'].get('path',''))).expanduser().resolve())==str(skill_file.resolve())
+    permitted=lambda c:native_skill_call(product,c,skill_file)
     returned_names=[name for r in requests for name in (r.get('tool_names',[]) if live else [r['decision']['tool']] if r.get('decision',{}).get('tool') else [])]
     arguments_complete=len(actual_calls)==len(returned_names)
     constraints=all(permitted(c) and condition['skill'] for c in actual_calls) if arguments_complete else None
-    load_attempt=any(c['name']==('skill' if product=='DSH' else 'read') for c in actual_calls)
+    load_attempt=any(permitted(c) for c in actual_calls)
     adopted=any(rule['prefix'] in result for r in task_requests for result in tool_results(r['request']))
     initial_rule=rule['prefix'] in request_text(first);catalog_visible=bool(skill_catalog(first));expected_initial=condition['budget']=='ample' or (product=='OpenClaw' and condition['rule_line']=='required_keyword')
     correct=delivery is not None and delivery['encoded']==encoded(rule,values)
     delivered=exit_code==0 and delivery is not None and unchanged
     expected_delivery=encoded(rule,values) if expected_initial or condition['skill'] else None
     calibration_valid=delivered and constraints and initial_rule==expected_initial and catalog_visible==condition['skill'] and (not condition['skill'] or load_attempt and adopted) and delivery['encoded']==expected_delivery and resources['complete']
-    result=dict(study_id='CTX-01',product=product,block=block,condition=condition,sequence=sequence,live_model=live,
+    result=dict(study_id='CTX-02',product=product,block=block,condition=condition,sequence=sequence,live_model=live,
         config_sha256=manifest(config_paths),input_sha256=before_files,task_values=values,rule=rule,rule_absent_from_user_prompt=rule['prefix'] not in prompt,
         instruction_limit=limit,source_agents_bytes=len(agents.encode()),source_skill_bytes=len(skill.encode()),
         exit_code=exit_code,adapter_error=adapter_error,stdout=stdout[-30000:],stderr=stderr[-8000:],
@@ -218,7 +234,7 @@ def main():
         if calibration['protocol_sha256']!=protocol_sha or not all(r['calibration_valid'] for r in calibration['results']):raise ValueError('Calibration gate not passed for this protocol')
     args.output.mkdir(parents=True,exist_ok=True);seed=int.from_bytes(os.urandom(8),'big');rng=random.Random(seed);results=[];sequence=0
     blocks=protocol['real_model_blocks'] if args.live_model else protocol['calibration_blocks']
-    report=dict(study_id='CTX-01',protocol_sha256=protocol_sha,controller_commit=os.environ.get('GITHUB_SHA'),run_id=os.environ.get('GITHUB_RUN_ID'),
+    report=dict(study_id='CTX-02',protocol_sha256=protocol_sha,controller_commit=os.environ.get('GITHUB_SHA'),run_id=os.environ.get('GITHUB_RUN_ID'),
         native_execution=True,formal_parent_studies_complete=False,live_model=args.live_model,installed_versions=versions,
         package_lock_sha256=hashlib.sha256((args.runtime/'package-lock.json').read_bytes()).hexdigest(),ordering_seed=seed,blocks=blocks,results=results)
     with tempfile.TemporaryDirectory(prefix='ctx-skill-',dir=os.environ['RUNNER_TEMP']) as tmp:
@@ -232,7 +248,7 @@ def main():
                 print(json.dumps({k:row[k] for k in ('product','block','sequence','calibration_valid','delivered','quality_correct','constraints_satisfied','observed')}),flush=True)
     report['cleanup_observation']=dict(task_roots_removed=True,retained_task_root_bytes=0,exported_evidence_excluded=True)
     (args.output/'context-skill-report.json').write_text(json.dumps(report,indent=2)+'\n')
-    if not args.live_model and not all(r['calibration_valid'] for r in results):raise SystemExit('CTX-01 adapter/control calibration failed; inspect retained partial/failed evidence')
-    if args.live_model and any(r['adapter_error'] or not r['resources']['complete'] for r in results):raise SystemExit('CTX-01 adapter/resource collection incomplete; task quality failures are separately retained')
+    if not args.live_model and not all(r['calibration_valid'] for r in results):raise SystemExit('CTX-02 adapter/control calibration failed; inspect retained partial/failed evidence')
+    if args.live_model and any(r['adapter_error'] or not r['resources']['complete'] for r in results):raise SystemExit('CTX-02 adapter/resource collection incomplete; task quality failures are separately retained')
 
 if __name__=='__main__':main()

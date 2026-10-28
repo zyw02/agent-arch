@@ -82,7 +82,7 @@ def plot(rows,report,output):
         for i,line in enumerate(matrix):
             for j,value in enumerate(line):axis.text(j,i,f'{round(value*counts[i])}/{counts[i]}' if counts[i] else 'N/A',ha='center',va='center',color='white' if value>.5 else 'black')
         axis.set_xticks(range(4),[label for key,label in columns]);axis.set_yticks(range(5),[LABELS[c] for c in conditions]);axis.set_title(product)
-    fig.suptitle('CTX-01: native context route and exact task result — two held-out paired blocks\nCounts are observed trials, not population estimates; redundant rule supplied by design',fontsize=11)
+    fig.suptitle('CTX-02: native context route and exact task result — two held-out paired blocks\nCounts are observed trials, not population estimates; redundant rule supplied by design',fontsize=11)
     fig.savefig(output/'context-skill-mechanism.svg');fig.savefig(output/'context-skill-mechanism.png',dpi=145);plt.close(fig)
     dimensions=[('independent_delivery_seconds','Independent delivery check (s)',1),('known_real_provider_tokens','Actual input + output tokens',1),('cpu_core_seconds','Product CPU (core-seconds)',1),('sampled_peak_pss_bytes','Sampled process PSS peak (MiB)',1024**2),('sampled_peak_disk_increment_bytes','Sampled disk increment peak (MiB)',1024**2),('observer_total_cpu_seconds','Observer + relay CPU (seconds)',1)]
     fig,axes=plt.subplots(2,6,figsize=(19,7.8),layout='constrained')
@@ -96,7 +96,7 @@ def plot(rows,report,output):
                 axis.plot([p[0] for p in points],[p[1] for p in points],marker='o',linewidth=1,label='block '+str(block),alpha=.8)
             axis.set_xticks(range(5),['A+S','A','T+S','T','T+R'],rotation=35);axis.set_title(product+'\n'+label,fontsize=9);axis.grid(axis='y',alpha=.2);axis.set_ylim(bottom=0)
             if col==0:axis.legend(fontsize=8)
-    fig.suptitle('CTX-01: all native task points retained, including missing-rule deliveries\nA=ample; T=tight; S=native skill available; R=Required keyword. Within-product paired observations; cold invocations; no general product ranking.',fontsize=11)
+    fig.suptitle('CTX-02: all native task points retained, including missing-rule deliveries\nA=ample; T=tight; S=native skill available; R=Required keyword. Within-product paired observations; cold invocations; no general product ranking.',fontsize=11)
     fig.savefig(output/'context-skill-resources.svg');fig.savefig(output/'context-skill-resources.png',dpi=145);plt.close(fig)
 
 
