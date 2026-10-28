@@ -8,9 +8,23 @@ import unittest
 sys.path.insert(0,str(Path(__file__).resolve().parents[1]))
 from prepare_tool_lifecycle_review import make_packet,expected_answers
 from summarize_tool_lifecycle import summarize
+from audit_tool_cancellation import audit
 
 
 class ToolNativePacketTests(unittest.TestCase):
+    def test_secondary_audit_detects_late_dispatch_even_if_it_stops_before_snapshot(self):
+        comparison=Path(__file__).resolve().parents[1]
+        report=json.loads(gzip.decompress((comparison/'evidence/tool-lifecycle-20261028/pilot-original-report.json.gz').read_bytes()))
+        result=audit(report);self.assertTrue(result['complete_cancel_arm_coverage'])
+        self.assertTrue(next(r for r in result['rows'] if r['product']=='DSH')['accepted_original_has_no_extra_tool_dispatch'])
+        arm=next(a for a in report['results'] if a['product']=='DSH' and a['condition']=='mcp_batch_cancel')
+        # A new attempt may finish before the 10-second snapshot. Its absence
+        # from live calls at that cut is insufficient to establish no dispatch.
+        arm['fixture_events'].append(dict(kind='call_received',index=3,mcp_call_id=999,monotonic_ns=arm['cancel']['received_ns']+1))
+        row=next(r for r in audit(report)['rows'] if r['product']=='DSH')
+        self.assertTrue(row['original_handling_acceptance']);self.assertFalse(row['accepted_original_has_no_extra_tool_dispatch'])
+        self.assertEqual(row['new_mcp_calls_after_cancel_before_health'][0]['index'],3)
+
     def test_complete_pilot_recomputes_original_judgments_hashes_and_admission(self):
         comparison=Path(__file__).resolve().parents[1];root=comparison/'evidence/tool-lifecycle-20261028'
         admission=json.loads((comparison/'tool-lifecycle-formal-admission.json').read_bytes());raw=gzip.decompress((comparison/admission['pilot_report_gzip']).read_bytes())

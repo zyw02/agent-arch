@@ -21,6 +21,8 @@ For offline verification, `export_native_review.py` takes the retained original 
 
 HD tool-lifecycle review is prepared in `comparison-tool-lifecycle-review.yml`: after complete formal blocks and usable controls, `prepare_tool_lifecycle_review.py` freezes eight randomized native-only healthy/failure packets and a separate independently reconstructed key. It reuses the isolated review/scoring runner with the preregistered HD questions. `export_native_review.py --study HD` verifies the exact packets, source truth, original answers and provider usage offline. `plot_tool_lifecycle.py` renders every normal-route pair and the independent cancellation witnesses. These tools alone do not confer executed-study credit.
 
+`audit_tool_cancellation.py` adds a secondary receipt-by-receipt check for new calls after cancellation and separates the later health read. It was prepared after formal execution started and before formal outcomes were inspected. Its output preserves the frozen original acceptance flags and distinguishes old-model requests inside the observation window from requests after cleanup.
+
 ## Progress maintenance
 
 Update each cell's status, evidence paths, and notes in `progress.json`, then run `python3 comparison/dashboard.py` and commit the ledger and generated README. `python3 comparison/dashboard.py --check` detects drift. GitHub Actions shows live job steps. When session calibration finishes, its aggregation job writes the latest run link and outcome to the active branch and regenerates the README. Other experiment states are maintained by their owners.
