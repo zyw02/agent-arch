@@ -41,7 +41,31 @@
       ],
       "independent_units_per_condition": 6,
       "track": "scripted",
-      "implementation": "planned"
+      "implementation": "planned",
+      "condition_factors": {
+        "C4": {
+          "arrival_interval_s": [
+            "2",
+            "0.5",
+            "0.1"
+          ],
+          "admission": [
+            "direct",
+            "external_fifo"
+          ]
+        },
+        "C5": {
+          "arrival_interval_s": [
+            "2",
+            "0.5",
+            "0.1"
+          ],
+          "admission": [
+            "direct",
+            "external_fifo"
+          ]
+        }
+      }
     },
     {
       "id": "P04",
@@ -92,7 +116,14 @@
       ],
       "independent_units_per_condition": 3,
       "track": "model_and_scripted",
-      "implementation": "planned"
+      "implementation": "planned",
+      "factors": {
+        "size_kib": [
+          8,
+          64,
+          256
+        ]
+      }
     },
     {
       "id": "H05",
@@ -105,7 +136,42 @@
       ],
       "independent_units_per_condition": 3,
       "track": "scripted",
-      "implementation": "planned"
+      "implementation": "planned",
+      "condition_factors": {
+        "C1": {
+          "recovery": [
+            "automatic",
+            "resume",
+            "user_retry"
+          ],
+          "idempotency": [
+            "off",
+            "on"
+          ]
+        },
+        "C2": {
+          "recovery": [
+            "automatic",
+            "resume",
+            "user_retry"
+          ],
+          "idempotency": [
+            "off",
+            "on"
+          ]
+        },
+        "C3": {
+          "recovery": [
+            "automatic",
+            "resume",
+            "user_retry"
+          ],
+          "idempotency": [
+            "off",
+            "on"
+          ]
+        }
+      }
     },
     {
       "id": "H07",
@@ -189,7 +255,21 @@
       "track": "real_model",
       "implementation": "planned",
       "task_families": 3,
-      "instances_per_family": 5
+      "instances_per_family": 5,
+      "factors": {
+        "family": [
+          "repository",
+          "data",
+          "effect"
+        ],
+        "instance": [
+          1,
+          2,
+          3,
+          4,
+          5
+        ]
+      }
     }
   ]
 }
