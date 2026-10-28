@@ -46,6 +46,12 @@ jobs:
           DEEPSEEK_API_KEY: ${{ secrets.DEEPSEEK_API_KEY }}
         run: |
           python3 comparison/context_skill_probe.py --runtime "$RUNNER_TEMP/context-skill-runtime" --output "$RUNNER_TEMP/context-skill-evidence/live" --live-model --calibration-report "$RUNNER_TEMP/context-skill-evidence/calibration/context-skill-report.json"
+      - name: Export live metrics and paired resource figures
+        if: inputs.live_model
+        run: |
+          python3 -m venv "$RUNNER_TEMP/context-plot-env"
+          "$RUNNER_TEMP/context-plot-env/bin/pip" install matplotlib==3.10.8
+          "$RUNNER_TEMP/context-plot-env/bin/python" comparison/export_context_skill.py --report "$RUNNER_TEMP/context-skill-evidence/live/context-skill-report.json" --output "$RUNNER_TEMP/context-skill-evidence/derived" --plot
       - name: Retain controls, native requests, actual usage and resource evidence
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
