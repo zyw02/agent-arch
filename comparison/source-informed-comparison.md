@@ -1,6 +1,6 @@
 # Source-informed DSH / OpenClaw comparison and evidence reuse
 
-This investigation precedes new native experiments. It binds DSH `dsh-v0.2.2-alpha.2` (`f3803c96974ad4a94195fb97e5c637e9c2a3afe3`) and the existing OpenClaw `2026.10.7` campaign (`157d8c2bc3ea2fa183afdc11088e69690bf8e64e`). The DSH source tag resolves to that commit; association with the installed npm runtime still needs build/package calibration. The current OpenClaw release is now `2026.10.8` (`dc2523e5a5c7a309517fd7fa834add938231d526`). The [version bridge](evidence/source-informed-20261028/version-bridge.json) checks all 14 selected OpenClaw source files: their blobs are unchanged from 10.7. This is source continuity only, not whole-program/runtime equivalence; new calibration uses 10.8 and old results keep 10.7 labels. DSH npm `latest` currently selects `0.2.1-rc.2`; the explicitly selected 0.2.2-alpha.2 channel remains separately declared. The local product checkouts were older and are excluded from these source findings. [Source manifest](source-review-manifest.json) records 38 fetched pinned files and Git blob identities; it is not an assertion that every possible implementation was exhaustively reviewed.
+This source-informed comparison binds DSH `dsh-v0.2.2-alpha.2` (`f3803c96974ad4a94195fb97e5c637e9c2a3afe3`) and the existing OpenClaw `2026.10.7` campaign (`157d8c2bc3ea2fa183afdc11088e69690bf8e64e`). The DSH source tag resolves to that commit; association with the installed npm runtime still needs build/package calibration. The current OpenClaw release is now `2026.10.8` (`dc2523e5a5c7a309517fd7fa834add938231d526`). The [version bridge](evidence/source-informed-20261028/version-bridge.json) checks all 14 selected OpenClaw source files: their blobs are unchanged from 10.7. This is source continuity only, not whole-program/runtime equivalence; new calibration uses 10.8 and old results keep 10.7 labels. DSH npm `latest` currently selects `0.2.1-rc.2`; the explicitly selected 0.2.2-alpha.2 channel remains separately declared. The local product checkouts were older and are excluded from these source findings. [Source manifest](source-review-manifest.json) records 38 fetched pinned files and Git blob identities; it is not an assertion that every possible implementation was exhaustively reviewed.
 
 The historical campaign was re-audited using its original validator: **257 scenarios, 253 measured scenarios, 969 accepted measured observations, four verified capability exclusions**. This is 60 experiment families, not 257 independent experiment families. The 29 scenarios retaining failed acceptance are retained as evidence. Invalid/quarantined originals and calibration are excluded. [Reuse audit](evidence/source-informed-20261028/reuse-audit.md) maps all scenarios to candidate questions and permanent ZIP hashes without giving them new-comparison coverage credit.
 
@@ -37,6 +37,23 @@ COST-03's 24 historical paired units were recomputed into [48 source-linked rows
 ![Historical paired guide reuse cost and completion](evidence/source-informed-20261028/guide-reuse-paired.png)
 
 The [plotting run](https://github.com/zyw02/agent-arch/actions/runs/40657342012) retains figures and raw rows. Each line is one paired independent unit. Cache input is counted once; learning and failed work remain charged.
+
+## Reused telemetry faults: task continuity and export durability differ
+
+The [OBS-02 re-extraction](https://github.com/zyw02/agent-arch/actions/runs/40665701079) verifies the permanent archive and every accepted native summary, then joins **all 12 original scenario/unit records** to full event-ID partitions. It executes no product and makes no model calls. [Rows](evidence/source-informed-20261028/observability-reuse-metrics.csv), [summary](evidence/source-informed-20261028/observability-reuse-summary.json) and [provenance](evidence/source-informed-20261028/observability-reuse-provenance.json) retain original failure states and source hashes. Unlike the earlier bounded numeric inventory, this checks complete sets and counts.
+
+| Original OpenClaw 2026.10.7 condition | Units | Target IDs offered / missing remotely | Missing local target IDs | Task during fault / after restoration | Fresh publication after restoration |
+| --- | ---: | ---: | ---: | --- | --- |
+| Brief collector fault | 3 | 24 / 24 | 0 | 3/3 / 3/3 | 3/3 |
+| Long collector fault | 3 | 24 / 24 | 0 | 3/3 / 3/3 | 3/3 |
+| Publisher killed and restarted | 3 | 24 / 24 | 0 | 3/3 / 3/3 | 0/3 |
+| 4096-event burst with collector fault | 3 | 12,288 / 12,288 | 2 in one unit; 0 in the other two | 3/3 / 3/3 | 3/3 |
+
+Missing remotely means absent at the declared final snapshot after recovery wait and native shutdown, not that no HTTP attempts occurred. The old failed batches were independently observed. The official `diagnostics-otel` exporter used the declared public diagnostic reference producer; native file logging was paired through distinct local offered IDs. The positive control first proved successful publication. The original SDK defaults were queue 2048 and batch 512; this is not an evaluator-installed durable queue. Two local IDs were missing in burst unit 1, while burst units 2 and 3 retained their full local sets. Logs can therefore support local diagnosis even when the export has gaps, but successful task recovery does not establish recovery of the telemetry publisher. The lossless criterion belongs to this experiment and is not an assertion of a product durable-spool guarantee.
+
+![Historical telemetry fault event retention and recovery](evidence/source-informed-20261028/observability-reuse.png)
+
+These are scoped historical observations. They do not establish loss in all native event paths, listener isolation, event ordering or diagnostic CPU overhead, and they are not a matched DSH comparison. A separate native listener/control contrast remains necessary for HD; the pinned DSH notification exception handling and OpenClaw EventEmitter source findings cannot supply unmeasured runtime latency.
 
 ## Native execution and first real-model pilot
 

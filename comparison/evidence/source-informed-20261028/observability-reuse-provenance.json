@@ -1,0 +1,16 @@
+{
+  "run_id": "40665954017",
+  "source_url": "https://github.com/zyw02/agent-arch/actions/runs/40665954017",
+  "artifact_id": 12805542591,
+  "artifact_zip_sha256": "f231c1486d202ed47cab46718ba0852bda1ecb09b1191284ebfdbaef8598015f",
+  "controller_commit": "feb9b28f104ee6582a6de922f1fa26c0f2d628c7",
+  "first_extraction_run": "40665701079",
+  "derived_files_sha256": {
+    "observability-reuse-metrics.csv": "f85f8999595ab651b456d4877a3b5e273a6292300f793cd816bdf5a47737c435",
+    "observability-reuse.png": "78b78de20ba76a90bcdb61369c2e8952c4228bc16ff870f3229cb7c02bfd864d",
+    "observability-reuse-summary.json": "549a11cd42be1664088cd0a0da05e8067421957a717d42155c63599393a3015c",
+    "observability-reuse.svg": "c5bab9665b8a7d2abbcc079c71a7fa506f7ba8d9d4717a61dfb27406c191ccdf"
+  },
+  "native_execution": false,
+  "paid_model_calls": 0
+}

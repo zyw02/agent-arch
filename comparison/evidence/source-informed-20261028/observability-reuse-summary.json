@@ -1,0 +1,66 @@
+{
+  "formal_new_experiments": false,
+  "run_id": "40665954017",
+  "controller_commit": "feb9b28f104ee6582a6de922f1fa26c0f2d628c7",
+  "source_version": "2026.10.7",
+  "rows": [
+    {
+      "scenario_id": "OBS-02-S01",
+      "label": "Brief collector fault",
+      "independent_units": 3,
+      "offered": 24,
+      "remote_missing": 24,
+      "local_missing": 0,
+      "task_during_fault_passed": 3,
+      "task_after_restoration_passed": 3,
+      "publication_after_restoration_passed": 3,
+      "local_offered_ids_retained_passed": 3,
+      "all_offered_ids_exported_passed": 0,
+      "no_duplicate_successful_deliveries_passed": 3
+    },
+    {
+      "scenario_id": "OBS-02-S02",
+      "label": "Long collector fault",
+      "independent_units": 3,
+      "offered": 24,
+      "remote_missing": 24,
+      "local_missing": 0,
+      "task_during_fault_passed": 3,
+      "task_after_restoration_passed": 3,
+      "publication_after_restoration_passed": 3,
+      "local_offered_ids_retained_passed": 3,
+      "all_offered_ids_exported_passed": 0,
+      "no_duplicate_successful_deliveries_passed": 3
+    },
+    {
+      "scenario_id": "OBS-02-S03",
+      "label": "Publisher killed/restarted",
+      "independent_units": 3,
+      "offered": 24,
+      "remote_missing": 24,
+      "local_missing": 0,
+      "task_during_fault_passed": 3,
+      "task_after_restoration_passed": 3,
+      "publication_after_restoration_passed": 0,
+      "local_offered_ids_retained_passed": 3,
+      "all_offered_ids_exported_passed": 0,
+      "no_duplicate_successful_deliveries_passed": 3
+    },
+    {
+      "scenario_id": "OBS-02-S04",
+      "label": "4096-event burst + fault",
+      "independent_units": 3,
+      "offered": 12288,
+      "remote_missing": 12288,
+      "local_missing": 2,
+      "task_during_fault_passed": 3,
+      "task_after_restoration_passed": 3,
+      "publication_after_restoration_passed": 3,
+      "local_offered_ids_retained_passed": 2,
+      "all_offered_ids_exported_passed": 0,
+      "no_duplicate_successful_deliveries_passed": 3
+    }
+  ],
+  "paid_model_calls": 0,
+  "interpretation": "Remote target loss, local offered-ID retention and fresh publication/task recovery have different scopes. The reference producer uses public diagnostic ingestion; no durable-spool guarantee is presumed and no broad native event-bus claim follows."
+}
