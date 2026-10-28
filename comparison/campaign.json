@@ -35,7 +35,9 @@
         "C0",
         "C1",
         "C2",
-        "C3"
+        "C3",
+        "C4",
+        "C5"
       ],
       "independent_units_per_condition": 6,
       "track": "scripted",
@@ -60,7 +62,8 @@
         "C0",
         "C1",
         "C2",
-        "C3"
+        "C3",
+        "C4"
       ],
       "independent_units_per_condition": 3,
       "track": "scripted",
@@ -73,7 +76,8 @@
         "C0",
         "C1",
         "C2",
-        "C3"
+        "C3",
+        "C4"
       ],
       "independent_units_per_condition": 3,
       "track": "model_and_scripted",
@@ -152,7 +156,10 @@
         "C1",
         "C2",
         "C3",
-        "C4"
+        "C4",
+        "C5",
+        "C6",
+        "C7"
       ],
       "independent_units_per_condition": 3,
       "track": "scripted",
@@ -179,8 +186,10 @@
         "C3"
       ],
       "independent_units_per_condition": 3,
-      "track": "model_and_scripted",
-      "implementation": "planned"
+      "track": "real_model",
+      "implementation": "planned",
+      "task_families": 3,
+      "instances_per_family": 5
     }
   ]
 }

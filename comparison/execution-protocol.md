@@ -27,7 +27,7 @@ Each cell identifies its primary experiment and the observation used for the ass
 
 **Budget and repetitions.** Deterministic controls and faults use 3 fresh units per product/profile/case; resource and latency conditions use 6 fresh units. Real-model task instances use 5 unique fixtures × 3 repetitions per product/configuration. A task timeout is 180 s, a held-fault reach timeout 60 s, restart observation 60 s, and cancellation follow-up 10 s with checks at 0.5/2/10 s. Service response delay is 250 ms unless the case specifies another delay. Real provider requests use a user-provided credential via GitHub Secrets; log request usage and actual prices if supplied, and report unknown amounts as unknown. The scripted fixture performs no paid calls.
 
-**Controls and outcome codes.** Each case includes a positive control: same task and fixture with no fault and permitted access. The controller records `fault_reached` or `denial_reached` from an independent event; absent triggers and failed controls yield `invalid` and a bounded rerun after repair. Valid product observations use `pass`, `fail`, `unsupported`, or `inconclusive`, with an explicit reason. An unsupported operation required by the scenario remains visible in capability coverage; failed adapter construction is `adapter_error`. Preserve all valid failures and side effects. Do not synthesize product recovery, retry, approval or deduplication in the adapter.
+**Controls and outcome codes.** Each case includes a positive control: same task and fixture with no fault and permitted access. The controller records `fault_reached` or `denial_reached` from an independent event; absent triggers or fixture failures yield `invalid` and a bounded rerun after repair; a valid product request that fails its positive control is retained as a product failure. Valid product observations use `pass`, `fail`, `unsupported`, or `inconclusive`, with an explicit reason. An unsupported operation required by the scenario remains visible in capability coverage; failed adapter construction is `adapter_error`. Preserve all valid failures and side effects. Do not synthesize product recovery, retry, approval or deduplication in the adapter.
 
 ## 3. Common fixtures and measurement contract
 
@@ -71,7 +71,7 @@ Steps: initialize a fresh profile; for C0 start only required resident component
 
 Acceptance and metrics: report task completion/attempts, elapsed wall time, per-task p50 and observed distribution, aggregate tasks/min, peak and time-integrated process-tree RSS, CPU seconds, startup time, residual processes, and idle service cost. Only valid ACKs count as completed. Six units support descriptive distributions; retain raw values and omit p99. Same-machine results compare configurations and profile choices, including their additional components.
 
-**Sustained-load extension:** Add C4, 30 minutes of mixed slow and fast tasks with a fixed arrival schedule, and C5, the same workload with tool execution. Capture per-class completion, queue delay, interference, memory and failure rate. Establish a no-contention baseline; compare service and per-task profiles on the same host.
+**Sustained-load extension:** Add C4 and C5: 30 minutes after a 2-minute warmup, one arrival every 2 seconds, alternating fast (250 ms) and slow (2 s) responses, with at most eight active tasks and a FIFO waiting queue owned by the supervisor. C5 adds one 250 ms tool read per task. Run six independent units per condition; retain the complete arrival and dispatch ledger. Capture per-class completion, queue delay, interference, memory and failure rate. Establish a no-contention baseline; compare service and per-task profiles on the same host.
 
 ### P04 — Extensibility/observability: external control
 
@@ -91,7 +91,7 @@ Steps: create the identities and profiles with the product's documented isolatio
 
 Acceptance and metrics: C0 must succeed to validate setup. C1/C2 pass if the unauthorized principal cannot obtain the canary or invoke A's task; C3 passes when B is denied and A's valid control remains usable. Record principal, configured boundary, actual file/endpoint effect, access denial, and operational cost. P05 measures a defined platform isolation claim; it does not assume that a product is a multi-tenant server.
 
-**Product authority extension:** Within each supported shared deployment, create two isolated sessions with distinct synthetic credentials and workspaces. Attempt cross-session state access, credential reuse and control-entry access using native interfaces, with positive controls for each identity. Record enforcement owner and actual effects. Report OS-user isolation separately from product-enforced boundaries.
+**Product authority extension (C4):** Within each supported shared deployment, create two isolated sessions with distinct synthetic credentials and workspaces. Attempt cross-session state access, credential reuse and control-entry access using native interfaces, with positive controls for each identity. Record enforcement owner and actual effects. Report OS-user isolation separately from product-enforced boundaries.
 
 ## 5. Harness layer
 
@@ -103,7 +103,7 @@ Steps: establish baseline; build the same history under the declared model conte
 
 Acceptance and metrics: score each of six constraints, updated rule adherence, completed-step repetition, artifact acceptance, compaction count, tokens by request, retries, and end-to-end time. Compare C0/C1/C2/C3 within the same model configuration. Direct input inspection establishes retention; black-box task outcomes establish observed behavior.
 
-**Matched-history control:** Construct identical long histories for the comparison and vary only the native compaction trigger where the product exposes that control. Capture pre/post model-visible input and the six constraints. When compaction cannot be controlled, report the observed threshold transition as a separate behavioral study; do not mix it with the controlled comparison.
+**Matched-history control (C4):** Construct identical long histories for the comparison and compare native compaction with an uncompacted run of the same history where the product exposes that control. Run five task instances and three repetitions per arm; record the exact history hash. Capture pre/post model-visible input and the six constraints. When compaction cannot be controlled, report the observed threshold transition as a separate behavioral study; do not mix it with the controlled comparison.
 
 ### H04 — Reliability/resource & cost: large output handling
 
@@ -137,9 +137,9 @@ Acceptance and metrics: C0 must succeed. Fault cases report final status, reques
 
 Inputs: T with 250 ms calls. C0 four independent `read` calls; C1 B reads the version written by A; C2 two writes target the same record in known order; C3 one of four reads fails while the others succeed; C4 slow and fast calls return out of order. Track D sends a fixed sequence when the native model/tool protocol supports it; Track N/C uses a real model and the same user request.
 
-Steps: reset T; run the case; capture M requests, T dispatch/start/end events, call IDs, native result events and final datastore; allow 180 s. For C1/C2 the fixed sequence is staged so the second call depends on the first response; record product-chosen behavior for real-model runs.
+Steps: reset T; run the case; capture M requests, T dispatch/start/end events, call IDs, native result events and final datastore; allow 180 s. For C1, send the dependent call only after the first response. For C2, deliver both writes in one model response and record the product’s actual scheduling; record product-chosen behavior for real-model runs.
 
-Acceptance and metrics: C0 needs four correctly matched results; C1 requires B's observed version to match A's committed version; C2 final state matches the declared order; C3 preserves three successful results and exposes the error; C4 results match call IDs. Report overlapping intervals, wall time, retries, and final correctness. Serial execution can satisfy correctness; concurrency is reported as a separate measure.
+Acceptance and metrics: C0 needs four correctly matched results; C1 requires B's observed version to match A's committed version; C2 reports the committed order and final state against the product’s documented ordering contract; C3 preserves three successful results and exposes the error; C4 results match call IDs. Report overlapping intervals, wall time, retries, and final correctness. Serial execution can satisfy correctness; concurrency is reported as a separate measure.
 
 **Scheduling control:** In the independent-read and conflict cases, deliver all calls in one model response and let the product decide dispatch. For dependent calls, evaluate the ordering guarantees actually advertised by the product; record unsupported guarantees separately. The fixture records time and effects without serializing calls on behalf of the product.
 
@@ -161,7 +161,7 @@ Steps: use product-native configuration or documented public plugin/API; record 
 
 Acceptance and metrics: C0 returns the expected receipt; C1/C2 expose failure and retain product control; C3 makes T unavailable in a new session; C4 preserves both tools' distinct identities. Record code/config changes, installation and recovery time, failed call propagation, cancellation/cleanup, and which component owns state and permissions. A product-native shim may bridge a transport, but its code and resource cost are reported separately.
 
-**Component extension:** Add separate provider and context-component integration cases, plus a full execution-component replacement where a public interface exists. Inject failure and cancellation after integration; record ownership of state, policy, usage, cancellation and recovery, the public API used, and any core changes. Record unavailable extension points as capabilities.
+**Component extension:** C5 connects the same synthetic provider; C6 installs a context component that preserves a fixed constraint and removes a fixed distractor; C7 replaces the execution component using a public interface where available. Run three independent units per condition and compare the exact input and result hashes against the baseline. Inject failure and cancellation after integration; record ownership of state, policy, usage, cancellation and recovery, the public API used, and any core changes; verify that the preserved constraint reaches the next request and the distractor is absent in C6. Record unavailable extension points as capabilities.
 
 ### H17 — Observability: causal reconstruction
 
@@ -175,7 +175,7 @@ Acceptance and metrics: C0 requires a correct observable effect in T. Score each
 
 ### H18 — End-to-end task delivery
 
-Inputs: three task families: repository change with hidden tests, data reconciliation with a fixed oracle, and a multi-step operation with an external effect ledger. Prepare five independent instances per family, three repetitions per product and configuration. Conditions C0 normal, C1 long context, C2 tool failure, and C3 interruption and native recovery. Freeze fixtures, hidden acceptance, model, permissions and budget before each matched batch.
+Inputs: three task families: repository change with hidden tests, data reconciliation with a fixed oracle, and a multi-step operation with an external effect ledger. Prepare five independent instances per family, three repetitions per product and configuration. Conditions C0 normal, C1 long context with six fixed constraints, C2 a single injected tool failure after dispatch, and C3 interruption followed by native recovery: for the effect task, interrupt after external commit but before acknowledgment; for repository and data tasks, interrupt after the fixture tool returns but before its result is recorded. Verify each fault boundary in the fixture ledger. Each repository fixture starts from a clean pinned commit and a failing hidden regression test; success requires that test and the existing suite to pass with the protected files unchanged. Each data fixture has a fixed input CSV, a reference aggregate and a required output schema. Each effect fixture contains three ordered operations with unique IDs; success requires one committed effect per ID and matching receipts. Use a 600-second task timeout and freeze per-product model, permissions and token budget before each matched batch.
 
 Steps: run each instance through the native task entry, inject each condition at its verified boundary, and retain artifact, effect ledger, native trajectory, all model usage and elapsed time. Track native-product and shared-model results separately.
 
