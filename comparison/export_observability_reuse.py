@@ -86,12 +86,15 @@ def plot(rows,output):
     matplotlib.use('Agg')
     import matplotlib.pyplot as plt
     fig,axes=plt.subplots(1,3,figsize=(14,4.8),layout='constrained')
-    for axis,key,title in zip(axes,['remote_missing_fraction','local_missing_fraction','publication_after_restoration'],
-                              ['Missing remote target IDs / offered','Missing local target IDs / offered','Fresh publication after restoration']):
+    for axis,key,title in zip(axes,['remote_missing_fraction','local_missing_unique_events','publication_after_restoration'],
+                              ['Missing remote target IDs / offered','Missing local target IDs (count)','Fresh publication after restoration']):
         for i,sid in enumerate(LABELS):
             part=sorted((r for r in rows if r['scenario_id']==sid),key=lambda r:r['unit'])
             for j,row in enumerate(part):axis.scatter(i+(j-1)*.09,float(row[key]),marker=['o','s','^'][j],s=48,label='unit '+str(row['unit']) if i==0 else None)
-        axis.set_xticks(range(4),['Brief','Long','Restart','Burst']);axis.set_ylim(-.08,1.08);axis.set_yticks([0,.5,1]);axis.grid(axis='y',alpha=.2);axis.set_title(title,fontsize=10)
+        axis.set_xticks(range(4),['Brief','Long','Restart','Burst']);axis.grid(axis='y',alpha=.2);axis.set_title(title,fontsize=10)
+        if key=='local_missing_unique_events':
+            top=max(r[key] for r in rows);axis.set_ylim(-.08,max(1,top)*1.15);axis.set_yticks(range(max(1,top)+1))
+        else:axis.set_ylim(-.08,1.08);axis.set_yticks([0,.5,1])
     axes[0].legend(fontsize=8)
     fig.suptitle('Historical OpenClaw 2026.10.7: accepted OBS-02 fault observations (3 units/condition)\nAll task effects and post-restoration task checks passed; original failed retention assertions retained. No new native execution.',fontsize=11)
     fig.savefig(output/'observability-reuse.svg');fig.savefig(output/'observability-reuse.png',dpi=145);plt.close(fig)
