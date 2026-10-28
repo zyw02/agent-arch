@@ -1,6 +1,11 @@
 name: DSH and OpenClaw native read calibration
 on:
   workflow_dispatch:
+    inputs:
+      live_model:
+        description: Run one real DeepSeek read pilot per product/route after synthetic calibration
+        type: boolean
+        default: false
   push:
     branches: [main]
     paths:
@@ -37,7 +42,15 @@ jobs:
           sudo chown "$(id -u):$(id -g)" "$task_group" "$task_group/cgroup.procs" "$task_group/cgroup.subtree_control"
           echo "AGENT_ARCH_CGROUP_ROOT=$task_group" >> "$GITHUB_ENV"
       - name: Exercise real native tools with synthetic model responses
-        run: python3 comparison/native_read_probe.py --runtime "$RUNNER_TEMP/native-read-runtime" --output "$RUNNER_TEMP/native-read-evidence"
+        env:
+          LIVE_MODEL: ${{ inputs.live_model || 'false' }}
+          DEEPSEEK_API_KEY: ${{ inputs.live_model && secrets.DEEPSEEK_API_KEY || '' }}
+        run: |
+          if [ "$LIVE_MODEL" = true ]; then
+            python3 comparison/native_read_probe.py --runtime "$RUNNER_TEMP/native-read-runtime" --output "$RUNNER_TEMP/native-read-evidence" --live-model
+          else
+            python3 comparison/native_read_probe.py --runtime "$RUNNER_TEMP/native-read-runtime" --output "$RUNNER_TEMP/native-read-evidence"
+          fi
       - name: Retain compact adapter calibration evidence
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
