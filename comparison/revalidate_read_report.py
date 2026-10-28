@@ -8,6 +8,7 @@ from pathlib import Path
 import re
 import zipfile
 from native_read_probe import final_receipt_matches
+from export_read_metrics import normalized_usage,request_stage
 
 
 def revalidate(raw,source):
@@ -21,6 +22,28 @@ def revalidate(raw,source):
         result['revalidation']=dict(original_valid=result['valid'],original_final_receipt=result['receipt_observed_in_final_output'],
             final_receipt_verified=observed,validator_revision='terminal-receipt-whitespace-v2',
             change='Read terminal output fields, permit whitespace after evaluator marker; file content must match exactly. Original judgment preserved.')
+        if result['product']=='OpenClaw':
+            metadata=json.loads(result['stdout'])['meta']
+            native=metadata.get('agentMeta',{})
+            result['native_metadata']={key:metadata.get(key) for key in ('replayInvalid','requestShaping','completion','toolSummary','durationMs')}
+            result['native_metadata'].update(usage=native.get('usage'),context_budget_status=native.get('contextBudgetStatus'))
+            native_total=native.get('usage',{}).get('total')
+        else:
+            steps=[json.loads(line)['usage'] for line in result['stdout'].splitlines() if line.startswith('{') and json.loads(line).get('type')=='status' and json.loads(line).get('phase')=='step_end']
+            result['native_metadata']=dict(step_usage=steps)
+            native_total=sum(v['totalTokens'] for v in steps)
+        provider_task_tokens=auxiliary_tokens=0
+        for request,accounting in zip(result['provider_requests'],result['token_usage']['requests']):
+            usage=normalized_usage(request['endpoint'],accounting['usage'])
+            if usage is None or not accounting['complete']:raise ValueError('Complete real provider counters required for this pilot reanalysis')
+            total=usage['input_tokens']+usage['output_tokens']
+            if request_stage(request)=='auxiliary_session_title':auxiliary_tokens+=total
+            else:provider_task_tokens+=total
+        result['native_provider_usage_check']=dict(native_task_tokens=native_total,provider_task_tokens=provider_task_tokens,
+            auxiliary_tokens=auxiliary_tokens,total_provider_tokens=provider_task_tokens+auxiliary_tokens,
+            consistent=native_total==provider_task_tokens,
+            cost_rule='Native configured-provider cost metadata is not an invoice. Real charge remains unknown, even if native cost.total is zero.')
+        if native_total!=provider_task_tokens:raise ValueError('Native and independent provider task counters disagree')
         result['revalidated_valid']=result['exit_code']==0 and result['receipt_was_absent_from_initial_prompt'] and result['native_read_requested'] and result['receipt_observed_in_tool_result'] and result['input_unchanged'] and observed and (result['route']=='native' or len(result['mcp_events'])==1)
     report['reanalysis_provenance']=dict(original_report_sha256=hashlib.sha256(raw).hexdigest(),**source,
         validator_controller_commit=os.environ.get('GITHUB_SHA'),
