@@ -1,6 +1,6 @@
 # Cloud design review controls — 2026-10-28
 
-**Default execution scope:** the [focused two-layer, six-dimension plan](architecture-core.md) defines seven complete studies: three platform and four harness studies. Duration is controlled by scope and pilot-based admission of complete comparison blocks, without a universal task cutoff or campaign kill budget. Long soak and full-factor sweeps are deferred reference work.
+**Default execution scope:** the [focused two-layer, six-dimension plan](architecture-core.md) defines ten complete studies: three platform and seven harness studies. Duration is controlled by scope and pilot-based admission of complete comparison blocks, without a universal task cutoff or campaign kill budget. Long soak and full-factor sweeps are deferred reference work.
 
 
 Revision `cloud-review-20261028-r1` amends the cross-product design at baseline `b243db1f1b03a5e24d9434716076067427670c46`. These rules take precedence over conflicting first-wave statements. They specify required execution behavior; adapters and hosted formal runs remain implementation work. The expanded matrix is a plan, not evidence of completed experiments.

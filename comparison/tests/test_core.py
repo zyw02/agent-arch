@@ -5,7 +5,7 @@ import subprocess
 import sys
 import unittest
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
-from plan_core import plan_core, DIMENSIONS, MECHANISMS
+from plan_core import plan_core, DIMENSIONS, MECHANISMS, CROSS_CUTTING_CHECKS, REQUIRED_CONTROLS
 ROOT = Path(__file__).resolve().parents[1]
 
 
@@ -13,11 +13,11 @@ class CoreTests(unittest.TestCase):
     def setUp(self):
         self.config = json.loads((ROOT / 'architecture-core.json').read_text())
 
-    def test_seven_studies_cover_both_layers(self):
+    def test_ten_studies_cover_both_layers(self):
         plan = plan_core(self.config)
-        self.assertEqual(plan['scope']['studies'], 7)
-        self.assertEqual(plan['scope']['complete_blocks'], 42)
-        self.assertEqual(plan['scope']['planned_arms'], 192)
+        self.assertEqual(plan['scope']['studies'], 10)
+        self.assertEqual(plan['scope']['complete_blocks'], 60)
+        self.assertEqual(plan['scope']['planned_arms'], 264)
         for layer in ('platform', 'harness'):
             self.assertEqual({d for s in plan['studies'] if s['layer'] == layer for d in s['primary_dimensions']}, DIMENSIONS)
         self.assertFalse(plan['runtime_ready'])
@@ -60,7 +60,7 @@ class CoreTests(unittest.TestCase):
 
     def test_default_cli_uses_focused_plan_without_budget(self):
         plan = json.loads(subprocess.check_output([sys.executable, str(ROOT / 'expand_campaign.py')]))
-        self.assertEqual(len(plan['studies']), 7)
+        self.assertEqual(len(plan['studies']), 10)
         self.assertNotIn('budget', plan)
         self.assertIsNone(plan['execution_policy']['campaign_wall_cutoff_seconds'])
 
@@ -88,7 +88,37 @@ class CoreTests(unittest.TestCase):
             self.assertTrue({'fresh_session_memory_enabled', 'fresh_session_memory_disabled',
                              'native_two_children', 'one_child_failure', 'parent_cancellation',
                              'untrusted_content_injection', 'child_scope_escalation',
-                             'memory_scope_cross_access'} <= conditions)
+                             'memory_scope_cross_access', 'sandbox_allowed', 'sandbox_denied',
+                             'interrupted_snapshot_restore', 'single_budget_exhausted',
+                             'children_budget_exhausted', 'native_policy_update',
+                             'native_update_reverted'} <= conditions)
+
+
+    def test_native_observability_contract_is_required_and_propagated(self):
+        plan = plan_core(self.config)
+        for block in plan['blocks']:
+            self.assertEqual(block['cross_cutting_evidence'], self.config['cross_cutting_evidence'])
+        for check in CROSS_CUTTING_CHECKS:
+            c = copy.deepcopy(self.config)
+            c['cross_cutting_evidence']['mechanism_checks'].remove(check)
+            with self.subTest(check=check), self.assertRaisesRegex(ValueError, 'observability'):
+                plan_core(c)
+
+    def test_recovery_budget_and_update_arms_keep_their_matched_controls(self):
+        for study_id in ('HC', 'HE', 'HF', 'HG'):
+            for arm, control in REQUIRED_CONTROLS[study_id].items():
+                c = copy.deepcopy(self.config)
+                study = next(s for s in c['studies'] if s['id'] == study_id)
+                study['control_conditions'][arm] = arm
+                with self.subTest(study=study_id, arm=arm), self.assertRaisesRegex(ValueError, 'matched mechanism control'):
+                    plan_core(c)
+
+    def test_observability_claims_require_evidence_and_limits(self):
+        for field in ('required_observations', 'inference_rule', 'limit_and_tradeoff'):
+            c = copy.deepcopy(self.config)
+            c['cross_cutting_evidence'][field] = ''
+            with self.subTest(field=field), self.assertRaisesRegex(ValueError, 'cross-cutting evidence'):
+                plan_core(c)
 
 
 if __name__ == '__main__':

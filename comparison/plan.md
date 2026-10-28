@@ -1,6 +1,6 @@
 # Practical two-layer evaluation plan
 
-**Default execution scope:** the [focused two-layer, six-dimension plan](architecture-core.md) defines seven complete studies: three platform and four harness studies. Duration is controlled by scope and pilot-based admission of complete comparison blocks, without a universal task cutoff or campaign kill budget. Long soak and full-factor sweeps are deferred reference work.
+**Default execution scope:** the [focused two-layer, six-dimension plan](architecture-core.md) defines ten complete studies: three platform and seven harness studies. Duration is controlled by scope and pilot-based admission of complete comparison blocks, without a universal task cutoff or campaign kill budget. Long soak and full-factor sweeps are deferred reference work.
 
 
 ## Research question
