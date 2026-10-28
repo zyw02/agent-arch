@@ -22,7 +22,7 @@ Read the [Harness measurement and visualization design](comparison/harness-evalu
 
 Explore the [experiment catalogue](comparison/experiment-index.md) and [execution protocol](comparison/execution-protocol.md) for scenarios, measurements, acceptance, and readiness.
 
-[![Architecture research progress](https://raw.githubusercontent.com/zyw02/agent-arch/main/comparison/progress.svg?v=6ab55ab8f29c)](https://github.com/zyw02/agent-arch/actions/workflows/comparison-calibration.yml?query=branch%3Amain)
+[![Architecture research progress](https://raw.githubusercontent.com/zyw02/agent-arch/main/comparison/progress.svg?v=ebf37b3a99a3)](https://github.com/zyw02/agent-arch/actions/workflows/comparison-calibration.yml?query=branch%3Amain)
 
 <!-- comparison-dashboard:start -->
 <details>
@@ -44,7 +44,7 @@ Explore the [experiment catalogue](comparison/experiment-index.md) and [executio
 | Harness · H08 Tool scheduling | Performance, Reliability | Planned | Planned | Planned |
 | Harness · H11 Approval binding | Security, Observability | Planned | Planned | Planned |
 | Harness · H14 Tool lifecycle and integration | Extensibility, Reliability | Planned | In progress | In progress |
-| Harness · H17 Execution trace | Observability | Planned | Planned | Planned |
+| Harness · H17 Execution trace | Observability | Planned | In progress | In progress |
 | Harness · H18 End-to-end task delivery | Reliability, Performance, Resource & cost | Planned | Planned | Planned |
 
 **Latest session calibration:** success (three independent calibration units). [View calibration evidence](https://github.com/zyw02/agent-arch/actions/runs/40623428889).

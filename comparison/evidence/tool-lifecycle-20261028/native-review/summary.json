@@ -1,0 +1,73 @@
+{
+  "study": "HD native-only automated reconstruction",
+  "source_run_id": "40684459876",
+  "source_controller_commit": "619b10c0d35cbb876c387263f4a1bd26acca60c4",
+  "original_artifact_sha256": "768e647aa5b2f7d4a1fd922aeedeee419e3bc800678217447f343a0976b3a70a",
+  "source_report_sha256": "37c1949e35e57cddb029514c498343d6ab696b30f8cb37dfda2d5af50648ab30",
+  "protocol_sha256": "4e165d1a3808395dec260b00df120dd9ee425493a81de73c6e564a7906c723b5",
+  "case_count": 8,
+  "fact_count": 24,
+  "original_counts": {
+    "correct": 14,
+    "incorrect": 0,
+    "unknown": 7,
+    "invalid_answer": 3,
+    "unscorable": 0
+  },
+  "counts_by_product": {
+    "DSH": {
+      "correct": 6,
+      "unknown": 3,
+      "invalid_answer": 3
+    },
+    "OpenClaw": {
+      "correct": 8,
+      "unknown": 4
+    }
+  },
+  "by_question": {
+    "failed_read_index": {
+      "DSH": {
+        "correct": 3,
+        "invalid_answer": 1
+      },
+      "OpenClaw": {
+        "correct": 4
+      }
+    },
+    "repeat_owner": {
+      "DSH": {
+        "unknown": 3,
+        "invalid_answer": 1
+      },
+      "OpenClaw": {
+        "unknown": 4
+      }
+    },
+    "delivered_value_count": {
+      "DSH": {
+        "correct": 3,
+        "invalid_answer": 1
+      },
+      "OpenClaw": {
+        "correct": 4
+      }
+    }
+  },
+  "exact_citation_substring_present": 0,
+  "correct_value_and_exact_citation": 0,
+  "original_judgments_unchanged": true,
+  "all_actual_packets_equal_declared_native_projection": true,
+  "all_actual_questions_equal_frozen_protocol": true,
+  "all_answers_started_after_packet_and_key_freeze": true,
+  "actual_paid_requests": 8,
+  "provider_complete": 8,
+  "known_input_tokens": 126346,
+  "known_output_tokens": 3243,
+  "known_total_tokens": 129589,
+  "known_cached_input_subset_tokens": 896,
+  "usage_coverage": 8,
+  "automated_review_elapsed_seconds": 23.723071565999998,
+  "actual_invoice_charge": null,
+  "interpretation": "Raw value matches are not proof of evidentiary support. Exact quotation may still concern the wrong phase or cause. Audit reasons/citations separately, preserve unsupported matching guesses and unknowns. One automated investigator of selected native surfaces, not a product-wide observability ranking or human diagnosis time. Review tokens are separate from native task usage; cached input is a subset, not added again."
+}

@@ -5,13 +5,36 @@ import json
 from pathlib import Path
 import sys
 import unittest
+import tempfile
+import zipfile
 sys.path.insert(0,str(Path(__file__).resolve().parents[1]))
 from prepare_tool_lifecycle_review import make_packet,expected_answers
 from summarize_tool_lifecycle import summarize
 from audit_tool_cancellation import audit
+from audit_tool_native_review import audit as audit_review
+from export_native_review import export
 
 
 class ToolNativePacketTests(unittest.TestCase):
+    def test_retained_review_verifies_exact_inputs_original_scores_usage_and_separate_support_audit(self):
+        comparison=Path(__file__).resolve().parents[1];root=comparison/'evidence/tool-lifecycle-20261028';review=root/'native-review'
+        provenance=json.loads((review/'provenance.json').read_bytes())
+        for name,digest in provenance['retained_files_sha256'].items():self.assertEqual(hashlib.sha256((review/name).read_bytes()).hexdigest(),digest,name)
+        with tempfile.TemporaryDirectory() as directory:
+            tmp=Path(directory)
+            summary=export(review/'original-artifact.zip',provenance['artifact_zip_sha256'],root/'formal-original-report.json.gz',review/'protocol.json','HD',tmp/'derived')
+            self.assertEqual(summary,json.loads((review/'summary.json').read_bytes()));self.assertEqual(summary['actual_paid_requests'],8);self.assertEqual(summary['provider_complete'],8)
+            self.assertEqual(summary['known_input_tokens']+summary['known_output_tokens'],summary['known_total_tokens'])
+            with zipfile.ZipFile(review/'original-artifact.zip') as zipped:
+                for entry in zipped.infolist():self.assertTrue((tmp/entry.filename).resolve().is_relative_to(tmp))
+                zipped.extractall(tmp)
+            dataset=tmp/'native-hd-review-dataset';answers=tmp/'native-hd-review-answers';informed=audit_review(dataset,answers,review/'protocol.json')
+            self.assertEqual(informed,json.loads((review/'informed-audit.json').read_bytes()))
+            self.assertEqual(informed['original_counts'],summary['original_counts']);self.assertEqual(informed['original_strict_citation_matches'],0)
+            self.assertEqual(informed['support_counts']['invalid_answer_preserved'],3)
+            altered=json.loads((dataset/'score.json').read_bytes());altered['totals']['correct']+=1;(dataset/'score.json').write_text(json.dumps(altered))
+            with self.assertRaisesRegex(ValueError,'Original review scores changed'):audit_review(dataset,answers,review/'protocol.json')
+
     def test_formal_records_recompute_and_secondary_audit_preserves_original_outcomes(self):
         comparison=Path(__file__).resolve().parents[1];root=comparison/'evidence/tool-lifecycle-20261028'
         raw=gzip.decompress((root/'formal-original-report.json.gz').read_bytes());report=json.loads(raw)

@@ -1,0 +1,24 @@
+{
+  "run_id": 40686238056,
+  "controller_commit": "323aaea218735ab98d6f688444f7a2e30c1cdfda",
+  "artifact_id": 12815670468,
+  "artifact_zip_sha256": "768e647aa5b2f7d4a1fd922aeedeee419e3bc800678217447f343a0976b3a70a",
+  "source_native_run_id": 40684459876,
+  "execution_scripts_sha256": {
+    "review_platform_native.py": "00882b9006afa92d233eaf39308a2ea557603d270467c16d4b56e99008ebe939",
+    "prepare_tool_lifecycle_review.py": "fc90e63c69d89c3a23db8e4878af5b376b9f49157a507e8fc58827f829d89cb2"
+  },
+  "offline_export_script_sha256": "ff8f85b7e58719581826a7a6699f9e750a08ce7ff8fe23bd1f54bb8d86404cb9",
+  "informed_audit_script_sha256": "8fa45b13004ea08f4411ad118ac9c4977e2a5e059f3e622125e24eb1b4568191",
+  "disposition": "Eight original isolated requests and full native packets, separate key/manifest, responses/usage and scores retained. Original counts14correct,7unknown,3invalid preserved; one complete provider response contains malformed answer JSON. The frozen natural-language exact-quote field wording is ambiguous while scorer reads quote only, so strict citation count0 remains. Alias/leaf/member checks and native-packet support are a separately labeled informed audit, not repaired answers or new blind scoring. No retry or extra model call improves any answer.",
+  "retained_files_sha256": {
+    "protocol.json": "4e165d1a3808395dec260b00df120dd9ee425493a81de73c6e564a7906c723b5",
+    "score-original.json": "ff4e34a920cdf526388f9a8bb4c3c5ab1c6966dbcc90a50bc603feb2c3245aab",
+    "facts.csv": "14a7f30ee3de1a1b74f9d780de3d781c58f5d0134d2faa892fd353e089ff94f8",
+    "usage.json": "a6687c3d0fcc1b756c7d5967c4e035a495ff8a42e8ea513c1fa2299f3c9267a4",
+    "manifest-original.json": "678a51757279d9dcc65e8b314a439817ddeb241d28220a1c77775e6f47cf6199",
+    "original-artifact.zip": "768e647aa5b2f7d4a1fd922aeedeee419e3bc800678217447f343a0976b3a70a",
+    "informed-audit.json": "ffaa60a3a6edfc1e2e561cb3d871537fc1917b4a326ea17eb06154687e3a3c7a",
+    "summary.json": "715f13c71fd18616c7af32af07243b8afd11bd1aba4082e4779d93124ce0acf4"
+  }
+}

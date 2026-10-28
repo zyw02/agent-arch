@@ -333,9 +333,11 @@
             "comparison/evidence/source-informed-20261028/native-mcp-resource-calibration.json",
             "comparison/evidence/tool-lifecycle-20261028/formal-summary.json",
             "comparison/evidence/tool-lifecycle-20261028/formal-provenance.json",
-            "comparison/evidence/tool-lifecycle-20261028/formal-cancellation-audit.json"
+            "comparison/evidence/tool-lifecycle-20261028/formal-cancellation-audit.json",
+            "comparison/evidence/tool-lifecycle-20261028/native-review/provenance.json",
+            "comparison/evidence/tool-lifecycle-20261028/native-review/informed-audit.json"
           ],
-          "note": "HD-MCP-01 two formal blocks/24 valid arms complete: native/MCP same-file routes, serial/batch, reached failure and cancellation with health; all 16 healthy controls pass. DSH stock bridge dispatches MCP exclusively; explicitly parallel OpenClaw overlaps four. Partial/error handling passes both products; DSH effective cancellation passes both blocks, acknowledged OpenClaw HTTP/MCP cancellation fails cessation both blocks. Independent native-only failure/retry reconstruction pending. Broader HD/H14 public component/event contrasts and source-token attribution remain unexecuted."
+          "note": "HD-MCP-01 two formal blocks/24 valid arms complete: native/MCP same-file routes, serial/batch, reached failure and cancellation with health; all 16 healthy controls pass. DSH stock bridge dispatches MCP exclusively; explicitly parallel OpenClaw overlaps four. Partial/error handling passes both products; DSH effective cancellation passes both blocks, acknowledged OpenClaw HTTP/MCP cancellation fails cessation both blocks. Eight isolated native-only reconstruction requests complete: original14 value matches/7 unknown/3 invalid preserved. Quote-key ambiguity and strict matcher limitations are separately audited, without rescoring or retries. Broader HD/H14 public component/event contrasts and source-token attribution remain unexecuted."
         },
         "OpenClaw": {
           "status": "in_progress",
@@ -343,9 +345,11 @@
             "comparison/evidence/source-informed-20261028/native-mcp-resource-calibration.json",
             "comparison/evidence/tool-lifecycle-20261028/formal-summary.json",
             "comparison/evidence/tool-lifecycle-20261028/formal-provenance.json",
-            "comparison/evidence/tool-lifecycle-20261028/formal-cancellation-audit.json"
+            "comparison/evidence/tool-lifecycle-20261028/formal-cancellation-audit.json",
+            "comparison/evidence/tool-lifecycle-20261028/native-review/provenance.json",
+            "comparison/evidence/tool-lifecycle-20261028/native-review/informed-audit.json"
           ],
-          "note": "HD-MCP-01 two formal blocks/24 valid arms complete: native/MCP same-file routes, serial/batch, reached failure and cancellation with health; all 16 healthy controls pass. DSH stock bridge dispatches MCP exclusively; explicitly parallel OpenClaw overlaps four. Partial/error handling passes both products; DSH effective cancellation passes both blocks, acknowledged OpenClaw HTTP/MCP cancellation fails cessation both blocks. Independent native-only failure/retry reconstruction pending. Broader HD/H14 public component/event contrasts and source-token attribution remain unexecuted."
+          "note": "HD-MCP-01 two formal blocks/24 valid arms complete: native/MCP same-file routes, serial/batch, reached failure and cancellation with health; all 16 healthy controls pass. DSH stock bridge dispatches MCP exclusively; explicitly parallel OpenClaw overlaps four. Partial/error handling passes both products; DSH effective cancellation passes both blocks, acknowledged OpenClaw HTTP/MCP cancellation fails cessation both blocks. Eight isolated native-only reconstruction requests complete: original14 value matches/7 unknown/3 invalid preserved. Quote-key ambiguity and strict matcher limitations are separately audited, without rescoring or retries. Broader HD/H14 public component/event contrasts and source-token attribution remain unexecuted."
         }
       },
       "dimensions": [
@@ -364,14 +368,28 @@
           "note": ""
         },
         "DSH": {
-          "status": "planned",
-          "evidence": [],
-          "note": ""
+          "status": "in_progress",
+          "evidence": [
+            "comparison/evidence/platform-fault-20261028/native-review/provenance.json",
+            "comparison/evidence/platform-fault-20261028/native-review/informed-audit.json",
+            "comparison/evidence/platform-resource-20261028/native-review/provenance.json",
+            "comparison/evidence/platform-resource-20261028/native-review/informed-audit.json",
+            "comparison/evidence/tool-lifecycle-20261028/native-review/provenance.json",
+            "comparison/evidence/tool-lifecycle-20261028/native-review/informed-audit.json"
+          ],
+          "note": "Selected native history/stdout automated reconstruction executed for bounded PA, PC and HD studies, with frozen actual prompts, independent truth, original answers and separately billed usage retained. Wrong-phase/fault and unsupported matching PA answers, PC ownership/overlap unknowns, and HD malformed JSON/quote-contract limits remain disclosed without rescoring. This does not complete native file-log inventory, human diagnosis time, disabled-observer/logging overhead or event-consumer interventions."
         },
         "OpenClaw": {
-          "status": "planned",
-          "evidence": [],
-          "note": ""
+          "status": "in_progress",
+          "evidence": [
+            "comparison/evidence/platform-fault-20261028/native-review/provenance.json",
+            "comparison/evidence/platform-fault-20261028/native-review/informed-audit.json",
+            "comparison/evidence/platform-resource-20261028/native-review/provenance.json",
+            "comparison/evidence/platform-resource-20261028/native-review/informed-audit.json",
+            "comparison/evidence/tool-lifecycle-20261028/native-review/provenance.json",
+            "comparison/evidence/tool-lifecycle-20261028/native-review/informed-audit.json"
+          ],
+          "note": "Selected native history/stdout automated reconstruction executed for bounded PA, PC and HD studies, with frozen actual prompts, independent truth, original answers and separately billed usage retained. Wrong-phase/fault and unsupported matching PA answers, PC ownership/overlap unknowns, and HD malformed JSON/quote-contract limits remain disclosed without rescoring. This does not complete native file-log inventory, human diagnosis time, disabled-observer/logging overhead or event-consumer interventions."
         }
       },
       "dimensions": [

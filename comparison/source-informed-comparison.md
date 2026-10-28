@@ -288,7 +288,27 @@ Across all twelve arms per product, sampled lifecycle peak PSS is 421.8–448.8 
 
 The sampler's actual median gaps range from 56.6 to 96.1 ms and its largest gap is 174.4 ms; RSS integration uses actual timestamps, while PSS peaks remain sampled. Owned disk covers the declared state/workspace and extension ledger, excluding shared installation and external native log paths; short disk peaks may be missed. Input values remain absent from the initial request and owned files remain unchanged. Model/context differences, observer contention and cached host state remain limits on causal attribution. Fine-grained source tokens and actual invoice cost are unknown.
 
-The complete two-block native work took **391.7 s**; the hosted job finished in about **9.3 minutes**, below the published 10–13 minute estimate. Setup/cleanup and host variation remain recorded rather than substituting the estimate for actual duration. The selected native-only eight-case failure/retry reconstruction is the remaining reporting step for this bounded protocol. Broader HD/H14 component, diagnostic/event and public provider/context replacement contrasts remain outside it.
+The complete two-block native work took **391.7 s**; the hosted job finished in about **9.3 minutes**, below the published 10–13 minute estimate. Setup/cleanup and host variation remain recorded rather than substituting the estimate for actual duration. The selected native-only eight-case failure/retry reconstruction is reported below. Broader HD/H14 component, diagnostic/event and public provider/context replacement contrasts remain outside this bounded protocol.
+
+## HD native-only reconstruction: retained answers and a quotation-contract limit
+
+The [isolated reconstruction run](https://github.com/zyw02/agent-arch/actions/runs/40686238056) made one fresh automated request for each of eight randomized healthy/failure batch cases. The frozen questions predate native execution. Each actual prompt contains only the selected public native history, bounded stdout and workload identifiers; it excludes condition labels, independent MCP receipts, provider truth, process/resources and the answer key. Product syntax remains recognizable. [Original requests, responses, packets, key and scores](evidence/tool-lifecycle-20261028/native-review/provenance.json) are retained in a permanent ZIP. The [offline export](evidence/tool-lifecycle-20261028/native-review/summary.json) verifies exact native-only projections, actual frozen questions, source truth, hashes, pre-answer freeze ordering and unchanged scores.
+
+| Original question-level classification, 12 per product | DSH | OpenClaw |
+| --- | ---: | ---: |
+| Exact value match | 6 | 8 |
+| Incorrect value | 0 | 0 |
+| Unknown | 3 | 4 |
+| Invalid answer | 3 | 0 |
+| Original strict citation match | 0 | 0 |
+
+One DSH-case provider response finishes normally but its answer text omits a closing JSON brace; strict parsing therefore preserves three invalid facts. It is neither repaired nor retried. The seven parsed cases correctly identify the reported failed index or all-success condition and count the actual assistant-final values, giving fourteen matching values. They return unknown for all seven hidden-retry/owner questions: visible transcript calls do not establish whether an underlying native transport retried. These selected records do not inventory every native logging surface, and this is one automated investigator rather than a human diagnosis-time or inter-reviewer study.
+
+The **zero original citation score exposes an evaluator-contract ambiguity**, not a clean native-observability result. The frozen natural-language answer format asks for an “exact quote” but does not fix its literal JSON key; the reviewer uses `exact quote` or `exact_quote`, while the original scorer only reads `quote`. Every original citation flag remains false. The [separate informed audit](evidence/tool-lifecycle-20261028/native-review/informed-audit.json) recognizes the returned aliases diagnostically: eight quotations match at the supplied path, two more occur in a descendant text field of the cited message object, and four quote a JSON boolean member rather than the scalar field value. None receives retrospective original citation credit. The four boolean quotations each cover one successful result; that quotation alone is insufficient for an all-four-success claim. The complete selected packets contain all four successful results, so the fourteen matching answers can be checked against native evidence, with these citation-scope limits kept separate. This audit is informed post-review analysis, not another blind investigator or a replacement score.
+
+All eight provider requests/responses and usage counters are complete: **126,346 input + 3,243 output = 129,589 actual review tokens**; 896 cached-input tokens are already included. Summed automated request elapsed time is 23.72 s, including inference/network time. Invoice charge is unknown. These are separately accounted real diagnostic requests, excluded from scripted native-task usage and product cgroup resources. No extra model call improves a JSON answer, citation or unknown.
+
+The bounded HD-MCP-01 two-block native comparison and this original-answer reconstruction are complete. It retains cancellation failures, safe interruptions, the malformed answer and quotation-contract limitations. H14 remains in progress for the broader public-component, event/logging, provider/context replacement and actual source-token questions in the overall ledger.
 
 ## Next native work, informed by these findings
 
