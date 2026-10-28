@@ -1,0 +1,68 @@
+{
+  "study": "HD-MCP-01",
+  "source_run_id": "40684459876",
+  "complete_cancel_arm_coverage": true,
+  "analysis_scope": "Secondary consistency audit prepared after formal execution started, before formal outcomes were inspected. Does not replace original acceptance judgments. Health starts after original observation/cleanup; the independent ledger must contain exactly its one index-0 call, and the held index must never be read.",
+  "rows": [
+    {
+      "product": "DSH",
+      "block": 1,
+      "original_handling_acceptance": true,
+      "new_mcp_calls_after_cancel_before_health": [],
+      "health_period_call_indexes": [
+        0
+      ],
+      "health_period_exactly_one_index_zero_call": true,
+      "held_index_ever_read": false,
+      "old_model_requests_within_observation": 0,
+      "old_model_requests_after_observation": 0,
+      "old_model_requests_after_fixture_cleanup_release": null,
+      "accepted_original_has_no_extra_tool_dispatch": true
+    },
+    {
+      "product": "OpenClaw",
+      "block": 1,
+      "original_handling_acceptance": false,
+      "new_mcp_calls_after_cancel_before_health": [],
+      "health_period_call_indexes": [
+        0
+      ],
+      "health_period_exactly_one_index_zero_call": true,
+      "held_index_ever_read": false,
+      "old_model_requests_within_observation": 0,
+      "old_model_requests_after_observation": 1,
+      "old_model_requests_after_fixture_cleanup_release": 1,
+      "accepted_original_has_no_extra_tool_dispatch": null
+    },
+    {
+      "product": "OpenClaw",
+      "block": 2,
+      "original_handling_acceptance": false,
+      "new_mcp_calls_after_cancel_before_health": [],
+      "health_period_call_indexes": [
+        0
+      ],
+      "health_period_exactly_one_index_zero_call": true,
+      "held_index_ever_read": false,
+      "old_model_requests_within_observation": 0,
+      "old_model_requests_after_observation": 1,
+      "old_model_requests_after_fixture_cleanup_release": 1,
+      "accepted_original_has_no_extra_tool_dispatch": null
+    },
+    {
+      "product": "DSH",
+      "block": 2,
+      "original_handling_acceptance": true,
+      "new_mcp_calls_after_cancel_before_health": [],
+      "health_period_call_indexes": [
+        0
+      ],
+      "health_period_exactly_one_index_zero_call": true,
+      "held_index_ever_read": false,
+      "old_model_requests_within_observation": 0,
+      "old_model_requests_after_observation": 0,
+      "old_model_requests_after_fixture_cleanup_release": null,
+      "accepted_original_has_no_extra_tool_dispatch": true
+    }
+  ]
+}

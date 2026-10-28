@@ -330,16 +330,22 @@
         "DSH": {
           "status": "in_progress",
           "evidence": [
-            "comparison/evidence/source-informed-20261028/native-mcp-resource-calibration.json"
+            "comparison/evidence/source-informed-20261028/native-mcp-resource-calibration.json",
+            "comparison/evidence/tool-lifecycle-20261028/formal-summary.json",
+            "comparison/evidence/tool-lifecycle-20261028/formal-provenance.json",
+            "comparison/evidence/tool-lifecycle-20261028/formal-cancellation-audit.json"
           ],
-          "note": "Native and public MCP same-file read calibration passed with owned resource collection. Four-arm real DeepSeek pilot retained and independently revalidated; formal repetitions, failure/cancel arms and component token attribution remain pending. See comparison/source-informed-comparison.md."
+          "note": "HD-MCP-01 two formal blocks/24 valid arms complete: native/MCP same-file routes, serial/batch, reached failure and cancellation with health; all 16 healthy controls pass. DSH stock bridge dispatches MCP exclusively; explicitly parallel OpenClaw overlaps four. Partial/error handling passes both products; DSH effective cancellation passes both blocks, acknowledged OpenClaw HTTP/MCP cancellation fails cessation both blocks. Independent native-only failure/retry reconstruction pending. Broader HD/H14 public component/event contrasts and source-token attribution remain unexecuted."
         },
         "OpenClaw": {
           "status": "in_progress",
           "evidence": [
-            "comparison/evidence/source-informed-20261028/native-mcp-resource-calibration.json"
+            "comparison/evidence/source-informed-20261028/native-mcp-resource-calibration.json",
+            "comparison/evidence/tool-lifecycle-20261028/formal-summary.json",
+            "comparison/evidence/tool-lifecycle-20261028/formal-provenance.json",
+            "comparison/evidence/tool-lifecycle-20261028/formal-cancellation-audit.json"
           ],
-          "note": "Native and public MCP same-file read calibration passed with owned resource collection. Four-arm real DeepSeek pilot retained and independently revalidated; formal repetitions, failure/cancel arms and component token attribution remain pending. See comparison/source-informed-comparison.md."
+          "note": "HD-MCP-01 two formal blocks/24 valid arms complete: native/MCP same-file routes, serial/batch, reached failure and cancellation with health; all 16 healthy controls pass. DSH stock bridge dispatches MCP exclusively; explicitly parallel OpenClaw overlaps four. Partial/error handling passes both products; DSH effective cancellation passes both blocks, acknowledged OpenClaw HTTP/MCP cancellation fails cessation both blocks. Independent native-only failure/retry reconstruction pending. Broader HD/H14 public component/event contrasts and source-token attribution remain unexecuted."
         }
       },
       "dimensions": [

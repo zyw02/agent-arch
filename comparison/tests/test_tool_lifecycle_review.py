@@ -12,6 +12,18 @@ from audit_tool_cancellation import audit
 
 
 class ToolNativePacketTests(unittest.TestCase):
+    def test_formal_records_recompute_and_secondary_audit_preserves_original_outcomes(self):
+        comparison=Path(__file__).resolve().parents[1];root=comparison/'evidence/tool-lifecycle-20261028'
+        raw=gzip.decompress((root/'formal-original-report.json.gz').read_bytes());report=json.loads(raw)
+        summary=summarize(report,comparison/'tool-lifecycle-protocol.json');published=json.loads((root/'formal-summary.json').read_bytes());published.pop('original_report_sha256')
+        self.assertEqual(summary,published);self.assertTrue(summary['complete_comparison_blocks']);self.assertTrue(summary['healthy_controls_passed']);self.assertEqual(len(summary['rows']),24)
+        self.assertEqual(audit(report),json.loads((root/'formal-cancellation-audit.json').read_bytes()))
+        provenance=json.loads((root/'formal-provenance.json').read_bytes());self.assertEqual(hashlib.sha256(raw).hexdigest(),provenance['original_report_sha256'])
+        for name,digest in provenance['retained_files_sha256'].items():self.assertEqual(hashlib.sha256((root/name).read_bytes()).hexdigest(),digest,name)
+        admission=json.loads((comparison/'tool-lifecycle-formal-admission.json').read_bytes())
+        self.assertEqual(provenance['analysis_scripts_sha256'],admission['frozen_analysis_scripts_sha256'])
+        for name,digest in admission['frozen_analysis_scripts_sha256'].items():self.assertEqual(hashlib.sha256((comparison/name).read_bytes()).hexdigest(),digest,name)
+
     def test_secondary_audit_detects_late_dispatch_even_if_it_stops_before_snapshot(self):
         comparison=Path(__file__).resolve().parents[1]
         report=json.loads(gzip.decompress((comparison/'evidence/tool-lifecycle-20261028/pilot-original-report.json.gz').read_bytes()))
