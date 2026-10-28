@@ -4,10 +4,41 @@ import sys
 import unittest
 from unittest.mock import patch
 sys.path.insert(0,str(Path(__file__).resolve().parents[1]))
-from platform_api_probe import NativeServer,fixture_response,redact,fresh_session_bindings
+from platform_api_probe import NativeServer,fixture_response,redact,fresh_session_bindings,select_service_owner
+from platform_fault_probe import Gate,history_facts
+import os
+import threading
 
 
 class PlatformApiCalibrationTests(unittest.TestCase):
+    def test_owner_must_be_unique_native_root_with_worker_uid_and_start_identity(self):
+        root=dict(pid=17,ppid=1,uid=os.getuid(),start_ticks=52,cmdline='openclaw-gateway')
+        child=dict(pid=18,ppid=17,uid=os.getuid(),start_ticks=53,cmdline='node worker')
+        self.assertEqual(select_service_owner([root,child],'OpenClaw'),root)
+        with self.assertRaisesRegex(RuntimeError,'Ambiguous'):select_service_owner([root,{**child,'ppid':1}],'OpenClaw')
+        with self.assertRaisesRegex(RuntimeError,'identity'):select_service_owner([{**root,'uid':-1}],'OpenClaw')
+        with self.assertRaisesRegex(RuntimeError,'command'):select_service_owner([{**root,'cmdline':'sudo monitor'}],'OpenClaw')
+
+    def test_fault_gate_records_actual_arrival_before_release_and_keeps_title_separate(self):
+        marker='PLATFORM_INPUT_'+'a'*32;gate=Gate([marker]);result=[]
+        body=dict(messages=[dict(role='user',content=marker)])
+        thread=threading.Thread(target=lambda:result.append(gate.decide(body)));thread.start()
+        try:
+            self.assertTrue(gate.arrived[marker].wait(1));self.assertEqual(len(gate.ledger),1)
+            self.assertFalse(result);self.assertNotIn('released_ns',gate.ledger[0])
+        finally:gate.release.set();thread.join()
+        self.assertEqual(result,[dict(text='PLATFORM_ACK:'+marker)])
+        title=Gate([marker]);title.decide(dict(messages=[dict(role='user',content='Generate the session title from this JSON array '+marker)]))
+        self.assertFalse(title.arrived[marker].is_set())
+
+    def test_native_ack_must_come_from_assistant_not_user_echo_or_fixture_string(self):
+        marker='PLATFORM_INPUT_'+'a'*32
+        history=dict(events=dict(records=[dict(event=dict(type='user/message',data=dict(content=[dict(type='text',text=marker+' PLATFORM_ACK:'+marker)])))]))
+        self.assertEqual(history_facts('DSH',history,marker),dict(user_retained=True,assistant_ack=False))
+        history['events']['records'].append(dict(event=dict(type='assistant/message',data=dict(message=dict(role='assistant',content=[dict(type='text',text='PLATFORM_ACK:'+marker)])))))
+        self.assertTrue(history_facts('DSH',history,marker)['assistant_ack'])
+        self.assertFalse(history_facts('OpenClaw',dict(history=dict(messages=[dict(role='user',content='PLATFORM_ACK:'+marker)])),marker)['assistant_ack'])
+
     def test_provider_only_acknowledges_a_marker_in_the_actual_request(self):
         marker='PLATFORM_INPUT_'+'a'*32
         body=dict(messages=[dict(role='user',content=marker)])

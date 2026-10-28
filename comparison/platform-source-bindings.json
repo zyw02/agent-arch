@@ -118,6 +118,24 @@
       "ref": "f3803c96974ad4a94195fb97e5c637e9c2a3afe3",
       "blob_sha": "41d4ebeaa832473b25952af1b185e02a7c182844",
       "url": "https://github.com/deepseek-ai/deepseek-harness/blob/f3803c96974ad4a94195fb97e5c637e9c2a3afe3/apps/cli/src/args.ts"
+    },
+    {
+      "product": "openclaw",
+      "path": "src/gateway/server-methods/chat-history-handler.ts",
+      "owner": "Native chat.history, in-flight/recovery read path",
+      "repo": "openclaw/openclaw",
+      "ref": "dc2523e5a5c7a309517fd7fa834add938231d526",
+      "blob_sha": "1b3bb2af93c333dcea7bad8dfe6e1277a8bb47b3",
+      "url": "https://github.com/openclaw/openclaw/blob/dc2523e5a5c7a309517fd7fa834add938231d526/src/gateway/server-methods/chat-history-handler.ts"
+    },
+    {
+      "product": "openclaw",
+      "path": "src/cli/gateway-cli/register.ts",
+      "owner": "Public gateway call flags and JSON output",
+      "repo": "openclaw/openclaw",
+      "ref": "dc2523e5a5c7a309517fd7fa834add938231d526",
+      "blob_sha": "7a6349f04c57fcc64e6a68148543a68e4ce9f937",
+      "url": "https://github.com/openclaw/openclaw/blob/dc2523e5a5c7a309517fd7fa834add938231d526/src/cli/gateway-cli/register.ts"
     }
   ]
 }

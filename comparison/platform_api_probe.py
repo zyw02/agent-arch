@@ -8,6 +8,7 @@ import json
 import os
 from pathlib import Path
 import re
+import resource
 import signal
 import socket
 import subprocess
@@ -57,11 +58,23 @@ def free_port():
 def redact(text):return re.sub(r'([?&]token=)[^\s)]+',r'\1<redacted>',text)
 
 
+def select_service_owner(rows,product):
+    ids={row['pid'] for row in rows}
+    roots=[row for row in rows if row['ppid'] not in ids]
+    if len(roots)!=1:raise RuntimeError('Ambiguous native execution-owner roots')
+    owner=roots[0]
+    if owner.get('uid')!=os.getuid() or not isinstance(owner.get('start_ticks'),int):
+        raise RuntimeError('Native owner identity is not the invocation worker')
+    expected='openclaw-gateway' if product=='OpenClaw' else '/.bin/dsh '
+    if expected not in owner['cmdline']:raise RuntimeError('Native owner command does not match pinned entry')
+    return owner
+
+
 class NativeServer:
     def __init__(self,product,runtime,root,provider):
-        self.product=product;self.root=root;self.port=free_port();self.launch_url=None;self.logs=deque(maxlen=150)
-        self.workspace=root/'workspace';self.workspace.mkdir();(self.workspace/'.git').mkdir()
-        self.state=root/'state';self.state.mkdir();env=dict(os.environ);env.pop('DEEPSEEK_API_KEY',None)
+        self.product=product;self.root=root;self.runtime=runtime;self.port=free_port();self.launch_url=None;self.logs=deque(maxlen=150)
+        self.workspace=root/'workspace';self.workspace.mkdir(exist_ok=True);(self.workspace/'.git').mkdir(exist_ok=True)
+        self.state=root/'state';self.state.mkdir(exist_ok=True);env=dict(os.environ);env.pop('DEEPSEEK_API_KEY',None)
         if product=='DSH':
             patch=root/'server.patch.yml';patch.write_text('- id: llm-deepseek\n  config:\n    thinking: disabled\n    reasoningEffort: off\n    maxTokens: 2048\n')
             env.update(DSH_HOME=str(self.state),DSH_AGENTS_HOME=str(root/'.agents'),DSH_TELEMETRY_DISABLED='1',
@@ -75,7 +88,7 @@ class NativeServer:
                 tools=dict(allow=['read'],toolSearch=False),cron=dict(enabled=False))))
             env.update(OPENCLAW_STATE_DIR=str(self.state),OPENCLAW_CONFIG_PATH=str(config),OPENCLAW_SKIP_CHANNELS='1',OPENCLAW_DISABLE_BUNDLED_PLUGINS='1')
             command=[str(runtime/'node_modules/.bin/openclaw'),'gateway','run','--bind','loopback','--port',str(self.port)]
-        self.command=command;self.collector=ResourceCollector(dict(workspace=self.workspace,product_state=self.state));self.started_ns=time.monotonic_ns()
+        self.env=env;self.command=command;self.collector=ResourceCollector(dict(workspace=self.workspace,product_state=self.state));self.started_ns=time.monotonic_ns()
         self.process=subprocess.Popen(self.collector.command(command),env=env,cwd=self.workspace,stdout=subprocess.PIPE,stderr=subprocess.STDOUT,text=True,start_new_session=True)
         self.reader=threading.Thread(target=self.read_log,daemon=True);self.reader.start();self.cookie=None
 
@@ -88,7 +101,9 @@ class NativeServer:
     def http(self,method,path,body=None,headers=None,timeout=60):
         connection=http.client.HTTPConnection('127.0.0.1',self.port,timeout=timeout)
         try:
-            connection.request(method,path,body,headers or {});response=connection.getresponse();data=response.read()
+            connection.request(method,path,body,headers or {})
+            if getattr(self,'on_http_sent',None):self.on_http_sent(method,path)
+            response=connection.getresponse();data=response.read()
             return response.status,{k.lower():v for k,v in response.getheaders()},data
         finally:connection.close()
 
@@ -128,15 +143,18 @@ class NativeServer:
             try:
                 status=Path('/proc',value,'status').read_text();cmdline=Path('/proc',value,'cmdline').read_bytes().replace(b'\0',b' ').decode(errors='replace').strip()
                 ppid=int(re.search(r'^PPid:\s*(\d+)',status,re.M)[1])
-                rows.append(dict(pid=pid,ppid=ppid,cmdline=cmdline))
+                stat=Path('/proc',value,'stat').read_text().rpartition(')')[2].split()
+                uid=int(re.search(r'^Uid:\s*(\d+)',status,re.M)[1])
+                rows.append(dict(pid=pid,ppid=ppid,uid=uid,start_ticks=int(stat[19]),state=stat[0],cmdline=cmdline))
             except (OSError,TypeError):continue
         return rows
 
-    def task(self,session_id,marker):
+    def task(self,session_id,marker,create=True):
         started=time.monotonic_ns()
         if self.product=='DSH':
-            created=self.rpc('session/create',dict(request=dict(sessionId=session_id,cwd=str(self.workspace))))
-            session_id=created['sessionId']
+            if create:
+                created=self.rpc('session/create',dict(request=dict(sessionId=session_id,cwd=str(self.workspace))))
+                session_id=created['sessionId']
             prompt=self.rpc('session/prompt',dict(request=dict(sessionId=session_id,requestId=str(uuid.uuid4()),mode='queue',content=[dict(type='text',text=marker)])))
             result=self.rpc('session/wait',dict(request=dict(sessionId=session_id,timeoutMs=60000)))
             accepted=prompt.get('accepted') is True and result.get('reason')=='idle' and 'PLATFORM_ACK:'+marker in json.dumps(result.get('output'))
@@ -146,6 +164,34 @@ class NativeServer:
             {'Content-Type':'application/json','Authorization':'Bearer synthetic-platform-only','x-openclaw-session-key':session_key})
         result=json.loads(raw);content=''.join(str(c.get('message',{}).get('content','')) for c in result.get('choices',[]))
         return dict(session_id=session_id,session_key=session_key,marker=marker,status=status,native_result=result,accepted=status==200 and content=='PLATFORM_ACK:'+marker,elapsed_ms=(time.monotonic_ns()-started)/1e6)
+
+    def history(self,session_id):
+        """Native passive history, kept separate from the independent effect ledger."""
+        if self.product=='DSH':
+            return dict(events=self.rpc('session/events',dict(request=dict(address=dict(kind='session',sessionId=session_id),maxMessages=100))),
+                state=self.rpc('session/state',dict(request=dict(sessionId=session_id))))
+        command=[str(self.runtime/'node_modules/.bin/openclaw'),'gateway','call','chat.history','--port',str(self.port),'--json',
+            '--params',json.dumps(dict(sessionKey='agent:main:platform:'+session_id,limit=100)),'--timeout','10000']
+        before=resource.getrusage(resource.RUSAGE_CHILDREN);start=time.monotonic_ns()
+        result=subprocess.run(command,env=self.env,cwd=self.workspace,capture_output=True,text=True,timeout=90)
+        after=resource.getrusage(resource.RUSAGE_CHILDREN)
+        if result.returncode!=0:raise RuntimeError('Native history CLI failed: '+redact(result.stderr[-1500:]))
+        return dict(history=json.loads(result.stdout),observer_cli=dict(elapsed_ms=(time.monotonic_ns()-start)/1e6,
+            cpu_seconds=after.ru_utime+after.ru_stime-before.ru_utime-before.ru_stime))
+
+    def service_owner(self):
+        return select_service_owner(self.process_map(),self.product)
+
+    def kill_service_owner(self,identity):
+        if os.environ.get('GITHUB_ACTIONS')!='true' or self.collector.group is None:
+            raise RuntimeError('Owner intervention requires owned disposable hosted cgroup')
+        current=self.service_owner()
+        if any(current[k]!=identity[k] for k in ('pid','uid','start_ticks','cmdline')):
+            raise RuntimeError('Native owner identity changed before intervention')
+        event=dict(signal='SIGKILL',identity=current,requested_ns=time.monotonic_ns())
+        os.kill(current['pid'],signal.SIGKILL)
+        event['delivered_ns']=time.monotonic_ns()
+        return event
 
     def stop(self):
         if self.process.poll() is None:

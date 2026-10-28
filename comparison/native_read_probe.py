@@ -38,7 +38,7 @@ def choose_response(body, file_path, receipt, target_tool='read'):
 
 
 class Provider:
-    def __init__(self, file_path, receipt, target_tool='read', decision_fn=None):
+    def __init__(self, file_path, receipt, target_tool='read', decision_fn=None,max_requests=10):
         self.file_path=file_path;self.receipt=receipt;self.requests=[]
         owner=self
         class Handler(BaseHTTPRequestHandler):
@@ -52,7 +52,7 @@ class Provider:
                 body=json.loads(self.rfile.read(size));decision=(decision_fn or choose_response)(body,owner.file_path,owner.receipt,target_tool)
                 owner.requests.append(dict(monotonic_ns=time.monotonic_ns(),endpoint=self.path,
                     schemas=schemas(body),request=body,decision=decision))
-                if len(owner.requests)>10:self.send_error(429);return
+                if len(owner.requests)>max_requests:self.send_error(429);return
                 anthropic=self.path.endswith('/messages');call=decision.get('tool')
                 text=decision.get('text','');callid='read_calibration_'+str(len(owner.requests))
                 if anthropic:
