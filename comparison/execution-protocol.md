@@ -1,6 +1,6 @@
 # Two-layer, six-dimension execution protocol
 
-**Default execution scope:** the [focused two-layer, six-dimension plan](architecture-core.md) defines six complete studies, three per layer. Duration is controlled by scope and pilot-based admission of complete comparison blocks, without a universal task cutoff or campaign kill budget. Long soak and full-factor sweeps are deferred reference work.
+**Default execution scope:** the [focused two-layer, six-dimension plan](architecture-core.md) defines seven complete studies: three platform and four harness studies. Duration is controlled by scope and pilot-based admission of complete comparison blocks, without a universal task cutoff or campaign kill budget. Long soak and full-factor sweeps are deferred reference work.
 
 
 This protocol defines the initial cross-product campaign for Codex, DeepSeek Harness (DSH), and OpenClaw. The [catalogue](experiment-index.md) explains the purpose of each experiment; the scenarios below define the inputs, operations, measurements, and acceptance rules. The [progress table](../README.md#research-progress) records implementation and execution status. The [campaign manifest](campaign.json) lists every case, condition, repetition baseline, and implementation state.
