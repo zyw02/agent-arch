@@ -1,0 +1,5 @@
+product,route,phase,accepted,original_acceptance,resources_complete,invocation_wall_seconds,cpu_core_seconds,cpu_user_seconds,cpu_system_seconds,sampled_peak_pss_bytes,sampled_peak_rss_sum_bytes,kernel_cgroup_memory_peak_bytes,sampled_peak_disk_increment_bytes,retained_disk_increment_bytes,provider_requests,paid_model_calls,known_real_provider_tokens,invoice_charge,run_id,usage_complete
+DSH,native,live-read-pilot,True,False,True,4.224429422999999,2.045093,1.81786,0.227232,338472960,342290432,295669760,73728,73728,3,3,11737,,40659335882,True
+DSH,mcp,live-read-pilot,True,False,True,4.654280731,2.157353,1.907008,0.250344,355279872,365461504,311889920,81920,81920,3,3,12472,,40659335882,True
+OpenClaw,native,live-read-pilot,True,False,True,16.017227774000002,18.917242,17.096064,1.821178,1302537216,1361002496,1292066816,4702208,2281472,2,2,8650,,40659335882,True
+OpenClaw,mcp,live-read-pilot,True,False,True,13.821686368,17.537696,15.854846,1.682849,1356740608,1473601536,1339916288,4624384,2265088,2,2,4240,,40659335882,True

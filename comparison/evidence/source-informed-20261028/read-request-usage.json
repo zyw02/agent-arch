@@ -1,0 +1,356 @@
+{
+  "report_sha256": "ce9914a63141ee0d3081b1ddff739428a4008157dbbe2b60100b21779b15e2ec",
+  "run_id": "40659335882",
+  "requests": [
+    {
+      "product": "DSH",
+      "route": "native",
+      "request_index": 0,
+      "stage": "task_initial",
+      "endpoint": "/v1/messages",
+      "model": "deepseek-flash",
+      "synthetic": false,
+      "raw_usage": {
+        "input_tokens": 5261,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 384,
+        "output_tokens": 69,
+        "service_tier": "standard"
+      },
+      "normalized_usage": {
+        "input_tokens": 5645,
+        "output_tokens": 69,
+        "cache_hit_input_tokens": 384,
+        "cache_created_input_tokens": 0
+      },
+      "usage_complete": true,
+      "http_status": 200,
+      "request_json_bytes": 58366,
+      "native_request_sha256": "62c70d040898ec7ce6ef390667dc23394e45daa9cf1b8e5ce1637e9808eca830",
+      "elapsed_seconds": 1.567323438,
+      "tool_names": [
+        "read"
+      ],
+      "thinking": {
+        "type": "enabled"
+      },
+      "output_config": {
+        "effort": "high"
+      }
+    },
+    {
+      "product": "DSH",
+      "route": "native",
+      "request_index": 1,
+      "stage": "auxiliary_session_title",
+      "endpoint": "/v1/messages",
+      "model": "deepseek-flash",
+      "synthetic": false,
+      "raw_usage": {
+        "input_tokens": 180,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "output_tokens": 5,
+        "service_tier": "standard"
+      },
+      "normalized_usage": {
+        "input_tokens": 180,
+        "output_tokens": 5,
+        "cache_hit_input_tokens": 0,
+        "cache_created_input_tokens": 0
+      },
+      "usage_complete": true,
+      "http_status": 200,
+      "request_json_bytes": 35576,
+      "native_request_sha256": "b4438db3c6d91c624c3a92d0da26770da6d0fa25396ec6a1a1d6d6e73d9a08c6",
+      "elapsed_seconds": 1.346143256,
+      "tool_names": [],
+      "thinking": {
+        "type": "disabled"
+      },
+      "output_config": null
+    },
+    {
+      "product": "DSH",
+      "route": "native",
+      "request_index": 2,
+      "stage": "task_tool_followup",
+      "endpoint": "/v1/messages",
+      "model": "deepseek-flash",
+      "synthetic": false,
+      "raw_usage": {
+        "input_tokens": 176,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 5632,
+        "output_tokens": 30,
+        "service_tier": "standard"
+      },
+      "normalized_usage": {
+        "input_tokens": 5808,
+        "output_tokens": 30,
+        "cache_hit_input_tokens": 5632,
+        "cache_created_input_tokens": 0
+      },
+      "usage_complete": true,
+      "http_status": 200,
+      "request_json_bytes": 36494,
+      "native_request_sha256": "576557c4707ea586db895e0473c13ac25b80412984e588934608338e923a6f55",
+      "elapsed_seconds": 1.084167152,
+      "tool_names": [],
+      "thinking": {
+        "type": "enabled"
+      },
+      "output_config": {
+        "effort": "high"
+      }
+    },
+    {
+      "product": "DSH",
+      "route": "mcp",
+      "request_index": 0,
+      "stage": "task_initial",
+      "endpoint": "/v1/messages",
+      "model": "deepseek-flash",
+      "synthetic": false,
+      "raw_usage": {
+        "input_tokens": 5626,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 384,
+        "output_tokens": 39,
+        "service_tier": "standard"
+      },
+      "normalized_usage": {
+        "input_tokens": 6010,
+        "output_tokens": 39,
+        "cache_hit_input_tokens": 384,
+        "cache_created_input_tokens": 0
+      },
+      "usage_complete": true,
+      "http_status": 200,
+      "request_json_bytes": 61325,
+      "native_request_sha256": "274b06d45e256bd0507d89dc1bbf5292b24d208a13dc17d3f855d4357580dc08",
+      "elapsed_seconds": 1.367554041,
+      "tool_names": [
+        "mcp__probe__eval_read"
+      ],
+      "thinking": {
+        "type": "enabled"
+      },
+      "output_config": {
+        "effort": "high"
+      }
+    },
+    {
+      "product": "DSH",
+      "route": "mcp",
+      "request_index": 1,
+      "stage": "auxiliary_session_title",
+      "endpoint": "/v1/messages",
+      "model": "deepseek-flash",
+      "synthetic": false,
+      "raw_usage": {
+        "input_tokens": 188,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "output_tokens": 7,
+        "service_tier": "standard"
+      },
+      "normalized_usage": {
+        "input_tokens": 188,
+        "output_tokens": 7,
+        "cache_hit_input_tokens": 0,
+        "cache_created_input_tokens": 0
+      },
+      "usage_complete": true,
+      "http_status": 200,
+      "request_json_bytes": 37111,
+      "native_request_sha256": "afc11674bae73dc4c49373b436fa5a2713ae41eab22ab27555e1ebe8b087cf12",
+      "elapsed_seconds": 1.37436485,
+      "tool_names": [],
+      "thinking": {
+        "type": "disabled"
+      },
+      "output_config": null
+    },
+    {
+      "product": "DSH",
+      "route": "mcp",
+      "request_index": 2,
+      "stage": "task_tool_followup",
+      "endpoint": "/v1/messages",
+      "model": "deepseek-flash",
+      "synthetic": false,
+      "raw_usage": {
+        "input_tokens": 198,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 5888,
+        "output_tokens": 142,
+        "service_tier": "standard"
+      },
+      "normalized_usage": {
+        "input_tokens": 6086,
+        "output_tokens": 142,
+        "cache_hit_input_tokens": 5888,
+        "cache_created_input_tokens": 0
+      },
+      "usage_complete": true,
+      "http_status": 200,
+      "request_json_bytes": 36962,
+      "native_request_sha256": "65e70c9d020eb611e7f5b8eb370706f5c8b2eb6a680cff5387070187b668f7f0",
+      "elapsed_seconds": 1.699657914,
+      "tool_names": [],
+      "thinking": {
+        "type": "enabled"
+      },
+      "output_config": {
+        "effort": "high"
+      }
+    },
+    {
+      "product": "OpenClaw",
+      "route": "native",
+      "request_index": 0,
+      "stage": "task_initial",
+      "endpoint": "/v1/chat/completions",
+      "model": "deepseek-flash",
+      "synthetic": false,
+      "raw_usage": {
+        "prompt_tokens": 4228,
+        "completion_tokens": 63,
+        "total_tokens": 4291,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 4228
+      },
+      "normalized_usage": {
+        "input_tokens": 4228,
+        "output_tokens": 63,
+        "cache_hit_input_tokens": 0,
+        "cache_created_input_tokens": null
+      },
+      "usage_complete": true,
+      "http_status": 200,
+      "request_json_bytes": 16510,
+      "native_request_sha256": "a862a6e83595eb35bde42ad75972a41c634db48400cb4c657f983a135d4105b1",
+      "elapsed_seconds": 1.259223273,
+      "tool_names": [
+        "read"
+      ],
+      "thinking": {
+        "type": "disabled"
+      },
+      "output_config": null
+    },
+    {
+      "product": "OpenClaw",
+      "route": "native",
+      "request_index": 1,
+      "stage": "task_tool_followup",
+      "endpoint": "/v1/chat/completions",
+      "model": "deepseek-flash",
+      "synthetic": false,
+      "raw_usage": {
+        "prompt_tokens": 4330,
+        "completion_tokens": 29,
+        "total_tokens": 4359,
+        "prompt_tokens_details": {
+          "cached_tokens": 4096
+        },
+        "prompt_cache_hit_tokens": 4096,
+        "prompt_cache_miss_tokens": 234
+      },
+      "normalized_usage": {
+        "input_tokens": 4330,
+        "output_tokens": 29,
+        "cache_hit_input_tokens": 4096,
+        "cache_created_input_tokens": null
+      },
+      "usage_complete": true,
+      "http_status": 200,
+      "request_json_bytes": 16907,
+      "native_request_sha256": "c5f00ab9efaba630e2ff330f4299e1ccd8ef8181492ebeba34765250c36bab25",
+      "elapsed_seconds": 1.218093344,
+      "tool_names": [],
+      "thinking": {
+        "type": "disabled"
+      },
+      "output_config": null
+    },
+    {
+      "product": "OpenClaw",
+      "route": "mcp",
+      "request_index": 0,
+      "stage": "task_initial",
+      "endpoint": "/v1/chat/completions",
+      "model": "deepseek-flash",
+      "synthetic": false,
+      "raw_usage": {
+        "prompt_tokens": 2062,
+        "completion_tokens": 24,
+        "total_tokens": 2086,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 2062
+      },
+      "normalized_usage": {
+        "input_tokens": 2062,
+        "output_tokens": 24,
+        "cache_hit_input_tokens": 0,
+        "cache_created_input_tokens": null
+      },
+      "usage_complete": true,
+      "http_status": 200,
+      "request_json_bytes": 7983,
+      "native_request_sha256": "ac8aceac27d96ac84d3a54050d0c1f38797f10a522aded47eae62a97ff1719b5",
+      "elapsed_seconds": 0.879615949,
+      "tool_names": [
+        "probe__eval_read"
+      ],
+      "thinking": {
+        "type": "disabled"
+      },
+      "output_config": null
+    },
+    {
+      "product": "OpenClaw",
+      "route": "mcp",
+      "request_index": 1,
+      "stage": "task_tool_followup",
+      "endpoint": "/v1/chat/completions",
+      "model": "deepseek-flash",
+      "synthetic": false,
+      "raw_usage": {
+        "prompt_tokens": 2125,
+        "completion_tokens": 29,
+        "total_tokens": 2154,
+        "prompt_tokens_details": {
+          "cached_tokens": 1920
+        },
+        "prompt_cache_hit_tokens": 1920,
+        "prompt_cache_miss_tokens": 205
+      },
+      "normalized_usage": {
+        "input_tokens": 2125,
+        "output_tokens": 29,
+        "cache_hit_input_tokens": 1920,
+        "cache_created_input_tokens": null
+      },
+      "usage_complete": true,
+      "http_status": 200,
+      "request_json_bytes": 8297,
+      "native_request_sha256": "4185dc54096298b114f87cab1c3bc7aca0ba03f0f07d00b07fa20d3735bbe648",
+      "elapsed_seconds": 0.919291669,
+      "tool_names": [],
+      "thinking": {
+        "type": "disabled"
+      },
+      "output_config": null
+    }
+  ],
+  "counter_rule": "Raw request counters, including auxiliary work and failures. Inclusive/cache/reasoning fields not blindly summed across protocols.",
+  "component_token_attribution": "Unobserved; source payload bytes must not be labeled tokens."
+}

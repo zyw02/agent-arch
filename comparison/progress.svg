@@ -18,28 +18,28 @@
 <text x="709" y="125" fill="#c1cde3" font-family="Arial,sans-serif" font-size="12">Not applicable: 0</text>
 <text x="44" y="172" fill="#f0f5ff" font-family="Arial,sans-serif" font-size="16" font-weight="700">DSH</text>
 <text x="936" y="172" text-anchor="end" fill="#b9c7e1" font-family="Arial,sans-serif" font-size="13">14 tasks</text>
-<rect x="180.00" y="158" width="45.00" height="18" fill="#7a9cff"><animate attributeName="opacity" values="1;0.55;1" dur="2.6s" repeatCount="indefinite"/></rect>
-<rect x="225.00" y="158" width="585.00" height="18" fill="#7383a1"/>
+<rect x="180.00" y="158" width="90.00" height="18" fill="#7a9cff"><animate attributeName="opacity" values="1;0.55;1" dur="2.6s" repeatCount="indefinite"/></rect>
+<rect x="270.00" y="158" width="540.00" height="18" fill="#7383a1"/>
 <circle cx="180" cy="197" r="4" fill="#65e7c0"/>
 <text x="189" y="201" fill="#c1cde3" font-family="Arial,sans-serif" font-size="12">Complete: 0</text>
 <circle cx="312" cy="197" r="4" fill="#7a9cff"/>
-<text x="321" y="201" fill="#c1cde3" font-family="Arial,sans-serif" font-size="12">In progress: 1</text>
+<text x="321" y="201" fill="#c1cde3" font-family="Arial,sans-serif" font-size="12">In progress: 2</text>
 <circle cx="470" cy="197" r="4" fill="#7383a1"/>
-<text x="479" y="201" fill="#c1cde3" font-family="Arial,sans-serif" font-size="12">Planned: 13</text>
+<text x="479" y="201" fill="#c1cde3" font-family="Arial,sans-serif" font-size="12">Planned: 12</text>
 <circle cx="585" cy="197" r="4" fill="#ffbd6a"/>
 <text x="594" y="201" fill="#c1cde3" font-family="Arial,sans-serif" font-size="12">Blocked: 0</text>
 <circle cx="700" cy="197" r="4" fill="#b79be9"/>
 <text x="709" y="201" fill="#c1cde3" font-family="Arial,sans-serif" font-size="12">Not applicable: 0</text>
 <text x="44" y="248" fill="#f0f5ff" font-family="Arial,sans-serif" font-size="16" font-weight="700">OpenClaw</text>
 <text x="936" y="248" text-anchor="end" fill="#b9c7e1" font-family="Arial,sans-serif" font-size="13">14 tasks</text>
-<rect x="180.00" y="234" width="45.00" height="18" fill="#7a9cff"><animate attributeName="opacity" values="1;0.55;1" dur="2.6s" repeatCount="indefinite"/></rect>
-<rect x="225.00" y="234" width="585.00" height="18" fill="#7383a1"/>
+<rect x="180.00" y="234" width="90.00" height="18" fill="#7a9cff"><animate attributeName="opacity" values="1;0.55;1" dur="2.6s" repeatCount="indefinite"/></rect>
+<rect x="270.00" y="234" width="540.00" height="18" fill="#7383a1"/>
 <circle cx="180" cy="273" r="4" fill="#65e7c0"/>
 <text x="189" y="277" fill="#c1cde3" font-family="Arial,sans-serif" font-size="12">Complete: 0</text>
 <circle cx="312" cy="273" r="4" fill="#7a9cff"/>
-<text x="321" y="277" fill="#c1cde3" font-family="Arial,sans-serif" font-size="12">In progress: 1</text>
+<text x="321" y="277" fill="#c1cde3" font-family="Arial,sans-serif" font-size="12">In progress: 2</text>
 <circle cx="470" cy="273" r="4" fill="#7383a1"/>
-<text x="479" y="277" fill="#c1cde3" font-family="Arial,sans-serif" font-size="12">Planned: 13</text>
+<text x="479" y="277" fill="#c1cde3" font-family="Arial,sans-serif" font-size="12">Planned: 12</text>
 <circle cx="585" cy="273" r="4" fill="#ffbd6a"/>
 <text x="594" y="277" fill="#c1cde3" font-family="Arial,sans-serif" font-size="12">Blocked: 0</text>
 <circle cx="700" cy="273" r="4" fill="#b79be9"/>

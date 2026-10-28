@@ -1,0 +1,23 @@
+{
+  "original_run_id": 40659335882,
+  "original_artifact_id": 12803531356,
+  "original_artifact_zip_sha256": "a1d5ffc0217ff055c9ec0c8c0909d8cf2f05e597ab4821c9e128a0f975628ae6",
+  "original_report_sha256": "8f03d600c1ca86c8cfb79d1eebd3093149550329ebbb3115e57f707f5d72bcbe",
+  "original_report_archive": "read-pilot-original-report.json.gz",
+  "original_report_archive_sha256": "d708267f788bb773eb2d82fcb37c6ba49ce374123a174466db9ae710bba1d72e",
+  "reanalysis_run_id": 40660343474,
+  "reanalysis_artifact_id": 12803492521,
+  "reanalysis_artifact_zip_sha256": "d24bceec677f89da399c3137b541c4d010fc5ce8a4fc5ca6add0ffb997310952",
+  "reanalysis_controller_commit": "c29e77a24603a62a6ec84efb53ef878104bb9562",
+  "artifact_url": "https://github.com/zyw02/agent-arch/actions/runs/40660343474/artifacts/12803492521",
+  "retained_files": {
+    "read-pilot-summary.json": "363aabddb0bfe73057ece95847db963c14e0b49ca80dca470e8de04e5ff3cf3b",
+    "read-resource-metrics.csv": "56cc3484df1f4f54e44fd218396bd95b24c9c55724f4110ba9edfacae4632892",
+    "read-request-usage.json": "c7ecc50cc10dfa8d85c91b08459e85e89f263230a645a6b8b4f69cea5dd6ac74",
+    "read-resource-timeline.png": "7a141c2b998170173c73877a2248079d719dd7d81a1b5416837484904aa8bc25",
+    "read-resource-timeline.svg": "87f17f27e15a5a27475d303a6f84d656642b636bbbb36c6758b4a7583535482e"
+  },
+  "live_provider_calls": 10,
+  "provider_calls_during_reanalysis": 0,
+  "formal_comparison_credit": false
+}

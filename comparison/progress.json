@@ -302,14 +302,18 @@
           "note": ""
         },
         "DSH": {
-          "status": "planned",
-          "evidence": [],
-          "note": ""
+          "status": "in_progress",
+          "evidence": [
+            "comparison/evidence/source-informed-20261028/native-mcp-resource-calibration.json"
+          ],
+          "note": "Native and public MCP same-file read calibration passed with owned resource collection. Four-arm real DeepSeek pilot retained and independently revalidated; formal repetitions, failure/cancel arms and component token attribution remain pending. See comparison/source-informed-comparison.md."
         },
         "OpenClaw": {
-          "status": "planned",
-          "evidence": [],
-          "note": ""
+          "status": "in_progress",
+          "evidence": [
+            "comparison/evidence/source-informed-20261028/native-mcp-resource-calibration.json"
+          ],
+          "note": "Native and public MCP same-file read calibration passed with owned resource collection. Four-arm real DeepSeek pilot retained and independently revalidated; formal repetitions, failure/cancel arms and component token attribution remain pending. See comparison/source-informed-comparison.md."
         }
       },
       "dimensions": [
