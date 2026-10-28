@@ -79,14 +79,20 @@
           "note": ""
         },
         "DSH": {
-          "status": "planned",
-          "evidence": [],
-          "note": ""
+          "status": "in_progress",
+          "evidence": [
+            "comparison/evidence/platform-resource-20261028/pilot-summary.json",
+            "comparison/evidence/platform-resource-20261028/pilot-provenance.json"
+          ],
+          "note": "Complete PC pilot: all ten conditions (post-ready no-task, cold/warm single, four sequential/concurrent), exact native ACK/session/provider bindings and complete native resources. Early no-task window includes post-ready initialization; not steady idle power. Two formal blocks admitted from measured 177.4 s complete native work, 8\u201311 min job estimate. Pilot is excluded from formal counts."
         },
         "OpenClaw": {
-          "status": "planned",
-          "evidence": [],
-          "note": ""
+          "status": "in_progress",
+          "evidence": [
+            "comparison/evidence/platform-resource-20261028/pilot-summary.json",
+            "comparison/evidence/platform-resource-20261028/pilot-provenance.json"
+          ],
+          "note": "Complete PC pilot: all ten conditions (post-ready no-task, cold/warm single, four sequential/concurrent), exact native ACK/session/provider bindings and complete native resources. Early no-task window includes post-ready initialization; not steady idle power. Two formal blocks admitted from measured 177.4 s complete native work, 8\u201311 min job estimate. Pilot is excluded from formal counts."
         }
       },
       "dimensions": [

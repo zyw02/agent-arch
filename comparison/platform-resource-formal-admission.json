@@ -1,0 +1,30 @@
+{
+  "study": "PC-HTTP-01",
+  "status": "admitted",
+  "phase": "two_complete_formal_blocks",
+  "pilot_run_id": 40674276655,
+  "pilot_controller_commit": "a5ca8ee2e9818af37b9ab41167cfc7b4e0e65bff",
+  "pilot_report_gzip": "evidence/platform-resource-20261028/pilot-original-report.json.gz",
+  "pilot_report_sha256": "fc322a4c7d7f4f9ced5ebbf98b42c6de4d8dee30f4ed58233970b592dfc5983b",
+  "protocol_sha256": "400f6fb113fbc4fa7312e598960aacdce50092e1331235469532fd5f744e3f21",
+  "measured_pilot_arm_seconds": 177.381345004,
+  "measured_pilot_by_product_seconds": {
+    "DSH": 29.540192632,
+    "OpenClaw": 147.841152372
+  },
+  "measured_setup_cleanup_seconds_approx": 110,
+  "estimated_two_block_runtime_minutes": [
+    8,
+    11
+  ],
+  "method": "Ten complete pilot arms took 177.4 seconds; two formal blocks double native work plus one installation/setup/cleanup. Range allows initialization/observer/runner variation; not a task deadline.",
+  "limits": [
+    "Idle is the five-second POST-READY no-task window, with native background startup still observable; no steady idle-power claim or subtraction of this baseline from warm-task phases",
+    "Configured 50ms sampler wait is not achieved cadence: pilot medians 56.8\u201399.1 ms, maximum 165.1 ms; integration uses actual sample timestamps with live samples bracketing phase cuts",
+    "Native state/workspace disk paths only; shared installation and external native log paths excluded",
+    "Controller and read-only memory helper CPU retained separately; no disabled-observer causal overhead calibration"
+  ],
+  "adapter_changes_after_pilot": [
+    "Synthetic provider close now joins admitted exchange threads and binds each transport observation to its local request record; no wire decision/delay or native configuration change; dedicated fixture cleanup test passed"
+  ]
+}

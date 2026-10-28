@@ -38,6 +38,7 @@ def make_packet(arm,case_id):
     # client receipts, provider records, process samples or condition names.
     packet=dict(case_id=case_id,task_identifiers={r:dict(session_id=t['session_id'],original_marker=t['marker'],new_followup_marker=arm.get('followups',{}).get(r,{}).get('marker')) for r,t in arm['tasks'].items()},
         native_carrier_logs=[c['sanitized_native_log'] for c in arm['cycles']],native_history_stages=stages,
+        capture_scope='Selected native surfaces: public history reads request at most 100 messages; stdout capture retains last 150 lines per carrier and at most 2400 characters per line. Total omitted stdout count is unknown. This is not an inventory of every native log file. Missing facts in these records do not prove that no other native surface contains them.',
         stage_legend='before_restart_histories: first carrier; passive_histories and after_passive_window_histories: new carrier, before NEW followup; final_histories: after NEW followup. The history RPC output is native; these stage labels only order collection.')
     return sanitize_native(packet)
 

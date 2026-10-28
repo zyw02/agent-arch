@@ -1,0 +1,19 @@
+{
+  "run_id": 40674276655,
+  "controller_commit": "a5ca8ee2e9818af37b9ab41167cfc7b4e0e65bff",
+  "artifact_id": 12809104957,
+  "artifact_zip_sha256": "f5db90500a06e0d74384a9dc22d0da8fd87c89644e78bebfa2dabb80f3d03e3a",
+  "original_report_sha256": "fc322a4c7d7f4f9ced5ebbf98b42c6de4d8dee30f4ed58233970b592dfc5983b",
+  "summary_script_sha256": "a6ca45944137885b8e190ab62734979dab08cf2402878aa94a33f68ecff5c8f8",
+  "disposition": "Complete pilot only; all ten original acceptance/resource judgments retained. Exact assistant ACK, distinct native sessions, provider contexts, CPU and sampled-memory integrals recomputed offline. No new product/model execution in derivation.",
+  "retained_files_sha256": {
+    "pilot-protocol.json": "400f6fb113fbc4fa7312e598960aacdce50092e1331235469532fd5f744e3f21",
+    "pilot-os-release.txt": "87458b3b1f1ca0e5c693ade771de7007c3783bdc692fa6b39eb6414bf2af2763",
+    "pilot-summary.json": "b8dedb1a123b642fc8ef13dbd2ca36ecd8cdecc28387396ed02d2adad95b310a",
+    "pilot-node-version.txt": "249baf635bb43877fcb9422efa1a4904b702d0ddf14d3949b7cd0950d5229c81",
+    "pilot-metrics.csv": "39924445dbfde53b4c494c6c3dafaa29710307ee4a7698ce5a3354ddea81cb0c",
+    "pilot-source-bindings.json": "662002486a76decf857be027ff552c4d21af5151a182dc2f527003200bdc5eaf",
+    "pilot-package-lock.json.gz": "831dd021da80e55d9dc7da78b6ad3e8117f68969b131a8f837e5a6d646e1aebf",
+    "pilot-original-report.json.gz": "6039962d4119d51a19c33f98e031fef7ea55a21555f1f2c8a47acc96ad6f6035"
+  }
+}
