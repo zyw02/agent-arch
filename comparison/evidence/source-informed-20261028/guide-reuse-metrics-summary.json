@@ -1,0 +1,87 @@
+{
+  "formal_new_experiments": false,
+  "source_version": "2026.10.7",
+  "rows": [
+    {
+      "scenario_id": "COST-03-S01",
+      "arm": "baseline",
+      "independent_units": 6,
+      "accepted": 6,
+      "planned": 6,
+      "known_tokens": 117328,
+      "pooled_known_tokens_per_accepted": 19554.666666666668,
+      "missing_counter_fields": 0
+    },
+    {
+      "scenario_id": "COST-03-S01",
+      "arm": "reuse",
+      "independent_units": 6,
+      "accepted": 6,
+      "planned": 6,
+      "known_tokens": 249827,
+      "pooled_known_tokens_per_accepted": 41637.833333333336,
+      "missing_counter_fields": 0
+    },
+    {
+      "scenario_id": "COST-03-S02",
+      "arm": "baseline",
+      "independent_units": 6,
+      "accepted": 30,
+      "planned": 30,
+      "known_tokens": 601476,
+      "pooled_known_tokens_per_accepted": 20049.2,
+      "missing_counter_fields": 0
+    },
+    {
+      "scenario_id": "COST-03-S02",
+      "arm": "reuse",
+      "independent_units": 6,
+      "accepted": 30,
+      "planned": 30,
+      "known_tokens": 648768,
+      "pooled_known_tokens_per_accepted": 21625.6,
+      "missing_counter_fields": 0
+    },
+    {
+      "scenario_id": "COST-03-S03",
+      "arm": "baseline",
+      "independent_units": 6,
+      "accepted": 81,
+      "planned": 120,
+      "known_tokens": 1639426,
+      "pooled_known_tokens_per_accepted": 20239.827160493827,
+      "missing_counter_fields": 0
+    },
+    {
+      "scenario_id": "COST-03-S03",
+      "arm": "reuse",
+      "independent_units": 6,
+      "accepted": 79,
+      "planned": 120,
+      "known_tokens": 1619968,
+      "pooled_known_tokens_per_accepted": 20505.92405063291,
+      "missing_counter_fields": 0
+    },
+    {
+      "scenario_id": "COST-03-S04",
+      "arm": "baseline",
+      "independent_units": 6,
+      "accepted": 30,
+      "planned": 30,
+      "known_tokens": 719286,
+      "pooled_known_tokens_per_accepted": 23976.2,
+      "missing_counter_fields": 0
+    },
+    {
+      "scenario_id": "COST-03-S04",
+      "arm": "reuse",
+      "independent_units": 6,
+      "accepted": 30,
+      "planned": 30,
+      "known_tokens": 720188,
+      "pooled_known_tokens_per_accepted": 24006.266666666666,
+      "missing_counter_fields": 0
+    }
+  ],
+  "rule": "Pooled cost includes failed work and learning; zero accepted is N/A. S03 incomplete reuse remains visible. No native Workshop or cross-product conclusion."
+}

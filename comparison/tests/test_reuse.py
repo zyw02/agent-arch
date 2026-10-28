@@ -9,6 +9,7 @@ import zipfile
 sys.path.insert(0,str(Path(__file__).resolve().parents[1]))
 from inspect_reuse_archives import inspect
 from native_read_probe import choose_response
+from export_reuse_metrics import row_from
 
 
 class ReuseIntegrityTests(unittest.TestCase):
@@ -48,5 +49,29 @@ class NativeReadCalibrationTests(unittest.TestCase):
     def test_missing_receipt_is_not_accepted_after_tool_failure(self):
         body={'messages':[{'role':'tool','content':'Error: read failed'}]}
         self.assertNotEqual(choose_response(body,Path('/synthetic/input'),'SECRET_RECEIPT').get('text'),'VERIFIED:SECRET_RECEIPT')
+
+
+class ReuseMetricTests(unittest.TestCase):
+    def fixture(self):
+        usage=dict(prompt_tokens=10,completion_tokens=2,prompt_cache_hit_tokens=6,prompt_cache_miss_tokens=4)
+        return dict(scenario_id='COST-03-S01',unit=1,state='pass',run_id='owned',native_summary_sha256='owned',evidence=['owned'],
+            reuse_accounting=dict(usage_synthetic=False,groups=dict(baseline=dict(known_usage=usage,missing_counters={},requests=1)),
+            normalization=dict(baseline=dict(accepted_deliveries=1,known_tokens_per_accepted_delivery=usage))))
+
+    def test_cache_is_not_added_to_inclusive_input_twice(self):
+        row=row_from(self.fixture(),'baseline')
+        self.assertEqual(row['known_total_tokens'],12)
+        self.assertIsNone(row['actual_charge_usd'])
+
+    def test_inconsistent_usage_or_synthetic_counters_are_rejected(self):
+        r=self.fixture();r['reuse_accounting']['groups']['baseline']['known_usage']['prompt_cache_hit_tokens']=7
+        with self.assertRaisesRegex(ValueError,'partition'):row_from(r,'baseline')
+        r=self.fixture();r['reuse_accounting']['usage_synthetic']=True
+        with self.assertRaisesRegex(ValueError,'Real provider'):row_from(r,'baseline')
+
+    def test_zero_accepted_keeps_cost_and_has_no_per_success_estimate(self):
+        r=self.fixture();r['reuse_accounting']['normalization']['baseline']['accepted_deliveries']=0
+        row=row_from(r,'baseline');self.assertEqual(row['known_total_tokens'],12)
+        self.assertIsNone(row['known_tokens_per_accepted_delivery'])
 
 if __name__=='__main__':unittest.main()
