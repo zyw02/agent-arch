@@ -5,8 +5,7 @@ import subprocess
 import sys
 import unittest
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
-from plan_core import plan_core
-
+from plan_core import plan_core, DIMENSIONS
 ROOT = Path(__file__).resolve().parents[1]
 
 
@@ -14,41 +13,56 @@ class CoreTests(unittest.TestCase):
     def setUp(self):
         self.config = json.loads((ROOT / 'architecture-core.json').read_text())
 
-    def test_whole_campaign_budget_includes_setup(self):
+    def test_six_studies_cover_both_layers(self):
         plan = plan_core(self.config)
-        self.assertEqual(plan['budget']['units'], 144)
-        self.assertEqual(plan['budget']['worst_case_runner_seconds'], 14400)
+        self.assertEqual(plan['scope']['studies'], 6)
+        self.assertEqual(plan['scope']['complete_blocks'], 36)
+        self.assertEqual(plan['scope']['planned_arms'], 120)
+        for layer in ('platform', 'harness'):
+            self.assertEqual({d for s in plan['studies'] if s['layer'] == layer for d in s['primary_dimensions']}, DIMENSIONS)
         self.assertFalse(plan['runtime_ready'])
-        self.assertTrue(all(r['plan_only'] for r in plan['units']))
 
-    def test_more_repeats_or_time_are_rejected(self):
-        for field in ('unit_timeout_seconds', 'setup_seconds_per_product'):
-            config = copy.deepcopy(self.config)
-            config[field] += 1
-            with self.subTest(field=field), self.assertRaises(ValueError):
-                plan_core(config)
-        self.config['studies'][0]['repetitions'] += 1
+    def test_no_arm_or_control_is_scheduled_outside_its_complete_block(self):
+        plan = plan_core(self.config)
+        lookup = {r['unit_id']: r for r in plan['units']}
+        for block in plan['blocks']:
+            for unit_id in block['unit_ids']:
+                row = lookup[unit_id]
+                self.assertIn(row['control_unit_id'], block['unit_ids'])
+                self.assertNotIn('timeout_seconds', row)
+                self.assertTrue(row['plan_only'])
+
+    def test_missing_dimension_and_missing_control_rejected(self):
+        self.config['studies'][0]['primary_dimensions'] = ['Reliability', 'Security']
+        with self.assertRaises(ValueError):
+            plan_core(self.config)
+        self.setUp()
+        del self.config['studies'][0]['control_conditions']['healthy']
         with self.assertRaises(ValueError):
             plan_core(self.config)
 
-    def test_cannot_raise_ceiling_or_enable_extra_profiles(self):
-        for field, value in [('max_aggregate_runner_seconds', 14401), ('profiles_per_product', 2), ('long_soak_enabled', True)]:
-            config = copy.deepcopy(self.config)
-            config[field] = value
+    def test_universal_cutoffs_and_extra_studies_rejected(self):
+        for field in ('campaign_wall_cutoff_seconds', 'universal_unit_timeout_seconds'):
+            c = copy.deepcopy(self.config)
+            c['execution_policy'][field] = 90
             with self.subTest(field=field), self.assertRaises(ValueError):
-                plan_core(config)
+                plan_core(c)
+        self.config['studies'].append(copy.deepcopy(self.config['studies'][0]))
+        with self.assertRaises(ValueError):
+            plan_core(self.config)
 
     def test_claims_require_observations_and_limits(self):
-        for field in ('alternative_explanations', 'required_observations', 'inference_rule', 'limit_and_tradeoff'):
-            config = copy.deepcopy(self.config)
-            config['studies'][0][field] = ''
+        for field in ('required_observations', 'inference_rule', 'completion_requirements'):
+            c = copy.deepcopy(self.config)
+            c['studies'][0][field] = ''
             with self.subTest(field=field), self.assertRaises(ValueError):
-                plan_core(config)
+                plan_core(c)
 
-    def test_default_cli_is_bounded_core(self):
+    def test_default_cli_uses_focused_plan_without_budget(self):
         plan = json.loads(subprocess.check_output([sys.executable, str(ROOT / 'expand_campaign.py')]))
-        self.assertEqual(plan['budget']['worst_case_runner_seconds'], 14400)
-        self.assertEqual(len(plan['units']), 144)
+        self.assertEqual(len(plan['studies']), 6)
+        self.assertNotIn('budget', plan)
+        self.assertIsNone(plan['execution_policy']['campaign_wall_cutoff_seconds'])
 
 
 if __name__ == '__main__':

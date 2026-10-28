@@ -1,6 +1,6 @@
 # Agent Platform and Harness Architecture Evaluation
 
-**Default research plan:** [architecture-first core campaign](comparison/architecture-core.md), focused on responsibility boundaries and design tradeoffs. Total experiment runtime is budgeted at at most four aggregate runner-hours across three configurations, including setup. Runtime enforcement and adapters remain implementation work; the full catalogue is reference-only.
+**Default research plan:** [two layers, six dimensions, six focused studies](comparison/architecture-core.md). Each layer has three studies that explain architecture mechanisms and tradeoffs. Complete comparison groups are scheduled using pilot estimates; no universal task cutoff or campaign kill budget. Adapters and runtime execution remain implementation work; the full catalogue is reference-only.
 
 
 Architecture research for **Codex, DeepSeek Harness (DSH), and OpenClaw**, across two complementary layers: how a system hosts agent work, and how its harness manages each execution. Six dimensions—reliability, security, performance, cost, extensibility, and observability—apply to both layers.
@@ -11,18 +11,21 @@ The platform layer examines how each system hosts and operates agent work. The h
 
 | Dimension | Platform evaluation | Harness evaluation | Initial work |
 | --- | --- | --- | --- |
-| **Reliability** | Failure isolation, state persistence, and deployment recovery | Context retention, execution recovery, and retry behavior | P01, P02, H03, H04, H05, H07, H08, H18 |
-| **Security** | State and credential ownership, access boundaries, and isolation | Authorization scope and consistency between approval and execution | P02, P05, H11 |
-| **Performance** | Throughput, concurrency, and resource contention | Tool scheduling, execution latency, and dependency handling | P03, H08, H18 |
-| **Resource & cost** | Idle footprint and marginal cost per task | Context processing, retry overhead, and model usage | P03, H03, H04, H07, H18 |
-| **Extensibility** | Entry-point integration and operational control | Component extension and responsibility boundaries | P04, H14 |
-| **Observability** | Fault visibility and diagnosis across system boundaries | Reconstruction of approvals, tool effects, and recovery | P01, P04, H05, H11, H17 |
+| **Reliability** | Task ownership and fault propagation | Context and constraint retention | PA, HA |
+| **Security** | Identity across external control entry points | Tool authorization and dispatch binding | PB, HB |
+| **Performance** | Startup, lifecycle and shared-resource contention | Tool scheduling and failure-path latency | PC, HC |
+| **Resource & cost** | Fixed and marginal lifecycle cost | Total compaction and model-input cost | PC, HA |
+| **Extensibility** | Public control integration | Public tool integration and responsibility boundaries | PB, HB |
+| **Observability** | Ownership and interruption reconstruction | Scheduling/failure/retry reconstruction | PA, HC |
 
 Explore the [experiment catalogue](comparison/experiment-index.md) and [execution protocol](comparison/execution-protocol.md) for scenarios, measurements, acceptance, and readiness.
 
 [![Architecture research progress](https://raw.githubusercontent.com/zyw02/agent-arch/main/comparison/progress.svg?v=ef4c19e9fa90)](https://github.com/zyw02/agent-arch/actions/workflows/comparison-calibration.yml?query=branch%3Amain)
 
 <!-- comparison-dashboard:start -->
+<details>
+<summary>Full catalogue progress (reference)</summary>
+
 ## Research progress
 
 | Layer / experiment | Dimensions | Codex | DSH | OpenClaw |
@@ -45,6 +48,8 @@ Explore the [experiment catalogue](comparison/experiment-index.md) and [executio
 **Latest session calibration:** success (three independent calibration units). [View calibration evidence](https://github.com/zyw02/agent-arch/actions/runs/40623428889).
 
 [OpenClaw architecture study](evaluation/reports/full-20261026-architecture.md) · [Experiment details](comparison/README.md)
+
+</details>
 <!-- comparison-dashboard:end -->
 
 ## Research and evidence

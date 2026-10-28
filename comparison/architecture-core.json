@@ -1,6 +1,6 @@
 {
-  "schema_version": 1,
-  "revision": "architecture-core-20261028-r1",
+  "schema_version": 2,
+  "revision": "focused-two-layer-six-dimension-r1",
   "state": "design_only",
   "default": true,
   "products": [
@@ -9,88 +9,175 @@
     "OpenClaw"
   ],
   "profiles_per_product": 1,
-  "max_aggregate_runner_seconds": 14400,
-  "max_wall_seconds": 14400,
-  "setup_seconds_per_product": 480,
-  "unit_timeout_seconds": 90,
-  "max_units_per_product": 48,
+  "dimensions": [
+    "Reliability",
+    "Security",
+    "Performance",
+    "Resource & cost",
+    "Extensibility",
+    "Observability"
+  ],
+  "layers": [
+    "platform",
+    "harness"
+  ],
   "long_soak_enabled": false,
+  "execution_policy": {
+    "scheduling_unit": "complete_comparison_block",
+    "campaign_wall_cutoff_seconds": null,
+    "universal_unit_timeout_seconds": null,
+    "duration_control": "reduce_scope_before_admission",
+    "start_policy": "calibrate_and_estimate_then_admit_whole_block",
+    "failure_safeguard": "freeze_native_operation_and_no_progress_limits_per_study",
+    "extension_policy": "predeclared_repeat_only_for_conflicting_evidence_no_automatic_matrix_expansion"
+  },
   "studies": [
     {
-      "id": "K01",
+      "id": "PA",
+      "layer": "platform",
+      "title": "Execution ownership and fault domains",
+      "primary_dimensions": [
+        "Reliability",
+        "Observability"
+      ],
       "references": [
-        "P01"
-      ],
-      "conditions": [
-        "baseline",
-        "entry_loss",
-        "core_loss"
-      ],
-      "repetitions": 2,
-      "question": "Where does execution live, and what shares its failure domain?",
-      "alternative_explanations": "Caller-owned versus service-owned execution; isolated versus shared failure domains.",
-      "required_observations": [
-        "process ancestry",
-        "verified kill boundary",
-        "primary and healthy companion outcomes",
-        "surviving model connection"
-      ],
-      "intervention": "Kill only the selected process after request receipt; keep an independent healthy companion in every arm.",
-      "inference_rule": "Survival plus process ownership can identify execution placement and blast radius. Coalesce entry/core faults if they are the same PID.",
-      "limit_and_tradeoff": "Service independence may preserve work but adds shared-service cost; do not infer availability from process topology alone."
-    },
-    {
-      "id": "K02",
-      "references": [
+        "P01",
         "P02",
-        "H05"
+        "P04",
+        "H17"
       ],
       "conditions": [
-        "baseline_no_dedup",
-        "baseline_dedup",
-        "commit_gap_no_dedup",
-        "commit_gap_dedup"
+        "healthy",
+        "client_exit",
+        "execution_owner_exit"
       ],
-      "repetitions": 2,
-      "question": "Which state is durable, and who prevents duplicate external effects?",
-      "alternative_explanations": "Conversation reconstruction versus execution/result persistence versus external-service deduplication.",
+      "question": "Which process owns work, and what shares its failure fate?",
+      "intervention": "At the same confirmed request boundary terminate the client or execution owner; retain a healthy companion in every arm.",
       "required_observations": [
-        "resumed model-visible history",
-        "durable effect receipts",
-        "retry origin",
-        "idempotency-key origin",
-        "acknowledgment or uncertainty"
+        "process ownership map",
+        "verified fault event",
+        "primary and companion terminal results",
+        "native recovery state",
+        "blind native-log reconstruction against independent ledger"
       ],
-      "intervention": "Use native resume after externally confirmed commit but before reply; change only service deduplication for each paired comparison.",
-      "inference_rule": "Deduplication-on/off isolates the external service contribution. Distinguish harness retries, scripted-model decisions and service suppression.",
-      "limit_and_tradeoff": "Replayable history is not an exactly-once guarantee. If M supplies a stable key, never credit its generation to the harness."
+      "inference_rule": "Surviving execution and collateral interruption, corroborated with process/source ownership, locate lifecycle and failure boundaries.",
+      "limit_and_tradeoff": "Client independence trades against resident/shared-service cost. If client and owner are the same PID, report one boundary rather than inventing a distinct layer.",
+      "complete_blocks": 2,
+      "implementation": "planned",
+      "alternative_explanations": "Caller-owned execution versus independently service-owned execution; per-task fault isolation versus shared execution-owner failure.",
+      "completion_requirements": [
+        "matched controls accounted for",
+        "each arm has a classified terminal result or explicit blocked/unsupported/unobservable disposition; missing arms prohibit paired conclusions",
+        "independent observations retained",
+        "mechanism owner/source corroborated or unresolved",
+        "tradeoff and applicability stated"
+      ],
+      "control_conditions": {
+        "healthy": "healthy",
+        "client_exit": "healthy",
+        "execution_owner_exit": "healthy"
+      }
     },
     {
-      "id": "K03",
+      "id": "PB",
+      "layer": "platform",
+      "title": "Public control integration and identity boundary",
+      "primary_dimensions": [
+        "Security",
+        "Extensibility"
+      ],
       "references": [
-        "P05",
-        "H11"
+        "P04",
+        "P05"
       ],
       "conditions": [
-        "allow",
-        "deny",
-        "revoke_before_dispatch"
+        "native_entry_authorized",
+        "public_integration_authorized",
+        "public_integration_unauthorized"
       ],
-      "repetitions": 2,
-      "question": "Which component enforces execution authority, and when?",
-      "alternative_explanations": "UI-only approval versus dispatch-time enforcement; session grant versus operation-bound grant.",
+      "question": "How can another application control the platform, and whose identity/authority governs that control?",
+      "intervention": "Integrate one minimal supervisor through a public native entry, then repeat the same harmless operation with an unauthorized principal.",
       "required_observations": [
-        "approved object and scope",
-        "native policy effective event",
-        "actual dispatch parameters",
-        "independent effect ledger"
+        "integration diff and dependencies",
+        "public interface contract",
+        "principal and enforcement owner",
+        "independent access/effect ledger",
+        "same-principal positive control"
       ],
-      "intervention": "Use the same harmless synthetic write and policy, changing the native approval decision or revoking before dispatch.",
-      "inference_rule": "Reached attempts and effects identify the observed enforcement boundary. Unsupported revocation is a capability result.",
-      "limit_and_tradeoff": "Central authorization can improve consistency while adding coordination; these probes cannot establish general security."
+      "inference_rule": "Compare native and integrated permitted paths, then the reached unauthorized attempt; determine responsibilities the platform provides versus those moved to the integrator or OS.",
+      "limit_and_tradeoff": "A local single-user interface is not presumed multi-tenant. Unsupported identity/remote surfaces remain capability entries; external wrappers must not manufacture product enforcement.",
+      "complete_blocks": 2,
+      "implementation": "planned",
+      "alternative_explanations": "Identity enforced at the native platform entry versus delegated to an integration wrapper or OS; public protocol integration versus core-coupled integration.",
+      "completion_requirements": [
+        "matched controls accounted for",
+        "each arm has a classified terminal result or explicit blocked/unsupported/unobservable disposition; missing arms prohibit paired conclusions",
+        "independent observations retained",
+        "mechanism owner/source corroborated or unresolved",
+        "tradeoff and applicability stated"
+      ],
+      "control_conditions": {
+        "native_entry_authorized": "native_entry_authorized",
+        "public_integration_authorized": "native_entry_authorized",
+        "public_integration_unauthorized": "public_integration_authorized"
+      }
     },
     {
-      "id": "K04",
+      "id": "PC",
+      "layer": "platform",
+      "title": "Lifecycle cost and sharing",
+      "primary_dimensions": [
+        "Performance",
+        "Resource & cost"
+      ],
+      "references": [
+        "P03"
+      ],
+      "conditions": [
+        "idle",
+        "cold_one_task",
+        "warm_one_task",
+        "four_tasks_sequential",
+        "four_tasks_concurrent"
+      ],
+      "question": "What fixed and marginal costs arise from lifecycle and resource-sharing choices?",
+      "intervention": "On a matched calibrated host compare cold/warm invocation, then the same four tasks sequentially and concurrently; use one short fixed observation window chosen by pilot.",
+      "required_observations": [
+        "same workload acceptance",
+        "process tree and service baseline",
+        "startup and completion time",
+        "CPU seconds and integrated RSS",
+        "fixture and observer overhead",
+        "model and tool request counts"
+      ],
+      "inference_rule": "Separate startup from task cost and compare identical total work at different concurrency; tie scaling/contending resources to actual ownership.",
+      "limit_and_tradeoff": "Describe lifecycle tradeoffs and short-window contention. Do not infer sustained capacity, p99, leaks or long-run reliability. No arrival-rate sweep or soak test.",
+      "complete_blocks": 2,
+      "implementation": "planned",
+      "alternative_explanations": "Amortized resident-service startup and shared resources versus per-invocation process cost; useful sharing versus contention under identical total work.",
+      "completion_requirements": [
+        "matched controls accounted for",
+        "each arm has a classified terminal result or explicit blocked/unsupported/unobservable disposition; missing arms prohibit paired conclusions",
+        "independent observations retained",
+        "mechanism owner/source corroborated or unresolved",
+        "tradeoff and applicability stated"
+      ],
+      "control_conditions": {
+        "idle": "idle",
+        "cold_one_task": "cold_one_task",
+        "warm_one_task": "cold_one_task",
+        "four_tasks_sequential": "cold_one_task",
+        "four_tasks_concurrent": "four_tasks_sequential"
+      }
+    },
+    {
+      "id": "HA",
+      "layer": "harness",
+      "title": "Context retention and information cost",
+      "primary_dimensions": [
+        "Reliability",
+        "Resource & cost"
+      ],
       "references": [
         "H03",
         "H04"
@@ -99,114 +186,125 @@
         "same_history_uncompacted",
         "same_history_compacted"
       ],
-      "repetitions": 2,
-      "question": "How does context maintenance change the information actually sent to the model?",
-      "alternative_explanations": "Preserved authoritative constraints versus lossy transformation or downstream reassembly.",
+      "question": "How does context maintenance trade information retention against model input cost?",
+      "intervention": "Use the same feasible long history containing protected constraints, a rule update and a completed-step receipt; vary only native compaction.",
       "required_observations": [
-        "identical input-history hash",
-        "native compaction event",
-        "transformed component output",
+        "matched history hash",
+        "compaction source and boundary",
+        "component transformation",
         "next independent model request",
-        "KEEP/DROP and updated-rule retention"
+        "constraint/task acceptance",
+        "all model calls and usage including compaction"
       ],
-      "intervention": "Use identical long history with a documented native compaction toggle or trigger; inspect the next model request, not only component output.",
-      "inference_rule": "A changed component output counts as integration only if the next request contains the change. If matched uncompressed history cannot run, mark the causal comparison unresolved.",
-      "limit_and_tradeoff": "Fewer input tokens trade against retention. Scripted summaries expose plumbing only; real summarization quality requires a separately declared real-model result."
+      "inference_rule": "A retained constraint counts as integrated only if it reaches the next model request and supports the accepted task; account for summary-generation cost as well as reduced input.",
+      "limit_and_tradeoff": "If no matched native control is available, report observational evidence only. Synthetic summaries establish plumbing, not semantic summarization quality. Conversation retention does not establish exactly-once external effects.",
+      "complete_blocks": 2,
+      "implementation": "planned",
+      "alternative_explanations": "Constraint-preserving context transformation adopted by the next request versus lossy transformation or ignored component output; net input savings versus cost transferred into summarization.",
+      "completion_requirements": [
+        "matched controls accounted for",
+        "each arm has a classified terminal result or explicit blocked/unsupported/unobservable disposition; missing arms prohibit paired conclusions",
+        "independent observations retained",
+        "mechanism owner/source corroborated or unresolved",
+        "tradeoff and applicability stated"
+      ],
+      "control_conditions": {
+        "same_history_uncompacted": "same_history_uncompacted",
+        "same_history_compacted": "same_history_uncompacted"
+      }
     },
     {
-      "id": "K05",
+      "id": "HB",
+      "layer": "harness",
+      "title": "Tool integration and authorization binding",
+      "primary_dimensions": [
+        "Security",
+        "Extensibility"
+      ],
       "references": [
-        "H08"
-      ],
-      "conditions": [
-        "one_read",
-        "four_independent_reads"
-      ],
-      "repetitions": 3,
-      "question": "Where are calls serialized, and who owns concurrency?",
-      "alternative_explanations": "Concurrent dispatch versus harness serialization versus fixture/service serialization.",
-      "required_observations": [
-        "model call-batch event",
-        "tool start/end intervals",
-        "call/result identity",
-        "native dispatch trace",
-        "fixture-only concurrency control"
-      ],
-      "intervention": "Deliver four independent reads together in one model response; compare with one read and confirm T itself handles overlap.",
-      "inference_rule": "Overlapping T intervals support concurrent dispatch. No overlap alone does not locate the bottleneck: require dispatch traces or source corroboration.",
-      "limit_and_tradeoff": "Concurrency reduces critical path but adds ordering/cancellation work. Do not claim dependent scheduling from provider-imposed ordering."
-    },
-    {
-      "id": "K06",
-      "references": [
-        "P03",
-        "P04"
-      ],
-      "conditions": [
-        "idle",
-        "one_task",
-        "four_tasks"
-      ],
-      "repetitions": 2,
-      "question": "What is the fixed and marginal cost of the chosen execution lifecycle?",
-      "alternative_explanations": "Resident shared service versus per-invocation processes; shared resource contention versus isolated task cost.",
-      "required_observations": [
-        "30-second idle RSS/CPU",
-        "cold-start timing",
-        "process count",
-        "one/four-task integrated resources",
-        "task correctness",
-        "fixture and observer overhead"
-      ],
-      "intervention": "Use a short fixed workload and at most 30 seconds of observation per condition; model delay and host remain matched.",
-      "inference_rule": "Report fixed footprint and descriptive marginal changes alongside process ownership; four-task contention is a short-window observation.",
-      "limit_and_tradeoff": "This identifies lifecycle costs, not maximum sustainable throughput, memory leaks or long-run stability."
-    },
-    {
-      "id": "K07",
-      "references": [
+        "H11",
         "H14"
       ],
       "conditions": [
-        "normal_extension",
-        "extension_fault"
+        "native_tool_allowed",
+        "extension_tool_allowed",
+        "extension_tool_denied",
+        "extension_target_changed"
       ],
-      "repetitions": 3,
-      "question": "Which responsibilities cross an extension boundary, and how does its failure propagate?",
-      "alternative_explanations": "External protocol/service isolation versus in-process callback coupling; host-owned versus extension-owned lifecycle.",
+      "question": "When a tool is extended, who owns schema, permissions and the binding from approval to dispatch?",
+      "intervention": "Implement one equivalent harmless operation through a public tool extension. Compare its permitted path with the native tool, deny it, and change the approved target through a supported public control.",
       "required_observations": [
-        "public interface and adapter surface",
-        "extension process ownership",
-        "fault boundary",
-        "native error or recovery",
-        "healthy control and retained product state"
+        "extension/configuration diff",
+        "schema and lifecycle owner",
+        "approved operation/scope",
+        "dispatched arguments",
+        "independent effect receipt",
+        "native-policy provenance"
       ],
-      "intervention": "Select one common read-only tool extension boundary per product; inject one fault through the extension itself and keep the native host control available.",
-      "inference_rule": "Combine native interface/source evidence with fault propagation; a successful plugin call alone does not prove extensibility or isolation.",
-      "limit_and_tradeoff": "Broad in-process hooks may reduce integration work but couple failures; attribute protection to actual process/exception boundaries."
+      "inference_rule": "An extension is verified by actual invocation and authority behavior. A reached denied or changed-target attempt must be compared to the same extension\u2019s allowed control.",
+      "limit_and_tradeoff": "Public surfaces may differ; compare ownership and guarantees, not raw line counts. Unsupported target mutation is a capability result; do not modify core code to create the intervention.",
+      "complete_blocks": 2,
+      "implementation": "planned",
+      "alternative_explanations": "Native authorization preserved across tool extension versus an extension dispatch path that bypasses or broadens approved scope.",
+      "completion_requirements": [
+        "matched controls accounted for",
+        "each arm has a classified terminal result or explicit blocked/unsupported/unobservable disposition; missing arms prohibit paired conclusions",
+        "independent observations retained",
+        "mechanism owner/source corroborated or unresolved",
+        "tradeoff and applicability stated"
+      ],
+      "control_conditions": {
+        "native_tool_allowed": "native_tool_allowed",
+        "extension_tool_allowed": "native_tool_allowed",
+        "extension_tool_denied": "extension_tool_allowed",
+        "extension_target_changed": "extension_tool_allowed"
+      }
     },
     {
-      "id": "K08",
+      "id": "HC",
+      "layer": "harness",
+      "title": "Scheduling and failure diagnosis",
+      "primary_dimensions": [
+        "Performance",
+        "Observability"
+      ],
       "references": [
-        "H18"
+        "H07",
+        "H08",
+        "H17"
       ],
       "conditions": [
-        "normal_task",
-        "one_tool_failure"
+        "four_reads_serial_reference",
+        "four_reads_batched",
+        "four_reads_batched_one_failure"
       ],
-      "repetitions": 3,
-      "question": "Does an observed mechanism matter to task delivery?",
-      "alternative_explanations": "Mechanism-level recovery that helps completion versus an apparent mechanism with no demonstrated task benefit.",
+      "question": "Where are tools scheduled, and can native traces explain the resulting latency and failure?",
+      "intervention": "Use the same four independent read operations. Prefer a public native serial/concurrent control; otherwise label sequential-model-dispatch as a protocol reference. Inject one reached tool failure in the batched arm.",
       "required_observations": [
-        "accepted final artifact",
-        "independent task oracle",
-        "native retry trace",
-        "usage completeness",
-        "link to K01-K07 mechanism evidence"
+        "model-roundtrip count/time",
+        "dispatch and T start/end intervals",
+        "call/result matching",
+        "successful and failed results",
+        "native terminal outcome",
+        "blind diagnosis with withheld fixture truth"
       ],
-      "intervention": "Use three distinct small task instances, pairing each normal run with one reached tool failure under the same real-model configuration.",
-      "inference_rule": "Three pairs are illustrative task validation, not a population benchmark. If model access, budget or acceptance is unavailable, leave this study untested.",
-      "limit_and_tradeoff": "Do not use scripted-model success as evidence of real task quality."
+      "inference_rule": "Use observed intervals plus native/source evidence to locate concurrency or serialization. Reconstruct the failed call and retry owner from native records before consulting fixture truth.",
+      "limit_and_tradeoff": "If the provider serializes calls, latency differences include model roundtrips and cannot be attributed wholly to the harness. Trace diagnosis reuses these runs; no separate fault matrix.",
+      "complete_blocks": 2,
+      "implementation": "planned",
+      "alternative_explanations": "Harness-concurrent dispatch versus producer-imposed or tool-service serialization; native causal trace versus disconnected events that cannot explain retry ownership.",
+      "completion_requirements": [
+        "matched controls accounted for",
+        "each arm has a classified terminal result or explicit blocked/unsupported/unobservable disposition; missing arms prohibit paired conclusions",
+        "independent observations retained",
+        "mechanism owner/source corroborated or unresolved",
+        "tradeoff and applicability stated"
+      ],
+      "control_conditions": {
+        "four_reads_serial_reference": "four_reads_serial_reference",
+        "four_reads_batched": "four_reads_serial_reference",
+        "four_reads_batched_one_failure": "four_reads_batched"
+      }
     }
   ]
 }
