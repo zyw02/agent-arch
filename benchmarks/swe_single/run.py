@@ -318,6 +318,7 @@ print(json.dumps({'paths': {k: disk_tree(v) for k, v in paths.items()},
             self.write_summary()
             # Rendering is independent of solving/scoring and also retains
             # calibration failures in a directly reviewable report.
+            subprocess.run(['python3', str(HERE / 'reconcile.py'), str(self.out)], check=True)
             subprocess.run(['python3', str(HERE / 'report.py'), str(self.out)], check=True)
         subprocess.run(['docker', 'network', 'rm', self.network], capture_output=True)
         # Only task-owned scratch trees, with raw state already archived above.

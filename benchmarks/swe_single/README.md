@@ -1,5 +1,7 @@
 # Five-harness single-task comparison
 
+中文执行协议与指标口径见 [measurement-contract.zh-CN.md](measurement-contract.zh-CN.md)。
+
 SWE-SINGLE-01 compares DSH, OpenClaw, Hermes, Codex and Claude Code on the same
 DeepSeek model, with native tools and orchestration. This separately authorized
 experiment does not change the historical OpenClaw campaign or its frozen scope.

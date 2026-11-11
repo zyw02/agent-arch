@@ -121,9 +121,15 @@ def inspect_native(product, home, stdout, output):
                     if isinstance(block, dict) and block.get('type') in ('toolCall', 'tool_use'):
                         tools.append(dict(id=block.get('id'), name=block.get('name')))
         tools = list({t['id']: t for t in tools}.values())
-        result['native_tool_calls'] = len(tools) if transcript_rows else None
+        meta = (result.get('native_result') or {}).get('meta', {})
+        tool_summary = meta.get('toolSummary', {})
+        result['native_tool_calls'] = len(tools) if transcript_rows else tool_summary.get('calls')
+        result['native_tool_summary'] = tool_summary or None
         result['native_usage'] = [r['message']['usage'] for r in transcript_rows
                                   if isinstance(r.get('message'), dict) and 'usage' in r['message']]
+        if not result['native_usage']:
+            result['native_usage'] = meta.get('agentMeta', {}).get('usage')
+        result['native_tool_count_scope'] = 'JSONL transcripts when available, otherwise native CLI meta.toolSummary.calls; SQLite state retained'
         result['transcript_event_types'] = dict(Counter(r.get('type', 'unknown') for r in transcript_rows))
     result['native_tools'] = tools
     (output / 'native-summary.json').write_text(json.dumps(result, indent=2, ensure_ascii=False) + '\n')
