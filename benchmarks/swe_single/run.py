@@ -86,6 +86,24 @@ class Campaign:
             initial_storage=disk_tree(self.initial)))
         shutil.copyfile(HERE / 'protocol.json', self.out / 'protocol.json')
         shutil.copyfile(HERE / 'task.json', self.out / 'controller-task.json')
+        inventory_code = (HERE / 'resources.py').read_text() + '''
+paths = {
+    'npm_shared_install': '/opt/products',
+    'dsh_package': '/opt/products/node_modules/@deepseek-ai/dsh',
+    'openclaw_package': '/opt/products/node_modules/openclaw',
+    'codex_package': '/opt/products/node_modules/@openai/codex',
+    'claude_package': '/opt/products/node_modules/@anthropic-ai/claude-code',
+    'hermes_source': '/opt/hermes',
+    'hermes_environment': '/opt/hermes-venv',
+    'task_environment': '/opt/testenv',
+    'shared_python': '/opt/python',
+}
+print(json.dumps({'paths': {k: disk_tree(v) for k, v in paths.items()},
+    'semantics': 'Package directory diagnostics; shared or optional dependencies are not exclusive standalone product footprints'}))
+'''
+        inventory = execute(['docker', 'run', '--rm', '--network', 'none', '--read-only',
+                             '--entrypoint', 'python3', self.args.image, '-c', inventory_code])
+        dump(self.out / 'installation-storage.json', json.loads(inventory.stdout))
 
     def grade(self, workspace, output):
         output.mkdir(parents=True, exist_ok=True)
@@ -297,6 +315,9 @@ class Campaign:
             relay.close()
         if self.out.exists():
             self.write_summary()
+            # Rendering is independent of solving/scoring and also retains
+            # calibration failures in a directly reviewable report.
+            subprocess.run(['python3', str(HERE / 'report.py'), str(self.out)], check=True)
         subprocess.run(['docker', 'network', 'rm', self.network], capture_output=True)
         # Only task-owned scratch trees, with raw state already archived above.
         if self.work.name.startswith(self.out.name + '-working-') and self.work.parent == self.out.parent:

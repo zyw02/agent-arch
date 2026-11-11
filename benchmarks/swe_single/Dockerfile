@@ -1,10 +1,10 @@
-FROM ghcr.io/astral-sh/uv:0.9.9 AS uv
+FROM ghcr.io/astral-sh/uv:0.13.7 AS uv
 FROM node:24.22.1-bookworm-slim
 COPY --from=uv /uv /usr/local/bin/uv
 ENV UV_PYTHON_INSTALL_DIR=/opt/python UV_CACHE_DIR=/tmp/uv-cache
-RUN apt-get update -qq && apt-get install -y --no-install-recommends git ca-certificates curl ripgrep zstd time procps python3 && rm -rf /var/lib/apt/lists/*
+RUN apt-get update -qq && apt-get install -y --no-install-recommends git ca-certificates curl ripgrep zstd time procps python3 build-essential && rm -rf /var/lib/apt/lists/*
 RUN uv python install 3.9.20 3.14.0
-RUN npm install --prefix /opt/products --save-exact --no-audit --no-fund @deepseek-ai/dsh@0.2.2-rc.1 openclaw@2026.11.3 @openai/codex@0.167.1 @anthropic-ai/claude-code@2.1.322
+RUN npm install --prefix /opt/products --save-exact --no-audit --no-fund --dangerously-allow-all-scripts @deepseek-ai/dsh@0.2.2-rc.1 openclaw@2026.11.3 @openai/codex@0.167.1 @anthropic-ai/claude-code@2.1.322
 RUN git clone --filter=blob:none --no-checkout https://github.com/NousResearch/hermes-agent.git /opt/hermes && git -C /opt/hermes checkout 84a0301415edd6d1385207ec96e4d7f2b6c1fcd9 && cd /opt/hermes && UV_PROJECT_ENVIRONMENT=/opt/hermes-venv uv sync --frozen --no-dev --extra anthropic --python 3.14.0 && rm -rf /opt/hermes/.git
 RUN uv venv --seed /opt/testenv --python 3.9.20 && uv pip install --python /opt/testenv/bin/python setuptools==75.1.0 wheel==0.44.0 setuptools-scm==8.1.0 atomicwrites==1.4.1 attrs==23.1.0 more-itertools==10.1.0 packaging==23.1 pluggy==0.13.1 py==1.11.0 wcwidth==0.2.6 six==1.16.0 hypothesis==6.56.4 iniconfig==1.1.1 toml==0.10.2
 COPY task-source /testbed
