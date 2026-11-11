@@ -13,6 +13,7 @@ import threading
 import time
 import urllib.error
 import urllib.request
+from urllib.parse import urlsplit
 
 from accounting import merge_counters, normalize_usage, summarize_requests
 
@@ -157,11 +158,16 @@ class Relay:
                 directory.mkdir()
                 observation = None
                 try:
-                    route = ROUTES.get(self.path)
+                    parsed = urlsplit(self.path)
+                    route = ROUTES.get(parsed.path)
+                    if parsed.query and not (route and route[0] == 'messages' and parsed.query == 'beta=true'):
+                        route = None
                     if route is None:
                         row['blocked_reason'] = 'endpoint_not_admitted'
                         return self.send_json(404, dict(error=dict(message='endpoint not admitted')))
                     api, upstream_path = route
+                    if parsed.query:
+                        upstream_path += '?' + parsed.query
                     row['api'] = api
                     size = int(self.headers.get('Content-Length', 0))
                     if not 0 < size <= 16 * 1024**2:

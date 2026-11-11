@@ -124,6 +124,36 @@ class StorageAndScoringTests(unittest.TestCase):
 
 
 class RelayIntegrationTests(unittest.TestCase):
+    def test_native_messages_beta_query_reaches_fixed_upstream_with_usage(self):
+        class Response(io.BytesIO):
+            status = 200
+            headers = {'Content-Type': 'application/json'}
+        class Opener:
+            def open(self, req, timeout):
+                self.request = req
+                return Response(json.dumps(dict(id='fixture', model='deepseek-flash',
+                    usage=dict(input_tokens=80, cache_read_input_tokens=20,
+                               cache_creation_input_tokens=0, output_tokens=10))).encode())
+        with tempfile.TemporaryDirectory() as temp:
+            relay = Relay('test-secret-not-in-artifacts', '127.0.0.1', temp, 'test')
+            relay.opener = Opener()
+            body = json.dumps(dict(model='deepseek-flash', messages=[dict(role='user', content='original')])).encode()
+            try:
+                request = urllib.request.Request(relay.base + '/anthropic/v1/messages?beta=true', data=body)
+                self.assertEqual(json.loads(urllib.request.urlopen(request).read())['id'], 'fixture')
+                self.assertEqual(relay.opener.request.full_url,
+                                 'https://api.deepseek.com/anthropic/v1/messages?beta=true')
+                bad = urllib.request.Request(relay.base + '/anthropic/v1/messages?other=true', data=body)
+                with self.assertRaises(urllib.error.HTTPError):
+                    urllib.request.urlopen(bad)
+            finally:
+                relay.close()
+            ledger = json.loads((Path(temp) / 'ledger.json').read_text())
+            self.assertTrue(ledger['summary']['usage_complete'])
+            self.assertEqual(ledger['summary']['provider_attempts'], 1)
+            self.assertEqual(ledger['summary']['blocked_requests'], 1)
+            self.assertEqual(ledger['summary']['input_total'], 100)
+
     def test_real_http_frontend_retains_usage_and_never_writes_credential(self):
         class Response(io.BytesIO):
             status = 200
