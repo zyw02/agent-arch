@@ -1,13 +1,20 @@
-name: DeepSeek connection preflight
+name: DeepSeek preflight and five-harness SWE benchmark
 
 on:
   workflow_dispatch:
+    inputs:
+      mode:
+        description: Connection only, five native calibrations, or the bounded formal campaign
+        type: choice
+        default: connection
+        options: [connection, calibration, formal]
 
 permissions:
   contents: read
 
 jobs:
   connection:
+    if: inputs.mode == 'connection'
     runs-on: ubuntu-24.04
     timeout-minutes: 3
     steps:
@@ -24,4 +31,47 @@ jobs:
           name: deepseek-connection-metadata
           path: ${{ runner.temp }}/deepseek-connection.json
           retention-days: 3
+          if-no-files-found: error
+  five-harness:
+    if: inputs.mode != 'connection'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 270
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - name: Validate measurement controls without model calls
+        run: python3 -m unittest discover -s benchmarks/swe_single/tests -v
+      - name: Install the controller's compressed-log reader
+        run: sudo apt-get update -qq && sudo apt-get install -y --no-install-recommends zstd
+      - name: Prepare a gold-free immutable task build context
+        run: python3 benchmarks/swe_single/prepare.py --output "$RUNNER_TEMP/swe-preparation"
+      - name: Build one common pinned runtime for all five native CLIs
+        run: |
+          docker build --progress=plain -t five-harness-swe "$RUNNER_TEMP/swe-preparation/context"
+          mkdir -p "$RUNNER_TEMP/swe-evidence"
+          cp "$RUNNER_TEMP/swe-preparation/preparation.json" "$RUNNER_TEMP/swe-evidence/preparation.json"
+          docker image inspect five-harness-swe > "$RUNNER_TEMP/swe-evidence/built-image.json"
+      - name: Run hidden-test controls, native tool and usage calibration, then selected campaign
+        env:
+          DEEPSEEK_API_KEY: ${{ secrets.DEEPSEEK_API_KEY }}
+          BENCH_MODE: ${{ inputs.mode }}
+        run: |
+          sudo --preserve-env=DEEPSEEK_API_KEY,GITHUB_SHA,GITHUB_RUN_ID python3 benchmarks/swe_single/run.py \
+            --image five-harness-swe --output "$RUNNER_TEMP/swe-evidence/campaign" \
+            --mode "$BENCH_MODE" --deadline-seconds 14400
+      - name: Check retained artifacts for the real provider credential
+        id: audit
+        if: always()
+        env:
+          DEEPSEEK_API_KEY: ${{ secrets.DEEPSEEK_API_KEY }}
+        run: sudo --preserve-env=DEEPSEEK_API_KEY python3 benchmarks/swe_single/audit_artifacts.py "$RUNNER_TEMP/swe-evidence"
+      - name: Upload raw evidence and every run result
+        if: always() && steps.audit.outcome == 'success'
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: five-harness-swe-${{ inputs.mode }}-${{ github.run_id }}
+          path: ${{ runner.temp }}/swe-evidence/
+          retention-days: 14
+          compression-level: 3
           if-no-files-found: error

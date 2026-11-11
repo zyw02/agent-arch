@@ -1,0 +1,20 @@
+{
+  "retrieved_utc": "2026-11-11T03:58:00Z",
+  "source": "https://api-docs.deepseek.com/quick_start/pricing.md",
+  "source_sha256": "07e68850f45ff5afc35a10f03831673beb5667d9c31d2b386ddf6c465b9e7eaf",
+  "model": "deepseek-flash",
+  "documented_backend": "DeepSeek-V4.1-Flash-1017",
+  "usd_per_million": {
+    "off_peak": {
+      "input_noncache_billed": "0.15",
+      "cache_read": "0.003",
+      "output_total": "0.6"
+    },
+    "peak": {
+      "input_noncache_billed": "0.3",
+      "cache_read": "0.006",
+      "output_total": "1.2"
+    }
+  },
+  "purpose": "standardized reference tariffs; no invoice or calendar-specific billing claim"
+}
