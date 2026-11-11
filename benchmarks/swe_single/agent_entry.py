@@ -59,7 +59,7 @@ def launch(product, base, prompt):
         write(home / '.claude.json', json.dumps(dict(hasCompletedOnboarding=True)))
         command = ['claude', '-p', '--verbose', '--output-format', 'stream-json',
                    '--permission-mode', 'bypassPermissions', '--model', model,
-                   '--disallowedTools', 'WebSearch,WebFetch', prompt]
+                   '--disallowedTools', 'WebSearch,WebFetch', '--', prompt]
     elif product == 'codex':
         env.update(BENCH_API_KEY=token)
         write(home / '.codex/config.toml', f'''model = "{model}"
@@ -80,12 +80,12 @@ requires_openai_auth = false
                    '--dangerously-bypass-approvals-and-sandbox', prompt]
     elif product == 'hermes':
         root = home / '.hermes'
-        env.update(HERMES_HOME=str(root), OPENAI_API_KEY=token,
-                   OPENAI_BASE_URL=base + '/v1', HERMES_YOLO_MODE='1',
+        env.update(HERMES_HOME=str(root), DEEPSEEK_API_KEY=token,
+                   DEEPSEEK_BASE_URL=base + '/v1', HERMES_YOLO_MODE='1',
                    TERMINAL_CWD='/testbed', TERMINAL_ENV='local')
         write(root / 'config.yaml', f'''model:
   default: {model}
-  provider: custom
+  provider: deepseek
   base_url: {base}/v1
   api_key: {token}
 agent:
@@ -99,7 +99,7 @@ memory:
   user_profile_enabled: false
 ''')
         command = ['/opt/hermes-venv/bin/hermes', '-z', prompt, '--model', model,
-                   '--provider', 'custom', '--reasoning', 'high', '--toolsets', 'terminal,file,todo,delegation,code_execution',
+                   '--provider', 'deepseek', '--reasoning', 'high', '--toolsets', 'terminal,file,todo,delegation,code_execution',
                    '--usage-file', str(home / 'native-usage.json')]
     else:
         raise ValueError('Unknown product')

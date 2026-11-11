@@ -288,6 +288,7 @@ print(json.dumps({'paths': {k: disk_tree(v) for k, v in paths.items()},
                                                                  for i in range(self.protocol['execution']['formal_repeats'])]))
         smoke_prompt = ('Read BENCH_RECEIPT.txt, run Python to compute the SHA-256 of its exact bytes, '
                         'and write the hex digest to BENCH_RESULT.txt. Use your local tools to do this. '
+                        'Also verify that the Python you use can import the preinstalled pytest. '
                         'Do not change other files. Work in /testbed.')
         calibration = [self.run_product(product, 'smoke-' + product, smoke_prompt, smoke=True) for product in products]
         if not all(r['calibration_passed'] for r in calibration):
