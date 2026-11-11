@@ -1,2 +1,4 @@
 # Preserve exported CSV bytes so the retained plot/input SHA-256 stays valid.
 *.csv -text whitespace=cr-at-eol
+# Matplotlib's generated SVG paths contain meaningful whitespace separators.
+comparison.svg -whitespace
