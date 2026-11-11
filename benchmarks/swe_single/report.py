@@ -69,6 +69,10 @@ def main():
                 row[f'{scope}_final_{metric}'] = storage['final'][scope][metric]
                 row[f'{scope}_delta_{metric}'] = storage['delta'][scope][metric]
                 row[f'{scope}_sampled_peak_{metric}'] = storage['sampled_peak'][scope][metric]
+        for stage in ('final', 'delta'):
+            for metric in ('logical_bytes', 'allocated_bytes', 'files', 'directories'):
+                row[f'writable_{stage}_{metric}'] = sum(storage[stage][scope][metric]
+                                                        for scope in ('workspace', 'home', 'tmp'))
         for category in ('logs_and_transcripts', 'database_and_journal', 'cache', 'other'):
             for metric in ('logical_bytes', 'allocated_bytes', 'files'):
                 row[f'home_{category}_{metric}'] = storage['final']['home'].get('categories', {}).get(category, {}).get(metric, 0)
@@ -141,6 +145,15 @@ def main():
                          f"{number(memory / 1024**2 if memory is not None else None)} | "
                          f"{number(logical / 1024**2)} | {number(allocated / 1024**2)} |")
         lines += ['', '每次运行长度不同，资源占用需结合逐次完成状态阅读；以上不含共享安装镜像和评测器归档。', '',
+                  '### 三处可写目录的合计增长', '',
+                  '| Harness | 逻辑增长 MiB 中位数 | 分配增长 MiB 中位数 | 文件数增长中位数 |',
+                  '| --- | --- | --- | --- |']
+        for product, values in grouped.items():
+            lines.append(f"| {product} | {number(median(values, 'writable_delta_logical_bytes') / 1024**2)} | "
+                         f"{number(median(values, 'writable_delta_allocated_bytes') / 1024**2)} | "
+                         f"{number(median(values, 'writable_delta_files'), 0)} |")
+        lines += ['', '合计先逐次相加工作区、home、/tmp 的最终减初始值，再取中位数。它包含测试产生的缓存和临时文件，',
+                  '不能当作框架空闲占用；例如 Hermes 把部分测试临时目录放在 home 内，其他框架更多写到 /tmp。', '',
                   '| 运行 | 完成 | F2P | P2P | 秒 | 请求 | usage 完整 |',
                   '| --- | --- | --- | --- | --- | --- | --- |']
         for row in rows:
@@ -154,7 +167,7 @@ def main():
     lines += ['', '## 数据边界', '',
               '- 原始证据在各运行目录的 provider、native-state、resources、patch 和 grading 文件中；逐次指标见 runs.csv。',
               '- 输入总数包含缓存读取；reasoning 若返回则属于输出子集，不重复相加。缺失字段为未知。',
-              '- 存储区分工作区、会话目录、临时目录；逻辑大小、分配块和设备 I/O 分别记录。采样峰值只是下界。',
+              '- 存储区分工作区、home、临时目录；逻辑大小、分配块和设备 I/O 分别记录。运行中扫描非原子，采样最大值是近似观测；最终值来自暂停后的扫描。',
               '- 费用使用冻结价格估算，不能视为账单金额；不完整运行只保留已知小计。',
               '- 原生工具数、步数、压缩和重试的语义不同，仅用于诊断。', '']
     (args.campaign / 'report.md').write_text('\n'.join(lines))

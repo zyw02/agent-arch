@@ -108,7 +108,8 @@ class Collector:
         self.paths = dict(workspace=Path(workspace), home=Path(home), tmp=Path(scratch))
         self.initial = {k: disk_tree(v) for k, v in self.paths.items()}
         self.last_storage = self.initial
-        self.peaks = {k: dict(v) for k, v in self.initial.items()}
+        self.peaks = {k: {m: v[m] for m in ('logical_bytes', 'allocated_bytes', 'files', 'directories')}
+                      for k, v in self.initial.items()}
         self.storage_limit = storage_limit
         self.storage_limit_exceeded = False
         self.stop_event = threading.Event()
@@ -157,6 +158,7 @@ class Collector:
             cgroup = self.last_cgroup
         result = dict(initial=self.initial, final=final, sampled_peak=self.peaks,
                       storage_peak_exact=False, storage_peak_sampling_seconds=2,
+                      storage_peak_semantics='Non-atomic scans during execution: approximate maxima, not exact peaks or guaranteed bounds under concurrent mutations. Final scan runs while the container is paused.',
                       cgroup=cgroup, samples=self.samples,
                       sample_interval_seconds=0.5, storage_limit_exceeded=self.storage_limit_exceeded,
                       io_semantics='cgroup device I/O, not logical application reads/writes',

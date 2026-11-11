@@ -52,7 +52,7 @@ validated JUnit scorer, not an official leaderboard submission.
 | Reasoning and cache creation | Raw protocol-specific usage fields | Optional subset/coverage fields; reasoning is never added to inclusive output |
 | Estimated cost | Frozen DeepSeek peak/off-peak tariff applied to each recorded usage | Same reference tariffs for all products; known subtotal retained if incomplete; not an invoice |
 | CPU, memory, device I/O and PIDs | Linux cgroup v2 counters and 0.5-second samples | All container descendants; memory.peak is kernel peak when available; I/O is physical device accounting |
-| Workspace, home and /tmp storage | Independent initial/final filesystem scans and 2-second samples | Logical regular-file bytes, allocated blocks, file/directory counts; sampled peak is a lower bound |
+| Workspace, home and /tmp storage | Independent initial/final filesystem scans and 2-second samples | Logical regular-file bytes, allocated blocks, file/directory counts; running scans are non-atomic approximate maxima; final scan is paused |
 | Native state breakdown | Frozen user-home files classified as logs, DB/WAL/SHM, caches and other | Raw native state archived; filesystem metadata overhead excluded |
 | Package footprint | Exact package lock and common image metadata | Shared dependencies and common runtimes must not be misrepresented as exclusive product size |
 | Patch size | Initial/final source hashes and independent unified diff | Added, deleted, modified files and source-policy violations |

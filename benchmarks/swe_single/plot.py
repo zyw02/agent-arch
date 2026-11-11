@@ -26,8 +26,8 @@ def main():
         ('Native run duration', 'Seconds', lambda r: float(r['wall_seconds']), False),
         ('Provider input + output', 'Million tokens',
          lambda r: (float(r['input_total']) + float(r['output_total'])) / 1e6 if r['usage_complete'] == 'True' else None, False),
-        ('Final native state + temporary files', 'MiB, logical regular-file bytes',
-         lambda r: (float(r['home_final_logical_bytes']) + float(r['tmp_final_logical_bytes'])) / 1024**2, True),
+        ('Writable storage growth: all three paths', 'MiB, logical regular-file growth',
+         lambda r: float(r['writable_delta_logical_bytes']) / 1024**2, True),
         ('Container memory peak', 'MiB, kernel cgroup peak',
          lambda r: float(r['memory_peak_bytes']) / 1024**2 if r['memory_peak_bytes'] else None, True),
     ]
@@ -69,9 +69,10 @@ def main():
                            Line2D([], [], color='#26323B', label='All-run median')],
                   loc='upper left', bbox_to_anchor=(.047, .935), frameon=False, ncol=3)
     figure.text(.055, .025,
-        'Each dot is one formal run; offsets from left to right identify blocks 1, 2, 3. Storage and memory axes are logarithmic.\n'
-        'Missing usage is excluded only from the token panel. Installation and controller trace storage are excluded.\n'
-        'Unresolved runs can consume less by failing early. One historical task does not establish a general ranking.',
+        'Each dot is one formal run; left-to-right offsets identify blocks 1, 2, 3. Storage and memory axes are logarithmic.\n'
+        'Storage is file growth across workspace, home and /tmp; installation and controller trace storage are excluded.\n'
+        'Missing usage is excluded only from the token panel. Unresolved runs can consume less by failing early.\n'
+        'One public historical task, three runs per harness: these observations do not establish a general ranking.',
         fontsize=9, color='#54616C', va='bottom')
     figure.tight_layout(rect=[.035, .125, .98, .86], h_pad=3)
     figure.savefig(args.campaign / 'comparison.png', dpi=170, facecolor='white')
