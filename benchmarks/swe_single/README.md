@@ -133,6 +133,14 @@ Scan all files and decompressed native archives for the real credential before
 artifact publication. Preserve calibration failures as environment/collection
 failures; never replace them with task failures or fabricated zero usage.
 
+After downloading an evidence artifact, regenerate the analysis with
+`python3 benchmarks/swe_single/report.py <campaign-directory>` and
+`python3 benchmarks/swe_single/reconcile.py <campaign-directory>`.
+The optional `plot.py <campaign-directory>` uses Matplotlib to show every formal
+observation in PNG/SVG; its version and input/script hashes accompany the plot.
+Native/provider reconciliation names each native counter's scope and preserves
+differences instead of treating agreement as proof of completeness.
+
 Primary sources: [SWE-bench](https://www.swebench.com/SWE-bench/guides/quickstart/),
 [frozen dataset](https://huggingface.co/datasets/princeton-nlp/SWE-bench_Verified/tree/c104f840cc67f8b6eec6f759ebc8b2693d585d4a),
 [DeepSeek Messages](https://api-docs.deepseek.com/guides/anthropic_api/),
