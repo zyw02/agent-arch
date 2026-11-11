@@ -37,11 +37,17 @@ def project(product, native):
     if product == 'hermes' and isinstance(usage, dict):
         auxiliary = usage.get('auxiliary')
         values = [usage] + ([auxiliary] if isinstance(auxiliary, dict) else [])
-        return dict(input_total=sum_fields(values, ('input_tokens',)),
+        # In the pinned DeepSeek adapter, main input is inclusive, while the
+        # auxiliary title counter stores uncached input separately from caches.
+        main_input = sum_fields([usage], ('input_tokens',))
+        auxiliary_input = (sum_fields([auxiliary], ('input_tokens', 'cache_read_tokens', 'cache_write_tokens'))
+                           if isinstance(auxiliary, dict) else 0)
+        total_input = main_input + auxiliary_input if main_input is not None and auxiliary_input is not None else None
+        return dict(input_total=total_input,
                     cache_read=sum_fields(values, ('cache_read_tokens',)),
                     output_total=sum_fields(values, ('output_tokens',)),
                     native_api_calls=sum_fields(values, ('api_calls',)),
-                    scope='Native usage file main plus explicit auxiliary counters; failed attempts may lack usage')
+                    scope='Pinned DeepSeek usage file: inclusive main input plus cache-exclusive auxiliary input and explicit auxiliary caches; late or failed attempts may be outside the snapshot')
     return dict(input_total=None, cache_read=None, output_total=None, native_api_calls=None,
                 scope='Native projection unavailable; raw evidence retained')
 

@@ -12,6 +12,7 @@ from accounting import merge_counters, normalize_usage, summarize_requests, unio
 from grading import compare_source, grading_workspace, parse_junit, score
 from relay import Observation, Relay, effective_request
 from resources import disk_tree
+from reconcile import project
 
 
 class AccountingTests(unittest.TestCase):
@@ -73,6 +74,20 @@ class AccountingTests(unittest.TestCase):
             effective_request('responses', dict(model='other'), 16384)
         with self.assertRaises(ValueError):
             effective_request('responses', dict(model='deepseek-flash', tools=[dict(type='web_search')]), 16384)
+
+
+class NativeProjectionTests(unittest.TestCase):
+    def test_hermes_main_and_auxiliary_use_different_input_boundaries(self):
+        # Retained block-1 Hermes counters: provider input=186372, cache=175744.
+        native = dict(native_usage=dict(input_tokens=185933, cache_read_tokens=175488,
+            output_tokens=5888, api_calls=11,
+            auxiliary=dict(input_tokens=183, cache_read_tokens=256, cache_write_tokens=0,
+                           output_tokens=157, api_calls=1)))
+        actual = project('hermes', native)
+        self.assertEqual(actual['input_total'], 186372)
+        self.assertEqual(actual['cache_read'], 175744)
+        self.assertEqual(actual['output_total'], 6045)
+        self.assertEqual(actual['native_api_calls'], 12)
 
 
 class StorageAndScoringTests(unittest.TestCase):
