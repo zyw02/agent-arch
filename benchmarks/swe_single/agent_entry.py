@@ -53,7 +53,10 @@ def launch(product, base, prompt):
         env.update(ANTHROPIC_BASE_URL=base + '/anthropic', ANTHROPIC_AUTH_TOKEN=token,
                    ANTHROPIC_API_KEY=token, ANTHROPIC_MODEL=model,
                    ANTHROPIC_DEFAULT_OPUS_MODEL=model, ANTHROPIC_DEFAULT_SONNET_MODEL=model,
-                   ANTHROPIC_DEFAULT_HAIKU_MODEL=model, CLAUDE_CODE_SUBAGENT_MODEL=model,
+                   ANTHROPIC_DEFAULT_HAIKU_MODEL=model, ANTHROPIC_DEFAULT_FABLE_MODEL=model,
+                   ANTHROPIC_CUSTOM_MODEL_OPTION=model,
+                   ANTHROPIC_CUSTOM_MODEL_OPTION_SUPPORTED_CAPABILITIES='effort,thinking,adaptive_thinking,interleaved_thinking',
+                   CLAUDE_CODE_MAX_CONTEXT_TOKENS='1048576', CLAUDE_CODE_SUBAGENT_MODEL=model,
                    CLAUDE_CODE_EFFORT_LEVEL='high', CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC='1',
                    CLAUDE_CODE_DISABLE_AUTO_MEMORY='1', DISABLE_AUTOUPDATER='1')
         write(home / '.claude.json', json.dumps(dict(hasCompletedOnboarding=True)))

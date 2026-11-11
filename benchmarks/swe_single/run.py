@@ -261,11 +261,14 @@ print(json.dumps({'paths': {k: disk_tree(v) for k, v in paths.items()},
         dump(output / 'result.json', result)
         self.results.append(result)
         self.write_summary()
-        print(json.dumps(dict(run_id=run_id, product=product, smoke=smoke,
+        progress = json.dumps(dict(run_id=run_id, product=product, smoke=smoke,
                               native_execution_ok=result['native_execution_ok'],
                               resolved=result['resolved'], usage_complete=result['provider']['usage_complete'],
                               wall_seconds=result['wall_seconds'],
-                              calibration_passed=result.get('calibration_passed')), ensure_ascii=False), flush=True)
+                              calibration_passed=result.get('calibration_passed')), ensure_ascii=False)
+        print(progress, flush=True)
+        if os.environ.get('GITHUB_RUN_ID'):
+            print('::notice title=Five-harness run complete::' + progress, flush=True)
         execute(['docker', 'rm', container])
         self.containers.remove(container)
         return result
