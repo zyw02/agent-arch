@@ -37,12 +37,13 @@ def launch(product, base, prompt):
         config = home / '.openclaw/openclaw.json'
         write(config, json.dumps(dict(
             gateway=dict(mode='local', auth=dict(mode='token', token=token)),
-            models=dict(providers=dict(bench=dict(baseUrl=base + '/v1', apiKey=token,
+            models=dict(providers=dict(deepseek=dict(baseUrl=base + '/v1', apiKey=token,
                 api='openai-completions', models=[dict(id=model, name='Frozen DeepSeek',
                     reasoning=True, input=['text'], contextWindow=1048576, maxTokens=16384)]))),
             agents=dict(defaults=dict(workspace='/testbed', skipBootstrap=True,
-                model=dict(primary='bench/' + model), thinkingDefault='high')),
-            tools=dict(profile='coding', deny=['web_search', 'web_fetch', 'browser', 'memory_search', 'memory_get']),
+                model=dict(primary='deepseek/' + model), thinkingDefault='high')),
+            tools=dict(profile='coding', exec=dict(mode='full'),
+                       deny=['web_search', 'web_fetch', 'browser', 'memory_search', 'memory_get']),
             cron=dict(enabled=False))))
         env.update(OPENCLAW_STATE_DIR=str(config.parent), OPENCLAW_CONFIG_PATH=str(config),
                    OPENCLAW_SKIP_CHANNELS='1')
