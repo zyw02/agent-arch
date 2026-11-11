@@ -10,7 +10,7 @@ import urllib.request
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from accounting import merge_counters, normalize_usage, summarize_requests, union_seconds
 from grading import compare_source, grading_workspace, parse_junit, score
-from relay import Relay, effective_request
+from relay import Observation, Relay, effective_request
 from resources import disk_tree
 
 
@@ -45,7 +45,8 @@ class AccountingTests(unittest.TestCase):
                          dict(details=dict(cached=30, other=3)))
 
     def test_retry_and_missing_terminal_do_not_look_complete(self):
-        good = dict(forwarded=True, settled=True, terminal=True, started_ns=0, ended_ns=10**9,
+        good = dict(forwarded=True, settled=True, terminal=True, final_usage_observed=True,
+                    started_ns=0, ended_ns=10**9,
                     normalized_usage=normalize_usage('chat', dict(prompt_tokens=100, prompt_cache_hit_tokens=20,
                                                                 completion_tokens=10)))
         unknown = dict(forwarded=True, settled=True, terminal=False, http_status=503,
@@ -124,6 +125,28 @@ class StorageAndScoringTests(unittest.TestCase):
 
 
 class RelayIntegrationTests(unittest.TestCase):
+    def test_initial_usage_and_stop_without_final_usage_are_incomplete(self):
+        row = dict(forwarded=True, settled=True, stream=True, started_ns=0, ended_ns=10**9)
+        observer = Observation('messages', row)
+        observer.event(dict(type='message_start', message=dict(usage=dict(
+            input_tokens=80, cache_read_input_tokens=20, cache_creation_input_tokens=0, output_tokens=0))), 1)
+        observer.event(dict(type='message_stop'), 2)
+        observer.finish()
+        self.assertTrue(row['terminal'])
+        self.assertFalse(summarize_requests([row])['usage_complete'])
+        observer.event(dict(type='message_delta', usage=dict(output_tokens=10)), 3)
+        observer.finish()
+        self.assertTrue(summarize_requests([row])['usage_complete'])
+
+    def test_nonstream_responses_usage_is_top_level(self):
+        row = dict(forwarded=True, settled=True, terminal=True, stream=False,
+                   started_ns=0, ended_ns=10**9)
+        observer = Observation('responses', row)
+        observer.event(dict(type='response', id='fixture', usage=dict(
+            input_tokens=100, input_tokens_details=dict(cached_tokens=20), output_tokens=10)), 1)
+        observer.finish()
+        self.assertTrue(summarize_requests([row])['usage_complete'])
+
     def test_native_messages_beta_query_reaches_fixed_upstream_with_usage(self):
         class Response(io.BytesIO):
             status = 200

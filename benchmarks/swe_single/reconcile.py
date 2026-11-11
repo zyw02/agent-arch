@@ -51,6 +51,10 @@ def main():
     parser.add_argument('campaign', type=Path)
     args = parser.parse_args()
     summary = json.loads((args.campaign / 'summary.json').read_text())
+    verified_path = args.campaign / 'validated-accounting.json'
+    if verified_path.exists():
+        summary.setdefault('latest_accounting', {}).update({
+            k: v['summary'] for k, v in json.loads(verified_path.read_text())['runs'].items()})
     rows = []
     for result in summary['results']:
         provider = summary.get('latest_accounting', {}).get(result['run_id'], result['provider'])

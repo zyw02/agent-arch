@@ -82,7 +82,8 @@ def union_seconds(intervals):
 
 def summarize_requests(records):
     forwarded = [r for r in records if r.get('forwarded')]
-    known = [r for r in forwarded if r.get('normalized_usage', {}).get('core_complete')]
+    known = [r for r in forwarded if r.get('normalized_usage', {}).get('core_complete')
+             and r.get('final_usage_observed')]
     result = dict(provider_attempts=len(forwarded), blocked_requests=len(records) - len(forwarded),
                   usage_known_attempts=len(known), usage_unknown_attempts=len(forwarded) - len(known),
                   usage_complete=bool(forwarded) and len(known) == len(forwarded)

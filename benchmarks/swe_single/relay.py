@@ -67,7 +67,7 @@ class Observation:
             return
         row = self.row
         typ = data.get('type')
-        response = data.get('response', {}) if self.api == 'responses' else data
+        response = data.get('response', data) if self.api == 'responses' else data
         message = data.get('message', {}) if typ == 'message_start' else response
         for key in ('id', 'model'):
             if message.get(key):
@@ -76,6 +76,16 @@ class Observation:
         if isinstance(usage, dict):
             self.usage = merge_counters(self.usage, usage)
             row.setdefault('usage_events', []).append(dict(monotonic_ns=now, usage=usage))
+            final = not row.get('stream', True)
+            if self.api == 'messages':
+                final |= typ == 'message_delta'
+            elif self.api == 'responses':
+                final |= typ in ('response.completed', 'response.incomplete', 'response.failed')
+            elif self.api == 'chat':
+                final |= data.get('choices') == [] or any(
+                    c.get('finish_reason') is not None for c in data.get('choices', []))
+            if final and usage:
+                row['final_usage_observed'] = True
         if typ == 'message_stop' or typ in ('response.completed', 'response.incomplete', 'response.failed'):
             row['terminal'] = True
             row['terminal_kind'] = typ
@@ -152,6 +162,7 @@ class Relay:
                     row = dict(run_id=owner.run_id, request_index=index, path=self.path,
                                started_ns=started, started_utc=datetime.now(timezone.utc).isoformat(),
                                forwarded=False, settled=False, terminal=False,
+                               final_usage_observed=False,
                                response_bytes=0, raw_usage=None, user_agent=self.headers.get('User-Agent'))
                     owner.records.append(row)
                 directory = owner.output / f'{index:04d}'
