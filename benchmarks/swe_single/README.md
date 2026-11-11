@@ -134,8 +134,13 @@ artifact publication. Preserve calibration failures as environment/collection
 failures; never replace them with task failures or fabricated zero usage.
 
 After downloading an evidence artifact, regenerate the analysis with
+`python3 benchmarks/swe_single/verify_usage.py <campaign-directory>`, then
 `python3 benchmarks/swe_single/report.py <campaign-directory>` and
 `python3 benchmarks/swe_single/reconcile.py <campaign-directory>`.
+The verifier replays retained wire events and requires final usage evidence;
+original ledgers and run results stay unchanged. The report separates all-run
+consumption from successful-run consumption, and exports storage categories,
+device I/O, coverage, and known partial token subtotals in `runs.csv`.
 The optional `plot.py <campaign-directory>` uses Matplotlib to show every formal
 observation in PNG/SVG; its version and input/script hashes accompany the plot.
 Native/provider reconciliation names each native counter's scope and preserves

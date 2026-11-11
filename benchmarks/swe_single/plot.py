@@ -66,12 +66,12 @@ def main():
                     x=.055, ha='left', y=.98, fontsize=17, fontweight='bold')
     figure.legend(handles=[Line2D([], [], color='#53626B', marker='o', linestyle='None', label='Resolved'),
                            Line2D([], [], color='#53626B', marker='x', linestyle='None', label='Unresolved'),
-                           Line2D([], [], color='#26323B', label='Median')],
+                           Line2D([], [], color='#26323B', label='All-run median')],
                   loc='upper right', bbox_to_anchor=(.96, .98), frameon=False, ncol=3)
     figure.text(.055, .025,
         'Each dot is one formal run; horizontal offsets identify blocks. Storage and memory axes are logarithmic.\n'
         'Missing usage is excluded only from the token panel. Installation and controller trace storage are excluded.\n'
-        'One historical task, three runs per harness: these observations do not establish a general ranking.',
+        'Unresolved runs can consume less by failing early. One historical task does not establish a general ranking.',
         fontsize=9, color='#54616C', va='bottom')
     figure.tight_layout(rect=[.035, .125, .98, .90], h_pad=3)
     figure.savefig(args.campaign / 'comparison.png', dpi=170, facecolor='white')
