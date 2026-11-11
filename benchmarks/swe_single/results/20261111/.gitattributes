@@ -1,0 +1,2 @@
+# Preserve exported CSV bytes so the retained plot/input SHA-256 stays valid.
+*.csv -text
