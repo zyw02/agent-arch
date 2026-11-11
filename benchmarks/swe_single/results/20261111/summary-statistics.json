@@ -211,6 +211,82 @@
       "peak_reference_usd_total": "0.116589060"
     }
   },
+  "rankings": {
+    "scope": "Single-task observed rankings; presentation criteria specified after collection; original execution and grading unchanged.",
+    "speed_metric": "Arithmetic mean of all three formal completion times; all three succeeded.",
+    "cost_metric": "Total complete provider-priced model consumption of three formal runs divided by three successful deliveries; same frozen peak tariff for all products.",
+    "speed": [
+      {
+        "rank": 1,
+        "product": "codex",
+        "mean_wall_seconds": 168.54854498866666
+      },
+      {
+        "rank": 2,
+        "product": "dsh",
+        "mean_wall_seconds": 182.29638472833335
+      },
+      {
+        "rank": 3,
+        "product": "hermes",
+        "mean_wall_seconds": 225.48278974366667
+      },
+      {
+        "rank": 4,
+        "product": "openclaw",
+        "mean_wall_seconds": 239.139567847
+      },
+      {
+        "rank": 5,
+        "product": "claude",
+        "mean_wall_seconds": 278.82290521666664
+      }
+    ],
+    "model_cost": [
+      {
+        "rank": 1,
+        "product": "hermes",
+        "mean_successful_delivery_usd": "0.020580568",
+        "three_run_total_usd": "0.061741704"
+      },
+      {
+        "rank": 2,
+        "product": "openclaw",
+        "mean_successful_delivery_usd": "0.028597564",
+        "three_run_total_usd": "0.085792692"
+      },
+      {
+        "rank": 3,
+        "product": "dsh",
+        "mean_successful_delivery_usd": "0.034465076",
+        "three_run_total_usd": "0.103395228"
+      },
+      {
+        "rank": 4,
+        "product": "claude",
+        "mean_successful_delivery_usd": "0.038863020",
+        "three_run_total_usd": "0.116589060"
+      },
+      {
+        "rank": 5,
+        "product": "codex",
+        "mean_successful_delivery_usd": "0.039235724",
+        "three_run_total_usd": "0.117707172"
+      }
+    ],
+    "secondary_diagnostics": [
+      "Agent Loop",
+      "scheduling/queueing",
+      "context management/compression",
+      "usage attribution",
+      "approval automation"
+    ],
+    "optional_dimensions": [
+      "model routing",
+      "compute/storage occupancy and quota management"
+    ],
+    "composite_score": null
+  },
   "formal_runs": 15,
   "formal_successes": 15,
   "formal_provider_attempts": 394,
@@ -225,5 +301,5 @@
   "experiment_unknown_attempts": 1,
   "experiment_peak_known_subtotal_usd": "0.529414776",
   "statistics_semantics": "Each column is independently aggregated; medians of token partitions need not sum to the median inclusive input. Three runs of one fixed public task, no population inference.",
-  "report_generator_sha256": "874921dcf4aa4f94480319abc4f7994a6f8297dcb412e02ecc5241ad71aa1345"
+  "report_generator_sha256": "099824aee202bee394805654b20d58163f143b3c50b7ef36f0f1afedd6b4e076"
 }

@@ -1,6 +1,6 @@
 # 五个 harness 同模型单题实测：结果与计量复核
 
-已完成 1 题 × 5 家 × 3 次正式运行。五家都是 **3/3 通过**，本题没有拉开完成率；耗时、资源和存储出现差别，但三次观测的波动较大。
+已完成 1 题 × 5 家 × 3 次正式运行。五家都是 **3/3 通过**。按平均完成时间，**Codex 第一**；按每次成功交付的模型参考费用，**Hermes 第一**。两项独立排序见 [完成快慢与资源成本](rankings.md)，逐次耗时、长尾和资源诊断保留在下文。
 
 题目为 SWE-bench Verified `pytest-dev__pytest-7490`，人工难度 15 分钟至 1 小时。模型统一为 `deepseek-flash`、high reasoning；同一镜像、2 CPU 配额、4 GiB 内存、单次 600 秒。每次 home、工作区、临时目录均重新创建。
 固定版本：DSH 0.2.2-rc.1；OpenClaw 2026.11.3；Hermes 84a0301415edd6d1385207ec96e4d7f2b6c1fcd9；Codex 0.167.1；Claude Code 2.1.322。原生协议分别为 Messages、Chat、Chat、Responses、Messages；提示词、工具描述与编排策略保留各家原生实现。

@@ -32,12 +32,23 @@ for product in products:
   input_total=sum(v['input_total'] for v in vs),cache_read=sum(v['cache_read'] for v in vs),output_total=sum(v['output_total'] for v in vs),
   peak_reference_usd_median=str(statistics.median(Decimal(v['reference_cost_usd']['peak']['complete_estimate']) for v in vs)),
   peak_reference_usd_total=str(sum(Decimal(v['reference_cost_usd']['peak']['complete_estimate']) for v in vs)))
+assert all(s['resolved']==3 and s['usage_complete_runs']==3 for s in stats.values())
+speed_order=sorted(products,key=lambda p:stats[p]['wall_mean'])
+cost_order=sorted(products,key=lambda p:Decimal(stats[p]['peak_reference_usd_total']))
+rankings=dict(scope='Single-task observed rankings; presentation criteria specified after collection; original execution and grading unchanged.',
+ speed_metric='Arithmetic mean of all three formal completion times; all three succeeded.',
+ cost_metric='Total complete provider-priced model consumption of three formal runs divided by three successful deliveries; same frozen peak tariff for all products.',
+ speed=[dict(rank=i+1,product=p,mean_wall_seconds=stats[p]['wall_mean']) for i,p in enumerate(speed_order)],
+ model_cost=[dict(rank=i+1,product=p,mean_successful_delivery_usd=str(Decimal(stats[p]['peak_reference_usd_total'])/3),
+                 three_run_total_usd=stats[p]['peak_reference_usd_total']) for i,p in enumerate(cost_order)],
+ secondary_diagnostics=['Agent Loop','scheduling/queueing','context management/compression','usage attribution','approval automation'],
+ optional_dimensions=['model routing','compute/storage occupancy and quota management'],composite_score=None)
 formal_values=[accounting[r['run_id']]['summary'] for r in rows]
 formal_peak=sum(Decimal(v['reference_cost_usd']['peak']['complete_estimate']) for v in formal_values)
 formal_off=sum(Decimal(v['reference_cost_usd']['off_peak']['complete_estimate']) for v in formal_values)
 all_campaigns=[C]+sorted((ROOT/'preliminary-calibrations').glob('*/campaign'))
 all_values=[v['summary'] for c in all_campaigns for v in json.loads((c/'validated-accounting.json').read_text())['runs'].values()]
-payload=dict(products=stats,formal_runs=15,formal_successes=15,formal_provider_attempts=394,formal_known_attempts=394,
+payload=dict(products=stats,rankings=rankings,formal_runs=15,formal_successes=15,formal_provider_attempts=394,formal_known_attempts=394,
  formal_input_total=sum(v['input_total'] for v in formal_values),formal_output_total=sum(v['output_total'] for v in formal_values),
  formal_reasoning_known_attempts=sum(v['reasoning_subset_coverage']['known'] for v in formal_values),
  formal_peak_reference_usd=str(formal_peak),formal_off_peak_reference_usd=str(formal_off),
@@ -48,8 +59,31 @@ payload=dict(products=stats,formal_runs=15,formal_successes=15,formal_provider_a
  statistics_semantics='Each column is independently aggregated; medians of token partitions need not sum to the median inclusive input. Three runs of one fixed public task, no population inference.',
  report_generator_sha256=hashlib.sha256(Path(__file__).read_bytes()).hexdigest())
 (ROOT/'summary-statistics.json').write_text(json.dumps(payload,indent=2)+'\n')
+rank_lines=['# 完成快慢与资源成本：两项独立排序','',
+ f"本题实测结果：**完成速度由 {labels[speed_order[0]]} 胜出；模型成本由 {labels[cost_order[0]]} 胜出。**",'',
+ '比较基础：同一题、同一模型、同一资源上限，每家 3 次正式运行全部成功。正式模型请求核心 usage 为 394/394 完整。','',
+ '## 完成快慢','',
+ '主指标为三次完整运行的算术平均耗时，保留长尾对实际等待时间的影响；中位数仅作辅助。','',
+ '| 排名 | Harness | 平均完成时间秒 |','| --- | --- | --- |']
+for i,p in enumerate(speed_order,1):
+ rank_lines.append(f"| {i} | {labels[p]} | {stats[p]['wall_mean']:.2f} |")
+rank_lines += ['', '## 资源成本：本轮以模型费用计','',
+ '主指标为三次正式运行全部模型参考费用 ÷ 三次成功交付，统一使用冻结峰时价。输入未缓存、缓存读、输出分别计价，包含辅助和尾部请求。算力、存储及模型路由暂作扩展项。','',
+ '| 排名 | Harness | 每次成功交付平均参考费用 USD | 三次合计 USD |','| --- | --- | --- | --- |']
+for i,p in enumerate(cost_order,1):
+ total=Decimal(stats[p]['peak_reference_usd_total'])
+ rank_lines.append(f'| {i} | {labels[p]} | {total/3:.6f} | {total:.6f} |')
+rank_lines += ['',
+ '费用为统一价格估算，不是实际账单；本协议的谷时参考价格各桶均为峰时的一半，因此改用谷时参考价不改变上述成本排序。',
+ '',
+ '排序是采集结束后按明确的评价重点生成的单题观测结果；原始题目、运行条件、评分和数据均保持不变。没有合成一个加权总分。',
+ '',
+ 'Agent Loop、调度排队、上下文压缩、用量归因和审批自动化用于解释快慢与成本。已有证据单列，未触发的能力保留未测，不能把未测当零分。',
+ '',
+ '[逐次数据](runs.csv) · [统计与排序 JSON](summary-statistics.json)','']
+(ROOT/'rankings.md').write_text('\n'.join(rank_lines))
 lines=['# 五个 harness 同模型单题实测：结果与计量复核','',
- '已完成 1 题 × 5 家 × 3 次正式运行。五家都是 **3/3 通过**，本题没有拉开完成率；耗时、资源和存储出现差别，但三次观测的波动较大。','',
+ f"已完成 1 题 × 5 家 × 3 次正式运行。五家都是 **3/3 通过**。按平均完成时间，**{labels[speed_order[0]]} 第一**；按每次成功交付的模型参考费用，**{labels[cost_order[0]]} 第一**。两项独立排序见 [完成快慢与资源成本](rankings.md)，逐次耗时、长尾和资源诊断保留在下文。",'',
  '题目为 SWE-bench Verified `pytest-dev__pytest-7490`，人工难度 15 分钟至 1 小时。模型统一为 `deepseek-flash`、high reasoning；同一镜像、2 CPU 配额、4 GiB 内存、单次 600 秒。每次 home、工作区、临时目录均重新创建。',
  '固定版本：DSH 0.2.2-rc.1；OpenClaw 2026.11.3；Hermes 84a0301415edd6d1385207ec96e4d7f2b6c1fcd9；Codex 0.167.1；Claude Code 2.1.322。原生协议分别为 Messages、Chat、Chat、Responses、Messages；提示词、工具描述与编排策略保留各家原生实现。',
  '执行时间为 2026-11-11 北京时间约 12:37–13:35，另有此前构建与接入校验；已在五小时时限内完成。','',

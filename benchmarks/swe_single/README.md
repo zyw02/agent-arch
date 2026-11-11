@@ -9,6 +9,9 @@ experiment does not change the historical OpenClaw campaign or its frozen scope.
 Completed first campaign: [2026-11-11 results and retained evidence](results/20261111/README.md).
 All five products resolved 3/3; the report preserves individual observations,
 resource/storage differences and exact provider-usage coverage without a general ranking.
+The requested [completion-speed and model-cost rankings](results/20261111/rankings.md)
+use arithmetic mean duration and mean complete model cost per successful delivery,
+respectively. They are separate observations of this fixed task.
 
 The five-hour session constraint controls task selection and execution: one
 SWE-bench Verified task, three independent runs per product, ten minutes per run
