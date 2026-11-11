@@ -6,6 +6,10 @@ SWE-SINGLE-01 compares DSH, OpenClaw, Hermes, Codex and Claude Code on the same
 DeepSeek model, with native tools and orchestration. This separately authorized
 experiment does not change the historical OpenClaw campaign or its frozen scope.
 
+Completed first campaign: [2026-11-11 results and retained evidence](results/20261111/README.md).
+All five products resolved 3/3; the report preserves individual observations,
+resource/storage differences and exact provider-usage coverage without a general ranking.
+
 The five-hour session constraint controls task selection and execution: one
 SWE-bench Verified task, three independent runs per product, ten minutes per run
 (150 minutes maximum formal agent time). Leave time for installation, gold/base

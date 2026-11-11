@@ -1,0 +1,32 @@
+{
+  "execution_run_id": 42959922129,
+  "execution_url": "https://github.com/zyw02/agent-arch/actions/runs/42959922129",
+  "execution_commit": "9b281ab6893cbb1ee357f5e3cb9b28cf8d092d71",
+  "analysis_commit": "e7b81b367b7ad9d905088871dc584e9ef8a1dfb2",
+  "image_id": "sha256:38ada54ea0b176681ec0075f374c5fe493d2ddeee9f2c0e0c558b52cba2b8108",
+  "artifact_id": 13831741854,
+  "original_artifact_sha256": "sha256:18b50969d50e42d8627c4c60756f1bc5c1901957634bb231229804e16c2d4373",
+  "original_artifact_bytes": 51402374,
+  "original_artifact_files": 1974,
+  "all_original_members_matched_on_initial_extraction": true,
+  "rewritten_derived_files": [
+    "campaign/native-provider-reconciliation.json",
+    "campaign/report.md",
+    "campaign/runs.csv"
+  ],
+  "all_other_original_files_unchanged": true,
+  "frozen_execution_protocol_sha256": "3555033ff0ab486c4ba96fd5028dc2afe9e494aba8c3339aa9ed093ac31e5c0d",
+  "analysis_scripts_sha256": {
+    "verify_usage.py": "4f381c2d6641e659ea8c440a0a6d0a8bf7666e25644a6d5024d12cb08f9f9720",
+    "report.py": "910d419abaff1918c76ce941e80a7067311a0872d0477fe7a52d1a7fd2e10b43",
+    "reconcile.py": "60311983d8ca4c30a0fb42c2bcb5696724b7f60ea527d9dc024e409db7244057",
+    "plot.py": "b9a31092ac70217782fd7277910dc8d5ff9784b456cb33cceeb964dd925c772d",
+    "accounting.py": "158ff01a285510ed06edc57d48b81bf1282e39d9473f3122ed30b9fa1d11e178",
+    "relay.py": "4c82cad530a0db6927d505e0923558b41fabd0e76fccae6238eaa192c0b3f761"
+  },
+  "precision_clarifications": [
+    "Running storage scans are non-atomic approximate maxima; main storage comparisons use final-minus-initial paused snapshots.",
+    "Only four scalar metrics in the original sampled_peak object were updated; initial-copy categories and scan metadata in that object are not peak measurements.",
+    "No solving conditions or grades were changed after the outcomes; source/archive hashes distinguish execution from postprocessing."
+  ]
+}

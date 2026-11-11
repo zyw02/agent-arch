@@ -1,0 +1,3916 @@
+{
+  "runs": {
+    "block-1-claude": {
+      "summary": {
+        "provider_attempts": 27,
+        "blocked_requests": 0,
+        "usage_known_attempts": 27,
+        "usage_unknown_attempts": 0,
+        "usage_complete": true,
+        "terminal_responses": 27,
+        "http_error_attempts": 0,
+        "request_bytes": 3761628,
+        "response_bytes": 2137843,
+        "provider_duration_union_seconds": 119.930108389,
+        "actual_cost_usd": null,
+        "known_input_total": 866274,
+        "input_total": 866274,
+        "known_input_noncache_billed": 30178,
+        "input_noncache_billed": 30178,
+        "known_cache_read": 836096,
+        "cache_read": 836096,
+        "known_output_total": 17849,
+        "output_total": 17849,
+        "known_reasoning_subset": 0,
+        "reasoning_subset_coverage": {
+          "known": 0,
+          "total": 27
+        },
+        "reasoning_subset": null,
+        "known_cache_write": 0,
+        "cache_write_coverage": {
+          "known": 27,
+          "total": 27
+        },
+        "cache_write": 0,
+        "reference_cost_usd": {
+          "off_peak": {
+            "known_subtotal": "0.017744388",
+            "complete_estimate": "0.017744388"
+          },
+          "peak": {
+            "known_subtotal": "0.035488776",
+            "complete_estimate": "0.035488776"
+          }
+        },
+        "cost_semantics": "Frozen 2026-11-11 DeepSeek tariffs, standardized peak/off-peak references, not actual time-window billing or invoice"
+      },
+      "ledger_sha256": "5dd55858765e2b62a23ae19c198d1d68c084cfa39ef166dee1459b5e5484e9c3",
+      "forwarded_attempts": [
+        {
+          "request_index": 0,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 1,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 2,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 3,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 4,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 5,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 6,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 7,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 8,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 9,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 10,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 11,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 12,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 13,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 14,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 15,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 16,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 17,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 18,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 19,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 20,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 21,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 22,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 23,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 24,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 25,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 26,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        }
+      ]
+    },
+    "block-1-codex": {
+      "summary": {
+        "provider_attempts": 19,
+        "blocked_requests": 0,
+        "usage_known_attempts": 19,
+        "usage_unknown_attempts": 0,
+        "usage_complete": true,
+        "terminal_responses": 19,
+        "http_error_attempts": 0,
+        "request_bytes": 3197570,
+        "response_bytes": 3635078,
+        "provider_duration_union_seconds": 92.508740407,
+        "actual_cost_usd": null,
+        "known_input_total": 796884,
+        "input_total": 796884,
+        "known_input_noncache_billed": 39380,
+        "input_noncache_billed": 39380,
+        "known_cache_read": 757504,
+        "cache_read": 757504,
+        "known_output_total": 16198,
+        "output_total": 16198,
+        "known_reasoning_subset": 6266,
+        "reasoning_subset_coverage": {
+          "known": 19,
+          "total": 19
+        },
+        "reasoning_subset": 6266,
+        "known_cache_write": 0,
+        "cache_write_coverage": {
+          "known": 0,
+          "total": 19
+        },
+        "cache_write": null,
+        "reference_cost_usd": {
+          "off_peak": {
+            "known_subtotal": "0.017898312",
+            "complete_estimate": "0.017898312"
+          },
+          "peak": {
+            "known_subtotal": "0.035796624",
+            "complete_estimate": "0.035796624"
+          }
+        },
+        "cost_semantics": "Frozen 2026-11-11 DeepSeek tariffs, standardized peak/off-peak references, not actual time-window billing or invoice"
+      },
+      "ledger_sha256": "1c5983e6b1c6e95397d6110095d2e2bd9a9804feb347ec7bcce039e708ad43eb",
+      "forwarded_attempts": [
+        {
+          "request_index": 0,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 1,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 2,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 3,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 4,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 5,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 6,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 7,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 8,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 9,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 10,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 11,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 12,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 13,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 14,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 15,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 16,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 17,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 18,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        }
+      ]
+    },
+    "block-1-dsh": {
+      "summary": {
+        "provider_attempts": 24,
+        "blocked_requests": 0,
+        "usage_known_attempts": 24,
+        "usage_unknown_attempts": 0,
+        "usage_complete": true,
+        "terminal_responses": 24,
+        "http_error_attempts": 0,
+        "request_bytes": 4360534,
+        "response_bytes": 1460600,
+        "provider_duration_union_seconds": 93.611588336,
+        "actual_cost_usd": null,
+        "known_input_total": 1039668,
+        "input_total": 1039668,
+        "known_input_noncache_billed": 45236,
+        "input_noncache_billed": 45236,
+        "known_cache_read": 994432,
+        "cache_read": 994432,
+        "known_output_total": 12516,
+        "output_total": 12516,
+        "known_reasoning_subset": 0,
+        "reasoning_subset_coverage": {
+          "known": 0,
+          "total": 24
+        },
+        "reasoning_subset": null,
+        "known_cache_write": 0,
+        "cache_write_coverage": {
+          "known": 24,
+          "total": 24
+        },
+        "cache_write": 0,
+        "reference_cost_usd": {
+          "off_peak": {
+            "known_subtotal": "0.017278296",
+            "complete_estimate": "0.017278296"
+          },
+          "peak": {
+            "known_subtotal": "0.034556592",
+            "complete_estimate": "0.034556592"
+          }
+        },
+        "cost_semantics": "Frozen 2026-11-11 DeepSeek tariffs, standardized peak/off-peak references, not actual time-window billing or invoice"
+      },
+      "ledger_sha256": "b08ed553d3989e1dc1f36a3ea7de43a7892333ea67efb3eacd032133d99791dc",
+      "forwarded_attempts": [
+        {
+          "request_index": 0,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 1,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 2,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 3,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 4,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 5,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 6,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 7,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 8,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 9,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 10,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 11,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 12,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 13,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 14,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 15,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 16,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 17,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 18,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 19,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 20,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 21,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 22,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 23,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        }
+      ]
+    },
+    "block-1-hermes": {
+      "summary": {
+        "provider_attempts": 12,
+        "blocked_requests": 4,
+        "usage_known_attempts": 12,
+        "usage_unknown_attempts": 0,
+        "usage_complete": true,
+        "terminal_responses": 12,
+        "http_error_attempts": 0,
+        "request_bytes": 905696,
+        "response_bytes": 1733743,
+        "provider_duration_union_seconds": 41.382853687,
+        "actual_cost_usd": null,
+        "known_input_total": 186372,
+        "input_total": 186372,
+        "known_input_noncache_billed": 10628,
+        "input_noncache_billed": 10628,
+        "known_cache_read": 175744,
+        "cache_read": 175744,
+        "known_output_total": 6045,
+        "output_total": 6045,
+        "known_reasoning_subset": 4371,
+        "reasoning_subset_coverage": {
+          "known": 12,
+          "total": 12
+        },
+        "reasoning_subset": 4371,
+        "known_cache_write": 0,
+        "cache_write_coverage": {
+          "known": 0,
+          "total": 12
+        },
+        "cache_write": null,
+        "reference_cost_usd": {
+          "off_peak": {
+            "known_subtotal": "0.005748432",
+            "complete_estimate": "0.005748432"
+          },
+          "peak": {
+            "known_subtotal": "0.011496864",
+            "complete_estimate": "0.011496864"
+          }
+        },
+        "cost_semantics": "Frozen 2026-11-11 DeepSeek tariffs, standardized peak/off-peak references, not actual time-window billing or invoice"
+      },
+      "ledger_sha256": "fee3bde477636bf064f14767683b89206a16f372c368051ec58b1ace110455df",
+      "forwarded_attempts": [
+        {
+          "request_index": 4,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 5,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 6,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 7,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 8,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 9,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 10,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 11,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 12,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 13,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 14,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 15,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        }
+      ]
+    },
+    "block-1-openclaw": {
+      "summary": {
+        "provider_attempts": 27,
+        "blocked_requests": 0,
+        "usage_known_attempts": 27,
+        "usage_unknown_attempts": 0,
+        "usage_complete": true,
+        "terminal_responses": 27,
+        "http_error_attempts": 0,
+        "request_bytes": 2864566,
+        "response_bytes": 3377534,
+        "provider_duration_union_seconds": 90.438117047,
+        "actual_cost_usd": null,
+        "known_input_total": 655862,
+        "input_total": 655862,
+        "known_input_noncache_billed": 16246,
+        "input_noncache_billed": 16246,
+        "known_cache_read": 639616,
+        "cache_read": 639616,
+        "known_output_total": 11910,
+        "output_total": 11910,
+        "known_reasoning_subset": 7683,
+        "reasoning_subset_coverage": {
+          "known": 27,
+          "total": 27
+        },
+        "reasoning_subset": 7683,
+        "known_cache_write": 0,
+        "cache_write_coverage": {
+          "known": 0,
+          "total": 27
+        },
+        "cache_write": null,
+        "reference_cost_usd": {
+          "off_peak": {
+            "known_subtotal": "0.011501748",
+            "complete_estimate": "0.011501748"
+          },
+          "peak": {
+            "known_subtotal": "0.023003496",
+            "complete_estimate": "0.023003496"
+          }
+        },
+        "cost_semantics": "Frozen 2026-11-11 DeepSeek tariffs, standardized peak/off-peak references, not actual time-window billing or invoice"
+      },
+      "ledger_sha256": "de11009c7f4772b5f3146ea15b9051da43e08cfce11c3a2b194d8fbe9d8f8117",
+      "forwarded_attempts": [
+        {
+          "request_index": 0,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 1,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 2,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 3,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 4,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 5,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 6,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 7,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 8,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 9,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 10,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 11,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 12,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 13,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 14,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 15,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 16,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 17,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 18,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 19,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 20,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 21,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 22,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 23,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 24,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 25,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 26,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        }
+      ]
+    },
+    "block-2-claude": {
+      "summary": {
+        "provider_attempts": 32,
+        "blocked_requests": 0,
+        "usage_known_attempts": 32,
+        "usage_unknown_attempts": 0,
+        "usage_complete": true,
+        "terminal_responses": 32,
+        "http_error_attempts": 0,
+        "request_bytes": 4588534,
+        "response_bytes": 2402934,
+        "provider_duration_union_seconds": 138.416048163,
+        "actual_cost_usd": null,
+        "known_input_total": 1090808,
+        "input_total": 1090808,
+        "known_input_noncache_billed": 34808,
+        "input_noncache_billed": 34808,
+        "known_cache_read": 1056000,
+        "cache_read": 1056000,
+        "known_output_total": 20251,
+        "output_total": 20251,
+        "known_reasoning_subset": 0,
+        "reasoning_subset_coverage": {
+          "known": 0,
+          "total": 32
+        },
+        "reasoning_subset": null,
+        "known_cache_write": 0,
+        "cache_write_coverage": {
+          "known": 32,
+          "total": 32
+        },
+        "cache_write": 0,
+        "reference_cost_usd": {
+          "off_peak": {
+            "known_subtotal": "0.0205398",
+            "complete_estimate": "0.0205398"
+          },
+          "peak": {
+            "known_subtotal": "0.0410796",
+            "complete_estimate": "0.0410796"
+          }
+        },
+        "cost_semantics": "Frozen 2026-11-11 DeepSeek tariffs, standardized peak/off-peak references, not actual time-window billing or invoice"
+      },
+      "ledger_sha256": "1d27bcafb328be7bb22773d149edcc493a7499664c2181b9ea5b2aaef7d2cb28",
+      "forwarded_attempts": [
+        {
+          "request_index": 0,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 1,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 2,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 3,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 4,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 5,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 6,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 7,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 8,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 9,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 10,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 11,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 12,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 13,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 14,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 15,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 16,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 17,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 18,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 19,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 20,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 21,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 22,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 23,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 24,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 25,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 26,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 27,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 28,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 29,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 30,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 31,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        }
+      ]
+    },
+    "block-2-codex": {
+      "summary": {
+        "provider_attempts": 25,
+        "blocked_requests": 0,
+        "usage_known_attempts": 25,
+        "usage_unknown_attempts": 0,
+        "usage_complete": true,
+        "terminal_responses": 25,
+        "http_error_attempts": 0,
+        "request_bytes": 4700771,
+        "response_bytes": 5455249,
+        "provider_duration_union_seconds": 140.191943496,
+        "actual_cost_usd": null,
+        "known_input_total": 1141972,
+        "input_total": 1141972,
+        "known_input_noncache_billed": 29524,
+        "input_noncache_billed": 29524,
+        "known_cache_read": 1112448,
+        "cache_read": 1112448,
+        "known_output_total": 23471,
+        "output_total": 23471,
+        "known_reasoning_subset": 11845,
+        "reasoning_subset_coverage": {
+          "known": 25,
+          "total": 25
+        },
+        "reasoning_subset": 11845,
+        "known_cache_write": 0,
+        "cache_write_coverage": {
+          "known": 0,
+          "total": 25
+        },
+        "cache_write": null,
+        "reference_cost_usd": {
+          "off_peak": {
+            "known_subtotal": "0.021848544",
+            "complete_estimate": "0.021848544"
+          },
+          "peak": {
+            "known_subtotal": "0.043697088",
+            "complete_estimate": "0.043697088"
+          }
+        },
+        "cost_semantics": "Frozen 2026-11-11 DeepSeek tariffs, standardized peak/off-peak references, not actual time-window billing or invoice"
+      },
+      "ledger_sha256": "c57aa1e534f767aedce312509210633680640f3278047880547471445091d363",
+      "forwarded_attempts": [
+        {
+          "request_index": 0,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 1,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 2,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 3,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 4,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 5,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 6,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 7,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 8,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 9,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 10,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 11,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 12,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 13,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 14,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 15,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 16,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 17,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 18,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 19,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 20,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 21,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 22,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 23,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 24,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        }
+      ]
+    },
+    "block-2-dsh": {
+      "summary": {
+        "provider_attempts": 19,
+        "blocked_requests": 0,
+        "usage_known_attempts": 19,
+        "usage_unknown_attempts": 0,
+        "usage_complete": true,
+        "terminal_responses": 19,
+        "http_error_attempts": 0,
+        "request_bytes": 2328936,
+        "response_bytes": 1260475,
+        "provider_duration_union_seconds": 75.709757287,
+        "actual_cost_usd": null,
+        "known_input_total": 417379,
+        "input_total": 417379,
+        "known_input_noncache_billed": 11235,
+        "input_noncache_billed": 11235,
+        "known_cache_read": 406144,
+        "cache_read": 406144,
+        "known_output_total": 10598,
+        "output_total": 10598,
+        "known_reasoning_subset": 0,
+        "reasoning_subset_coverage": {
+          "known": 0,
+          "total": 19
+        },
+        "reasoning_subset": null,
+        "known_cache_write": 0,
+        "cache_write_coverage": {
+          "known": 19,
+          "total": 19
+        },
+        "cache_write": 0,
+        "reference_cost_usd": {
+          "off_peak": {
+            "known_subtotal": "0.009262482",
+            "complete_estimate": "0.009262482"
+          },
+          "peak": {
+            "known_subtotal": "0.018524964",
+            "complete_estimate": "0.018524964"
+          }
+        },
+        "cost_semantics": "Frozen 2026-11-11 DeepSeek tariffs, standardized peak/off-peak references, not actual time-window billing or invoice"
+      },
+      "ledger_sha256": "94aeb55dd3a644210cba19582fb26b386bcf2f3a99146a5e6b007d4df99d6970",
+      "forwarded_attempts": [
+        {
+          "request_index": 0,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 1,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 2,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 3,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 4,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 5,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 6,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 7,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 8,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 9,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 10,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 11,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 12,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 13,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 14,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 15,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 16,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 17,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 18,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        }
+      ]
+    },
+    "block-2-hermes": {
+      "summary": {
+        "provider_attempts": 14,
+        "blocked_requests": 4,
+        "usage_known_attempts": 14,
+        "usage_unknown_attempts": 0,
+        "usage_complete": true,
+        "terminal_responses": 14,
+        "http_error_attempts": 0,
+        "request_bytes": 1050347,
+        "response_bytes": 1193920,
+        "provider_duration_union_seconds": 36.151529034,
+        "actual_cost_usd": null,
+        "known_input_total": 224336,
+        "input_total": 224336,
+        "known_input_noncache_billed": 7888,
+        "input_noncache_billed": 7888,
+        "known_cache_read": 216448,
+        "cache_read": 216448,
+        "known_output_total": 4386,
+        "output_total": 4386,
+        "known_reasoning_subset": 2333,
+        "reasoning_subset_coverage": {
+          "known": 14,
+          "total": 14
+        },
+        "reasoning_subset": 2333,
+        "known_cache_write": 0,
+        "cache_write_coverage": {
+          "known": 0,
+          "total": 14
+        },
+        "cache_write": null,
+        "reference_cost_usd": {
+          "off_peak": {
+            "known_subtotal": "0.004464144",
+            "complete_estimate": "0.004464144"
+          },
+          "peak": {
+            "known_subtotal": "0.008928288",
+            "complete_estimate": "0.008928288"
+          }
+        },
+        "cost_semantics": "Frozen 2026-11-11 DeepSeek tariffs, standardized peak/off-peak references, not actual time-window billing or invoice"
+      },
+      "ledger_sha256": "1a0b73748698a6ce4d2a6ee2e28ac192a0640bc367037b88e7142af7ae1fcf4b",
+      "forwarded_attempts": [
+        {
+          "request_index": 4,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 5,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 6,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 7,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 8,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 9,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 10,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 11,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 12,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 13,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 14,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 15,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 16,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 17,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        }
+      ]
+    },
+    "block-2-openclaw": {
+      "summary": {
+        "provider_attempts": 39,
+        "blocked_requests": 0,
+        "usage_known_attempts": 39,
+        "usage_unknown_attempts": 0,
+        "usage_complete": true,
+        "terminal_responses": 39,
+        "http_error_attempts": 0,
+        "request_bytes": 4775681,
+        "response_bytes": 5147891,
+        "provider_duration_union_seconds": 132.106402772,
+        "actual_cost_usd": null,
+        "known_input_total": 1109149,
+        "input_total": 1109149,
+        "known_input_noncache_billed": 22557,
+        "input_noncache_billed": 22557,
+        "known_cache_read": 1086592,
+        "cache_read": 1086592,
+        "known_output_total": 17632,
+        "output_total": 17632,
+        "known_reasoning_subset": 13402,
+        "reasoning_subset_coverage": {
+          "known": 39,
+          "total": 39
+        },
+        "reasoning_subset": 13402,
+        "known_cache_write": 0,
+        "cache_write_coverage": {
+          "known": 0,
+          "total": 39
+        },
+        "cache_write": null,
+        "reference_cost_usd": {
+          "off_peak": {
+            "known_subtotal": "0.017222526",
+            "complete_estimate": "0.017222526"
+          },
+          "peak": {
+            "known_subtotal": "0.034445052",
+            "complete_estimate": "0.034445052"
+          }
+        },
+        "cost_semantics": "Frozen 2026-11-11 DeepSeek tariffs, standardized peak/off-peak references, not actual time-window billing or invoice"
+      },
+      "ledger_sha256": "14383dcec9dbc5bfd055aab8207602ae611eb8b371f2461abd456f9fff432f5e",
+      "forwarded_attempts": [
+        {
+          "request_index": 0,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 1,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 2,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 3,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 4,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 5,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 6,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 7,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 8,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 9,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 10,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 11,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 12,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 13,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 14,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 15,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 16,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 17,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 18,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 19,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 20,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 21,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 22,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 23,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 24,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 25,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 26,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 27,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 28,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 29,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 30,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 31,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 32,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 33,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 34,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 35,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 36,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 37,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 38,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        }
+      ]
+    },
+    "block-3-claude": {
+      "summary": {
+        "provider_attempts": 31,
+        "blocked_requests": 0,
+        "usage_known_attempts": 31,
+        "usage_unknown_attempts": 0,
+        "usage_complete": true,
+        "terminal_responses": 31,
+        "http_error_attempts": 0,
+        "request_bytes": 4685358,
+        "response_bytes": 2420778,
+        "provider_duration_union_seconds": 137.89551093,
+        "actual_cost_usd": null,
+        "known_input_total": 1107717,
+        "input_total": 1107717,
+        "known_input_noncache_billed": 30853,
+        "input_noncache_billed": 30853,
+        "known_cache_read": 1076864,
+        "cache_read": 1076864,
+        "known_output_total": 20253,
+        "output_total": 20253,
+        "known_reasoning_subset": 0,
+        "reasoning_subset_coverage": {
+          "known": 0,
+          "total": 31
+        },
+        "reasoning_subset": null,
+        "known_cache_write": 0,
+        "cache_write_coverage": {
+          "known": 31,
+          "total": 31
+        },
+        "cache_write": 0,
+        "reference_cost_usd": {
+          "off_peak": {
+            "known_subtotal": "0.020010342",
+            "complete_estimate": "0.020010342"
+          },
+          "peak": {
+            "known_subtotal": "0.040020684",
+            "complete_estimate": "0.040020684"
+          }
+        },
+        "cost_semantics": "Frozen 2026-11-11 DeepSeek tariffs, standardized peak/off-peak references, not actual time-window billing or invoice"
+      },
+      "ledger_sha256": "c52c3fb9d8b7bbd61326ccf0d63462b684d3a0d425fe9b1c929c44d6c519520c",
+      "forwarded_attempts": [
+        {
+          "request_index": 0,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 1,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 2,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 3,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 4,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 5,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 6,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 7,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 8,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 9,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 10,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 11,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 12,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 13,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 14,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 15,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 16,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 17,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 18,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 19,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 20,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 21,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 22,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 23,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 24,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 25,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 26,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 27,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 28,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 29,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 30,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        }
+      ]
+    },
+    "block-3-codex": {
+      "summary": {
+        "provider_attempts": 20,
+        "blocked_requests": 0,
+        "usage_known_attempts": 20,
+        "usage_unknown_attempts": 0,
+        "usage_complete": true,
+        "terminal_responses": 20,
+        "http_error_attempts": 0,
+        "request_bytes": 3566652,
+        "response_bytes": 4348276,
+        "provider_duration_union_seconds": 113.0345406,
+        "actual_cost_usd": null,
+        "known_input_total": 875291,
+        "input_total": 875291,
+        "known_input_noncache_billed": 34331,
+        "input_noncache_billed": 34331,
+        "known_cache_read": 840960,
+        "cache_read": 840960,
+        "known_output_total": 19057,
+        "output_total": 19057,
+        "known_reasoning_subset": 9430,
+        "reasoning_subset_coverage": {
+          "known": 20,
+          "total": 20
+        },
+        "reasoning_subset": 9430,
+        "known_cache_write": 0,
+        "cache_write_coverage": {
+          "known": 0,
+          "total": 20
+        },
+        "cache_write": null,
+        "reference_cost_usd": {
+          "off_peak": {
+            "known_subtotal": "0.01910673",
+            "complete_estimate": "0.01910673"
+          },
+          "peak": {
+            "known_subtotal": "0.03821346",
+            "complete_estimate": "0.03821346"
+          }
+        },
+        "cost_semantics": "Frozen 2026-11-11 DeepSeek tariffs, standardized peak/off-peak references, not actual time-window billing or invoice"
+      },
+      "ledger_sha256": "682d90f8b57948e46d254bbb4116b454b583dd9dc71d00f256a1fa487d6fa84b",
+      "forwarded_attempts": [
+        {
+          "request_index": 0,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 1,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 2,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 3,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 4,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 5,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 6,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 7,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 8,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 9,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 10,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 11,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 12,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 13,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 14,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 15,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 16,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 17,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 18,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 19,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        }
+      ]
+    },
+    "block-3-dsh": {
+      "summary": {
+        "provider_attempts": 34,
+        "blocked_requests": 0,
+        "usage_known_attempts": 34,
+        "usage_unknown_attempts": 0,
+        "usage_complete": true,
+        "terminal_responses": 34,
+        "http_error_attempts": 0,
+        "request_bytes": 6899939,
+        "response_bytes": 2678082,
+        "provider_duration_union_seconds": 165.059114617,
+        "actual_cost_usd": null,
+        "known_input_total": 1439142,
+        "input_total": 1439142,
+        "known_input_noncache_billed": 49830,
+        "input_noncache_billed": 49830,
+        "known_cache_read": 1389312,
+        "cache_read": 1389312,
+        "known_output_total": 22524,
+        "output_total": 22524,
+        "known_reasoning_subset": 0,
+        "reasoning_subset_coverage": {
+          "known": 0,
+          "total": 34
+        },
+        "reasoning_subset": null,
+        "known_cache_write": 0,
+        "cache_write_coverage": {
+          "known": 34,
+          "total": 34
+        },
+        "cache_write": 0,
+        "reference_cost_usd": {
+          "off_peak": {
+            "known_subtotal": "0.025156836",
+            "complete_estimate": "0.025156836"
+          },
+          "peak": {
+            "known_subtotal": "0.050313672",
+            "complete_estimate": "0.050313672"
+          }
+        },
+        "cost_semantics": "Frozen 2026-11-11 DeepSeek tariffs, standardized peak/off-peak references, not actual time-window billing or invoice"
+      },
+      "ledger_sha256": "9b6d4b6934e842d73c501fe96e7e9a36abcc962c654540af643416710fc7cb08",
+      "forwarded_attempts": [
+        {
+          "request_index": 0,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 1,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 2,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 3,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 4,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 5,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 6,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 7,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 8,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 9,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 10,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 11,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 12,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 13,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 14,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 15,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 16,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 17,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 18,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 19,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 20,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 21,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 22,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 23,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 24,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 25,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 26,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 27,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 28,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 29,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 30,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 31,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 32,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 33,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        }
+      ]
+    },
+    "block-3-hermes": {
+      "summary": {
+        "provider_attempts": 39,
+        "blocked_requests": 5,
+        "usage_known_attempts": 39,
+        "usage_unknown_attempts": 0,
+        "usage_complete": true,
+        "terminal_responses": 39,
+        "http_error_attempts": 0,
+        "request_bytes": 7288207,
+        "response_bytes": 6435811,
+        "provider_duration_union_seconds": 155.699528836,
+        "actual_cost_usd": null,
+        "known_input_total": 1358462,
+        "input_total": 1358462,
+        "known_input_noncache_billed": 22270,
+        "input_noncache_billed": 22270,
+        "known_cache_read": 1336192,
+        "cache_read": 1336192,
+        "known_output_total": 22182,
+        "output_total": 22182,
+        "known_reasoning_subset": 16795,
+        "reasoning_subset_coverage": {
+          "known": 39,
+          "total": 39
+        },
+        "reasoning_subset": 16795,
+        "known_cache_write": 0,
+        "cache_write_coverage": {
+          "known": 0,
+          "total": 39
+        },
+        "cache_write": null,
+        "reference_cost_usd": {
+          "off_peak": {
+            "known_subtotal": "0.020658276",
+            "complete_estimate": "0.020658276"
+          },
+          "peak": {
+            "known_subtotal": "0.041316552",
+            "complete_estimate": "0.041316552"
+          }
+        },
+        "cost_semantics": "Frozen 2026-11-11 DeepSeek tariffs, standardized peak/off-peak references, not actual time-window billing or invoice"
+      },
+      "ledger_sha256": "65965a3939454ddd2f8caf62996535392026f53bc7400c67415c30d4b8158b3c",
+      "forwarded_attempts": [
+        {
+          "request_index": 4,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 5,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 6,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 7,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 8,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 9,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 10,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 11,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 12,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 13,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 14,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 15,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 16,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 17,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 18,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 19,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 20,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 21,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 22,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 23,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 24,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 25,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 26,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 27,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 28,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 29,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 30,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 31,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 32,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 33,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 34,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 35,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 36,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 37,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 38,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 39,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 40,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 41,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 43,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        }
+      ]
+    },
+    "block-3-openclaw": {
+      "summary": {
+        "provider_attempts": 32,
+        "blocked_requests": 0,
+        "usage_known_attempts": 32,
+        "usage_unknown_attempts": 0,
+        "usage_complete": true,
+        "terminal_responses": 32,
+        "http_error_attempts": 0,
+        "request_bytes": 3870515,
+        "response_bytes": 4033172,
+        "provider_duration_union_seconds": 112.403720367,
+        "actual_cost_usd": null,
+        "known_input_total": 888516,
+        "input_total": 888516,
+        "known_input_noncache_billed": 20292,
+        "input_noncache_billed": 20292,
+        "known_cache_read": 868224,
+        "cache_read": 868224,
+        "known_output_total": 14206,
+        "output_total": 14206,
+        "known_reasoning_subset": 9234,
+        "reasoning_subset_coverage": {
+          "known": 32,
+          "total": 32
+        },
+        "reasoning_subset": 9234,
+        "known_cache_write": 0,
+        "cache_write_coverage": {
+          "known": 0,
+          "total": 32
+        },
+        "cache_write": null,
+        "reference_cost_usd": {
+          "off_peak": {
+            "known_subtotal": "0.014172072",
+            "complete_estimate": "0.014172072"
+          },
+          "peak": {
+            "known_subtotal": "0.028344144",
+            "complete_estimate": "0.028344144"
+          }
+        },
+        "cost_semantics": "Frozen 2026-11-11 DeepSeek tariffs, standardized peak/off-peak references, not actual time-window billing or invoice"
+      },
+      "ledger_sha256": "fbe15b80cd0429cd540fa23140e04979e611423be07f07d187a20fa13b257afe",
+      "forwarded_attempts": [
+        {
+          "request_index": 0,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 1,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 2,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 3,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 4,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 5,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 6,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 7,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 8,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 9,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 10,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 11,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 12,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 13,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 14,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 15,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 16,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 17,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 18,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 19,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 20,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 21,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 22,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 23,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 24,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 25,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 26,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 27,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 28,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 29,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 30,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 31,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        }
+      ]
+    },
+    "smoke-claude": {
+      "summary": {
+        "provider_attempts": 6,
+        "blocked_requests": 0,
+        "usage_known_attempts": 6,
+        "usage_unknown_attempts": 0,
+        "usage_complete": true,
+        "terminal_responses": 6,
+        "http_error_attempts": 0,
+        "request_bytes": 296568,
+        "response_bytes": 222230,
+        "provider_duration_union_seconds": 15.887875487,
+        "actual_cost_usd": null,
+        "known_input_total": 72900,
+        "input_total": 72900,
+        "known_input_noncache_billed": 12484,
+        "input_noncache_billed": 12484,
+        "known_cache_read": 60416,
+        "cache_read": 60416,
+        "known_output_total": 1926,
+        "output_total": 1926,
+        "known_reasoning_subset": 0,
+        "reasoning_subset_coverage": {
+          "known": 0,
+          "total": 6
+        },
+        "reasoning_subset": null,
+        "known_cache_write": 0,
+        "cache_write_coverage": {
+          "known": 6,
+          "total": 6
+        },
+        "cache_write": 0,
+        "reference_cost_usd": {
+          "off_peak": {
+            "known_subtotal": "0.003209448",
+            "complete_estimate": "0.003209448"
+          },
+          "peak": {
+            "known_subtotal": "0.006418896",
+            "complete_estimate": "0.006418896"
+          }
+        },
+        "cost_semantics": "Frozen 2026-11-11 DeepSeek tariffs, standardized peak/off-peak references, not actual time-window billing or invoice"
+      },
+      "ledger_sha256": "153948c072fba1022100d1ed671ea9ea8e67ae0ae6927d03ebc9064ff6536977",
+      "forwarded_attempts": [
+        {
+          "request_index": 0,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 1,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 2,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 3,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 4,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 5,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        }
+      ]
+    },
+    "smoke-codex": {
+      "summary": {
+        "provider_attempts": 2,
+        "blocked_requests": 0,
+        "usage_known_attempts": 2,
+        "usage_unknown_attempts": 0,
+        "usage_complete": true,
+        "terminal_responses": 2,
+        "http_error_attempts": 0,
+        "request_bytes": 82061,
+        "response_bytes": 266613,
+        "provider_duration_union_seconds": 6.21908775,
+        "actual_cost_usd": null,
+        "known_input_total": 17963,
+        "input_total": 17963,
+        "known_input_noncache_billed": 555,
+        "input_noncache_billed": 555,
+        "known_cache_read": 17408,
+        "cache_read": 17408,
+        "known_output_total": 806,
+        "output_total": 806,
+        "known_reasoning_subset": 321,
+        "reasoning_subset_coverage": {
+          "known": 2,
+          "total": 2
+        },
+        "reasoning_subset": 321,
+        "known_cache_write": 0,
+        "cache_write_coverage": {
+          "known": 0,
+          "total": 2
+        },
+        "cache_write": null,
+        "reference_cost_usd": {
+          "off_peak": {
+            "known_subtotal": "0.000619074",
+            "complete_estimate": "0.000619074"
+          },
+          "peak": {
+            "known_subtotal": "0.001238148",
+            "complete_estimate": "0.001238148"
+          }
+        },
+        "cost_semantics": "Frozen 2026-11-11 DeepSeek tariffs, standardized peak/off-peak references, not actual time-window billing or invoice"
+      },
+      "ledger_sha256": "3f382fb03db4bf409eed811326f88a9f1fb193f3a03b7cab4b3b84983a8bdae0",
+      "forwarded_attempts": [
+        {
+          "request_index": 0,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 1,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        }
+      ]
+    },
+    "smoke-dsh": {
+      "summary": {
+        "provider_attempts": 7,
+        "blocked_requests": 0,
+        "usage_known_attempts": 7,
+        "usage_unknown_attempts": 0,
+        "usage_complete": true,
+        "terminal_responses": 7,
+        "http_error_attempts": 0,
+        "request_bytes": 294514,
+        "response_bytes": 164579,
+        "provider_duration_union_seconds": 12.379778357,
+        "actual_cost_usd": null,
+        "known_input_total": 41018,
+        "input_total": 41018,
+        "known_input_noncache_billed": 2234,
+        "input_noncache_billed": 2234,
+        "known_cache_read": 38784,
+        "cache_read": 38784,
+        "known_output_total": 1437,
+        "output_total": 1437,
+        "known_reasoning_subset": 0,
+        "reasoning_subset_coverage": {
+          "known": 0,
+          "total": 7
+        },
+        "reasoning_subset": null,
+        "known_cache_write": 0,
+        "cache_write_coverage": {
+          "known": 7,
+          "total": 7
+        },
+        "cache_write": 0,
+        "reference_cost_usd": {
+          "off_peak": {
+            "known_subtotal": "0.001313652",
+            "complete_estimate": "0.001313652"
+          },
+          "peak": {
+            "known_subtotal": "0.002627304",
+            "complete_estimate": "0.002627304"
+          }
+        },
+        "cost_semantics": "Frozen 2026-11-11 DeepSeek tariffs, standardized peak/off-peak references, not actual time-window billing or invoice"
+      },
+      "ledger_sha256": "2e4d2d0a4d79c8808f8723e88b423eb13c66aa2c7a0c0fd26b3e77218bbfa9d6",
+      "forwarded_attempts": [
+        {
+          "request_index": 0,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 1,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 2,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 3,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 4,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 5,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 6,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        }
+      ]
+    },
+    "smoke-hermes": {
+      "summary": {
+        "provider_attempts": 5,
+        "blocked_requests": 4,
+        "usage_known_attempts": 5,
+        "usage_unknown_attempts": 0,
+        "usage_complete": true,
+        "terminal_responses": 5,
+        "http_error_attempts": 0,
+        "request_bytes": 122454,
+        "response_bytes": 172463,
+        "provider_duration_union_seconds": 6.776316431,
+        "actual_cost_usd": null,
+        "known_input_total": 29248,
+        "input_total": 29248,
+        "known_input_noncache_billed": 1216,
+        "input_noncache_billed": 1216,
+        "known_cache_read": 28032,
+        "cache_read": 28032,
+        "known_output_total": 788,
+        "output_total": 788,
+        "known_reasoning_subset": 274,
+        "reasoning_subset_coverage": {
+          "known": 5,
+          "total": 5
+        },
+        "reasoning_subset": 274,
+        "known_cache_write": 0,
+        "cache_write_coverage": {
+          "known": 0,
+          "total": 5
+        },
+        "cache_write": null,
+        "reference_cost_usd": {
+          "off_peak": {
+            "known_subtotal": "0.000739296",
+            "complete_estimate": "0.000739296"
+          },
+          "peak": {
+            "known_subtotal": "0.001478592",
+            "complete_estimate": "0.001478592"
+          }
+        },
+        "cost_semantics": "Frozen 2026-11-11 DeepSeek tariffs, standardized peak/off-peak references, not actual time-window billing or invoice"
+      },
+      "ledger_sha256": "9674e4c1cc75885eccfd1cb4d2a1e346e8dc71478053ddb35fbdd7d03835a712",
+      "forwarded_attempts": [
+        {
+          "request_index": 4,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 5,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 6,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 7,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 8,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        }
+      ]
+    },
+    "smoke-openclaw": {
+      "summary": {
+        "provider_attempts": 4,
+        "blocked_requests": 0,
+        "usage_known_attempts": 4,
+        "usage_unknown_attempts": 0,
+        "usage_complete": true,
+        "terminal_responses": 4,
+        "http_error_attempts": 0,
+        "request_bytes": 156726,
+        "response_bytes": 193223,
+        "provider_duration_union_seconds": 6.733558423,
+        "actual_cost_usd": null,
+        "known_input_total": 38835,
+        "input_total": 38835,
+        "known_input_noncache_billed": 1843,
+        "input_noncache_billed": 1843,
+        "known_cache_read": 36992,
+        "cache_read": 36992,
+        "known_output_total": 725,
+        "output_total": 725,
+        "known_reasoning_subset": 97,
+        "reasoning_subset_coverage": {
+          "known": 4,
+          "total": 4
+        },
+        "reasoning_subset": 97,
+        "known_cache_write": 0,
+        "cache_write_coverage": {
+          "known": 0,
+          "total": 4
+        },
+        "cache_write": null,
+        "reference_cost_usd": {
+          "off_peak": {
+            "known_subtotal": "0.000822426",
+            "complete_estimate": "0.000822426"
+          },
+          "peak": {
+            "known_subtotal": "0.001644852",
+            "complete_estimate": "0.001644852"
+          }
+        },
+        "cost_semantics": "Frozen 2026-11-11 DeepSeek tariffs, standardized peak/off-peak references, not actual time-window billing or invoice"
+      },
+      "ledger_sha256": "6a7f1c3d3dc80934001e3ba982daa6a361e5938124739392e7bf7b0f413ad0e6",
+      "forwarded_attempts": [
+        {
+          "request_index": 0,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 1,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 2,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        },
+        {
+          "request_index": 3,
+          "final_usage_observed": true,
+          "terminal": true,
+          "settled": true,
+          "replay_error": null
+        }
+      ]
+    }
+  },
+  "semantics": "Derived from retained raw responses; original ledgers/results are unchanged. Final usage evidence is mandatory.",
+  "verifier_sha256": "4f381c2d6641e659ea8c440a0a6d0a8bf7666e25644a6d5024d12cb08f9f9720",
+  "dependency_sha256": {
+    "accounting.py": "158ff01a285510ed06edc57d48b81bf1282e39d9473f3122ed30b9fa1d11e178",
+    "relay.py": "4c82cad530a0db6927d505e0923558b41fabd0e76fccae6238eaa192c0b3f761"
+  }
+}

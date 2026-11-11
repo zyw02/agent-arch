@@ -1,0 +1,705 @@
+{
+  "rows": [
+    {
+      "run_id": "smoke-claude",
+      "product": "claude",
+      "smoke": true,
+      "native": {
+        "input_total": 72900,
+        "cache_read": 60416,
+        "output_total": 1926,
+        "native_api_calls": null,
+        "scope": "CLI final result usage; retain modelUsage and subagent traces to assess aggregation scope"
+      },
+      "provider_usage_complete": true,
+      "provider_attempts": 6,
+      "provider_usage_known_attempts": 6,
+      "counters": {
+        "input_total": {
+          "native": 72900,
+          "provider": 72900,
+          "provider_known_subtotal": 72900,
+          "provider_minus_native": 0
+        },
+        "cache_read": {
+          "native": 60416,
+          "provider": 60416,
+          "provider_known_subtotal": 60416,
+          "provider_minus_native": 0
+        },
+        "output_total": {
+          "native": 1926,
+          "provider": 1926,
+          "provider_known_subtotal": 1926,
+          "provider_minus_native": 0
+        }
+      }
+    },
+    {
+      "run_id": "smoke-dsh",
+      "product": "dsh",
+      "smoke": true,
+      "native": {
+        "input_total": 40791,
+        "cache_read": 38784,
+        "output_total": 1351,
+        "native_api_calls": 6,
+        "scope": "stdout step-end counters; auxiliary title calls may be outside this scope"
+      },
+      "provider_usage_complete": true,
+      "provider_attempts": 7,
+      "provider_usage_known_attempts": 7,
+      "counters": {
+        "input_total": {
+          "native": 40791,
+          "provider": 41018,
+          "provider_known_subtotal": 41018,
+          "provider_minus_native": 227
+        },
+        "cache_read": {
+          "native": 38784,
+          "provider": 38784,
+          "provider_known_subtotal": 38784,
+          "provider_minus_native": 0
+        },
+        "output_total": {
+          "native": 1351,
+          "provider": 1437,
+          "provider_known_subtotal": 1437,
+          "provider_minus_native": 86
+        }
+      }
+    },
+    {
+      "run_id": "smoke-openclaw",
+      "product": "openclaw",
+      "smoke": true,
+      "native": {
+        "input_total": 38835,
+        "cache_read": 36992,
+        "output_total": 725,
+        "native_api_calls": null,
+        "scope": "CLI meta.agentMeta.usage; input is uncached and cache counters are separate"
+      },
+      "provider_usage_complete": true,
+      "provider_attempts": 4,
+      "provider_usage_known_attempts": 4,
+      "counters": {
+        "input_total": {
+          "native": 38835,
+          "provider": 38835,
+          "provider_known_subtotal": 38835,
+          "provider_minus_native": 0
+        },
+        "cache_read": {
+          "native": 36992,
+          "provider": 36992,
+          "provider_known_subtotal": 36992,
+          "provider_minus_native": 0
+        },
+        "output_total": {
+          "native": 725,
+          "provider": 725,
+          "provider_known_subtotal": 725,
+          "provider_minus_native": 0
+        }
+      }
+    },
+    {
+      "run_id": "smoke-hermes",
+      "product": "hermes",
+      "smoke": true,
+      "native": {
+        "input_total": 29248,
+        "cache_read": 28032,
+        "output_total": 788,
+        "native_api_calls": 5,
+        "scope": "Pinned DeepSeek usage file: inclusive main input plus cache-exclusive auxiliary input and explicit auxiliary caches; late or failed attempts may be outside the snapshot"
+      },
+      "provider_usage_complete": true,
+      "provider_attempts": 5,
+      "provider_usage_known_attempts": 5,
+      "counters": {
+        "input_total": {
+          "native": 29248,
+          "provider": 29248,
+          "provider_known_subtotal": 29248,
+          "provider_minus_native": 0
+        },
+        "cache_read": {
+          "native": 28032,
+          "provider": 28032,
+          "provider_known_subtotal": 28032,
+          "provider_minus_native": 0
+        },
+        "output_total": {
+          "native": 788,
+          "provider": 788,
+          "provider_known_subtotal": 788,
+          "provider_minus_native": 0
+        }
+      }
+    },
+    {
+      "run_id": "smoke-codex",
+      "product": "codex",
+      "smoke": true,
+      "native": {
+        "input_total": 17963,
+        "cache_read": 17408,
+        "output_total": 806,
+        "native_api_calls": null,
+        "scope": "CLI turn.completed usage; raw persisted rollouts retained"
+      },
+      "provider_usage_complete": true,
+      "provider_attempts": 2,
+      "provider_usage_known_attempts": 2,
+      "counters": {
+        "input_total": {
+          "native": 17963,
+          "provider": 17963,
+          "provider_known_subtotal": 17963,
+          "provider_minus_native": 0
+        },
+        "cache_read": {
+          "native": 17408,
+          "provider": 17408,
+          "provider_known_subtotal": 17408,
+          "provider_minus_native": 0
+        },
+        "output_total": {
+          "native": 806,
+          "provider": 806,
+          "provider_known_subtotal": 806,
+          "provider_minus_native": 0
+        }
+      }
+    },
+    {
+      "run_id": "block-1-claude",
+      "product": "claude",
+      "smoke": false,
+      "native": {
+        "input_total": 866274,
+        "cache_read": 836096,
+        "output_total": 17849,
+        "native_api_calls": null,
+        "scope": "CLI final result usage; retain modelUsage and subagent traces to assess aggregation scope"
+      },
+      "provider_usage_complete": true,
+      "provider_attempts": 27,
+      "provider_usage_known_attempts": 27,
+      "counters": {
+        "input_total": {
+          "native": 866274,
+          "provider": 866274,
+          "provider_known_subtotal": 866274,
+          "provider_minus_native": 0
+        },
+        "cache_read": {
+          "native": 836096,
+          "provider": 836096,
+          "provider_known_subtotal": 836096,
+          "provider_minus_native": 0
+        },
+        "output_total": {
+          "native": 17849,
+          "provider": 17849,
+          "provider_known_subtotal": 17849,
+          "provider_minus_native": 0
+        }
+      }
+    },
+    {
+      "run_id": "block-1-dsh",
+      "product": "dsh",
+      "smoke": false,
+      "native": {
+        "input_total": 1039668,
+        "cache_read": 994432,
+        "output_total": 12516,
+        "native_api_calls": 24,
+        "scope": "stdout step-end counters; auxiliary title calls may be outside this scope"
+      },
+      "provider_usage_complete": true,
+      "provider_attempts": 24,
+      "provider_usage_known_attempts": 24,
+      "counters": {
+        "input_total": {
+          "native": 1039668,
+          "provider": 1039668,
+          "provider_known_subtotal": 1039668,
+          "provider_minus_native": 0
+        },
+        "cache_read": {
+          "native": 994432,
+          "provider": 994432,
+          "provider_known_subtotal": 994432,
+          "provider_minus_native": 0
+        },
+        "output_total": {
+          "native": 12516,
+          "provider": 12516,
+          "provider_known_subtotal": 12516,
+          "provider_minus_native": 0
+        }
+      }
+    },
+    {
+      "run_id": "block-1-openclaw",
+      "product": "openclaw",
+      "smoke": false,
+      "native": {
+        "input_total": 655862,
+        "cache_read": 639616,
+        "output_total": 11910,
+        "native_api_calls": null,
+        "scope": "CLI meta.agentMeta.usage; input is uncached and cache counters are separate"
+      },
+      "provider_usage_complete": true,
+      "provider_attempts": 27,
+      "provider_usage_known_attempts": 27,
+      "counters": {
+        "input_total": {
+          "native": 655862,
+          "provider": 655862,
+          "provider_known_subtotal": 655862,
+          "provider_minus_native": 0
+        },
+        "cache_read": {
+          "native": 639616,
+          "provider": 639616,
+          "provider_known_subtotal": 639616,
+          "provider_minus_native": 0
+        },
+        "output_total": {
+          "native": 11910,
+          "provider": 11910,
+          "provider_known_subtotal": 11910,
+          "provider_minus_native": 0
+        }
+      }
+    },
+    {
+      "run_id": "block-1-hermes",
+      "product": "hermes",
+      "smoke": false,
+      "native": {
+        "input_total": 186372,
+        "cache_read": 175744,
+        "output_total": 6045,
+        "native_api_calls": 12,
+        "scope": "Pinned DeepSeek usage file: inclusive main input plus cache-exclusive auxiliary input and explicit auxiliary caches; late or failed attempts may be outside the snapshot"
+      },
+      "provider_usage_complete": true,
+      "provider_attempts": 12,
+      "provider_usage_known_attempts": 12,
+      "counters": {
+        "input_total": {
+          "native": 186372,
+          "provider": 186372,
+          "provider_known_subtotal": 186372,
+          "provider_minus_native": 0
+        },
+        "cache_read": {
+          "native": 175744,
+          "provider": 175744,
+          "provider_known_subtotal": 175744,
+          "provider_minus_native": 0
+        },
+        "output_total": {
+          "native": 6045,
+          "provider": 6045,
+          "provider_known_subtotal": 6045,
+          "provider_minus_native": 0
+        }
+      }
+    },
+    {
+      "run_id": "block-1-codex",
+      "product": "codex",
+      "smoke": false,
+      "native": {
+        "input_total": 796884,
+        "cache_read": 757504,
+        "output_total": 16198,
+        "native_api_calls": null,
+        "scope": "CLI turn.completed usage; raw persisted rollouts retained"
+      },
+      "provider_usage_complete": true,
+      "provider_attempts": 19,
+      "provider_usage_known_attempts": 19,
+      "counters": {
+        "input_total": {
+          "native": 796884,
+          "provider": 796884,
+          "provider_known_subtotal": 796884,
+          "provider_minus_native": 0
+        },
+        "cache_read": {
+          "native": 757504,
+          "provider": 757504,
+          "provider_known_subtotal": 757504,
+          "provider_minus_native": 0
+        },
+        "output_total": {
+          "native": 16198,
+          "provider": 16198,
+          "provider_known_subtotal": 16198,
+          "provider_minus_native": 0
+        }
+      }
+    },
+    {
+      "run_id": "block-2-dsh",
+      "product": "dsh",
+      "smoke": false,
+      "native": {
+        "input_total": 417379,
+        "cache_read": 406144,
+        "output_total": 10598,
+        "native_api_calls": 19,
+        "scope": "stdout step-end counters; auxiliary title calls may be outside this scope"
+      },
+      "provider_usage_complete": true,
+      "provider_attempts": 19,
+      "provider_usage_known_attempts": 19,
+      "counters": {
+        "input_total": {
+          "native": 417379,
+          "provider": 417379,
+          "provider_known_subtotal": 417379,
+          "provider_minus_native": 0
+        },
+        "cache_read": {
+          "native": 406144,
+          "provider": 406144,
+          "provider_known_subtotal": 406144,
+          "provider_minus_native": 0
+        },
+        "output_total": {
+          "native": 10598,
+          "provider": 10598,
+          "provider_known_subtotal": 10598,
+          "provider_minus_native": 0
+        }
+      }
+    },
+    {
+      "run_id": "block-2-openclaw",
+      "product": "openclaw",
+      "smoke": false,
+      "native": {
+        "input_total": 1109149,
+        "cache_read": 1086592,
+        "output_total": 17632,
+        "native_api_calls": null,
+        "scope": "CLI meta.agentMeta.usage; input is uncached and cache counters are separate"
+      },
+      "provider_usage_complete": true,
+      "provider_attempts": 39,
+      "provider_usage_known_attempts": 39,
+      "counters": {
+        "input_total": {
+          "native": 1109149,
+          "provider": 1109149,
+          "provider_known_subtotal": 1109149,
+          "provider_minus_native": 0
+        },
+        "cache_read": {
+          "native": 1086592,
+          "provider": 1086592,
+          "provider_known_subtotal": 1086592,
+          "provider_minus_native": 0
+        },
+        "output_total": {
+          "native": 17632,
+          "provider": 17632,
+          "provider_known_subtotal": 17632,
+          "provider_minus_native": 0
+        }
+      }
+    },
+    {
+      "run_id": "block-2-hermes",
+      "product": "hermes",
+      "smoke": false,
+      "native": {
+        "input_total": 224336,
+        "cache_read": 216448,
+        "output_total": 4386,
+        "native_api_calls": 14,
+        "scope": "Pinned DeepSeek usage file: inclusive main input plus cache-exclusive auxiliary input and explicit auxiliary caches; late or failed attempts may be outside the snapshot"
+      },
+      "provider_usage_complete": true,
+      "provider_attempts": 14,
+      "provider_usage_known_attempts": 14,
+      "counters": {
+        "input_total": {
+          "native": 224336,
+          "provider": 224336,
+          "provider_known_subtotal": 224336,
+          "provider_minus_native": 0
+        },
+        "cache_read": {
+          "native": 216448,
+          "provider": 216448,
+          "provider_known_subtotal": 216448,
+          "provider_minus_native": 0
+        },
+        "output_total": {
+          "native": 4386,
+          "provider": 4386,
+          "provider_known_subtotal": 4386,
+          "provider_minus_native": 0
+        }
+      }
+    },
+    {
+      "run_id": "block-2-codex",
+      "product": "codex",
+      "smoke": false,
+      "native": {
+        "input_total": 1141972,
+        "cache_read": 1112448,
+        "output_total": 23471,
+        "native_api_calls": null,
+        "scope": "CLI turn.completed usage; raw persisted rollouts retained"
+      },
+      "provider_usage_complete": true,
+      "provider_attempts": 25,
+      "provider_usage_known_attempts": 25,
+      "counters": {
+        "input_total": {
+          "native": 1141972,
+          "provider": 1141972,
+          "provider_known_subtotal": 1141972,
+          "provider_minus_native": 0
+        },
+        "cache_read": {
+          "native": 1112448,
+          "provider": 1112448,
+          "provider_known_subtotal": 1112448,
+          "provider_minus_native": 0
+        },
+        "output_total": {
+          "native": 23471,
+          "provider": 23471,
+          "provider_known_subtotal": 23471,
+          "provider_minus_native": 0
+        }
+      }
+    },
+    {
+      "run_id": "block-2-claude",
+      "product": "claude",
+      "smoke": false,
+      "native": {
+        "input_total": 1090808,
+        "cache_read": 1056000,
+        "output_total": 20251,
+        "native_api_calls": null,
+        "scope": "CLI final result usage; retain modelUsage and subagent traces to assess aggregation scope"
+      },
+      "provider_usage_complete": true,
+      "provider_attempts": 32,
+      "provider_usage_known_attempts": 32,
+      "counters": {
+        "input_total": {
+          "native": 1090808,
+          "provider": 1090808,
+          "provider_known_subtotal": 1090808,
+          "provider_minus_native": 0
+        },
+        "cache_read": {
+          "native": 1056000,
+          "provider": 1056000,
+          "provider_known_subtotal": 1056000,
+          "provider_minus_native": 0
+        },
+        "output_total": {
+          "native": 20251,
+          "provider": 20251,
+          "provider_known_subtotal": 20251,
+          "provider_minus_native": 0
+        }
+      }
+    },
+    {
+      "run_id": "block-3-openclaw",
+      "product": "openclaw",
+      "smoke": false,
+      "native": {
+        "input_total": 888516,
+        "cache_read": 868224,
+        "output_total": 14206,
+        "native_api_calls": null,
+        "scope": "CLI meta.agentMeta.usage; input is uncached and cache counters are separate"
+      },
+      "provider_usage_complete": true,
+      "provider_attempts": 32,
+      "provider_usage_known_attempts": 32,
+      "counters": {
+        "input_total": {
+          "native": 888516,
+          "provider": 888516,
+          "provider_known_subtotal": 888516,
+          "provider_minus_native": 0
+        },
+        "cache_read": {
+          "native": 868224,
+          "provider": 868224,
+          "provider_known_subtotal": 868224,
+          "provider_minus_native": 0
+        },
+        "output_total": {
+          "native": 14206,
+          "provider": 14206,
+          "provider_known_subtotal": 14206,
+          "provider_minus_native": 0
+        }
+      }
+    },
+    {
+      "run_id": "block-3-hermes",
+      "product": "hermes",
+      "smoke": false,
+      "native": {
+        "input_total": 1308794,
+        "cache_read": 1287424,
+        "output_total": 22086,
+        "native_api_calls": 38,
+        "scope": "Pinned DeepSeek usage file: inclusive main input plus cache-exclusive auxiliary input and explicit auxiliary caches; late or failed attempts may be outside the snapshot"
+      },
+      "provider_usage_complete": true,
+      "provider_attempts": 39,
+      "provider_usage_known_attempts": 39,
+      "counters": {
+        "input_total": {
+          "native": 1308794,
+          "provider": 1358462,
+          "provider_known_subtotal": 1358462,
+          "provider_minus_native": 49668
+        },
+        "cache_read": {
+          "native": 1287424,
+          "provider": 1336192,
+          "provider_known_subtotal": 1336192,
+          "provider_minus_native": 48768
+        },
+        "output_total": {
+          "native": 22086,
+          "provider": 22182,
+          "provider_known_subtotal": 22182,
+          "provider_minus_native": 96
+        }
+      }
+    },
+    {
+      "run_id": "block-3-codex",
+      "product": "codex",
+      "smoke": false,
+      "native": {
+        "input_total": 875291,
+        "cache_read": 840960,
+        "output_total": 19057,
+        "native_api_calls": null,
+        "scope": "CLI turn.completed usage; raw persisted rollouts retained"
+      },
+      "provider_usage_complete": true,
+      "provider_attempts": 20,
+      "provider_usage_known_attempts": 20,
+      "counters": {
+        "input_total": {
+          "native": 875291,
+          "provider": 875291,
+          "provider_known_subtotal": 875291,
+          "provider_minus_native": 0
+        },
+        "cache_read": {
+          "native": 840960,
+          "provider": 840960,
+          "provider_known_subtotal": 840960,
+          "provider_minus_native": 0
+        },
+        "output_total": {
+          "native": 19057,
+          "provider": 19057,
+          "provider_known_subtotal": 19057,
+          "provider_minus_native": 0
+        }
+      }
+    },
+    {
+      "run_id": "block-3-claude",
+      "product": "claude",
+      "smoke": false,
+      "native": {
+        "input_total": 1107717,
+        "cache_read": 1076864,
+        "output_total": 20253,
+        "native_api_calls": null,
+        "scope": "CLI final result usage; retain modelUsage and subagent traces to assess aggregation scope"
+      },
+      "provider_usage_complete": true,
+      "provider_attempts": 31,
+      "provider_usage_known_attempts": 31,
+      "counters": {
+        "input_total": {
+          "native": 1107717,
+          "provider": 1107717,
+          "provider_known_subtotal": 1107717,
+          "provider_minus_native": 0
+        },
+        "cache_read": {
+          "native": 1076864,
+          "provider": 1076864,
+          "provider_known_subtotal": 1076864,
+          "provider_minus_native": 0
+        },
+        "output_total": {
+          "native": 20253,
+          "provider": 20253,
+          "provider_known_subtotal": 20253,
+          "provider_minus_native": 0
+        }
+      }
+    },
+    {
+      "run_id": "block-3-dsh",
+      "product": "dsh",
+      "smoke": false,
+      "native": {
+        "input_total": 1439142,
+        "cache_read": 1389312,
+        "output_total": 22524,
+        "native_api_calls": 34,
+        "scope": "stdout step-end counters; auxiliary title calls may be outside this scope"
+      },
+      "provider_usage_complete": true,
+      "provider_attempts": 34,
+      "provider_usage_known_attempts": 34,
+      "counters": {
+        "input_total": {
+          "native": 1439142,
+          "provider": 1439142,
+          "provider_known_subtotal": 1439142,
+          "provider_minus_native": 0
+        },
+        "cache_read": {
+          "native": 1389312,
+          "provider": 1389312,
+          "provider_known_subtotal": 1389312,
+          "provider_minus_native": 0
+        },
+        "output_total": {
+          "native": 22524,
+          "provider": 22524,
+          "provider_known_subtotal": 22524,
+          "provider_minus_native": 0
+        }
+      }
+    }
+  ],
+  "interpretation": "A nonzero difference identifies a scope/accounting discrepancy for investigation, not automatic proof of a harness defect. Never replace provider counters with native totals or use agreement alone as completeness proof."
+}

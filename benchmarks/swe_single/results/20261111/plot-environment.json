@@ -1,0 +1,7 @@
+{
+  "matplotlib": "3.11.2",
+  "formal_runs": 15,
+  "script": "benchmarks/swe_single/plot.py",
+  "script_sha256": "b9a31092ac70217782fd7277910dc8d5ff9784b456cb33cceeb964dd925c772d",
+  "csv_sha256": "b51625e99d5d8e345742035b9d44c5e5750142f2d20e27979d5786324772662f"
+}

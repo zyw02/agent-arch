@@ -1,0 +1,158 @@
+{
+  "passed": true,
+  "formal_runs": 15,
+  "calibration_runs": 5,
+  "formal_provider_attempts": 394,
+  "all_provider_attempts": 418,
+  "stream_attempts": 414,
+  "nonstream_attempts": 4,
+  "image_id": "sha256:38ada54ea0b176681ec0075f374c5fe493d2ddeee9f2c0e0c558b52cba2b8108",
+  "formal_prompt_sha256": "a2c8ae7bced265097552c0ef19757fd95b3b4847fb805136770249331fd9372c",
+  "response_models": {
+    "deepseek-flash": 418
+  },
+  "blocked_requests": [
+    {
+      "product": "hermes",
+      "path": "/api/show",
+      "reason": "endpoint_not_admitted",
+      "count": 17
+    }
+  ],
+  "runs": [
+    {
+      "run_id": "smoke-claude",
+      "formal": false,
+      "passed": true,
+      "provider_attempts": 6
+    },
+    {
+      "run_id": "smoke-dsh",
+      "formal": false,
+      "passed": true,
+      "provider_attempts": 7
+    },
+    {
+      "run_id": "smoke-openclaw",
+      "formal": false,
+      "passed": true,
+      "provider_attempts": 4
+    },
+    {
+      "run_id": "smoke-hermes",
+      "formal": false,
+      "passed": true,
+      "provider_attempts": 5
+    },
+    {
+      "run_id": "smoke-codex",
+      "formal": false,
+      "passed": true,
+      "provider_attempts": 2
+    },
+    {
+      "run_id": "block-1-claude",
+      "formal": true,
+      "passed": true,
+      "provider_attempts": 27
+    },
+    {
+      "run_id": "block-1-dsh",
+      "formal": true,
+      "passed": true,
+      "provider_attempts": 24
+    },
+    {
+      "run_id": "block-1-openclaw",
+      "formal": true,
+      "passed": true,
+      "provider_attempts": 27
+    },
+    {
+      "run_id": "block-1-hermes",
+      "formal": true,
+      "passed": true,
+      "provider_attempts": 12
+    },
+    {
+      "run_id": "block-1-codex",
+      "formal": true,
+      "passed": true,
+      "provider_attempts": 19
+    },
+    {
+      "run_id": "block-2-dsh",
+      "formal": true,
+      "passed": true,
+      "provider_attempts": 19
+    },
+    {
+      "run_id": "block-2-openclaw",
+      "formal": true,
+      "passed": true,
+      "provider_attempts": 39
+    },
+    {
+      "run_id": "block-2-hermes",
+      "formal": true,
+      "passed": true,
+      "provider_attempts": 14
+    },
+    {
+      "run_id": "block-2-codex",
+      "formal": true,
+      "passed": true,
+      "provider_attempts": 25
+    },
+    {
+      "run_id": "block-2-claude",
+      "formal": true,
+      "passed": true,
+      "provider_attempts": 32
+    },
+    {
+      "run_id": "block-3-openclaw",
+      "formal": true,
+      "passed": true,
+      "provider_attempts": 32
+    },
+    {
+      "run_id": "block-3-hermes",
+      "formal": true,
+      "passed": true,
+      "provider_attempts": 39
+    },
+    {
+      "run_id": "block-3-codex",
+      "formal": true,
+      "passed": true,
+      "provider_attempts": 20
+    },
+    {
+      "run_id": "block-3-claude",
+      "formal": true,
+      "passed": true,
+      "provider_attempts": 31
+    },
+    {
+      "run_id": "block-3-dsh",
+      "formal": true,
+      "passed": true,
+      "provider_attempts": 34
+    }
+  ],
+  "checks": [
+    "artifact request hashes",
+    "raw SSE equals retained event sequence",
+    "common model/reasoning/output controls",
+    "native tools/messages unchanged by relay",
+    "same common image and CPU/memory limits",
+    "identical formal issue prompts",
+    "15 accepted source policies and patch hashes",
+    "2 F2P plus 78 P2P and 81-case affected file",
+    "all final storage scans without errors",
+    "cgroup availability and no OOM kills",
+    "complete final provider usage for all admitted attempts"
+  ],
+  "script_sha256": "a803bfb3d7f7f127a16d67efb160a549bcbd1c3bde315a99d174f84efc7625c8"
+}

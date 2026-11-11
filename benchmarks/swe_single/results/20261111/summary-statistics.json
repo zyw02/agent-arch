@@ -1,0 +1,229 @@
+{
+  "products": {
+    "dsh": {
+      "label": "DSH",
+      "runs": [
+        "block-1-dsh",
+        "block-2-dsh",
+        "block-3-dsh"
+      ],
+      "resolved": 3,
+      "wall_seconds": [
+        119.14117927,
+        88.891919822,
+        338.856055093
+      ],
+      "wall_mean": 182.29638472833335,
+      "wall_median": 119.14117927,
+      "medians": {
+        "wall_seconds": 119.14117927,
+        "time_to_first_provider_request_seconds": 1.933500136,
+        "cpu_seconds": 28.086212,
+        "memory_peak_bytes": 523247616.0,
+        "input_total": 1039668.0,
+        "input_noncache_billed": 45236.0,
+        "cache_read": 994432.0,
+        "output_total": 12516.0,
+        "home_final_logical_bytes": 212985.0,
+        "tmp_final_logical_bytes": 2367806.0,
+        "home_final_allocated_bytes": 249856.0,
+        "tmp_final_allocated_bytes": 9035776.0,
+        "workspace_delta_logical_bytes": 134.0,
+        "workspace_delta_allocated_bytes": 0.0,
+        "writable_delta_logical_bytes": 4189812.0,
+        "writable_delta_allocated_bytes": 9261056.0,
+        "writable_delta_files": 1690.0
+      },
+      "provider_attempts": 77,
+      "usage_complete_runs": 3,
+      "input_total": 2896189,
+      "cache_read": 2789888,
+      "output_total": 45638,
+      "peak_reference_usd_median": "0.034556592",
+      "peak_reference_usd_total": "0.103395228"
+    },
+    "openclaw": {
+      "label": "OpenClaw",
+      "runs": [
+        "block-1-openclaw",
+        "block-2-openclaw",
+        "block-3-openclaw"
+      ],
+      "resolved": 3,
+      "wall_seconds": [
+        267.813424453,
+        179.784781911,
+        269.820497177
+      ],
+      "wall_mean": 239.139567847,
+      "wall_median": 267.813424453,
+      "medians": {
+        "wall_seconds": 267.813424453,
+        "time_to_first_provider_request_seconds": 11.769869601,
+        "cpu_seconds": 180.72665,
+        "memory_peak_bytes": 2063736832.0,
+        "input_total": 888516.0,
+        "input_noncache_billed": 20292.0,
+        "cache_read": 868224.0,
+        "output_total": 14206.0,
+        "home_final_logical_bytes": 3203196.0,
+        "tmp_final_logical_bytes": 188186.0,
+        "home_final_allocated_bytes": 3215360.0,
+        "tmp_final_allocated_bytes": 6234112.0,
+        "workspace_delta_logical_bytes": 1558447.0,
+        "workspace_delta_allocated_bytes": 1863680.0,
+        "writable_delta_logical_bytes": 4729839.0,
+        "writable_delta_allocated_bytes": 9474048.0,
+        "writable_delta_files": 1542.0
+      },
+      "provider_attempts": 98,
+      "usage_complete_runs": 3,
+      "input_total": 2653527,
+      "cache_read": 2594432,
+      "output_total": 43748,
+      "peak_reference_usd_median": "0.028344144",
+      "peak_reference_usd_total": "0.085792692"
+    },
+    "hermes": {
+      "label": "Hermes",
+      "runs": [
+        "block-1-hermes",
+        "block-2-hermes",
+        "block-3-hermes"
+      ],
+      "resolved": 3,
+      "wall_seconds": [
+        71.265723707,
+        69.172111429,
+        536.010534095
+      ],
+      "wall_mean": 225.48278974366667,
+      "wall_median": 71.265723707,
+      "medians": {
+        "wall_seconds": 71.265723707,
+        "time_to_first_provider_request_seconds": 9.358570053,
+        "cpu_seconds": 33.798896,
+        "memory_peak_bytes": 506503168.0,
+        "input_total": 224336.0,
+        "input_noncache_billed": 10628.0,
+        "cache_read": 216448.0,
+        "output_total": 6045.0,
+        "home_final_logical_bytes": 3972708.0,
+        "tmp_final_logical_bytes": 13469.0,
+        "home_final_allocated_bytes": 11280384.0,
+        "tmp_final_allocated_bytes": 61440.0,
+        "workspace_delta_logical_bytes": 32905.0,
+        "workspace_delta_allocated_bytes": 53248.0,
+        "writable_delta_logical_bytes": 3978141.0,
+        "writable_delta_allocated_bytes": 11378688.0,
+        "writable_delta_files": 2021.0
+      },
+      "provider_attempts": 65,
+      "usage_complete_runs": 3,
+      "input_total": 1769170,
+      "cache_read": 1728384,
+      "output_total": 32613,
+      "peak_reference_usd_median": "0.011496864",
+      "peak_reference_usd_total": "0.061741704"
+    },
+    "codex": {
+      "label": "Codex",
+      "runs": [
+        "block-1-codex",
+        "block-2-codex",
+        "block-3-codex"
+      ],
+      "resolved": 3,
+      "wall_seconds": [
+        112.943580495,
+        267.812548844,
+        124.889505627
+      ],
+      "wall_mean": 168.54854498866666,
+      "wall_median": 124.889505627,
+      "medians": {
+        "wall_seconds": 124.889505627,
+        "time_to_first_provider_request_seconds": 0.320420306,
+        "cpu_seconds": 20.752871,
+        "memory_peak_bytes": 274124800.0,
+        "input_total": 875291.0,
+        "input_noncache_billed": 34331.0,
+        "cache_read": 840960.0,
+        "output_total": 19057.0,
+        "home_final_logical_bytes": 5997648.0,
+        "tmp_final_logical_bytes": 265623.0,
+        "home_final_allocated_bytes": 6127616.0,
+        "tmp_final_allocated_bytes": 9064448.0,
+        "workspace_delta_logical_bytes": 21236.0,
+        "workspace_delta_allocated_bytes": 40960.0,
+        "writable_delta_logical_bytes": 6272800.0,
+        "writable_delta_allocated_bytes": 15220736.0,
+        "writable_delta_files": 2293.0
+      },
+      "provider_attempts": 64,
+      "usage_complete_runs": 3,
+      "input_total": 2814147,
+      "cache_read": 2710912,
+      "output_total": 58726,
+      "peak_reference_usd_median": "0.03821346",
+      "peak_reference_usd_total": "0.117707172"
+    },
+    "claude": {
+      "label": "Claude Code",
+      "runs": [
+        "block-1-claude",
+        "block-2-claude",
+        "block-3-claude"
+      ],
+      "resolved": 3,
+      "wall_seconds": [
+        271.125403675,
+        168.318154166,
+        397.025157809
+      ],
+      "wall_mean": 278.82290521666664,
+      "wall_median": 271.125403675,
+      "medians": {
+        "wall_seconds": 271.125403675,
+        "time_to_first_provider_request_seconds": 0.43243348,
+        "cpu_seconds": 148.000658,
+        "memory_peak_bytes": 1238749184.0,
+        "input_total": 1090808.0,
+        "input_noncache_billed": 30853.0,
+        "cache_read": 1056000.0,
+        "output_total": 20251.0,
+        "home_final_logical_bytes": 603120.0,
+        "tmp_final_logical_bytes": 1522930.0,
+        "home_final_allocated_bytes": 630784.0,
+        "tmp_final_allocated_bytes": 43167744.0,
+        "workspace_delta_logical_bytes": 1349169.0,
+        "workspace_delta_allocated_bytes": 1654784.0,
+        "writable_delta_logical_bytes": 3454721.0,
+        "writable_delta_allocated_bytes": 45502464.0,
+        "writable_delta_files": 11024.0
+      },
+      "provider_attempts": 90,
+      "usage_complete_runs": 3,
+      "input_total": 3064799,
+      "cache_read": 2968960,
+      "output_total": 58353,
+      "peak_reference_usd_median": "0.040020684",
+      "peak_reference_usd_total": "0.116589060"
+    }
+  },
+  "formal_runs": 15,
+  "formal_successes": 15,
+  "formal_provider_attempts": 394,
+  "formal_known_attempts": 394,
+  "formal_input_total": 13197832,
+  "formal_output_total": 239078,
+  "formal_reasoning_known_attempts": 227,
+  "formal_peak_reference_usd": "0.485225856",
+  "formal_off_peak_reference_usd": "0.242612928",
+  "experiment_provider_attempts": 474,
+  "experiment_known_attempts": 473,
+  "experiment_unknown_attempts": 1,
+  "experiment_peak_known_subtotal_usd": "0.529414776",
+  "statistics_semantics": "Each column is independently aggregated; medians of token partitions need not sum to the median inclusive input. Three runs of one fixed public task, no population inference.",
+  "report_generator_sha256": "874921dcf4aa4f94480319abc4f7994a6f8297dcb412e02ecc5241ad71aa1345"
+}
