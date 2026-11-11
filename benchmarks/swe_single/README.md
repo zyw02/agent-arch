@@ -141,6 +141,9 @@ The verifier replays retained wire events and requires final usage evidence;
 original ledgers and run results stay unchanged. The report separates all-run
 consumption from successful-run consumption, and exports storage categories,
 device I/O, coverage, and known partial token subtotals in `runs.csv`.
+`requests.csv` retains each physical or blocked attempt, replayed counters,
+final-usage flags and relay-observed latency boundaries. Its first-byte field is
+an HTTP/SSE byte boundary, not a claim about model-token generation speed.
 The optional `plot.py <campaign-directory>` uses Matplotlib to show every formal
 observation in PNG/SVG; its version and input/script hashes accompany the plot.
 Native/provider reconciliation names each native counter's scope and preserves
