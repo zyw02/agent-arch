@@ -184,6 +184,8 @@ print(json.dumps({'paths': {k: disk_tree(v) for k, v in paths.items()},
                    '--junitxml=/testbed/benchmark-junit.xml', *test_paths]
         if 'memory_swap_bytes' in controls:
             command[3:3] = ['--memory-swap', str(controls['memory_swap_bytes'])]
+        if controls.get('single_host_campaign'):
+            command[3:3] = ['--cpuset-cpus', controls['cpuset_cpus']]
         started = time.monotonic()
         try:
             p = subprocess.run(command, capture_output=True, text=True,
@@ -262,6 +264,8 @@ print(json.dumps({'paths': {k: disk_tree(v) for k, v in paths.items()},
                    self.args.image, product, relay.base, '/home/bench/prompt.txt']
         if 'memory_swap_bytes' in limits:
             command[2:2] = ['--memory-swap', str(limits['memory_swap_bytes'])]
+        if limits.get('single_host_campaign'):
+            command[2:2] = ['--cpuset-cpus', limits['cpuset_cpus']]
         if 'native_timeout_seconds' in limits:
             command[2:2] = ['--env', 'BENCH_TASK_TIMEOUT_SECONDS=' + str(limits['native_timeout_seconds'])]
         if self.protocol['provider'].get('request_policy') == 'native-aux-v2':

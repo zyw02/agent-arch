@@ -54,11 +54,14 @@ class Application:
             HOME=str(self.home),TMPDIR=str(scratch),LANG='C.UTF-8',TERM='xterm-256color',COLORTERM='truecolor',COLUMNS='120',LINES='35')
         self.port=None;self.ready_at=None;self.startup_actions=[];self.process=None;self.closed=False;self.raw=bytearray();self.opener=urllib.request.build_opener(urllib.request.HTTPCookieProcessor())
         token='idle-probe-only';model='deepseek-flash';self.cwd=self.workspace
+        if product == 'openclaw57_patched' and os.environ.get('BENCH_AIOS_CONTEXT_MODEL') == 'deepseek-flash[1m]':
+            model = 'deepseek-flash[1m]'
+        max_output = int(os.environ.get('BENCH_MAX_OUTPUT_TOKENS', '16384'))
         if product in ('openclaw','openclaw57_patched'):
             self.port=port();state=self.home/'.openclaw';state.mkdir();config=state/'openclaw.json'
             cfg=dict(gateway=dict(mode='local',auth=dict(mode='token',token=token),controlUi=dict(enabled=False)),
                 agents=dict(defaults=dict(workspace=str(self.workspace),skipBootstrap=True,memorySearch=dict(enabled=False),model=dict(primary='deepseek/'+model))),
-                models=dict(providers=dict(deepseek=dict(baseUrl=base+'/v1',apiKey=token,api='openai-completions',models=[dict(id=model,name='Idle only',reasoning=True,input=['text'],contextWindow=1048576,maxTokens=16384)]))),
+                models=dict(providers=dict(deepseek=dict(baseUrl=base+'/v1',apiKey=token,api='openai-completions',models=[dict(id=model,name='Idle only',reasoning=True,input=['text'],contextWindow=1048576,maxTokens=max_output)]))),
                 cron=dict(enabled=False),logging=dict(level='debug',consoleLevel='info',file=str(self.home/'gateway-debug.log')))
             self.env.update(OPENCLAW_STATE_DIR=str(state),OPENCLAW_CONFIG_PATH=str(config),OPENCLAW_SKIP_CHANNELS='1',OPENCLAW_DISABLE_BONJOUR='1')
             if product=='openclaw57_patched':
@@ -122,12 +125,15 @@ terminal:
 ''')
             self.command=['/opt/hermes-venv/bin/hermes','--cli','--model',model,'--provider','deepseek']
         else:raise ValueError(product)
-        dump(self.path/'launch.json',dict(product=product,command=self.command,environment=self.env,cwd=str(self.cwd),phase='idle; no task or prompt submitted',cpus=sorted(os.sched_getaffinity(0))[:2]))
+        self.cpus = sorted(os.sched_getaffinity(0))
+        if os.environ.get('BENCH_USE_ALL_ALLOCATED_CPUS') != '1':
+            self.cpus = self.cpus[:2]
+        dump(self.path/'launch.json',dict(product=product,command=self.command,environment=self.env,cwd=str(self.cwd),phase='idle; no task or prompt submitted',cpus=self.cpus))
     def start(self):
         master,slave=pty.openpty();self.master=master
         fcntl.ioctl(slave,termios.TIOCSWINSZ,struct.pack('HHHH',35,120,0,0))
         def setup():
-            os.setsid();fcntl.ioctl(slave,termios.TIOCSCTTY,0);os.sched_setaffinity(0,sorted(os.sched_getaffinity(0))[:2])
+            os.setsid();fcntl.ioctl(slave,termios.TIOCSCTTY,0);os.sched_setaffinity(0,self.cpus)
         self.process=subprocess.Popen(self.command,cwd=self.cwd,env=self.env,stdin=slave,stdout=slave,stderr=slave,preexec_fn=setup)
         os.close(slave)
         self.reader=threading.Thread(target=self.read,daemon=True);self.reader.start()

@@ -56,16 +56,20 @@ def repeat(args, index):
     work = args.output.parent/('idle-'+uuid.uuid4().hex); work.mkdir()
     home, workspace, scratch = [work/n for n in ('home', 'workspace', 'tmp')]
     for path in (home, workspace, scratch):
-        path.mkdir()
+        if path == workspace and getattr(args, 'workspace_source', None):
+            shutil.copytree(args.workspace_source, path)
+        else:
+            path.mkdir()
     scratch.chmod(0o1777); chown_tree(work)
     container = 'idle-'+uuid.uuid4().hex[:12]
+    cpus = getattr(args, 'cpus', 2)
     result = dict(product=args.product, repeat=index, valid=False, phase='initial idle; no task',
                   settle_seconds=60, sample_seconds=60, memory_limit_bytes=8*1024**3,
-                  swap_disabled=True, cpus=2, external_network='none', model_credentials=False)
+                  swap_disabled=True, cpus=cpus, external_network='none', model_credentials=False)
     created = False
     try:
-        execute(['docker', 'create', '--name', container, '--network', 'none', '--read-only',
-                 '--cpus', '2', '--memory', str(8*1024**3), '--memory-swap', str(8*1024**3),
+        command = ['docker', 'create', '--name', container, '--network', 'none', '--read-only',
+                 '--cpus', str(cpus), '--memory', str(8*1024**3), '--memory-swap', str(8*1024**3),
                  '--pids-limit', '512', '--cap-drop', 'ALL', '--security-opt', 'no-new-privileges',
                  '--mount', f'type=bind,src={home},dst=/home/bench',
                  '--mount', f'type=bind,src={workspace},dst=/testbed',
@@ -73,7 +77,15 @@ def repeat(args, index):
                  '--mount', f'type=bind,src={Path(__file__).parent / "idle_native_entry.py"},dst=/opt/bench/idle_native_entry.py,readonly',
                  '--mount', f'type=bind,src={Path(__file__).parent / "agentloop_app.py"},dst=/opt/bench/agentloop_app.py,readonly',
                  '--entrypoint', '/usr/bin/python3', args.image,
-                 '/opt/bench/idle_native_entry.py', '--product', args.product])
+                 '/opt/bench/idle_native_entry.py', '--product', args.product]
+        if getattr(args, 'cpuset_cpus', None):
+            command[2:2] = ['--cpuset-cpus', args.cpuset_cpus,
+                '--env', 'BENCH_AIOS_CONTEXT_MODEL=deepseek-flash[1m]',
+                '--env', 'BENCH_MAX_OUTPUT_TOKENS=65536',
+                '--env', 'BENCH_USE_ALL_ALLOCATED_CPUS=1']
+            result['cpuset_cpus'] = args.cpuset_cpus
+            result['workspace_source'] = str(args.workspace_source)
+        execute(command)
         created = True; execute(['docker', 'start', container])
         deadline = time.monotonic()+540
         while not (home/'idle-ready.json').exists():

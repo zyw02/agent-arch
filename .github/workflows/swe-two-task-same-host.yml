@@ -1,0 +1,263 @@
+name: Two-task six-product benchmark on one host
+on:
+  workflow_call:
+    inputs:
+      runtime_run_id:
+        type: string
+        default: '43241110158'
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: two-task-same-host-benchmark
+  cancel-in-progress: false
+jobs:
+  measure:
+    name: One host — 7236 and 7324 — six products × three repeats
+    runs-on: ubuntu-24.04
+    timeout-minutes: 360
+    env:
+      DEEPSEEK_API_KEY: ${{ secrets.DEEPSEEK_API_KEY }}
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - name: Record allocated host once and use all allocated CPUs for every product
+        env:
+          PAIRED_ROOT: ${{ runner.temp }}/two-task-evidence
+        run: |
+          mkdir -p "$PAIRED_ROOT"
+          python3 - <<'PYHOST'
+          import json,os,time
+          from pathlib import Path
+          cpus=sorted(os.sched_getaffinity(0))
+          cpu_max=Path('/sys/fs/cgroup/cpu.max')
+          quota=cpu_max.read_text().split() if cpu_max.exists() else ['max']
+          if quota[0]!='max':cpus=cpus[:max(1,int(quota[0])//int(quota[1]))]
+          assert len(cpus)>=2, 'At least two allocated CPUs required'
+          models=sorted({s.split(':',1)[1].strip() for s in Path('/proc/cpuinfo').read_text().splitlines() if s.startswith('model name')})
+          assert len(models)==1, 'Heterogeneous CPU model inside allocated VM'
+          memory=int(next(s.split()[1] for s in Path('/proc/meminfo').read_text().splitlines() if s.startswith('MemTotal:')))
+          assert memory>=12*1024**2, '8 GiB tests require at least 12 GiB host RAM'
+          values=dict(PAIRED_ROOT=os.environ['PAIRED_ROOT'],PAIRED_SOURCES=os.environ['RUNNER_TEMP']+'/task-sources',
+              BENCH_EXPECTED_CPU_MODEL=models[0],BENCH_EXPECTED_RUNNER_NAME=os.environ['RUNNER_NAME'],
+              BENCH_ALLOCATED_CPUS=str(len(cpus)),
+              BENCH_CPUSET_CPUS=','.join(map(str,cpus)),BENCH_JOB_DEADLINE_UTC=str(time.time()+21600),
+              BENCH_PROTOCOL_PREFLIGHT_RECEIPT=os.environ['PAIRED_ROOT']+'/protocol-validation/preflight.json')
+          with open(os.environ['GITHUB_ENV'],'a') as f:
+              for k,v in values.items():f.write(k+'='+v+'\n')
+          root=Path(os.environ['PAIRED_ROOT'])
+          (root/'runner-cpuinfo.txt').write_text(Path('/proc/cpuinfo').read_text())
+          (root/'runner-memory.txt').write_text(Path('/proc/meminfo').read_text())
+          (root/'allocated-host.json').write_text(json.dumps(dict(cpu_model=models[0],cpuset_cpus=cpus,
+              runner_name=os.environ['RUNNER_NAME'],boot_id=Path('/proc/sys/kernel/random/boot_id').read_text().strip(),
+              host_memory_kib=memory,cgroup_cpu_max=quota,job_start_epoch=time.time()),indent=2)+'\n')
+          print(json.dumps(dict(cpu_model=models[0],cpuset_cpus=cpus,host_memory_gib=memory/1024**2)))
+          PYHOST
+      - name: Retain actual host allocation before any model calls
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: same-host-hardware-${{ github.run_id }}
+          path: |
+            ${{ runner.temp }}/two-task-evidence/allocated-host.json
+            ${{ runner.temp }}/two-task-evidence/runner-cpuinfo.txt
+            ${{ runner.temp }}/two-task-evidence/runner-memory.txt
+          retention-days: 14
+          if-no-files-found: error
+      - name: Verify controls without model calls
+        run: python3 -m unittest discover -s benchmarks/swe_single/tests -v
+      - name: Reclaim unused SDK storage and install compressed-log reader
+        run: |
+          sudo rm -rf /usr/share/dotnet /usr/local/lib/android /opt/ghc
+          sudo apt-get update -qq
+          sudo apt-get install -y --no-install-recommends zstd
+          df -h /
+      - name: Download the same immutable runtime used in the original campaign
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RUNTIME_RUN_ID: ${{ inputs.runtime_run_id }}
+        run: |
+          [[ "$RUNTIME_RUN_ID" =~ ^[0-9]+$ ]]
+          gh run download "$RUNTIME_RUN_ID" --repo "$GITHUB_REPOSITORY" --name "expanded-runtime-$RUNTIME_RUN_ID" --dir "$RUNNER_TEMP/runtime-bundle"
+      - name: Verify and load the common image and frozen source snapshots
+        env:
+          OPENCLAW57_PATCH_KEY: ${{ secrets.OPENCLAW57_PATCH_KEY }}
+        run: |
+          set -o pipefail
+          cd "$RUNNER_TEMP/runtime-bundle"
+          sha256sum -c SHA256SUMS
+          openssl enc -d -aes-256-cbc -pbkdf2 -iter 200000 -pass env:OPENCLAW57_PATCH_KEY -in runtime.tar.zst.enc | zstd -d | docker load
+          python3 - <<'PYIMAGE'
+          import json,subprocess
+          expected=json.load(open('image.json'))[0]['Id']
+          actual=subprocess.check_output(['docker','image','inspect','six-harness-expanded','--format','{{.Id}}'],text=True).strip()
+          assert actual==expected=='sha256:f768db1deda462fdbbf4adfddf7dd3df2a3e388d66584d5e1977500f5774f94b', 'Frozen runtime mismatch'
+          PYIMAGE
+          tar -xzf task-sources.tar.gz -C "$RUNNER_TEMP"
+          cp image.json SHA256SUMS "$PAIRED_ROOT/"
+          rm runtime.tar.zst.enc
+      - name: Validate live model protocols and native auxiliary reasoning intent
+        run: python3 benchmarks/swe_single/provider_preflight.py --output "$PAIRED_ROOT/protocol-validation"
+      - name: Initialize the fixed plan and host admission
+        run: sudo -E python3 benchmarks/swe_single/paired_campaign.py --output "$PAIRED_ROOT" --sources "$PAIRED_SOURCES" --stage init
+      - name: Hidden acceptance controls for both tasks — base red and reference green twice
+        timeout-minutes: 60
+        run: sudo -E python3 benchmarks/swe_single/paired_campaign.py --output "$PAIRED_ROOT" --sources "$PAIRED_SOURCES" --stage controls
+      - name: Six native calibrations — fresh idle RSS/PSS before every launch
+        timeout-minutes: 120
+        run: sudo -E python3 benchmarks/swe_single/paired_campaign.py --output "$PAIRED_ROOT" --sources "$PAIRED_SOURCES" --stage calibration
+      - name: Audit controls, protocols and calibrations
+        id: audit_controls
+        if: always()
+        run: sudo -E python3 benchmarks/swe_single/audit_artifacts.py "$PAIRED_ROOT"
+      - name: Save controls and calibrations before formal testing
+        if: always() && steps.audit_controls.outcome == 'success'
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: same-host-controls-${{ github.run_id }}
+          path: ${{ runner.temp }}/two-task-evidence/
+          retention-days: 14
+          compression-level: 3
+          if-no-files-found: error
+      - name: Task 7236 repeat 1 — six sequential fresh attempts, each preceded by idle RSS/PSS
+        id: round_0
+        timeout-minutes: 330
+        run: sudo -E python3 benchmarks/swe_single/paired_campaign.py --output "$PAIRED_ROOT" --sources "$PAIRED_SOURCES" --stage round --round 0
+      - name: Audit task 7236 repeat 1
+        id: audit_0
+        if: always() && steps.round_0.outcome != 'skipped'
+        run: sudo -E python3 benchmarks/swe_single/audit_artifacts.py "$PAIRED_ROOT"
+      - name: Retain task 7236 repeat 1 immediately
+        if: always() && steps.audit_0.outcome == 'success'
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: same-host-task-7236-repeat-1-${{ github.run_id }}
+          path: |
+            ${{ runner.temp }}/two-task-evidence/segments/round-0/
+            ${{ runner.temp }}/two-task-evidence/idle/pytest-dev__pytest-7236-repeat-1-*/
+            ${{ runner.temp }}/two-task-evidence/progress.jsonl
+            ${{ runner.temp }}/two-task-evidence/current-status.json
+          retention-days: 14
+          compression-level: 3
+          if-no-files-found: error
+      - name: Task 7324 repeat 1 — six sequential fresh attempts, each preceded by idle RSS/PSS
+        id: round_1
+        timeout-minutes: 330
+        run: sudo -E python3 benchmarks/swe_single/paired_campaign.py --output "$PAIRED_ROOT" --sources "$PAIRED_SOURCES" --stage round --round 1
+      - name: Audit task 7324 repeat 1
+        id: audit_1
+        if: always() && steps.round_1.outcome != 'skipped'
+        run: sudo -E python3 benchmarks/swe_single/audit_artifacts.py "$PAIRED_ROOT"
+      - name: Retain task 7324 repeat 1 immediately
+        if: always() && steps.audit_1.outcome == 'success'
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: same-host-task-7324-repeat-1-${{ github.run_id }}
+          path: |
+            ${{ runner.temp }}/two-task-evidence/segments/round-1/
+            ${{ runner.temp }}/two-task-evidence/idle/pytest-dev__pytest-7324-repeat-1-*/
+            ${{ runner.temp }}/two-task-evidence/progress.jsonl
+            ${{ runner.temp }}/two-task-evidence/current-status.json
+          retention-days: 14
+          compression-level: 3
+          if-no-files-found: error
+      - name: Task 7236 repeat 2 — six sequential fresh attempts, each preceded by idle RSS/PSS
+        id: round_2
+        timeout-minutes: 330
+        run: sudo -E python3 benchmarks/swe_single/paired_campaign.py --output "$PAIRED_ROOT" --sources "$PAIRED_SOURCES" --stage round --round 2
+      - name: Audit task 7236 repeat 2
+        id: audit_2
+        if: always() && steps.round_2.outcome != 'skipped'
+        run: sudo -E python3 benchmarks/swe_single/audit_artifacts.py "$PAIRED_ROOT"
+      - name: Retain task 7236 repeat 2 immediately
+        if: always() && steps.audit_2.outcome == 'success'
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: same-host-task-7236-repeat-2-${{ github.run_id }}
+          path: |
+            ${{ runner.temp }}/two-task-evidence/segments/round-2/
+            ${{ runner.temp }}/two-task-evidence/idle/pytest-dev__pytest-7236-repeat-2-*/
+            ${{ runner.temp }}/two-task-evidence/progress.jsonl
+            ${{ runner.temp }}/two-task-evidence/current-status.json
+          retention-days: 14
+          compression-level: 3
+          if-no-files-found: error
+      - name: Task 7324 repeat 2 — six sequential fresh attempts, each preceded by idle RSS/PSS
+        id: round_3
+        timeout-minutes: 330
+        run: sudo -E python3 benchmarks/swe_single/paired_campaign.py --output "$PAIRED_ROOT" --sources "$PAIRED_SOURCES" --stage round --round 3
+      - name: Audit task 7324 repeat 2
+        id: audit_3
+        if: always() && steps.round_3.outcome != 'skipped'
+        run: sudo -E python3 benchmarks/swe_single/audit_artifacts.py "$PAIRED_ROOT"
+      - name: Retain task 7324 repeat 2 immediately
+        if: always() && steps.audit_3.outcome == 'success'
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: same-host-task-7324-repeat-2-${{ github.run_id }}
+          path: |
+            ${{ runner.temp }}/two-task-evidence/segments/round-3/
+            ${{ runner.temp }}/two-task-evidence/idle/pytest-dev__pytest-7324-repeat-2-*/
+            ${{ runner.temp }}/two-task-evidence/progress.jsonl
+            ${{ runner.temp }}/two-task-evidence/current-status.json
+          retention-days: 14
+          compression-level: 3
+          if-no-files-found: error
+      - name: Task 7236 repeat 3 — six sequential fresh attempts, each preceded by idle RSS/PSS
+        id: round_4
+        timeout-minutes: 330
+        run: sudo -E python3 benchmarks/swe_single/paired_campaign.py --output "$PAIRED_ROOT" --sources "$PAIRED_SOURCES" --stage round --round 4
+      - name: Audit task 7236 repeat 3
+        id: audit_4
+        if: always() && steps.round_4.outcome != 'skipped'
+        run: sudo -E python3 benchmarks/swe_single/audit_artifacts.py "$PAIRED_ROOT"
+      - name: Retain task 7236 repeat 3 immediately
+        if: always() && steps.audit_4.outcome == 'success'
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: same-host-task-7236-repeat-3-${{ github.run_id }}
+          path: |
+            ${{ runner.temp }}/two-task-evidence/segments/round-4/
+            ${{ runner.temp }}/two-task-evidence/idle/pytest-dev__pytest-7236-repeat-3-*/
+            ${{ runner.temp }}/two-task-evidence/progress.jsonl
+            ${{ runner.temp }}/two-task-evidence/current-status.json
+          retention-days: 14
+          compression-level: 3
+          if-no-files-found: error
+      - name: Task 7324 repeat 3 — six sequential fresh attempts, each preceded by idle RSS/PSS
+        id: round_5
+        timeout-minutes: 330
+        run: sudo -E python3 benchmarks/swe_single/paired_campaign.py --output "$PAIRED_ROOT" --sources "$PAIRED_SOURCES" --stage round --round 5
+      - name: Audit task 7324 repeat 3
+        id: audit_5
+        if: always() && steps.round_5.outcome != 'skipped'
+        run: sudo -E python3 benchmarks/swe_single/audit_artifacts.py "$PAIRED_ROOT"
+      - name: Retain task 7324 repeat 3 immediately
+        if: always() && steps.audit_5.outcome == 'success'
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: same-host-task-7324-repeat-3-${{ github.run_id }}
+          path: |
+            ${{ runner.temp }}/two-task-evidence/segments/round-5/
+            ${{ runner.temp }}/two-task-evidence/idle/pytest-dev__pytest-7324-repeat-3-*/
+            ${{ runner.temp }}/two-task-evidence/progress.jsonl
+            ${{ runner.temp }}/two-task-evidence/current-status.json
+          retention-days: 14
+          compression-level: 3
+          if-no-files-found: error
+      - name: Summarize every expected attempt including missing or invalid measurements
+        if: always()
+        run: sudo -E python3 benchmarks/swe_single/paired_campaign.py --output "$PAIRED_ROOT" --sources "$PAIRED_SOURCES" --stage finalize
+      - name: Final credential audit
+        id: audit_final
+        if: always()
+        run: sudo -E python3 benchmarks/swe_single/audit_artifacts.py "$PAIRED_ROOT"
+      - name: Preserve complete raw evidence and final status
+        if: always() && steps.audit_final.outcome == 'success'
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: same-host-complete-${{ github.run_id }}
+          path: ${{ runner.temp }}/two-task-evidence/
+          retention-days: 14
+          compression-level: 3
+          if-no-files-found: error

@@ -7,7 +7,7 @@ on:
         description: Original five-product campaign, or enhanced six-product calibration/formal campaign
         type: choice
         default: connection
-        options: [connection, protocol-validation, proxy-forensics, calibration, formal, enhanced-calibration, enhanced-formal, enhanced-reproduce, enhanced-lock, enhanced-observed, enhanced-memory, enhanced-idle-memory, enhanced-suite]
+        options: [connection, protocol-validation, proxy-forensics, two-task-same-host, calibration, formal, enhanced-calibration, enhanced-formal, enhanced-reproduce, enhanced-lock, enhanced-observed, enhanced-memory, enhanced-idle-memory, enhanced-suite]
 
       product:
         description: Product for the independent observed batch
@@ -36,6 +36,13 @@ permissions:
   actions: read
 
 jobs:
+  two-task-same-host:
+    if: inputs.mode == 'two-task-same-host'
+    uses: ./.github/workflows/swe-two-task-same-host.yml
+    with:
+      runtime_run_id: ${{ inputs.runtime_run_id || '43241110158' }}
+    secrets: inherit
+
   proxy-forensics:
     if: inputs.mode == 'proxy-forensics'
     uses: ./.github/workflows/relay-forensics.yml
@@ -92,7 +99,7 @@ jobs:
           retention-days: 3
           if-no-files-found: error
   five-harness:
-    if: inputs.mode != 'connection' && inputs.mode != 'protocol-validation' && inputs.mode != 'proxy-forensics' && inputs.mode != 'enhanced-observed' && inputs.mode != 'enhanced-memory' && inputs.mode != 'enhanced-idle-memory' && inputs.mode != 'enhanced-suite'
+    if: inputs.mode != 'connection' && inputs.mode != 'protocol-validation' && inputs.mode != 'proxy-forensics' && inputs.mode != 'two-task-same-host' && inputs.mode != 'enhanced-observed' && inputs.mode != 'enhanced-memory' && inputs.mode != 'enhanced-idle-memory' && inputs.mode != 'enhanced-suite'
     runs-on: ubuntu-24.04
     timeout-minutes: 270
     steps:
