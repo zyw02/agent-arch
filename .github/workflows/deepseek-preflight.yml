@@ -7,7 +7,7 @@ on:
         description: Original five-product campaign, or enhanced six-product calibration/formal campaign
         type: choice
         default: connection
-        options: [connection, calibration, formal, enhanced-calibration, enhanced-formal, enhanced-reproduce, enhanced-lock, enhanced-observed]
+        options: [connection, calibration, formal, enhanced-calibration, enhanced-formal, enhanced-reproduce, enhanced-lock, enhanced-observed, enhanced-memory]
 
       product:
         description: Product for the independent observed batch
@@ -45,7 +45,7 @@ jobs:
           retention-days: 3
           if-no-files-found: error
   five-harness:
-    if: inputs.mode != 'connection' && inputs.mode != 'enhanced-observed'
+    if: inputs.mode != 'connection' && inputs.mode != 'enhanced-observed' && inputs.mode != 'enhanced-memory'
     runs-on: ubuntu-24.04
     timeout-minutes: 270
     steps:
@@ -286,6 +286,190 @@ jobs:
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
           name: observed-${{ inputs.product }}-${{ github.run_id }}-combined
+          path: ${{ runner.temp }}/swe-evidence/
+          retention-days: 14
+          compression-level: 3
+          if-no-files-found: error
+
+  memory:
+    if: inputs.mode == 'enhanced-memory'
+    name: Six native process-tree RSS and PSS observations (no inference)
+    runs-on: ubuntu-24.04
+    timeout-minutes: 75
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - name: Validate measurement and observed-stage admission
+        run: python3 -m unittest discover -s benchmarks/swe_single/tests -v
+      - name: Install compressed-log reader
+        run: sudo apt-get update -qq && sudo apt-get install -y --no-install-recommends zstd
+      - name: Prepare the same sealed patched source and frozen task
+        env:
+          OPENCLAW57_PATCH_KEY: ${{ secrets.OPENCLAW57_PATCH_KEY }}
+        run: python3 benchmarks/swe_single/prepare_enhanced.py --output "$RUNNER_TEMP/swe-preparation"
+      - name: Build the same pinned common runtime
+        run: |
+          mkdir -p "$RUNNER_TEMP/swe-evidence"
+          cp "$RUNNER_TEMP/swe-preparation/preparation.json" "$RUNNER_TEMP/swe-evidence/preparation.json"
+          docker build --progress=plain -t five-harness-swe "$RUNNER_TEMP/swe-preparation/context" > "$RUNNER_TEMP/swe-build.log" 2>&1
+          docker image inspect five-harness-swe > "$RUNNER_TEMP/swe-evidence/built-image.json"
+      - name: Seal build diagnostics
+        if: always()
+        env:
+          OPENCLAW57_PATCH_KEY: ${{ secrets.OPENCLAW57_PATCH_KEY }}
+        run: |
+          if [[ -f "$RUNNER_TEMP/swe-build.log" ]]; then
+            mkdir -p "$RUNNER_TEMP/swe-evidence"
+            python3 -c 'import sys; sys.path.insert(0, "benchmarks/swe_single"); from sealed_input import transform; transform(sys.argv[1], sys.argv[2])' \
+              "$RUNNER_TEMP/swe-build.log" "$RUNNER_TEMP/swe-evidence/build.log.enc"
+          fi
+      - name: Measure DSH ready RSS and PSS (three fresh repeats)
+        id: memory_dsh
+        continue-on-error: true
+        timeout-minutes: 10
+        run: |
+          sudo --preserve-env=GITHUB_SHA,GITHUB_RUN_ID python3 benchmarks/swe_single/memory_probe.py \
+            --image five-harness-swe --product dsh --output "$RUNNER_TEMP/swe-evidence/memory"
+      - name: Audit DSH memory evidence
+        id: audit_memory_dsh
+        if: always() && steps.memory_dsh.outcome != 'skipped'
+        env:
+          DEEPSEEK_API_KEY: ${{ secrets.DEEPSEEK_API_KEY }}
+        run: sudo --preserve-env=DEEPSEEK_API_KEY python3 benchmarks/swe_single/audit_artifacts.py "$RUNNER_TEMP/swe-evidence/memory/dsh"
+      - name: Retain DSH memory observations immediately
+        if: always() && steps.audit_memory_dsh.outcome == 'success'
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: memory-dsh-${{ github.run_id }}
+          path: ${{ runner.temp }}/swe-evidence/memory/dsh/
+          retention-days: 14
+          compression-level: 3
+          if-no-files-found: error
+      - name: Measure Patched OpenClaw 5.7 ready RSS and PSS (three fresh repeats)
+        id: memory_openclaw57_patched
+        continue-on-error: true
+        timeout-minutes: 10
+        run: |
+          sudo --preserve-env=GITHUB_SHA,GITHUB_RUN_ID python3 benchmarks/swe_single/memory_probe.py \
+            --image five-harness-swe --product openclaw57_patched --output "$RUNNER_TEMP/swe-evidence/memory"
+      - name: Audit Patched OpenClaw 5.7 memory evidence
+        id: audit_memory_openclaw57_patched
+        if: always() && steps.memory_openclaw57_patched.outcome != 'skipped'
+        env:
+          DEEPSEEK_API_KEY: ${{ secrets.DEEPSEEK_API_KEY }}
+        run: sudo --preserve-env=DEEPSEEK_API_KEY python3 benchmarks/swe_single/audit_artifacts.py "$RUNNER_TEMP/swe-evidence/memory/openclaw57_patched"
+      - name: Retain Patched OpenClaw 5.7 memory observations immediately
+        if: always() && steps.audit_memory_openclaw57_patched.outcome == 'success'
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: memory-openclaw57_patched-${{ github.run_id }}
+          path: ${{ runner.temp }}/swe-evidence/memory/openclaw57_patched/
+          retention-days: 14
+          compression-level: 3
+          if-no-files-found: error
+      - name: Measure Hermes ready RSS and PSS (three fresh repeats)
+        id: memory_hermes
+        continue-on-error: true
+        timeout-minutes: 10
+        run: |
+          sudo --preserve-env=GITHUB_SHA,GITHUB_RUN_ID python3 benchmarks/swe_single/memory_probe.py \
+            --image five-harness-swe --product hermes --output "$RUNNER_TEMP/swe-evidence/memory"
+      - name: Audit Hermes memory evidence
+        id: audit_memory_hermes
+        if: always() && steps.memory_hermes.outcome != 'skipped'
+        env:
+          DEEPSEEK_API_KEY: ${{ secrets.DEEPSEEK_API_KEY }}
+        run: sudo --preserve-env=DEEPSEEK_API_KEY python3 benchmarks/swe_single/audit_artifacts.py "$RUNNER_TEMP/swe-evidence/memory/hermes"
+      - name: Retain Hermes memory observations immediately
+        if: always() && steps.audit_memory_hermes.outcome == 'success'
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: memory-hermes-${{ github.run_id }}
+          path: ${{ runner.temp }}/swe-evidence/memory/hermes/
+          retention-days: 14
+          compression-level: 3
+          if-no-files-found: error
+      - name: Measure Codex ready RSS and PSS (three fresh repeats)
+        id: memory_codex
+        continue-on-error: true
+        timeout-minutes: 10
+        run: |
+          sudo --preserve-env=GITHUB_SHA,GITHUB_RUN_ID python3 benchmarks/swe_single/memory_probe.py \
+            --image five-harness-swe --product codex --output "$RUNNER_TEMP/swe-evidence/memory"
+      - name: Audit Codex memory evidence
+        id: audit_memory_codex
+        if: always() && steps.memory_codex.outcome != 'skipped'
+        env:
+          DEEPSEEK_API_KEY: ${{ secrets.DEEPSEEK_API_KEY }}
+        run: sudo --preserve-env=DEEPSEEK_API_KEY python3 benchmarks/swe_single/audit_artifacts.py "$RUNNER_TEMP/swe-evidence/memory/codex"
+      - name: Retain Codex memory observations immediately
+        if: always() && steps.audit_memory_codex.outcome == 'success'
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: memory-codex-${{ github.run_id }}
+          path: ${{ runner.temp }}/swe-evidence/memory/codex/
+          retention-days: 14
+          compression-level: 3
+          if-no-files-found: error
+      - name: Measure Claude Code ready RSS and PSS (three fresh repeats)
+        id: memory_claude
+        continue-on-error: true
+        timeout-minutes: 10
+        run: |
+          sudo --preserve-env=GITHUB_SHA,GITHUB_RUN_ID python3 benchmarks/swe_single/memory_probe.py \
+            --image five-harness-swe --product claude --output "$RUNNER_TEMP/swe-evidence/memory"
+      - name: Audit Claude Code memory evidence
+        id: audit_memory_claude
+        if: always() && steps.memory_claude.outcome != 'skipped'
+        env:
+          DEEPSEEK_API_KEY: ${{ secrets.DEEPSEEK_API_KEY }}
+        run: sudo --preserve-env=DEEPSEEK_API_KEY python3 benchmarks/swe_single/audit_artifacts.py "$RUNNER_TEMP/swe-evidence/memory/claude"
+      - name: Retain Claude Code memory observations immediately
+        if: always() && steps.audit_memory_claude.outcome == 'success'
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: memory-claude-${{ github.run_id }}
+          path: ${{ runner.temp }}/swe-evidence/memory/claude/
+          retention-days: 14
+          compression-level: 3
+          if-no-files-found: error
+      - name: Measure OpenClaw 11.3 ready RSS and PSS (three fresh repeats)
+        id: memory_openclaw
+        continue-on-error: true
+        timeout-minutes: 10
+        run: |
+          sudo --preserve-env=GITHUB_SHA,GITHUB_RUN_ID python3 benchmarks/swe_single/memory_probe.py \
+            --image five-harness-swe --product openclaw --output "$RUNNER_TEMP/swe-evidence/memory"
+      - name: Audit OpenClaw 11.3 memory evidence
+        id: audit_memory_openclaw
+        if: always() && steps.memory_openclaw.outcome != 'skipped'
+        env:
+          DEEPSEEK_API_KEY: ${{ secrets.DEEPSEEK_API_KEY }}
+        run: sudo --preserve-env=DEEPSEEK_API_KEY python3 benchmarks/swe_single/audit_artifacts.py "$RUNNER_TEMP/swe-evidence/memory/openclaw"
+      - name: Retain OpenClaw 11.3 memory observations immediately
+        if: always() && steps.audit_memory_openclaw.outcome == 'success'
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: memory-openclaw-${{ github.run_id }}
+          path: ${{ runner.temp }}/swe-evidence/memory/openclaw/
+          retention-days: 14
+          compression-level: 3
+          if-no-files-found: error
+      - name: Require complete process-tree observations for all six products
+        if: always()
+        run: sudo python3 benchmarks/swe_single/memory_probe.py --output "$RUNNER_TEMP/swe-evidence/memory" --summarize
+      - name: Audit combined memory evidence
+        id: audit_memory_all
+        if: always()
+        env:
+          DEEPSEEK_API_KEY: ${{ secrets.DEEPSEEK_API_KEY }}
+        run: sudo --preserve-env=DEEPSEEK_API_KEY python3 benchmarks/swe_single/audit_artifacts.py "$RUNNER_TEMP/swe-evidence"
+      - name: Retain combined memory observations and build provenance
+        if: always() && steps.audit_memory_all.outcome == 'success'
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: memory-combined-${{ github.run_id }}
           path: ${{ runner.temp }}/swe-evidence/
           retention-days: 14
           compression-level: 3

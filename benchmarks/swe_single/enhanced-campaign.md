@@ -83,3 +83,26 @@ Admission checks require the accepted controls and calibration to use the same
 image and effective protocol, including the chosen timeout. A cancelled hosted
 execution is restarted as a fresh three-repeat batch; prior segment evidence
 remains separate and is not pooled with the changed-timeout experiment.
+
+## Model-ready resident-memory observations
+
+`mode=enhanced-memory` measures all six native launchers in one newly built
+common pinned image, with the original gold-free task prompt and fresh
+workspace/home/tmp for each of three repeats. The same 2 CPU / 4 GiB limits
+apply. A local relay accepts the native first model request and holds its
+response open with transport keepalives; it has no upstream client and the
+measurement controller must not receive a provider key. No inference or task
+solving occurs. This is an initialized, model-ready waiting phase, not an idle
+daemon measurement or a replacement for whole-task peak memory.
+
+After a 10-second settling interval, the controller samples every second for
+20 seconds. Every process in the container cgroup (including background
+processes) must have a readable `smaps_rollup`; incomplete coverage is invalid,
+never zero. RSS and PSS sums, individual process counters, cgroup memory.stat
+anonymous/file-cache breakdowns, native state and first request bodies are
+retained. Each repeat reports its window median; product comparisons average
+the three repeat medians. PSS prevents shared process pages being counted
+multiple times. Unmapped filesystem cache is outside process RSS/PSS; mapped
+code/library pages remain included. All six groups must pass admission and
+share one image before a complete memory table is admitted. Product artifacts
+are uploaded immediately after their three observations.
