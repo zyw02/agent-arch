@@ -25,6 +25,8 @@ def run(output):
     model = next(m for m in models['data'] if m['id']=='deepseek-flash')
     if model.get('max_output_tokens',0)<65536:
         raise ValueError('Provider does not advertise the corrected output budget')
+    if model.get('context_window', 0) < 1000000:
+        raise ValueError('Provider does not advertise the AIOS context metadata hint')
     protocol = selected_protocol('openclaw57_patched','pytest-dev__pytest-7236',validated=True)
     relay = Relay.from_protocol(key,'127.0.0.1',output/'provider','protocol-preflight-only',protocol)
     probes=[]
@@ -32,7 +34,7 @@ def run(output):
         for api,route in [('chat','/v1/chat/completions'),('messages','/anthropic/v1/messages'),
                           ('responses','/v1/responses')]:
             for mode in ('main-high','auxiliary-disabled'):
-                body=dict(model='deepseek-flash',stream=True)
+                body=dict(model='deepseek-flash[1m]' if api == 'chat' else 'deepseek-flash',stream=True)
                 if api=='responses':
                     body['input']='Reply with READY only.'
                     if mode=='auxiliary-disabled':

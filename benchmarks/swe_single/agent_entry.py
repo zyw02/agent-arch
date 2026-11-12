@@ -20,6 +20,8 @@ def launch(product, base, prompt):
     # All of these are disposable relay credentials, never the real provider key.
     token = 'benchmark-relay-only'
     model = 'deepseek-flash'
+    if product == 'openclaw57_patched' and os.environ.get('BENCH_AIOS_CONTEXT_MODEL') == 'deepseek-flash[1m]':
+        model = 'deepseek-flash[1m]'
     max_output = int(os.environ.get('BENCH_MAX_OUTPUT_TOKENS', '16384'))
     iteration_limit = int(os.environ.get('BENCH_NATIVE_ITERATION_LIMIT', '64'))
     if product == 'dsh':

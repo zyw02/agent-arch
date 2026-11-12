@@ -42,6 +42,10 @@ def effective_request(api, original, limit, policy='legacy-v1'):
     if not isinstance(limit, int) or isinstance(limit, bool) or limit <= 0:
         raise ValueError('Output limit must be a positive integer')
     body = dict(original)
+    # The shipped AgentLoop SDK understands this context metadata suffix. The
+    # provider still receives the identical base model, never a different model.
+    if policy == 'native-aux-v2' and body.get('model') == 'deepseek-flash[1m]':
+        body['model'] = 'deepseek-flash'
     if body.get('model') != 'deepseek-flash':
         raise ValueError('undeclared model')
     # Native server-side retrieval would evade the no-web task condition.
@@ -209,6 +213,15 @@ class Relay:
                 directory = owner.output / f'{index:04d}'
                 directory.mkdir()
                 observation = None
+                response_started = False
+                upstream_digest = hashlib.sha256()
+                downstream_digest = hashlib.sha256()
+                row['downstream_bytes'] = 0
+                def deliver(data):
+                    self.wfile.write(data)
+                    self.wfile.flush()
+                    downstream_digest.update(data)
+                    row['downstream_bytes'] += len(data)
                 try:
                     parsed = urlsplit(self.path)
                     route = ROUTES.get(parsed.path)
@@ -244,6 +257,7 @@ class Relay:
                                original_sha256=hashlib.sha256(raw).hexdigest(),
                                effective_sha256=hashlib.sha256(forwarded).hexdigest(),
                                requested_model=body['model'], stream=bool(body.get('stream')))
+                    row['native_requested_model'] = json.loads(raw).get('model')
                     row['request_policy'] = owner.request_policy
                     row['native_thinking_disabled'] = native_reasoning_disabled(body)
                     row['requested_output_limit'] = body.get('max_tokens', body.get('max_output_tokens'))
@@ -263,15 +277,19 @@ class Relay:
                         row.update(http_status=response.status, headers_ns=time.monotonic_ns(),
                                    upstream_request_id=response.headers.get('x-request-id'),
                                    response_content_type=response.headers.get('Content-Type'))
+                        row['upstream_framing'] = {k: response.headers.get(k) for k in
+                            ('Content-Length', 'Transfer-Encoding', 'Content-Encoding', 'Connection')}
                         self.send_response(response.status)
                         self.send_header('Content-Type', response.headers.get('Content-Type', 'application/json'))
                         self.end_headers()
+                        response_started = True
                         disconnected = False
                         with (directory / 'response.raw').open('wb') as saved, (directory / 'events.jsonl').open('w') as events:
                             if body.get('stream'):
                                 for line in response:
                                     now = time.monotonic_ns()
                                     saved.write(line)
+                                    upstream_digest.update(line)
                                     row['response_bytes'] += len(line)
                                     if row.get('first_byte_ns') is None:
                                         row['first_byte_ns'] = now
@@ -279,8 +297,7 @@ class Relay:
                                         raise ValueError('response exceeds trace bound')
                                     if not disconnected:
                                         try:
-                                            self.wfile.write(line)
-                                            self.wfile.flush()
+                                            deliver(line)
                                         except OSError:
                                             disconnected = True
                                             row['client_disconnected'] = True
@@ -301,6 +318,7 @@ class Relay:
                             else:
                                 data = response.read(32 * 1024**2 + 1)
                                 saved.write(data)
+                                upstream_digest.update(data)
                                 row['response_bytes'] = len(data)
                                 if len(data) > 32 * 1024**2:
                                     raise ValueError('response exceeds trace bound')
@@ -308,7 +326,7 @@ class Relay:
                                 row['terminal'] = True
                                 row['terminal_kind'] = 'json_response'
                                 try:
-                                    self.wfile.write(data)
+                                    deliver(data)
                                 except OSError:
                                     row['client_disconnected'] = True
                 except urllib.error.HTTPError as exc:
@@ -323,13 +341,25 @@ class Relay:
                         pass
                 except Exception as exc:
                     row.update(error_type=type(exc).__name__, error_message=str(exc).replace(owner.key, '[REDACTED]')[:300])
-                    try:
-                        self.send_json(502, dict(error=dict(message='benchmark relay request failed')))
-                    except OSError:
-                        pass
+                    # Once SSE headers were sent a second HTTP response corrupts
+                    # the event stream. Close it and retain the real failure.
+                    if not response_started:
+                        try:
+                            self.send_json(502, dict(error=dict(message='benchmark relay request failed')))
+                        except OSError:
+                            pass
+                    else:
+                        self.close_connection = True
                 finally:
                     if observation is not None:
                         observation.finish()
+                    if response_started:
+                        row['upstream_body_sha256'] = upstream_digest.hexdigest()
+                        row['downstream_body_sha256'] = downstream_digest.hexdigest()
+                        row['stream_end'] = ('upstream_read_error' if row.get('error_type') else
+                            'terminal_complete' if row.get('terminal') else 'upstream_eof_without_terminal')
+                        row['transport_bytes_match'] = (row['response_bytes'] == row['downstream_bytes'] and
+                            row['upstream_body_sha256'] == row['downstream_body_sha256'])
                     row.update(ended_ns=time.monotonic_ns(), settled=True)
                     owner.flush()
 

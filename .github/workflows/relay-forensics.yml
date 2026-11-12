@@ -1,0 +1,49 @@
+name: Diagnose retained DSH streams and corrected native protocols
+on:
+  workflow_dispatch:
+  workflow_call:
+    secrets:
+      DEEPSEEK_API_KEY:
+        required: true
+permissions:
+  contents: read
+  actions: read
+jobs:
+  diagnose:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - name: Validate controls and stream transport without model calls
+        run: python3 -m unittest discover -s benchmarks/swe_single/tests -v
+      - name: Download the two immutable failing request artifacts
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh run download 43241110158 --name expanded-dsh-pytest-dev__pytest-7236-block-2-43241110158 --dir "$RUNNER_TEMP/replay-input/block-2"
+          gh run download 43241110158 --name expanded-dsh-pytest-dev__pytest-7236-block-3-43241110158 --dir "$RUNNER_TEMP/replay-input/block-3"
+      - name: Compare direct and relayed responses for both original payloads
+        env:
+          DEEPSEEK_API_KEY: ${{ secrets.DEEPSEEK_API_KEY }}
+        run: python3 benchmarks/swe_single/relay_forensics.py --inputs "$RUNNER_TEMP/replay-input" --output "$RUNNER_TEMP/forensic-evidence/dsh"
+      - name: Validate corrected six-protocol intents and AIOS context alias
+        if: always()
+        env:
+          DEEPSEEK_API_KEY: ${{ secrets.DEEPSEEK_API_KEY }}
+        run: python3 benchmarks/swe_single/provider_preflight.py --output "$RUNNER_TEMP/forensic-evidence/protocol-validation"
+      - name: Check retained evidence for provider credentials
+        id: audit
+        if: always()
+        env:
+          DEEPSEEK_API_KEY: ${{ secrets.DEEPSEEK_API_KEY }}
+        run: python3 benchmarks/swe_single/audit_artifacts.py "$RUNNER_TEMP/forensic-evidence"
+      - name: Retain diagnostic evidence separately from benchmark results
+        if: always() && steps.audit.outcome == 'success'
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: relay-forensics-${{ github.run_id }}
+          path: ${{ runner.temp }}/forensic-evidence/
+          retention-days: 14
+          if-no-files-found: error

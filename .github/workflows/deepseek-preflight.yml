@@ -7,7 +7,7 @@ on:
         description: Original five-product campaign, or enhanced six-product calibration/formal campaign
         type: choice
         default: connection
-        options: [connection, protocol-validation, calibration, formal, enhanced-calibration, enhanced-formal, enhanced-reproduce, enhanced-lock, enhanced-observed, enhanced-memory, enhanced-idle-memory, enhanced-suite]
+        options: [connection, protocol-validation, proxy-forensics, calibration, formal, enhanced-calibration, enhanced-formal, enhanced-reproduce, enhanced-lock, enhanced-observed, enhanced-memory, enhanced-idle-memory, enhanced-suite]
 
       product:
         description: Product for the independent observed batch
@@ -36,6 +36,11 @@ permissions:
   actions: read
 
 jobs:
+  proxy-forensics:
+    if: inputs.mode == 'proxy-forensics'
+    uses: ./.github/workflows/relay-forensics.yml
+    secrets: inherit
+
   protocol-validation:
     if: inputs.mode == 'protocol-validation'
     runs-on: ubuntu-24.04
@@ -87,7 +92,7 @@ jobs:
           retention-days: 3
           if-no-files-found: error
   five-harness:
-    if: inputs.mode != 'connection' && inputs.mode != 'protocol-validation' && inputs.mode != 'enhanced-observed' && inputs.mode != 'enhanced-memory' && inputs.mode != 'enhanced-idle-memory' && inputs.mode != 'enhanced-suite'
+    if: inputs.mode != 'connection' && inputs.mode != 'protocol-validation' && inputs.mode != 'proxy-forensics' && inputs.mode != 'enhanced-observed' && inputs.mode != 'enhanced-memory' && inputs.mode != 'enhanced-idle-memory' && inputs.mode != 'enhanced-suite'
     runs-on: ubuntu-24.04
     timeout-minutes: 270
     steps:

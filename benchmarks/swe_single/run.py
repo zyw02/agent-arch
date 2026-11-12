@@ -268,6 +268,7 @@ print(json.dumps({'paths': {k: disk_tree(v) for k, v in paths.items()},
             command[2:2] = [
                 '--env', 'BENCH_MAX_OUTPUT_TOKENS=' + str(self.protocol['provider']['requested_max_output_tokens']),
                 '--env', 'BENCH_NATIVE_ITERATION_LIMIT=' + str(limits['native_iteration_safety_limit']),
+                '--env', 'BENCH_AIOS_CONTEXT_MODEL=deepseek-flash[1m]',
                 '--mount', f'type=bind,src={HERE / "agent_entry.py"},dst=/opt/bench/agent_entry.py,readonly']
         if product == 'openclaw57_patched' and limits.get('aios_runtime') == 'agentloop':
             command[command.index(self.args.image):command.index(self.args.image)] = [

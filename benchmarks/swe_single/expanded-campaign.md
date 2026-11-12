@@ -25,3 +25,25 @@ The November 13 request audit found that the V1 relay forced high reasoning onto
 V2 requires `BENCH_EXPECTED_CPU_MODEL`, `BENCH_EXPECTED_RUNNER_NAME` and an exactly matching `RUNNER_NAME`. It also requires `BENCH_PROTOCOL_PREFLIGHT_RECEIPT` pointing to a successful live six-probe receipt whose control-source hashes match the executing code. Assign the unique runner label to one dedicated machine, register one runner service, serialize campaign jobs and give every attempt fresh containers and memory. These host checks do not assert constant provider cache state, stable network latency or absence of host load. The hosted V1 workflow is not automatically upgraded or rerun with these controls. Old paid Campaign entrypoints now refuse to start by default; `BENCH_ALLOW_LEGACY_REPRODUCTION=1` is reserved for intentional historical reproduction, not corrected measurements.
 
 Dispatch `deepseek-preflight.yml` with `mode=protocol-validation` for a small six-call live protocol check (main/auxiliary across Chat, Messages and Responses). It checks actual request intent, output budgets, response termination and usage coverage without solving tasks. It does not establish complete six-framework compatibility. A native smoke and internal-compaction check must still pass on the selected fixed runner before a new formal campaign; model/context guards and native SDK failures must be reported separately from task-quality failures. Never merge these new measurements into the frozen V1 campaign.
+# 2026-11-13：原始失败轮的进一步核查
+
+历史 72 轮数据保持原样；以下修改只进入新的 validated 控制配置。
+
+- AIOS 的交付 SDK 将 `deepseek-flash` 模糊匹配到旧 DeepSeek 表项，得到
+  81,384 总窗、65,000 有效上下文和 62,000 阻断线。7324 第一次的实际主请求
+  输入 31,645，但 SDK 将缓存重复计入，原始状态重放估算为 63,673，触发
+  `Prompt is too long`。最后两个正常结束的请求属于内部压缩，并非用户任务终态。
+- 新测试仅在原生模型配置中使用 SDK 支持的 `deepseek-flash[1m]` 上下文提示；
+  代理明确白名单映射回同一个 `deepseek-flash`。实际供应商模型、工具、消息不变。
+  模型发现必须证明上下文至少 1,000,000。交付 SDK、源码 patch、依赖锁不修改。
+  这不会修改 SDK 的缓存计数算法；原始 usage 与计费仍完整保留。
+- 代理新增上游/下游字节数、SHA256、HTTP framing 及终止分类。已经发送 SSE
+  响应头后发生异常时直接关闭流，禁止把第二份 HTTP 502 响应写入 SSE 正文。
+  不伪造终态或最终 usage，不暗中重试已计费请求。
+- DSH 两次历史断流请求的原始/有效正文哈希相同，不能归因为正文改写；历史缺少
+  分段传输证据，不能仅凭 EOF 确认网络、服务端或代理的责任。`proxy-forensics`
+  单独下载原请求，交替顺序各做一次直连与代理重放，并验证六种协议意图。
+  重放不执行工具，不是整题重跑，也不进入原性能、费用或成功率排名。
+- Hermes 7324 第三次把同名测试标签 `True`、`False`、`None` 当作 Python 常量，
+  改变了 matcher 语义。其历史轮还出现 16K 输出截断，故不能把该轮作为完全排除
+  测试条件干扰后的产品能力结论。

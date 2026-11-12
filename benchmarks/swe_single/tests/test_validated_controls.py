@@ -22,6 +22,16 @@ from validated_controls import (check_response_integrity, fixed_runner_admission
 
 
 class ValidatedControlTests(unittest.TestCase):
+    def test_context_hint_changes_only_provider_model_metadata(self):
+        original = dict(model='deepseek-flash[1m]', messages=[dict(role='user', content='unchanged')])
+        effective = effective_request('chat', original, 65536, 'native-aux-v2')
+        self.assertEqual(effective['model'], 'deepseek-flash')
+        self.assertEqual(effective['messages'], original['messages'])
+        self.assertEqual(original['model'], 'deepseek-flash[1m]')
+        for name, policy in [('deepseek-flash[1m]', 'legacy-v1'), ('other[1m]', 'native-aux-v2')]:
+            with self.assertRaises(ValueError):
+                effective_request('chat', dict(model=name), 65536, policy)
+
     def test_old_paid_entrypoint_is_blocked_before_credentials_or_docker(self):
         with patch.dict('os.environ',{'BENCH_ALLOW_LEGACY_REPRODUCTION':''}):
             with self.assertRaisesRegex(ValueError,'historical only'):
@@ -141,12 +151,14 @@ class ValidatedControlTests(unittest.TestCase):
         with patch.object(agent_entry,'write',lambda p,t:saved.__setitem__(str(p),t)), \
              patch.object(Path,'read_text',lambda p:saved[str(p)]), \
              patch.dict('os.environ',dict(BENCH_RUN_ID='fixture',BENCH_AIOS_RUNTIME='agentloop',
-                 BENCH_TASK_TIMEOUT_SECONDS='1800',BENCH_MAX_OUTPUT_TOKENS='65536',BENCH_NATIVE_ITERATION_LIMIT='4096')), \
+                 BENCH_TASK_TIMEOUT_SECONDS='1800',BENCH_MAX_OUTPUT_TOKENS='65536',BENCH_NATIVE_ITERATION_LIMIT='4096',
+                 BENCH_AIOS_CONTEXT_MODEL='deepseek-flash[1m]')), \
              patch('os.execvpe') as execute:
             agent_entry.launch('openclaw57_patched','http://fixture','original issue')
         config=json.loads(saved['/home/bench/.openclaw/openclaw.json'])
         self.assertEqual(config['models']['providers']['deepseek']['models'][0]['maxTokens'],65536)
         self.assertEqual(config['agents']['defaults']['thinkingDefault'],'high')
+        self.assertEqual(config['agents']['defaults']['model']['primary'], 'deepseek/deepseek-flash[1m]')
         self.assertEqual(execute.call_args.args[2]['AGENTLOOP_LOOP_MAX_TURNS'],'4096')
 
 
