@@ -7,7 +7,7 @@ on:
         description: Original five-product campaign, or enhanced six-product calibration/formal campaign
         type: choice
         default: connection
-        options: [connection, calibration, formal, enhanced-calibration, enhanced-formal, enhanced-reproduce, enhanced-lock, enhanced-observed, enhanced-memory]
+        options: [connection, calibration, formal, enhanced-calibration, enhanced-formal, enhanced-reproduce, enhanced-lock, enhanced-observed, enhanced-memory, enhanced-idle-memory]
 
       product:
         description: Product for the independent observed batch
@@ -45,7 +45,7 @@ jobs:
           retention-days: 3
           if-no-files-found: error
   five-harness:
-    if: inputs.mode != 'connection' && inputs.mode != 'enhanced-observed' && inputs.mode != 'enhanced-memory'
+    if: inputs.mode != 'connection' && inputs.mode != 'enhanced-observed' && inputs.mode != 'enhanced-memory' && inputs.mode != 'enhanced-idle-memory'
     runs-on: ubuntu-24.04
     timeout-minutes: 270
     steps:
@@ -471,6 +471,57 @@ jobs:
         with:
           name: memory-combined-${{ github.run_id }}
           path: ${{ runner.temp }}/swe-evidence/
+          retention-days: 14
+          compression-level: 3
+          if-no-files-found: error
+
+  idle-memory:
+    if: inputs.mode == 'enhanced-idle-memory'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - name: Validate memory measurement and runtime admission
+        run: python3 -m unittest discover -s benchmarks/swe_single/tests -v
+      - name: Prepare the sealed source and unchanged dependency locks
+        env:
+          OPENCLAW57_PATCH_KEY: ${{ secrets.OPENCLAW57_PATCH_KEY }}
+        run: python3 benchmarks/swe_single/prepare_enhanced.py --output "$RUNNER_TEMP/swe-preparation"
+      - name: Build the same pinned common runtime
+        run: |
+          mkdir -p "$RUNNER_TEMP/idle-evidence"
+          cp "$RUNNER_TEMP/swe-preparation/preparation.json" "$RUNNER_TEMP/idle-evidence/preparation.json"
+          docker build --progress=plain -t five-harness-swe "$RUNNER_TEMP/swe-preparation/context" > "$RUNNER_TEMP/idle-build.log" 2>&1
+          docker image inspect five-harness-swe > "$RUNNER_TEMP/idle-evidence/built-image.json"
+      - name: Measure three fresh idle AgentLoop Gateways without model credentials
+        timeout-minutes: 20
+        run: |
+          sudo --preserve-env=GITHUB_SHA,GITHUB_RUN_ID python3 benchmarks/swe_single/idle_memory.py \
+            --image five-harness-swe --output "$RUNNER_TEMP/idle-evidence/idle-agentloop"
+      - name: Seal source build diagnostics
+        if: always()
+        env:
+          OPENCLAW57_PATCH_KEY: ${{ secrets.OPENCLAW57_PATCH_KEY }}
+        run: |
+          if [[ -f "$RUNNER_TEMP/idle-build.log" ]]; then
+            mkdir -p "$RUNNER_TEMP/idle-evidence"
+            python3 -c 'import sys; sys.path.insert(0, "benchmarks/swe_single"); from sealed_input import transform; transform(sys.argv[1], sys.argv[2])' \
+              "$RUNNER_TEMP/idle-build.log" "$RUNNER_TEMP/idle-evidence/build.log.enc"
+          fi
+      - name: Audit the idle evidence
+        id: audit_idle
+        if: always()
+        env:
+          DEEPSEEK_API_KEY: ${{ secrets.DEEPSEEK_API_KEY }}
+        run: sudo --preserve-env=DEEPSEEK_API_KEY python3 benchmarks/swe_single/audit_artifacts.py "$RUNNER_TEMP/idle-evidence"
+      - name: Retain idle process memory, initialization logs, and provenance
+        if: always() && steps.audit_idle.outcome == 'success'
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: openclaw57-idle-agentloop-${{ github.run_id }}
+          path: ${{ runner.temp }}/idle-evidence/
           retention-days: 14
           compression-level: 3
           if-no-files-found: error
