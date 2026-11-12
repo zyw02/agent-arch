@@ -52,7 +52,8 @@ controls and all six native tool/usage calibrations pass. Every run retains
 the same provider evidence, resource/storage samples, native state, patches
 and independent grades as before. Do not count missing dependencies as a
 failed SWE-bench solution or publish a sixth score before it actually runs.
-# Independent observed batch
+
+## Independent observed batch
 
 `deepseek-preflight.yml` now also accepts `mode=enhanced-observed` and
 `product=openclaw57_patched` (the default). This is a separate diagnostic batch
@@ -72,4 +73,3 @@ locks, provider parameters, native executor, resource limits, and grader are
 reused. The image is freshly built, so equality of its ID to the running
 six-product campaign is not assumed. These isolated repeats are not rotated
 six-product comparison blocks and must not be pooled into that campaign.
-
