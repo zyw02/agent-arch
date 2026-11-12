@@ -9,7 +9,7 @@ import urllib.request
 
 from relay import Relay
 from suite import selected_protocol
-from validated_controls import check_response_integrity
+from validated_controls import check_response_integrity, control_source_hashes
 
 
 def run(output):
@@ -57,6 +57,7 @@ def run(output):
               all(r.get('http_status')==200 for r in relay.records))
     report=dict(complete=complete,probes=probes,response_integrity=integrity,
         accounting=summary,model=model,scope='Six tiny protocol probes only; not framework or task performance validation',
+        control_source_hashes=control_source_hashes(),controller_sha=os.environ.get('GITHUB_SHA'),
         credentials_retained=False)
     (output/'preflight.json').write_text(json.dumps(report,indent=2)+'\n')
     print(json.dumps(dict(complete=complete,probes=len(probes),integrity=integrity)))

@@ -9,16 +9,40 @@ import unittest
 import urllib.error
 import urllib.request
 from unittest.mock import patch
+from argparse import Namespace
 
 HERE = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(HERE))
 import agent_entry
 from relay import Observation, Relay, effective_request
 from suite import selected_protocol
-from validated_controls import check_response_integrity, fixed_runner_admission
+from run import Campaign
+from validated_controls import (check_response_integrity, fixed_runner_admission,
+                                 control_source_hashes, require_protocol_preflight)
 
 
 class ValidatedControlTests(unittest.TestCase):
+    def test_old_paid_entrypoint_is_blocked_before_credentials_or_docker(self):
+        with patch.dict('os.environ',{'BENCH_ALLOW_LEGACY_REPRODUCTION':''}):
+            with self.assertRaisesRegex(ValueError,'historical only'):
+                Campaign(Namespace(protocol=HERE/'protocol-six.json'))
+
+    def test_live_receipt_is_bound_to_all_six_probes_and_current_control_code(self):
+        with self.assertRaises(ValueError):
+            require_protocol_preflight(None)
+        with tempfile.TemporaryDirectory() as temp:
+            path=Path(temp)/'receipt.json'
+            receipt=dict(complete=True,probes=[dict(api=api,mode=mode)
+                for api in ('chat','messages','responses') for mode in ('main-high','auxiliary-disabled')],
+                response_integrity=dict(clean=True),accounting=dict(usage_complete=True),
+                control_source_hashes=control_source_hashes())
+            path.write_text(json.dumps(receipt))
+            self.assertTrue(require_protocol_preflight(path)['passed'])
+            receipt['control_source_hashes']['relay.py']='different code'
+            path.write_text(json.dumps(receipt))
+            with self.assertRaisesRegex(ValueError,'different controller code'):
+                require_protocol_preflight(path)
+
     def test_auxiliary_reasoning_and_smaller_budget_survive_all_protocols(self):
         for api in ('chat', 'messages', 'responses'):
             with self.subTest(api=api):

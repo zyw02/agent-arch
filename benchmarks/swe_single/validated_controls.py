@@ -1,6 +1,29 @@
 """Opt-in corrected controls; historical protocols and measurements stay frozen."""
+import hashlib
+import json
 import os
 from pathlib import Path
+
+
+def control_source_hashes():
+    root=Path(__file__).resolve().parent
+    return {name:hashlib.sha256((root/name).read_bytes()).hexdigest()
+            for name in ('relay.py','validated_controls.py','agent_entry.py')}
+
+
+def require_protocol_preflight(path):
+    if not path:
+        raise ValueError('Validated campaign requires BENCH_PROTOCOL_PREFLIGHT_RECEIPT from the live six-probe check')
+    receipt=json.loads(Path(path).read_text())
+    expected={(api,mode) for api in ('chat','messages','responses')
+              for mode in ('main-high','auxiliary-disabled')}
+    actual={(p['api'],p['mode']) for p in receipt.get('probes',[])}
+    if (not receipt.get('complete') or actual!=expected or
+            not receipt.get('response_integrity',{}).get('clean') or
+            not receipt.get('accounting',{}).get('usage_complete') or
+            receipt.get('control_source_hashes')!=control_source_hashes()):
+        raise ValueError('Live protocol receipt is incomplete or belongs to different controller code; no model calls admitted')
+    return dict(passed=True,receipt=str(Path(path).resolve()),control_source_hashes=control_source_hashes())
 
 
 def apply_validated_controls(protocol):

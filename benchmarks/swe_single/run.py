@@ -95,16 +95,22 @@ class Campaign:
         self.args = args
         self.protocol_path = Path(getattr(args, 'protocol', None) or HERE / 'protocol.json')
         self.protocol = json.loads(self.protocol_path.read_text())
+        request_policy=self.protocol['provider'].get('request_policy','legacy-v1')
+        if request_policy!='native-aux-v2' and os.environ.get('BENCH_ALLOW_LEGACY_REPRODUCTION')!='1':
+            raise ValueError('Legacy inference controls are historical only; use suite.py --validated-controls for new measurements')
         host_admission = None
-        if self.protocol['execution'].get('require_fixed_runner'):
-            from validated_controls import fixed_runner_admission
+        protocol_admission = None
+        if request_policy=='native-aux-v2':
+            from validated_controls import fixed_runner_admission, require_protocol_preflight
             host_admission = fixed_runner_admission()
+            protocol_admission = require_protocol_preflight(os.environ.get('BENCH_PROTOCOL_PREFLIGHT_RECEIPT'))
         self.task_path = Path(getattr(args, 'task', None) or HERE / 'task.json')
         self.task = json.loads(self.task_path.read_text())
         self.out = args.output.resolve()
         self.out.mkdir(parents=True, exist_ok=False)
         if host_admission:
             dump(self.out/'fixed-runner-admission.json', host_admission)
+            dump(self.out/'protocol-preflight-admission.json', protocol_admission)
         self.work = self.out.parent / (self.out.name + '-working-' + uuid.uuid4().hex[:8])
         self.work.mkdir()
         self.initial = self.work / 'initial'
@@ -261,7 +267,8 @@ print(json.dumps({'paths': {k: disk_tree(v) for k, v in paths.items()},
         if self.protocol['provider'].get('request_policy') == 'native-aux-v2':
             command[2:2] = [
                 '--env', 'BENCH_MAX_OUTPUT_TOKENS=' + str(self.protocol['provider']['requested_max_output_tokens']),
-                '--env', 'BENCH_NATIVE_ITERATION_LIMIT=' + str(limits['native_iteration_safety_limit'])]
+                '--env', 'BENCH_NATIVE_ITERATION_LIMIT=' + str(limits['native_iteration_safety_limit']),
+                '--mount', f'type=bind,src={HERE / "agent_entry.py"},dst=/opt/bench/agent_entry.py,readonly']
         if product == 'openclaw57_patched' and limits.get('aios_runtime') == 'agentloop':
             command[command.index(self.args.image):command.index(self.args.image)] = [
                 '--env', 'BENCH_AIOS_RUNTIME=agentloop', '--env', 'AGENTLOOP_WARMUP=0']

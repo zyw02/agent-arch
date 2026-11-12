@@ -25,6 +25,12 @@ ROUTES = {
 }
 
 
+def native_reasoning_disabled(body):
+    return ((body.get('thinking') or {}).get('type') == 'disabled' or
+            body.get('reasoning_effort') == 'none' or
+            (body.get('reasoning') or {}).get('effort') == 'none')
+
+
 class NoRedirect(urllib.request.HTTPRedirectHandler):
     def redirect_request(self, *args, **kwargs):
         raise ValueError('fixed-origin relay refuses redirects')
@@ -46,10 +52,7 @@ def effective_request(api, original, limit, policy='legacy-v1'):
     # Frameworks intentionally disable reasoning for summaries/classifiers.
     # Preserve that decision and its smaller output budget; enforcing the main
     # task's high effort here changes native orchestration and can break compact.
-    native_disabled = ((original.get('thinking') or {}).get('type') == 'disabled' or
-                       original.get('reasoning_effort') == 'none' or
-                       (original.get('reasoning') or {}).get('effort') == 'none')
-    if policy == 'native-aux-v2' and native_disabled:
+    if policy == 'native-aux-v2' and native_reasoning_disabled(original):
         cap_key = 'max_output_tokens' if api == 'responses' else 'max_tokens'
         native_limit = original.get(cap_key, original.get('max_completion_tokens'))
         body[cap_key] = min(native_limit, limit) if isinstance(native_limit, int) and native_limit > 0 else limit
@@ -242,7 +245,7 @@ class Relay:
                                effective_sha256=hashlib.sha256(forwarded).hexdigest(),
                                requested_model=body['model'], stream=bool(body.get('stream')))
                     row['request_policy'] = owner.request_policy
-                    row['native_thinking_disabled'] = body.get('thinking', {}).get('type') == 'disabled'
+                    row['native_thinking_disabled'] = native_reasoning_disabled(body)
                     row['requested_output_limit'] = body.get('max_tokens', body.get('max_output_tokens'))
                     headers = {'Authorization': 'Bearer ' + owner.key, 'Content-Type': 'application/json'}
                     if api == 'messages':
