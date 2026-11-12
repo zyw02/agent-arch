@@ -92,7 +92,8 @@ def main():
             writer = csv.DictWriter(stream, fieldnames=list(rows[0]))
             writer.writeheader()
             writer.writerows(rows)
-    lines = ['# 五个 harness 的同模型单题实测', '',
+    product_count = len({r['product'] for r in rows})
+    lines = [f'# {product_count} 个 harness 的同模型单题实测', '',
              f"题目：`{summary['instance_id']}`；实验：`{summary['experiment_id']}`。", '',
              '此表只描述固定题目、版本、模型及资源条件下的观测，不能推导总体排名。', '',
              '## 接入与计量校验', '',

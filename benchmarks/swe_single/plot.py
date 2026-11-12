@@ -22,6 +22,10 @@ def main():
     products = ['dsh', 'openclaw', 'hermes', 'codex', 'claude']
     labels = ['DSH', 'OpenClaw', 'Hermes', 'Codex', 'Claude Code']
     colors = ['#176B61', '#C46C30', '#7060A2', '#2874A6', '#AD4C70']
+    if any(r['product'] == 'openclaw57_patched' for r in rows):
+        products.append('openclaw57_patched')
+        labels.append('OpenClaw 5.7\npatched')
+        colors.append('#547A2A')
     panels = [
         ('Native run duration', 'Seconds', lambda r: float(r['wall_seconds']), False),
         ('Provider input + output', 'Million tokens',
@@ -56,13 +60,13 @@ def main():
         ax.set_title(title, loc='left', pad=30, fontweight='bold', fontsize=12)
         ax.set_ylabel(unit)
         ax.set_xticks(range(len(products)), labels)
-        ax.set_xlim(-.55, 4.55)
+        ax.set_xlim(-.55, len(products) - .45)
         ax.grid(axis='y', color='#D9DEE3', linewidth=.6, zorder=0)
         if logarithmic:
             ax.set_yscale('log')
         else:
             ax.set_ylim(bottom=0)
-    figure.suptitle('Five native harnesses | same DeepSeek model | pytest-7490',
+    figure.suptitle(f'{len(products)} native harnesses | same DeepSeek model | pytest-7490',
                     x=.055, ha='left', y=.98, fontsize=17, fontweight='bold')
     figure.legend(handles=[Line2D([], [], color='#53626B', marker='o', linestyle='None', label='Resolved'),
                            Line2D([], [], color='#53626B', marker='x', linestyle='None', label='Unresolved'),

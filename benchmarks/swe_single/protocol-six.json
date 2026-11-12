@@ -1,0 +1,143 @@
+{
+  "schema_version": 1,
+  "experiment_id": "SWE-SINGLE-01-SIX-20261112",
+  "purpose": "Six-product extension of SWE-SINGLE-01; same frozen task and controls, with supplied patched OpenClaw 2026.5.7 as the sixth product.",
+  "instance_id": "pytest-dev__pytest-7490",
+  "selection": {
+    "frozen_before_harness_outcomes": true,
+    "reason": "Five-hour session constraint: select the human 15-minutes-to-one-hour tier. Dynamic xfail markers require understanding setup/call/report timing and preserving strict xpass and --runxfail behavior. Two distinct FAIL_TO_PASS cases plus the existing skipping regression suite; pure Python and no external services. The 21-line reference change is not provided to agents.",
+    "alternatives_reviewed": [
+      "pytest-dev__pytest-5787",
+      "pytest-dev__pytest-10356",
+      "pytest-dev__pytest-6197",
+      "pydata__xarray-3095"
+    ],
+    "excluded_5787": "Demoted before any harness outcomes: human difficulty 1-4 hours and 232 changed lines are too heavy for the five-hour session constraint.",
+    "excluded_10356": "Hidden test introduces a new consider_mro keyword not explicitly required by the original issue; avoid underspecified API acceptance.",
+    "contamination": "Public historical benchmark; model training contamination cannot be excluded. No gold patch, hidden tests, hints, or original Git objects are exposed to the agent."
+  },
+  "products": {
+    "dsh": {
+      "package": "@deepseek-ai/dsh",
+      "version": "0.2.2-rc.1",
+      "api": "messages"
+    },
+    "openclaw": {
+      "package": "openclaw",
+      "version": "2026.11.3",
+      "api": "chat"
+    },
+    "hermes": {
+      "repo": "NousResearch/hermes-agent",
+      "commit": "84a0301415edd6d1385207ec96e4d7f2b6c1fcd9",
+      "api": "chat"
+    },
+    "codex": {
+      "package": "@openai/codex",
+      "version": "0.167.1",
+      "api": "responses"
+    },
+    "claude": {
+      "package": "@anthropic-ai/claude-code",
+      "version": "2.1.322",
+      "api": "messages"
+    },
+    "openclaw57_patched": {
+      "package": "openclaw",
+      "version": "2026.5.7",
+      "api": "chat",
+      "baseline_commit": "eeef4864494f859838fec1586bedbab1f8fa5702",
+      "patched_tree": "25cca8d4848324eaa24e8bf36430b58bcc38feca",
+      "source_manifest": "inputs/source.json",
+      "execution": "local agent; same native coding profile and DeepSeek configuration; old exec schema uses security=full/ask=off"
+    }
+  },
+  "provider": {
+    "origin": "https://api.deepseek.com",
+    "model": "deepseek-flash",
+    "thinking": "enabled",
+    "effort": "high",
+    "requested_max_output_tokens": 16384,
+    "output_cap_limitation": "DeepSeek documents compatibility paths which can increase effective Messages max_tokens for some clients. Retain actual output usage; this is a common requested limit, not a proven strict billing cap.",
+    "upstream_retries_in_relay": 0,
+    "protocol_translation": false,
+    "stream_usage_requested": true,
+    "unknown_usage": "null, never an inferred zero",
+    "cache_write": "Not separately billed by this provider. Report billing dimension as not_applicable; retain every raw field without fabricating a measured count."
+  },
+  "execution": {
+    "formal_repeats": 3,
+    "calibration_repeats": 1,
+    "task_timeout_seconds": 600,
+    "smoke_timeout_seconds": 180,
+    "maximum_provider_attempts_per_run": 64,
+    "cpus": 2,
+    "memory_bytes": 4294967296,
+    "pids_limit": 512,
+    "sampling_interval_seconds": 0.5,
+    "storage_sampling_interval_seconds": 2,
+    "writable_paths_limit_bytes": 1073741824,
+    "session_time_budget_seconds": 18000,
+    "formal_agent_time_budget_seconds": 9000,
+    "same_image_all_products": true,
+    "isolated_home_and_workspace_each_run": true,
+    "cross_run_memory": false,
+    "warmup": "Tool smoke in a separate home/workspace. Never include smoke in formal statistics; provider caches are not controllably cold.",
+    "order_seed": 20261111,
+    "order": "One seeded order rotated between complete blocks, sequential within each block on one hosted worker.",
+    "network": "Docker internal network; model relay exposes only fixed-origin inference and local model listing. Scoring has network=none.",
+    "tools": "Native filesystem, shell and local coding tools; web retrieval, external MCP integrations and cross-session memory disabled. Native tool schemas and orchestration remain part of the treatment.",
+    "scoring": "Fresh initial snapshot + candidate production-code changes + hidden test patch. Evaluate both FAIL_TO_PASS and PASS_TO_PASS. Keep per-test statuses and full scoring output.",
+    "allowed_changes": "src/** only; test/config/scorer edits fail policy. Runtime caches and Git bookkeeping excluded from source comparison."
+  },
+  "interpretation": {
+    "comparable": [
+      "resolved",
+      "fail_to_pass_passed",
+      "pass_to_pass_preserved",
+      "wall_seconds",
+      "provider_attempts",
+      "completed_provider_responses",
+      "provider_input_total",
+      "provider_input_uncached",
+      "provider_cache_read",
+      "provider_output_total",
+      "provider_reasoning_subset_when_reported",
+      "provider_duration_union_seconds",
+      "time_to_first_provider_request",
+      "request_response_bytes",
+      "container_cpu_seconds",
+      "container_memory_peak_bytes",
+      "container_io_bytes",
+      "workspace_state_bytes",
+      "workspace_state_allocated_bytes",
+      "workspace_state_file_count",
+      "workspace_state_storage_sampled_peak",
+      "native_log_db_cache_bytes",
+      "patch_files",
+      "patch_lines"
+    ],
+    "diagnostic_only": [
+      "native_steps",
+      "native_tool_calls",
+      "native_retry_events",
+      "native_compactions",
+      "native_approvals",
+      "subagents",
+      "tool_categories",
+      "native_provider_usage_reconciliation"
+    ],
+    "missing_values": "Store null plus reason and coverage; missing instrumentation must never become zero.",
+    "cost": "Estimate only from recorded provider usage and a frozen provider price snapshot. Account invoice unavailable. Incomplete runs retain known subtotals and missing-attempt counts.",
+    "statistics": "Show all three formal runs, observed success fraction and paired-block measurements; no broad superiority claim.",
+    "storage": "Record initial/final regular-file logical bytes, allocated st_blocks*512 bytes, file count and directory count for workspace, home and /tmp. Allocation deduplicates hard-linked inodes within each scope; directory/inode/filesystem overhead excluded. Sample every two seconds: running scans are non-atomic approximate maxima, not exact transient peaks or guaranteed bounds under concurrent mutations. Final scans occur while paused. This precision clarification does not change execution controls. Retain cgroup io.stat physical device read/write counters separately from logical sizes; neither is an application-level read/write byte count. Classify native logs, SQLite DB/WAL/SHM, caches and other state. Controller trace/archive storage is separate. Product package trees are installation diagnostics, not interchangeable full standalone dependency footprints. /dev/shm and runtime IPC tmpfs are outside path scans and bounded by the container runtime; memory counters include their charged pages."
+  },
+  "comparison_provenance": {
+    "reference_run_id": 42959922129,
+    "reference_commit": "9b281ab6893cbb1ee357f5e3cb9b28cf8d092d71",
+    "reference_protocol_sha256": "3555033ff0ab486c4ba96fd5028dc2afe9e494aba8c3339aa9ed093ac31e5c0d",
+    "historical_results_unchanged": true,
+    "environment": "One newly built common image for all six products. Original runner-local image was not retained; exact equality to the historical image is not asserted. Prior npm lock, base image digests and task dependencies are pinned.",
+    "cache_and_provider": "New date and provider cache state; historical measurements remain a separate campaign."
+  }
+}

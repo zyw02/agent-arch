@@ -103,7 +103,7 @@ def inspect_native(product, home, stdout, output):
         path = home / 'native-usage.json'
         if path.exists():
             result['native_usage'] = json.loads(path.read_text())
-    elif product == 'openclaw':
+    elif product in ('openclaw', 'openclaw57_patched'):
         # The CLI may print one indented object instead of JSONL.
         text = Path(stdout).read_text(errors='replace')
         text = '\n'.join(re.sub(r'^\d{4}-\d\d-\d\dT\S+\s+', '', line) for line in text.splitlines())

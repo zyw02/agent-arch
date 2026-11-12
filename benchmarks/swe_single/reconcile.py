@@ -26,7 +26,7 @@ def project(product, native):
         return dict(input_total=usage.get('input_tokens'), cache_read=usage.get('cached_input_tokens'),
                     output_total=usage.get('output_tokens'), native_api_calls=None,
                     scope='CLI turn.completed usage; raw persisted rollouts retained')
-    if product == 'openclaw':
+    if product in ('openclaw', 'openclaw57_patched'):
         meta = (native.get('native_result') or {}).get('meta', {})
         usage = (meta.get('agentMeta') or {}).get('usage')
         if isinstance(usage, dict):

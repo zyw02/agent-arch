@@ -33,7 +33,7 @@ def launch(product, base, prompt):
 ''')
         command = ['dsh', '--profile', 'headless', '--patch', str(overlay), '--json',
                    '--permission-mode', 'danger-full-access', '--approval-policy', 'never', prompt]
-    elif product == 'openclaw':
+    elif product in ('openclaw', 'openclaw57_patched'):
         config = home / '.openclaw/openclaw.json'
         write(config, json.dumps(dict(
             gateway=dict(mode='local', auth=dict(mode='token', token=token)),
@@ -49,6 +49,14 @@ def launch(product, base, prompt):
                    OPENCLAW_SKIP_CHANNELS='1')
         command = ['openclaw', 'agent', '--local', '--session-id', str(uuid.uuid5(uuid.NAMESPACE_URL, os.environ['BENCH_RUN_ID'])),
                    '--json', '--message', prompt]
+        if product == 'openclaw57_patched':
+            # The older schema expresses the same unrestricted local execution
+            # policy as security/ask. Run this source build explicitly: its
+            # mobile entrypoint shebang must not select the system openclaw.
+            settings = json.loads(config.read_text())
+            settings['tools']['exec'] = dict(security='full', ask='off')
+            write(config, json.dumps(settings))
+            command = ['node', '/opt/openclaw57/openclaw.mjs', *command[1:]]
     elif product == 'claude':
         env.update(ANTHROPIC_BASE_URL=base + '/anthropic', ANTHROPIC_AUTH_TOKEN=token,
                    ANTHROPIC_API_KEY=token, ANTHROPIC_MODEL=model,

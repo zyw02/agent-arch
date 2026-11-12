@@ -30,6 +30,8 @@ jobs:
         run: python3 comparison/dashboard.py --check
       - name: Validate repository and frozen scorer
         run: python3 tools/check_repository.py
+      - name: Validate SWE measurement and enhanced source admission without model calls
+        run: python3 -m unittest discover -s benchmarks/swe_single/tests -v
       - name: Validate the six-dimension OpenClaw design
         run: python3 evaluation/tools/check_design.py
       - name: Test campaign gates, fixture acceptance and cost accounting

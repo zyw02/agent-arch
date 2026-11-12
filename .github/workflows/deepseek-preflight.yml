@@ -1,13 +1,13 @@
-name: DeepSeek preflight and five-harness SWE benchmark
+name: DeepSeek preflight and native-harness SWE benchmark
 
 on:
   workflow_dispatch:
     inputs:
       mode:
-        description: Connection only, five native calibrations, or the bounded formal campaign
+        description: Original five-product campaign, or enhanced six-product calibration/formal campaign
         type: choice
         default: connection
-        options: [connection, calibration, formal]
+        options: [connection, calibration, formal, enhanced-calibration, enhanced-formal]
 
 permissions:
   contents: read
@@ -45,21 +45,51 @@ jobs:
       - name: Install the controller's compressed-log reader
         run: sudo apt-get update -qq && sudo apt-get install -y --no-install-recommends zstd
       - name: Prepare a gold-free immutable task build context
-        run: python3 benchmarks/swe_single/prepare.py --output "$RUNNER_TEMP/swe-preparation"
-      - name: Build one common pinned runtime for all five native CLIs
+        env:
+          BENCH_MODE: ${{ inputs.mode }}
+          OPENCLAW57_PATCH_KEY: ${{ secrets.OPENCLAW57_PATCH_KEY }}
         run: |
-          docker build --progress=plain -t five-harness-swe "$RUNNER_TEMP/swe-preparation/context"
+          if [[ "$BENCH_MODE" == enhanced-* ]]; then
+            python3 benchmarks/swe_single/prepare_enhanced.py --output "$RUNNER_TEMP/swe-preparation"
+          else
+            python3 benchmarks/swe_single/prepare.py --output "$RUNNER_TEMP/swe-preparation"
+          fi
+      - name: Build one common pinned runtime for every selected native CLI
+        run: |
           mkdir -p "$RUNNER_TEMP/swe-evidence"
           cp "$RUNNER_TEMP/swe-preparation/preparation.json" "$RUNNER_TEMP/swe-evidence/preparation.json"
+          docker build --progress=plain -t five-harness-swe "$RUNNER_TEMP/swe-preparation/context" > "$RUNNER_TEMP/swe-build.log" 2>&1
           docker image inspect five-harness-swe > "$RUNNER_TEMP/swe-evidence/built-image.json"
       - name: Run hidden-test controls, native tool and usage calibration, then selected campaign
         env:
           DEEPSEEK_API_KEY: ${{ secrets.DEEPSEEK_API_KEY }}
           BENCH_MODE: ${{ inputs.mode }}
         run: |
+          if [[ "$BENCH_MODE" == enhanced-* ]]; then
+            PROTOCOL=benchmarks/swe_single/protocol-six.json
+            MODE="${BENCH_MODE#enhanced-}"
+          else
+            PROTOCOL=benchmarks/swe_single/protocol.json
+            MODE="$BENCH_MODE"
+          fi
           sudo --preserve-env=DEEPSEEK_API_KEY,GITHUB_SHA,GITHUB_RUN_ID python3 benchmarks/swe_single/run.py \
             --image five-harness-swe --output "$RUNNER_TEMP/swe-evidence/campaign" \
-            --mode "$BENCH_MODE" --deadline-seconds 14400
+            --protocol "$PROTOCOL" --mode "$MODE" --deadline-seconds 14400
+      - name: Retain build diagnostics with source details sealed for enhanced inputs
+        if: always()
+        env:
+          BENCH_MODE: ${{ inputs.mode }}
+          OPENCLAW57_PATCH_KEY: ${{ secrets.OPENCLAW57_PATCH_KEY }}
+        run: |
+          mkdir -p "$RUNNER_TEMP/swe-evidence"
+          if [[ -f "$RUNNER_TEMP/swe-build.log" ]]; then
+            if [[ "$BENCH_MODE" == enhanced-* ]]; then
+              python3 -c 'import sys; sys.path.insert(0, "benchmarks/swe_single"); from sealed_input import transform; transform(sys.argv[1], sys.argv[2])' \
+                "$RUNNER_TEMP/swe-build.log" "$RUNNER_TEMP/swe-evidence/build.log.enc"
+            else
+              cp "$RUNNER_TEMP/swe-build.log" "$RUNNER_TEMP/swe-evidence/build.log"
+            fi
+          fi
       - name: Check retained artifacts for the real provider credential
         id: audit
         if: always()

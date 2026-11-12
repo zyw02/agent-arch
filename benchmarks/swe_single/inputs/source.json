@@ -1,0 +1,18 @@
+{
+  "baseline_commit": "eeef4864494f859838fec1586bedbab1f8fa5702",
+  "baseline_tree": "1b7a4b7a7341497f3c5b441ece5d3b93111630a0",
+  "patched_tree": "25cca8d4848324eaa24e8bf36430b58bcc38feca",
+  "enhance_source_commit": "9c0e88e210b7bef3a2eb0ba9b0bed853077014a0",
+  "patch_filename": "openclaw-2026.5.7-to-enhance-stable.patch",
+  "patch_sha256": "c76f0cad12b8078ecdddb8de42d13b1d0bd71ba43dfbf060bc3a871e54316294",
+  "delivery_sha256": "7e682588111b4d8e5198c60d2ddc757f378b523ecd6a419279a467865e85926e",
+  "sealed_inputs": {
+    "pchs.tar.gz.enc": "196c59ce8ca3470c852d8a4ad1a7dd5d8cb5427be1044fbfb60e2c43b35a2c2f"
+  },
+  "sdk_integrity": "sha512-Qu1LC4o5FfRshozBSzRhfCcRSNfsHtDQiaBvSKElU3mA+kOkq8MGfg2s3JMPe+8bz8LKOo/o0KFbJQfrbE451Q==",
+  "sdk_status": "missing_from_supplied_delivery",
+  "reference_node_digest": "sha256:be8204d4bd327363357f532187b752ff62759c31bedf98e9e18fc08c9cbd605c",
+  "reference_uv_digest": "sha256:96f40d3904aad8d0bd010539001d36c8e2188b981e1334471a90c4a1d93bb490",
+  "reference_package_lock_sha256": "37a092cb2616abf9d38a50cb200c6a47a78bd232c93bec1f90ea60437b8d0991",
+  "reference_test_dependencies_sha256": "a74fc2f1cae2a02a28543a24679ebe32894e4753ddd160bc86c38ad9ffdeca5b"
+}

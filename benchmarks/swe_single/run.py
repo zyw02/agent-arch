@@ -48,7 +48,8 @@ def chown_tree(root):
 class Campaign:
     def __init__(self, args):
         self.args = args
-        self.protocol = json.loads((HERE / 'protocol.json').read_text())
+        self.protocol_path = Path(getattr(args, 'protocol', None) or HERE / 'protocol.json')
+        self.protocol = json.loads(self.protocol_path.read_text())
         self.task = json.loads((HERE / 'task.json').read_text())
         self.out = args.output.resolve()
         self.out.mkdir(parents=True, exist_ok=False)
@@ -81,16 +82,17 @@ class Campaign:
             docker_version=execute(['docker', 'version', '--format', '{{.Server.Version}}']).stdout.strip(),
             controller_sha=os.environ.get('GITHUB_SHA'), github_run_id=os.environ.get('GITHUB_RUN_ID'),
             started_utc=datetime.now(timezone.utc).isoformat(), network=info,
-            protocol_sha256=hashlib.sha256((HERE / 'protocol.json').read_bytes()).hexdigest(),
+            protocol_sha256=hashlib.sha256(self.protocol_path.read_bytes()).hexdigest(),
             task_sha256=hashlib.sha256((HERE / 'task.json').read_bytes()).hexdigest(),
             initial_storage=disk_tree(self.initial)))
-        shutil.copyfile(HERE / 'protocol.json', self.out / 'protocol.json')
+        shutil.copyfile(self.protocol_path, self.out / 'protocol.json')
         shutil.copyfile(HERE / 'task.json', self.out / 'controller-task.json')
         inventory_code = (HERE / 'resources.py').read_text() + '''
 paths = {
     'npm_shared_install': '/opt/products',
     'dsh_package': '/opt/products/node_modules/@deepseek-ai/dsh',
     'openclaw_package': '/opt/products/node_modules/openclaw',
+    'openclaw57_patched_source_build': '/opt/openclaw57',
     'codex_package': '/opt/products/node_modules/@openai/codex',
     'claude_package': '/opt/products/node_modules/@anthropic-ai/claude-code',
     'hermes_source': '/opt/hermes',
@@ -335,6 +337,7 @@ def main():
     p.add_argument('--image', required=True)
     p.add_argument('--output', required=True, type=Path)
     p.add_argument('--mode', choices=['calibration', 'formal'], default='calibration')
+    p.add_argument('--protocol', type=Path, default=HERE / 'protocol.json')
     p.add_argument('--deadline-seconds', type=int, default=14400)
     args = p.parse_args()
     campaign = Campaign(args)
