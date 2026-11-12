@@ -229,6 +229,9 @@ print(json.dumps({'paths': {k: disk_tree(v) for k, v in paths.items()},
             expected_digest = hashlib.sha256(receipt.encode()).hexdigest()
         prompt_path = home / 'prompt.txt'
         prompt_path.write_text(prompt)
+        if product == 'openclaw57_patched' and self.protocol['execution'].get('aios_runtime') == 'agentloop':
+            from agentloop_app import prepare_default_app
+            prepare_default_app(home)
         chown_tree(root)
         collector = Collector(output, workspace, home, scratch, self.protocol['execution']['writable_paths_limit_bytes'])
         relay = Relay(self.key, self.gateway, output / 'provider', run_id,

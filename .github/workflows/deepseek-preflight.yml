@@ -26,6 +26,11 @@ on:
         type: string
         default: ''
 
+      suite_products:
+        description: JSON array of expanded-suite products; use a subset only for explicit recovery
+        type: string
+        default: '["openclaw57_patched","codex","dsh","claude","hermes","openclaw"]'
+
 permissions:
   contents: read
   actions: read
@@ -36,6 +41,7 @@ jobs:
     uses: ./.github/workflows/swe-expanded.yml
     with:
       runtime_run_id: ${{ inputs.runtime_run_id }}
+      suite_products: ${{ inputs.suite_products }}
     secrets: inherit
 
   connection:

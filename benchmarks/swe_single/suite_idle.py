@@ -70,6 +70,8 @@ def repeat(args, index):
                  '--mount', f'type=bind,src={home},dst=/home/bench',
                  '--mount', f'type=bind,src={workspace},dst=/testbed',
                  '--mount', f'type=bind,src={scratch},dst=/tmp',
+                 '--mount', f'type=bind,src={Path(__file__).parent / "idle_native_entry.py"},dst=/opt/bench/idle_native_entry.py,readonly',
+                 '--mount', f'type=bind,src={Path(__file__).parent / "agentloop_app.py"},dst=/opt/bench/agentloop_app.py,readonly',
                  '--entrypoint', '/usr/bin/python3', args.image,
                  '/opt/bench/idle_native_entry.py', '--product', args.product])
         created = True; execute(['docker', 'start', container])

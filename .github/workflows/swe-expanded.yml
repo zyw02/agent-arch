@@ -6,6 +6,9 @@ on:
       runtime_run_id:
         type: string
         default: ''
+      suite_products:
+        type: string
+        default: '["openclaw57_patched","codex","dsh","claude","hermes","openclaw"]'
 
 permissions:
   contents: read
@@ -113,7 +116,7 @@ jobs:
       fail-fast: false
       max-parallel: 6
       matrix:
-        product: [openclaw57_patched, codex, dsh, claude, hermes, openclaw]
+        product: ${{ fromJSON(inputs.suite_products) }}
         task: [pytest-dev__pytest-7490, pytest-dev__pytest-7571, pytest-dev__pytest-7236, pytest-dev__pytest-7324]
     env:
       SUITE_PRODUCT: ${{ matrix.product }}
@@ -354,7 +357,7 @@ jobs:
           if-no-files-found: error
 
   collect:
-    if: always() && needs.build.result == 'success'
+    if: always() && needs.build.result == 'success' && inputs.suite_products == '["openclaw57_patched","codex","dsh","claude","hermes","openclaw"]'
     needs: [build, measure]
     name: Collect 72 attempt records and initial idle RSS/PSS
     runs-on: ubuntu-24.04

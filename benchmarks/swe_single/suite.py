@@ -42,6 +42,7 @@ def selected_protocol(product, task_id):
         original_job_timeout_minutes=270, requested_tripled_job_timeout_minutes=810,
         scheduling='Split into 24 fresh hosted jobs because GitHub cannot accept an 810-minute job',
         aios='Exact delivered 5.7 patch and SDK with native AgentLoop selected; no PI fallback admitted',
+        aios_apps='User default App: default/main, SDK-native complex loop, no custom executor or extra task prompt',
         provider_cache='Fresh local memory each attempt; provider-side cache cannot be reset',
         controls='2 CPU, 8 GiB, same common image and frozen dependency locks for all products',
         difficulty='Same human-verified 15 min - 1 hour tier, not a claim of identical difficulty')

@@ -11,12 +11,19 @@ HERE = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(HERE))
 import agent_entry
 import idle_native_entry
+from agentloop_app import prepare_default_app
 from live_observation import validate_agentloop
 from suite import selected_protocol, shard_summary
 from run import replace_task_source
 
 
 class SuiteTests(unittest.TestCase):
+    def test_aios_uses_native_complex_loop_without_a_custom_executor_or_prompt(self):
+        with tempfile.TemporaryDirectory() as temp:
+            apps=prepare_default_app(Path(temp))
+            config=json.loads((apps/'default/agent.app.json').read_text())
+            self.assertEqual(config,dict(app_name='default',loop_mode=[dict(id='main',type='complex')]))
+            self.assertEqual((apps/'default/index.js').read_text(),'export {};\n')
     def test_new_snapshot_keeps_generated_editable_install_metadata(self):
         with tempfile.TemporaryDirectory() as temp:
             root=Path(temp); initial=root/'initial'; source=root/'source'

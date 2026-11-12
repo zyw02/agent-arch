@@ -62,6 +62,8 @@ class Application:
                 cron=dict(enabled=False),logging=dict(level='debug',consoleLevel='info',file=str(self.home/'gateway-debug.log')))
             self.env.update(OPENCLAW_STATE_DIR=str(state),OPENCLAW_CONFIG_PATH=str(config),OPENCLAW_SKIP_CHANNELS='1',OPENCLAW_DISABLE_BONJOUR='1')
             if product=='openclaw57_patched':
+                from agentloop_app import prepare_default_app
+                prepare_default_app(self.home)
                 cfg['agents']['defaults']['agentRuntime']=dict(id='agentloop');cfg['plugins']=dict(entries=dict(agentloop=dict(enabled=True)))
                 self.env.update(OPENCLAW_AGENT_RUNTIME='agentloop',AGENTLOOP_WARMUP='0')
                 entry=Path('/opt/openclaw57/openclaw.mjs')
