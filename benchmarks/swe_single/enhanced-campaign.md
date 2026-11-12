@@ -52,3 +52,24 @@ controls and all six native tool/usage calibrations pass. Every run retains
 the same provider evidence, resource/storage samples, native state, patches
 and independent grades as before. Do not count missing dependencies as a
 failed SWE-bench solution or publish a sixth score before it actually runs.
+# Independent observed batch
+
+`deepseek-preflight.yml` now also accepts `mode=enhanced-observed` and
+`product=openclaw57_patched` (the default). This is a separate diagnostic batch
+alongside run 43144468826. It does not cancel or change that execution.
+
+The job builds the same pinned runtime recipe and runs hidden-test controls,
+one tool/usage calibration, and three formal repeats in separate Actions steps.
+Every segment is audited and uploaded immediately, including on failure. Each
+artifact contains the original request/response streams, native state and tool
+traces, measurements, candidate patch, and independent hidden grading. The
+combined artifact preserves segment environment records and all outcomes.
+Live API status is available at each step boundary; raw traces become available
+after each segment, rather than waiting for the entire campaign to finish.
+
+Only scheduling and upload boundaries differ: task, prompt, SDK, dependency
+locks, provider parameters, native executor, resource limits, and grader are
+reused. The image is freshly built, so equality of its ID to the running
+six-product campaign is not assumed. These isolated repeats are not rotated
+six-product comparison blocks and must not be pooled into that campaign.
+

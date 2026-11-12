@@ -45,6 +45,23 @@ def chown_tree(root):
             os.chown(Path(parent) / name, 1000, 1000, follow_symlinks=False)
 
 
+def calibration_prompt():
+    return ('Read BENCH_RECEIPT.txt, run Python to compute the SHA-256 of its exact bytes, '
+            'and write the hex digest to BENCH_RESULT.txt. Use your local tools to do this. '
+            'Also verify that the Python you use can import the preinstalled pytest. '
+            'Do not change other files. Work in /testbed.')
+
+
+def formal_prompt(task):
+    return (task['problem_statement'] + '\n\n'
+            'Fix this issue in the production source under src/. Work in /testbed. '
+            'Use the preinstalled Python and pytest to reproduce and verify your repair. '
+            'Limit final source changes to src/. Put temporary reproduction files under /tmp. '
+            'Do not modify existing tests, configuration, or dependency files. '
+            'The source snapshot has no original Git history. Network retrieval is unavailable. '
+            'Implement the fix and report the validation you performed.')
+
+
 class Campaign:
     def __init__(self, args):
         self.args = args
@@ -291,22 +308,13 @@ print(json.dumps({'paths': {k: disk_tree(v) for k, v in paths.items()},
         random.Random(self.protocol['execution']['order_seed']).shuffle(products)
         dump(self.out / 'order.json', dict(smoke=products, formal=[products[i:] + products[:i]
                                                                  for i in range(self.protocol['execution']['formal_repeats'])]))
-        smoke_prompt = ('Read BENCH_RECEIPT.txt, run Python to compute the SHA-256 of its exact bytes, '
-                        'and write the hex digest to BENCH_RESULT.txt. Use your local tools to do this. '
-                        'Also verify that the Python you use can import the preinstalled pytest. '
-                        'Do not change other files. Work in /testbed.')
+        smoke_prompt = calibration_prompt()
         calibration = [self.run_product(product, 'smoke-' + product, smoke_prompt, smoke=True) for product in products]
         if not all(r['calibration_passed'] for r in calibration):
             raise RuntimeError('Native tool/usage calibration failed; no formal runs admitted')
         if self.args.mode == 'calibration':
             return
-        prompt = (self.task['problem_statement'] + '\n\n'
-                  'Fix this issue in the production source under src/. Work in /testbed. '
-                  'Use the preinstalled Python and pytest to reproduce and verify your repair. '
-                  'Limit final source changes to src/. Put temporary reproduction files under /tmp. '
-                  'Do not modify existing tests, configuration, or dependency files. '
-                  'The source snapshot has no original Git history. Network retrieval is unavailable. '
-                  'Implement the fix and report the validation you performed.')
+        prompt = formal_prompt(self.task)
         for index in range(self.protocol['execution']['formal_repeats']):
             for product in products[index:] + products[:index]:
                 if time.monotonic() - self.started > self.args.deadline_seconds - 800:

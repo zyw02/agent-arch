@@ -7,7 +7,13 @@ on:
         description: Original five-product campaign, or enhanced six-product calibration/formal campaign
         type: choice
         default: connection
-        options: [connection, calibration, formal, enhanced-calibration, enhanced-formal, enhanced-reproduce, enhanced-lock]
+        options: [connection, calibration, formal, enhanced-calibration, enhanced-formal, enhanced-reproduce, enhanced-lock, enhanced-observed]
+
+      product:
+        description: Product for the independent observed batch
+        type: choice
+        default: openclaw57_patched
+        options: [openclaw57_patched, openclaw, dsh, hermes, codex, claude]
 
 permissions:
   contents: read
@@ -33,7 +39,7 @@ jobs:
           retention-days: 3
           if-no-files-found: error
   five-harness:
-    if: inputs.mode != 'connection'
+    if: inputs.mode != 'connection' && inputs.mode != 'enhanced-observed'
     runs-on: ubuntu-24.04
     timeout-minutes: 270
     steps:
@@ -123,6 +129,156 @@ jobs:
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
           name: five-harness-swe-${{ inputs.mode }}-${{ github.run_id }}
+          path: ${{ runner.temp }}/swe-evidence/
+          retention-days: 14
+          compression-level: 3
+          if-no-files-found: error
+
+  observed:
+    if: inputs.mode == 'enhanced-observed'
+    name: Observed ${{ inputs.product }} — controls, calibration, three repeats
+    runs-on: ubuntu-24.04
+    timeout-minutes: 110
+    env:
+      OBSERVED_PRODUCT: ${{ inputs.product }}
+      DEEPSEEK_API_KEY: ${{ secrets.DEEPSEEK_API_KEY }}
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - name: Validate measurement and observed-stage admission
+        run: python3 -m unittest discover -s benchmarks/swe_single/tests -v
+      - name: Install compressed-log reader
+        run: sudo apt-get update -qq && sudo apt-get install -y --no-install-recommends zstd
+      - name: Prepare the same sealed patched source and frozen task
+        env:
+          OPENCLAW57_PATCH_KEY: ${{ secrets.OPENCLAW57_PATCH_KEY }}
+        run: python3 benchmarks/swe_single/prepare_enhanced.py --output "$RUNNER_TEMP/swe-preparation"
+      - name: Build the same pinned common runtime
+        run: |
+          mkdir -p "$RUNNER_TEMP/swe-evidence"
+          cp "$RUNNER_TEMP/swe-preparation/preparation.json" "$RUNNER_TEMP/swe-evidence/preparation.json"
+          docker build --progress=plain -t five-harness-swe "$RUNNER_TEMP/swe-preparation/context" > "$RUNNER_TEMP/swe-build.log" 2>&1
+          docker image inspect five-harness-swe > "$RUNNER_TEMP/swe-evidence/built-image.json"
+      - name: Seal build diagnostics
+        if: always()
+        env:
+          OPENCLAW57_PATCH_KEY: ${{ secrets.OPENCLAW57_PATCH_KEY }}
+        run: |
+          if [[ -f "$RUNNER_TEMP/swe-build.log" ]]; then
+            mkdir -p "$RUNNER_TEMP/swe-evidence"
+            python3 -c 'import sys; sys.path.insert(0, "benchmarks/swe_single"); from sealed_input import transform; transform(sys.argv[1], sys.argv[2])' \
+              "$RUNNER_TEMP/swe-build.log" "$RUNNER_TEMP/swe-evidence/build.log.enc"
+          fi
+      - name: Hidden-test environment controls (no model calls)
+        id: controls
+        timeout-minutes: 20
+        run: |
+          sudo --preserve-env=DEEPSEEK_API_KEY,GITHUB_SHA,GITHUB_RUN_ID,GITHUB_STEP_SUMMARY python3 benchmarks/swe_single/observed.py \
+            --image five-harness-swe --product "$OBSERVED_PRODUCT" --stage controls \
+            --output "$RUNNER_TEMP/swe-evidence/observed"
+      - name: Audit controls evidence
+        id: audit_controls
+        if: always() && steps.controls.outcome != 'skipped'
+        run: sudo --preserve-env=DEEPSEEK_API_KEY python3 benchmarks/swe_single/audit_artifacts.py "$RUNNER_TEMP/swe-evidence/observed/segments/controls"
+      - name: Retain controls raw traces immediately
+        if: always() && steps.audit_controls.outcome == 'success'
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: observed-${{ inputs.product }}-${{ github.run_id }}-controls
+          path: ${{ runner.temp }}/swe-evidence/observed/segments/controls/
+          retention-days: 14
+          compression-level: 3
+          if-no-files-found: error
+      - name: Native tool and usage calibration
+        id: calibration
+        timeout-minutes: 20
+        run: |
+          sudo --preserve-env=DEEPSEEK_API_KEY,GITHUB_SHA,GITHUB_RUN_ID,GITHUB_STEP_SUMMARY python3 benchmarks/swe_single/observed.py \
+            --image five-harness-swe --product "$OBSERVED_PRODUCT" --stage calibration \
+            --output "$RUNNER_TEMP/swe-evidence/observed"
+      - name: Audit calibration evidence
+        id: audit_calibration
+        if: always() && steps.calibration.outcome != 'skipped'
+        run: sudo --preserve-env=DEEPSEEK_API_KEY python3 benchmarks/swe_single/audit_artifacts.py "$RUNNER_TEMP/swe-evidence/observed/segments/calibration"
+      - name: Retain calibration raw traces immediately
+        if: always() && steps.audit_calibration.outcome == 'success'
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: observed-${{ inputs.product }}-${{ github.run_id }}-calibration
+          path: ${{ runner.temp }}/swe-evidence/observed/segments/calibration/
+          retention-days: 14
+          compression-level: 3
+          if-no-files-found: error
+      - name: Formal repeat 1 of 3
+        id: block_1
+        timeout-minutes: 20
+        run: |
+          sudo --preserve-env=DEEPSEEK_API_KEY,GITHUB_SHA,GITHUB_RUN_ID,GITHUB_STEP_SUMMARY python3 benchmarks/swe_single/observed.py \
+            --image five-harness-swe --product "$OBSERVED_PRODUCT" --stage block-1 \
+            --output "$RUNNER_TEMP/swe-evidence/observed"
+      - name: Audit block-1 evidence
+        id: audit_block_1
+        if: always() && steps.block_1.outcome != 'skipped'
+        run: sudo --preserve-env=DEEPSEEK_API_KEY python3 benchmarks/swe_single/audit_artifacts.py "$RUNNER_TEMP/swe-evidence/observed/segments/block-1"
+      - name: Retain block-1 raw traces immediately
+        if: always() && steps.audit_block_1.outcome == 'success'
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: observed-${{ inputs.product }}-${{ github.run_id }}-block-1
+          path: ${{ runner.temp }}/swe-evidence/observed/segments/block-1/
+          retention-days: 14
+          compression-level: 3
+          if-no-files-found: error
+      - name: Formal repeat 2 of 3
+        id: block_2
+        timeout-minutes: 20
+        run: |
+          sudo --preserve-env=DEEPSEEK_API_KEY,GITHUB_SHA,GITHUB_RUN_ID,GITHUB_STEP_SUMMARY python3 benchmarks/swe_single/observed.py \
+            --image five-harness-swe --product "$OBSERVED_PRODUCT" --stage block-2 \
+            --output "$RUNNER_TEMP/swe-evidence/observed"
+      - name: Audit block-2 evidence
+        id: audit_block_2
+        if: always() && steps.block_2.outcome != 'skipped'
+        run: sudo --preserve-env=DEEPSEEK_API_KEY python3 benchmarks/swe_single/audit_artifacts.py "$RUNNER_TEMP/swe-evidence/observed/segments/block-2"
+      - name: Retain block-2 raw traces immediately
+        if: always() && steps.audit_block_2.outcome == 'success'
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: observed-${{ inputs.product }}-${{ github.run_id }}-block-2
+          path: ${{ runner.temp }}/swe-evidence/observed/segments/block-2/
+          retention-days: 14
+          compression-level: 3
+          if-no-files-found: error
+      - name: Formal repeat 3 of 3
+        id: block_3
+        timeout-minutes: 20
+        run: |
+          sudo --preserve-env=DEEPSEEK_API_KEY,GITHUB_SHA,GITHUB_RUN_ID,GITHUB_STEP_SUMMARY python3 benchmarks/swe_single/observed.py \
+            --image five-harness-swe --product "$OBSERVED_PRODUCT" --stage block-3 \
+            --output "$RUNNER_TEMP/swe-evidence/observed"
+      - name: Audit block-3 evidence
+        id: audit_block_3
+        if: always() && steps.block_3.outcome != 'skipped'
+        run: sudo --preserve-env=DEEPSEEK_API_KEY python3 benchmarks/swe_single/audit_artifacts.py "$RUNNER_TEMP/swe-evidence/observed/segments/block-3"
+      - name: Retain block-3 raw traces immediately
+        if: always() && steps.audit_block_3.outcome == 'success'
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: observed-${{ inputs.product }}-${{ github.run_id }}-block-3
+          path: ${{ runner.temp }}/swe-evidence/observed/segments/block-3/
+          retention-days: 14
+          compression-level: 3
+          if-no-files-found: error
+      - name: Audit all retained evidence
+        id: audit_all
+        if: always()
+        run: sudo --preserve-env=DEEPSEEK_API_KEY python3 benchmarks/swe_single/audit_artifacts.py "$RUNNER_TEMP/swe-evidence"
+      - name: Retain combined results and build provenance
+        if: always() && steps.audit_all.outcome == 'success'
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: observed-${{ inputs.product }}-${{ github.run_id }}-combined
           path: ${{ runner.temp }}/swe-evidence/
           retention-days: 14
           compression-level: 3
