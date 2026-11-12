@@ -8,10 +8,11 @@
   "delivery_sha256": "7e682588111b4d8e5198c60d2ddc757f378b523ecd6a419279a467865e85926e",
   "sealed_inputs": {
     "pchs.tar.gz.enc": "196c59ce8ca3470c852d8a4ad1a7dd5d8cb5427be1044fbfb60e2c43b35a2c2f",
-    "agentloop-sdk.tgz.enc": "3ab760485379140043f3f5ad9b72ce45fd942c4a3a5d5ba0428de2fbe022507c"
+    "agentloop-sdk.tgz.enc": "3ab760485379140043f3f5ad9b72ce45fd942c4a3a5d5ba0428de2fbe022507c",
+    "pnpm-lock.yaml.enc": "dc6b2e5828968b8f30d15114875fbb40ca28cd80f9f63c32e802ead70fab92b4"
   },
   "sdk_integrity": "sha512-Qu1LC4o5FfRshozBSzRhfCcRSNfsHtDQiaBvSKElU3mA+kOkq8MGfg2s3JMPe+8bz8LKOo/o0KFbJQfrbE451Q==",
-  "sdk_status": "restored_but_incompatible_with_original_lock_integrity_and_dependency_manifest",
+  "sdk_status": "restored_and_isolated_dependency_lock_resolved_in_actions",
   "reference_node_digest": "sha256:be8204d4bd327363357f532187b752ff62759c31bedf98e9e18fc08c9cbd605c",
   "reference_uv_digest": "sha256:96f40d3904aad8d0bd010539001d36c8e2188b981e1334471a90c4a1d93bb490",
   "reference_package_lock_sha256": "37a092cb2616abf9d38a50cb200c6a47a78bd232c93bec1f90ea60437b8d0991",
@@ -19,5 +20,9 @@
   "sdk_sha256": "69cbb01a221b6924a70de8d0aa864a4d8f57fb55cb8c81ff710de8dfaac2eafd",
   "sdk_delivery_integrity": "sha512-XJvZx+6l3ZyzNC2Kjtd4ecMlEUzRMX9sXOhOIkryxBiFSkKHOEx/Y8uEBrcSZ8poFvkz/uFOpHxSoX56Sitcqg==",
   "sdk_delivery_patch_sha256": "9b5e4ca5997339b63cf5c0ec6b3a967550aeb4f8c41632e70e18bfb420818d56",
-  "sdk_source_commit": "b4dbf0f4a715e4cdf44f62c69fef6c05ce5d8817"
+  "sdk_source_commit": "b4dbf0f4a715e4cdf44f62c69fef6c05ce5d8817",
+  "effective_pnpm_lock_sha256": "e1da68472734f85c4ca0c8fd88080b4f1568184d4da96cdedc24b34b3697da89",
+  "dependency_lock_run_id": 43144097151,
+  "dependency_lock_run_url": "https://github.com/zyw02/agent-arch/actions/runs/43144097151",
+  "effective_tree_with_sdk_and_lock": "de525b97433ffab32e13a6c9321e72c3ddba6ad4"
 }

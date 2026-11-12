@@ -24,8 +24,15 @@ The SDK was subsequently restored from the user's `agentloop-patch.zip`.
 Its SHA-256 matches the delivery (`69cbb01a221b6924a70de8d0aa864a4d8f57fb55cb8c81ff710de8dfaac2eafd`),
 but its SHA-512 and dependency declarations differ from the original pnpm lock
 despite having the same package name/version. Both fingerprints are preserved
-in `inputs/source.json`. Normal calibration/formal preparation rejects this
-mismatch before model calls. The `enhanced-reproduce` mode explicitly restores
+in `inputs/source.json`. The user explicitly authorized using this delivery and
+updating only the sixth product's dependency lock. Actions run 43144097151
+resolved the local SDK using pnpm 10.33.2; the effective lock is sealed as
+`inputs/pnpm-lock.yaml.enc` and its plaintext hash is pinned in the manifest.
+Preparation first verifies the unchanged supplied source tree, then adds the
+SDK and overlays this separately recorded lock. Installation uses
+`--frozen-lockfile`. Shared peer contexts may be re-resolved inside this
+sixth-product pnpm workspace; the five historical products' separate npm lock
+and Hermes environment remain unchanged. The `enhanced-reproduce` mode restores
 the supplied SDK without changing the original lock, attempts the frozen build
 to retain the real installer outcome, and never admits model calls. It does
 not waive SDK/lock validation for calibration or formal solving. The SDK is
