@@ -7,12 +7,17 @@
   "patch_sha256": "c76f0cad12b8078ecdddb8de42d13b1d0bd71ba43dfbf060bc3a871e54316294",
   "delivery_sha256": "7e682588111b4d8e5198c60d2ddc757f378b523ecd6a419279a467865e85926e",
   "sealed_inputs": {
-    "pchs.tar.gz.enc": "196c59ce8ca3470c852d8a4ad1a7dd5d8cb5427be1044fbfb60e2c43b35a2c2f"
+    "pchs.tar.gz.enc": "196c59ce8ca3470c852d8a4ad1a7dd5d8cb5427be1044fbfb60e2c43b35a2c2f",
+    "agentloop-sdk.tgz.enc": "3ab760485379140043f3f5ad9b72ce45fd942c4a3a5d5ba0428de2fbe022507c"
   },
   "sdk_integrity": "sha512-Qu1LC4o5FfRshozBSzRhfCcRSNfsHtDQiaBvSKElU3mA+kOkq8MGfg2s3JMPe+8bz8LKOo/o0KFbJQfrbE451Q==",
-  "sdk_status": "missing_from_supplied_delivery",
+  "sdk_status": "restored_but_incompatible_with_original_lock_integrity_and_dependency_manifest",
   "reference_node_digest": "sha256:be8204d4bd327363357f532187b752ff62759c31bedf98e9e18fc08c9cbd605c",
   "reference_uv_digest": "sha256:96f40d3904aad8d0bd010539001d36c8e2188b981e1334471a90c4a1d93bb490",
   "reference_package_lock_sha256": "37a092cb2616abf9d38a50cb200c6a47a78bd232c93bec1f90ea60437b8d0991",
-  "reference_test_dependencies_sha256": "a74fc2f1cae2a02a28543a24679ebe32894e4753ddd160bc86c38ad9ffdeca5b"
+  "reference_test_dependencies_sha256": "a74fc2f1cae2a02a28543a24679ebe32894e4753ddd160bc86c38ad9ffdeca5b",
+  "sdk_sha256": "69cbb01a221b6924a70de8d0aa864a4d8f57fb55cb8c81ff710de8dfaac2eafd",
+  "sdk_delivery_integrity": "sha512-XJvZx+6l3ZyzNC2Kjtd4ecMlEUzRMX9sXOhOIkryxBiFSkKHOEx/Y8uEBrcSZ8poFvkz/uFOpHxSoX56Sitcqg==",
+  "sdk_delivery_patch_sha256": "9b5e4ca5997339b63cf5c0ec6b3a967550aeb4f8c41632e70e18bfb420818d56",
+  "sdk_source_commit": "b4dbf0f4a715e4cdf44f62c69fef6c05ce5d8817"
 }

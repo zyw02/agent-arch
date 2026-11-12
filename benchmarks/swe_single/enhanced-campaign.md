@@ -20,13 +20,16 @@ the decrypted delivery hash and the patch hash. The public repository holds
 only an encrypted copy of the supplied patch; `OPENCLAW57_PATCH_KEY` is an
 Actions secret. The same key seals detailed source build logs.
 
-The patch requires `extensions/agentloop/zte-agentloop-sdk-6.26.20-b4.tgz`,
-which is absent from the delivered tree. The exact tarball is mandatory before
-building; its SHA-512 must equal the supplied pnpm lockfile integrity. Removing
-this dependency, stubbing the SDK or excluding the plugin would change the
-requested treatment. Input admission stops before any model calls if it is
-absent. Once supplied, seal it as `inputs/agentloop-sdk.tgz.enc` and register
-its ciphertext SHA-256 in `inputs/source.json` using the same stored key.
+The SDK was subsequently restored from the user's `agentloop-patch.zip`.
+Its SHA-256 matches the delivery (`69cbb01a221b6924a70de8d0aa864a4d8f57fb55cb8c81ff710de8dfaac2eafd`),
+but its SHA-512 and dependency declarations differ from the original pnpm lock
+despite having the same package name/version. Both fingerprints are preserved
+in `inputs/source.json`. Normal calibration/formal preparation rejects this
+mismatch before model calls. The `enhanced-reproduce` mode explicitly restores
+the supplied SDK without changing the original lock, attempts the frozen build
+to retain the real installer outcome, and never admits model calls. It does
+not waive SDK/lock validation for calibration or formal solving. The SDK is
+sealed as `inputs/agentloop-sdk.tgz.enc`, using the same Actions secret.
 
 The historical Docker image was runner-local with no registry digest and was
 not retained. A new six-product common image is built from the original base

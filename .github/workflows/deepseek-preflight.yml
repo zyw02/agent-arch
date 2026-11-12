@@ -7,7 +7,7 @@ on:
         description: Original five-product campaign, or enhanced six-product calibration/formal campaign
         type: choice
         default: connection
-        options: [connection, calibration, formal, enhanced-calibration, enhanced-formal]
+        options: [connection, calibration, formal, enhanced-calibration, enhanced-formal, enhanced-reproduce, enhanced-lock]
 
 permissions:
   contents: read
@@ -49,18 +49,40 @@ jobs:
           BENCH_MODE: ${{ inputs.mode }}
           OPENCLAW57_PATCH_KEY: ${{ secrets.OPENCLAW57_PATCH_KEY }}
         run: |
-          if [[ "$BENCH_MODE" == enhanced-* ]]; then
+          if [[ "$BENCH_MODE" == enhanced-reproduce || "$BENCH_MODE" == enhanced-lock ]]; then
+            python3 benchmarks/swe_single/prepare_enhanced.py --diagnose-sdk --output "$RUNNER_TEMP/swe-preparation"
+          elif [[ "$BENCH_MODE" == enhanced-* ]]; then
             python3 benchmarks/swe_single/prepare_enhanced.py --output "$RUNNER_TEMP/swe-preparation"
           else
             python3 benchmarks/swe_single/prepare.py --output "$RUNNER_TEMP/swe-preparation"
           fi
+      - name: Set up the pinned runtime for sixth-product lock resolution
+        if: inputs.mode == 'enhanced-lock'
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: 24.22.1
+      - name: Resolve only the delivered SDK and freeze sixth-product dependencies
+        if: inputs.mode == 'enhanced-lock'
+        env:
+          OPENCLAW57_PATCH_KEY: ${{ secrets.OPENCLAW57_PATCH_KEY }}
+        run: |
+          mkdir -p "$RUNNER_TEMP/swe-evidence"
+          cp "$RUNNER_TEMP/swe-preparation/preparation.json" "$RUNNER_TEMP/swe-evidence/preparation.json"
+          npm install --global --no-audit --no-fund pnpm@10.33.2
+          cd "$RUNNER_TEMP/swe-preparation/context/enhanced-source"
+          pnpm --filter openclaw --filter @openclaw/agentloop update @zte/agentloop-sdk --lockfile-only --ignore-scripts > "$RUNNER_TEMP/swe-build.log" 2>&1
+          cd "$GITHUB_WORKSPACE"
+          python3 -c 'import sys; sys.path.insert(0, "benchmarks/swe_single"); from sealed_input import transform; transform(sys.argv[1], sys.argv[2])' \
+            "$RUNNER_TEMP/swe-preparation/context/enhanced-source/pnpm-lock.yaml" "$RUNNER_TEMP/swe-evidence/pnpm-lock.yaml.enc"
       - name: Build one common pinned runtime for every selected native CLI
+        if: inputs.mode != 'enhanced-lock'
         run: |
           mkdir -p "$RUNNER_TEMP/swe-evidence"
           cp "$RUNNER_TEMP/swe-preparation/preparation.json" "$RUNNER_TEMP/swe-evidence/preparation.json"
           docker build --progress=plain -t five-harness-swe "$RUNNER_TEMP/swe-preparation/context" > "$RUNNER_TEMP/swe-build.log" 2>&1
           docker image inspect five-harness-swe > "$RUNNER_TEMP/swe-evidence/built-image.json"
       - name: Run hidden-test controls, native tool and usage calibration, then selected campaign
+        if: inputs.mode != 'enhanced-reproduce' && inputs.mode != 'enhanced-lock'
         env:
           DEEPSEEK_API_KEY: ${{ secrets.DEEPSEEK_API_KEY }}
           BENCH_MODE: ${{ inputs.mode }}

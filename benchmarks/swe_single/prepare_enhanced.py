@@ -26,7 +26,8 @@ def verify_vendor(path, expected_integrity):
     with Path(path).open('rb') as stream:
         actual = base64.b64encode(hashlib.file_digest(stream, 'sha512').digest()).decode()
     if 'sha512-' + actual != expected_integrity:
-        raise ValueError('Vendor SDK differs from the patch lockfile integrity')
+        raise ValueError('Vendor SDK differs from the patch lockfile integrity: expected '
+                         + expected_integrity + ', actual sha512-' + actual)
     with tarfile.open(path) as archive:
         package = json.load(archive.extractfile('package/package.json'))
     if package['name'] != '@zte/agentloop-sdk':
@@ -50,7 +51,7 @@ def require_inputs(manifest):
             raise ValueError(f'Historical environment lock changed: {name}')
 
 
-def prepare(output):
+def prepare(output, diagnose_sdk=False):
     manifest = json.loads((INPUTS / 'source.json').read_text())
     # Fail before fetching or building if the exact vendor artifact is absent.
     require_inputs(manifest)
@@ -87,8 +88,22 @@ def prepare(output):
             archive.extractall(source, filter='data')
         sdk = source / 'extensions/agentloop' / SDK
         transform(INPUTS / 'agentloop-sdk.tgz.enc', sdk, decrypt=True)
-        verify_vendor(sdk, manifest['sdk_integrity'])
         vendor_sha = digest(sdk)
+        if vendor_sha != manifest['sdk_sha256']:
+            raise ValueError('Restored SDK does not match the new delivery SHA-256')
+        verify_vendor(sdk, manifest['sdk_delivery_integrity'])
+        sdk_matches_lock = True
+        try:
+            verify_vendor(sdk, manifest['sdk_integrity'])
+        except ValueError:
+            sdk_matches_lock = False
+            if not diagnose_sdk and 'pnpm-lock.yaml.enc' not in manifest['sealed_inputs']:
+                raise
+        if not diagnose_sdk and 'pnpm-lock.yaml.enc' in manifest['sealed_inputs']:
+            updated_lock = source / 'pnpm-lock.yaml'
+            transform(INPUTS / 'pnpm-lock.yaml.enc', updated_lock, decrypt=True)
+            if digest(updated_lock) != manifest['effective_pnpm_lock_sha256']:
+                raise ValueError('Updated sixth-product dependency lock checksum mismatch')
     shutil.copyfile(INPUTS / 'reference-package-lock.json', context / 'reference-package-lock.json')
     shutil.copyfile(INPUTS / 'reference-test-dependencies.txt', context / 'reference-test-dependencies.txt')
     shutil.copyfile(INPUTS / 'source.json', context / 'enhanced-provenance.json')
@@ -118,6 +133,8 @@ USER 1000:1000
     provenance = json.loads((output / 'preparation.json').read_text())
     provenance['enhanced_source'] = dict(manifest, actual_sdk_sha256=vendor_sha,
         source_tree_verified_before_vendor_addition=True,
+        sdk_matches_original_lock=sdk_matches_lock,
+        dependency_reproduction_only=diagnose_sdk,
         historical_reference_run=42959922129,
         historical_image_reusable=False,
         historical_image_limitation='Original image was runner-local and not retained; rebuild is not the same image. All six products use one new common image and three fresh repeats.',
@@ -128,4 +145,7 @@ USER 1000:1000
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('--output', type=Path, required=True)
-    prepare(parser.parse_args().output.resolve())
+    parser.add_argument('--diagnose-sdk', action='store_true',
+                        help='Prepare the exact mismatched delivery solely to reproduce the frozen build; do not run models')
+    args = parser.parse_args()
+    prepare(args.output.resolve(), diagnose_sdk=args.diagnose_sdk)
