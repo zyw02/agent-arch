@@ -20,14 +20,16 @@ def launch(product, base, prompt):
     # All of these are disposable relay credentials, never the real provider key.
     token = 'benchmark-relay-only'
     model = 'deepseek-flash'
+    max_output = int(os.environ.get('BENCH_MAX_OUTPUT_TOKENS', '16384'))
+    iteration_limit = int(os.environ.get('BENCH_NATIVE_ITERATION_LIMIT', '64'))
     if product == 'dsh':
         env.update(DSH_HOME=str(home / '.dsh'), DEEPSEEK_BASE_URL=base + '/anthropic',
                    DEEPSEEK_API_KEY=token, DSH_PERMISSION_MODE='danger-full-access')
         overlay = home / 'dsh.patch.yml'
-        write(overlay, '''- id: llm-deepseek
+        write(overlay, f'''- id: llm-deepseek
   config:
     reasoningEffort: high
-    maxTokens: 16384
+    maxTokens: {max_output}
 - id: tool-web
   disabled: true
 ''')
@@ -39,7 +41,7 @@ def launch(product, base, prompt):
             gateway=dict(mode='local', auth=dict(mode='token', token=token)),
             models=dict(providers=dict(deepseek=dict(baseUrl=base + '/v1', apiKey=token,
                 api='openai-completions', models=[dict(id=model, name='Frozen DeepSeek',
-                    reasoning=True, input=['text'], contextWindow=1048576, maxTokens=16384)]))),
+                    reasoning=True, input=['text'], contextWindow=1048576, maxTokens=max_output)]))),
             agents=dict(defaults=dict(workspace='/testbed', skipBootstrap=True,
                 model=dict(primary='deepseek/' + model), thinkingDefault='high')),
             tools=dict(profile='coding', exec=dict(mode='full'),
@@ -67,6 +69,8 @@ def launch(product, base, prompt):
                 settings['logging'] = dict(level='debug', consoleLevel='info',
                                            file='/home/bench/agentloop-debug.log')
                 env.update(OPENCLAW_AGENT_RUNTIME='agentloop', AGENTLOOP_WARMUP='0')
+                if os.environ.get('BENCH_NATIVE_ITERATION_LIMIT'):
+                    env['AGENTLOOP_LOOP_MAX_TURNS'] = str(iteration_limit)
             write(config, json.dumps(settings))
             command = ['node', '/opt/openclaw57/openclaw.mjs', *command[1:]]
     elif product == 'claude':
@@ -112,7 +116,7 @@ requires_openai_auth = false
   base_url: {base}/v1
   api_key: {token}
 agent:
-  max_turns: 64
+  max_turns: {iteration_limit}
   reasoning_effort: high
 terminal:
   backend: local

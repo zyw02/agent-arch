@@ -13,7 +13,7 @@ from observed import require_gate
 from run import Campaign, HERE, calibration_prompt, formal_prompt, dump
 
 
-def selected_protocol(product, task_id):
+def selected_protocol(product, task_id, *, validated=False):
     protocol = json.loads((HERE / 'protocol-six.json').read_text())
     selection = json.loads((HERE / 'suite-selection.json').read_text())
     entry = next((t for t in selection['tasks'] if t['instance_id'] == task_id), None)
@@ -48,6 +48,9 @@ def selected_protocol(product, task_id):
         difficulty='Same human-verified 15 min - 1 hour tier, not a claim of identical difficulty')
     if product == 'openclaw57_patched':
         protocol['products'][product]['execution'] = 'Native local agent; AgentLoop runtime enabled and verified from SDK loop-entry log'
+    if validated:
+        from validated_controls import apply_validated_controls
+        apply_validated_controls(protocol)
     return protocol
 
 
@@ -80,10 +83,15 @@ def main():
     p.add_argument('--output', type=Path, required=True)
     p.add_argument('--sources', type=Path, required=True)
     p.add_argument('--image', default='six-harness-expanded')
+    p.add_argument('--validated-controls', action='store_true',
+                   help='New V2 campaign only; requires a pinned runner and CPU model')
     p.add_argument('--stage', choices=['controls', 'calibration', 'block-1', 'block-2', 'block-3', 'summarize'], required=True)
     args = p.parse_args()
     root = args.output.resolve(); root.mkdir(parents=True, exist_ok=True)
-    protocol = selected_protocol(args.product, args.task_id)
+    protocol = selected_protocol(args.product, args.task_id, validated=args.validated_controls)
+    if args.validated_controls:
+        from validated_controls import fixed_runner_admission
+        dump(root/'fixed-runner-admission.json', fixed_runner_admission())
     path = root / 'suite-protocol.json'; dump(path, protocol)
     if args.stage == 'summarize':
         print(json.dumps(shard_summary(root, args.task_id, args.product, require_complete=True)), flush=True)

@@ -7,7 +7,7 @@ on:
         description: Original five-product campaign, or enhanced six-product calibration/formal campaign
         type: choice
         default: connection
-        options: [connection, calibration, formal, enhanced-calibration, enhanced-formal, enhanced-reproduce, enhanced-lock, enhanced-observed, enhanced-memory, enhanced-idle-memory, enhanced-suite]
+        options: [connection, protocol-validation, calibration, formal, enhanced-calibration, enhanced-formal, enhanced-reproduce, enhanced-lock, enhanced-observed, enhanced-memory, enhanced-idle-memory, enhanced-suite]
 
       product:
         description: Product for the independent observed batch
@@ -36,6 +36,29 @@ permissions:
   actions: read
 
 jobs:
+  protocol-validation:
+    if: inputs.mode == 'protocol-validation'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - name: Verify benchmark controls without model calls
+        run: python3 -m unittest discover -s benchmarks/swe_single/tests -v
+      - name: Probe main and auxiliary intent on each native provider protocol
+        env:
+          DEEPSEEK_API_KEY: ${{ secrets.DEEPSEEK_API_KEY }}
+        run: python3 benchmarks/swe_single/provider_preflight.py --output "$RUNNER_TEMP/protocol-validation"
+      - name: Retain protocol validation evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: protocol-validation-${{ github.run_id }}
+          path: ${{ runner.temp }}/protocol-validation/
+          retention-days: 7
+          if-no-files-found: warn
+
   expanded-suite:
     if: inputs.mode == 'enhanced-suite'
     uses: ./.github/workflows/swe-expanded.yml
@@ -64,7 +87,7 @@ jobs:
           retention-days: 3
           if-no-files-found: error
   five-harness:
-    if: inputs.mode != 'connection' && inputs.mode != 'enhanced-observed' && inputs.mode != 'enhanced-memory' && inputs.mode != 'enhanced-idle-memory' && inputs.mode != 'enhanced-suite'
+    if: inputs.mode != 'connection' && inputs.mode != 'protocol-validation' && inputs.mode != 'enhanced-observed' && inputs.mode != 'enhanced-memory' && inputs.mode != 'enhanced-idle-memory' && inputs.mode != 'enhanced-suite'
     runs-on: ubuntu-24.04
     timeout-minutes: 270
     steps:

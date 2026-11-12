@@ -95,10 +95,16 @@ class Campaign:
         self.args = args
         self.protocol_path = Path(getattr(args, 'protocol', None) or HERE / 'protocol.json')
         self.protocol = json.loads(self.protocol_path.read_text())
+        host_admission = None
+        if self.protocol['execution'].get('require_fixed_runner'):
+            from validated_controls import fixed_runner_admission
+            host_admission = fixed_runner_admission()
         self.task_path = Path(getattr(args, 'task', None) or HERE / 'task.json')
         self.task = json.loads(self.task_path.read_text())
         self.out = args.output.resolve()
         self.out.mkdir(parents=True, exist_ok=False)
+        if host_admission:
+            dump(self.out/'fixed-runner-admission.json', host_admission)
         self.work = self.out.parent / (self.out.name + '-working-' + uuid.uuid4().hex[:8])
         self.work.mkdir()
         self.initial = self.work / 'initial'
@@ -234,9 +240,7 @@ print(json.dumps({'paths': {k: disk_tree(v) for k, v in paths.items()},
             prepare_default_app(home)
         chown_tree(root)
         collector = Collector(output, workspace, home, scratch, self.protocol['execution']['writable_paths_limit_bytes'])
-        relay = Relay(self.key, self.gateway, output / 'provider', run_id,
-                      self.protocol['execution']['maximum_provider_attempts_per_run'],
-                      request_timeout=self.protocol['execution'].get('provider_request_timeout_seconds', 180))
+        relay = Relay.from_protocol(self.key, self.gateway, output / 'provider', run_id, self.protocol)
         self.relays.append(relay)
         container = 'swe-' + run_id
         limits = self.protocol['execution']
@@ -254,6 +258,10 @@ print(json.dumps({'paths': {k: disk_tree(v) for k, v in paths.items()},
             command[2:2] = ['--memory-swap', str(limits['memory_swap_bytes'])]
         if 'native_timeout_seconds' in limits:
             command[2:2] = ['--env', 'BENCH_TASK_TIMEOUT_SECONDS=' + str(limits['native_timeout_seconds'])]
+        if self.protocol['provider'].get('request_policy') == 'native-aux-v2':
+            command[2:2] = [
+                '--env', 'BENCH_MAX_OUTPUT_TOKENS=' + str(self.protocol['provider']['requested_max_output_tokens']),
+                '--env', 'BENCH_NATIVE_ITERATION_LIMIT=' + str(limits['native_iteration_safety_limit'])]
         if product == 'openclaw57_patched' and limits.get('aios_runtime') == 'agentloop':
             command[command.index(self.args.image):command.index(self.args.image)] = [
                 '--env', 'BENCH_AIOS_RUNTIME=agentloop', '--env', 'AGENTLOOP_WARMUP=0']
@@ -324,6 +332,8 @@ print(json.dumps({'paths': {k: disk_tree(v) for k, v in paths.items()},
         if forwarded:
             result['time_to_first_provider_request_seconds'] = (min(r['started_ns'] for r in forwarded) - started_ns) / 1e9
         result['native_execution_ok'] = bool(exit_report and exit_report['exit_code'] == 0 and termination is None)
+        from validated_controls import check_response_integrity
+        result['response_integrity'] = check_response_integrity(relay.records)
         if product == 'openclaw57_patched' and limits.get('aios_runtime') == 'agentloop':
             from live_observation import validate_agentloop
             result['runtime_validation'] = validate_agentloop(home, logs.stdout + logs.stderr)
@@ -332,6 +342,8 @@ print(json.dumps({'paths': {k: disk_tree(v) for k, v in paths.items()},
             path = workspace / 'BENCH_RESULT.txt'
             result['smoke_effect_verified'] = path.exists() and path.read_text().strip() == expected_digest
             result['calibration_passed'] = result['native_execution_ok'] and result['smoke_effect_verified'] and result['provider']['usage_complete']
+            if self.protocol['provider'].get('request_policy') == 'native-aux-v2':
+                result['calibration_passed'] &= result['response_integrity']['clean']
         else:
             if observer:
                 observer.phase('grading_started')

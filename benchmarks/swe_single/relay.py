@@ -30,7 +30,11 @@ class NoRedirect(urllib.request.HTTPRedirectHandler):
         raise ValueError('fixed-origin relay refuses redirects')
 
 
-def effective_request(api, original, limit):
+def effective_request(api, original, limit, policy='legacy-v1'):
+    if policy not in ('legacy-v1', 'native-aux-v2'):
+        raise ValueError('Unknown inference request policy')
+    if not isinstance(limit, int) or isinstance(limit, bool) or limit <= 0:
+        raise ValueError('Output limit must be a positive integer')
     body = dict(original)
     if body.get('model') != 'deepseek-flash':
         raise ValueError('undeclared model')
@@ -39,6 +43,21 @@ def effective_request(api, original, limit):
         kind = tool.get('type', '')
         if kind.startswith(('web_search', 'web_fetch', 'tool_search')):
             raise ValueError('server-side retrieval is outside this task condition')
+    # Frameworks intentionally disable reasoning for summaries/classifiers.
+    # Preserve that decision and its smaller output budget; enforcing the main
+    # task's high effort here changes native orchestration and can break compact.
+    native_disabled = ((original.get('thinking') or {}).get('type') == 'disabled' or
+                       original.get('reasoning_effort') == 'none' or
+                       (original.get('reasoning') or {}).get('effort') == 'none')
+    if policy == 'native-aux-v2' and native_disabled:
+        cap_key = 'max_output_tokens' if api == 'responses' else 'max_tokens'
+        native_limit = original.get(cap_key, original.get('max_completion_tokens'))
+        body[cap_key] = min(native_limit, limit) if isinstance(native_limit, int) and native_limit > 0 else limit
+        if api == 'chat':
+            body.pop('max_completion_tokens', None)
+            if body.get('stream'):
+                body['stream_options'] = {**body.get('stream_options', {}), 'include_usage': True}
+        return body
     if api == 'messages':
         body['thinking'] = dict(type='enabled')
         body['output_config'] = {**body.get('output_config', {}), 'effort': 'high'}
@@ -101,6 +120,10 @@ class Observation:
             item = data.get('item', {})
             if item.get('type') in ('function_call', 'custom_tool_call'):
                 self.tools[item.get('call_id', item.get('id', 'unknown'))] = dict(id=item.get('call_id'), name=item.get('name'))
+        if typ == 'message_delta':
+            row['finish_reason'] = data.get('delta', {}).get('stop_reason') or row.get('finish_reason')
+        if typ == 'response.incomplete':
+            row['finish_reason'] = response.get('incomplete_details', {}).get('reason', 'incomplete')
         for choice in data.get('choices', []):
             delta = choice.get('delta', choice.get('message', {}))
             if delta.get('content') or delta.get('reasoning_content') or delta.get('tool_calls'):
@@ -124,8 +147,20 @@ class Observation:
 
 
 class Relay:
+    @classmethod
+    def from_protocol(cls, key, bind, output, run_id, protocol):
+        return cls(key, bind, output, run_id,
+                   maximum_attempts=protocol['execution']['maximum_provider_attempts_per_run'],
+                   output_limit=protocol['provider']['requested_max_output_tokens'],
+                   request_timeout=protocol['execution'].get('provider_request_timeout_seconds', 180),
+                   request_policy=protocol['provider'].get('request_policy', 'legacy-v1'))
+
     def __init__(self, key, bind, output, run_id, maximum_attempts=64, output_limit=16384,
-                 request_timeout=180):
+                 request_timeout=180, request_policy='legacy-v1'):
+        if maximum_attempts is not None and (not isinstance(maximum_attempts, int) or
+                isinstance(maximum_attempts, bool) or maximum_attempts <= 0):
+            raise ValueError('Request limit must be positive or None for timeout-only execution')
+        effective_request('chat', dict(model='deepseek-flash'), output_limit, request_policy)
         self.key = key
         self.output = Path(output)
         self.output.mkdir(parents=True, exist_ok=True)
@@ -134,6 +169,7 @@ class Relay:
         self.lock = threading.Lock()
         self.maximum_attempts, self.output_limit = maximum_attempts, output_limit
         self.request_timeout = request_timeout
+        self.request_policy = request_policy
         self.opener = urllib.request.build_opener(NoRedirect())
         owner = self
 
@@ -190,12 +226,12 @@ class Relay:
                         raise ValueError('incomplete local body')
                     body = json.loads(raw)
                     (directory / 'request.original.json').write_bytes(raw)
-                    body = effective_request(api, body, owner.output_limit)
+                    body = effective_request(api, body, owner.output_limit, owner.request_policy)
                     forwarded = json.dumps(body, ensure_ascii=False, separators=(',', ':')).encode()
                     (directory / 'request.effective.json').write_bytes(forwarded)
                     with owner.lock:
                         attempts = sum(r['forwarded'] for r in owner.records)
-                        if attempts >= owner.maximum_attempts:
+                        if owner.maximum_attempts is not None and attempts >= owner.maximum_attempts:
                             row['blocked_reason'] = 'declared_request_limit'
                         else:
                             row['forwarded'] = True
@@ -205,6 +241,9 @@ class Relay:
                                original_sha256=hashlib.sha256(raw).hexdigest(),
                                effective_sha256=hashlib.sha256(forwarded).hexdigest(),
                                requested_model=body['model'], stream=bool(body.get('stream')))
+                    row['request_policy'] = owner.request_policy
+                    row['native_thinking_disabled'] = body.get('thinking', {}).get('type') == 'disabled'
+                    row['requested_output_limit'] = body.get('max_tokens', body.get('max_output_tokens'))
                     headers = {'Authorization': 'Bearer ' + owner.key, 'Content-Type': 'application/json'}
                     if api == 'messages':
                         headers['x-api-key'] = owner.key
@@ -304,7 +343,9 @@ class Relay:
         with self.lock:
             records = json.loads(json.dumps(self.records))
             payload = dict(run_id=self.run_id, records=records, summary=summarize_requests(records),
-                           credentials_retained=False, protocol_translation=False)
+                           credentials_retained=False, protocol_translation=False,
+                           request_policy=self.request_policy, maximum_attempts=self.maximum_attempts,
+                           output_limit=self.output_limit)
             target = self.output / 'ledger.json'
             temporary = self.output / 'ledger.json.tmp'
             temporary.write_text(json.dumps(payload, indent=2, ensure_ascii=False) + '\n')
