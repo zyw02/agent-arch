@@ -13,9 +13,26 @@ import agent_entry
 import idle_native_entry
 from live_observation import validate_agentloop
 from suite import selected_protocol, shard_summary
+from run import replace_task_source
 
 
 class SuiteTests(unittest.TestCase):
+    def test_new_snapshot_keeps_generated_editable_install_metadata(self):
+        with tempfile.TemporaryDirectory() as temp:
+            root=Path(temp); initial=root/'initial'; source=root/'source'
+            for path in (initial,source):
+                (path/'src/_pytest').mkdir(parents=True)
+            (initial/'src/_pytest/_version.py').write_text('version = "6.0.0rc1"\n')
+            (initial/'src/pytest.egg-info').mkdir()
+            (initial/'src/pytest.egg-info/PKG-INFO').write_text('Name: pytest\nVersion: 6.0.0rc1\n')
+            (initial/'src/_pytest/implementation.py').write_text('old code')
+            (source/'src/_pytest/implementation.py').write_text('frozen new-task code')
+            replace_task_source(initial,source)
+            self.assertEqual((initial/'src/_pytest/_version.py').read_text(),'version = "6.0.0rc1"\n')
+            self.assertTrue((initial/'src/pytest.egg-info/PKG-INFO').exists())
+            self.assertEqual((initial/'src/_pytest/implementation.py').read_text(),'frozen new-task code')
+            self.assertFalse((source/'src/_pytest/_version.py').exists())
+
     def test_frozen_four_task_scope_and_all_timeout_layers(self):
         original = (HERE/'protocol-six.json').read_bytes()
         selection = json.loads((HERE/'suite-selection.json').read_text())

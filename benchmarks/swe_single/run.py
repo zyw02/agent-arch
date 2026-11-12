@@ -45,6 +45,34 @@ def chown_tree(root):
             os.chown(Path(parent) / name, 1000, 1000, follow_symlinks=False)
 
 
+def replace_task_source(initial, task_source):
+    # Git archives omit setuptools-scm output and editable-install
+    # metadata. Preserve the pinned image's generated installation
+    # files when replacing its source with a different frozen task.
+    generated = {}
+    for relative in ('src/_pytest/_version.py', 'src/pytest.egg-info'):
+        source = initial / relative
+        if source.is_file():
+            generated[relative] = source.read_bytes()
+        elif source.is_dir():
+            generated[relative] = {str(p.relative_to(source)):p.read_bytes()
+                                   for p in source.rglob('*') if p.is_file()}
+    shutil.rmtree(initial)
+    shutil.copytree(task_source, initial)
+    for relative, value in generated.items():
+        target = initial / relative
+        if target.exists():
+            continue
+        if isinstance(value, bytes):
+            target.parent.mkdir(parents=True, exist_ok=True)
+            target.write_bytes(value)
+        else:
+            for name, data in value.items():
+                path = target / name
+                path.parent.mkdir(parents=True, exist_ok=True)
+                path.write_bytes(data)
+
+
 def calibration_prompt():
     return ('Read BENCH_RECEIPT.txt, run Python to compute the SHA-256 of its exact bytes, '
             'and write the hex digest to BENCH_RESULT.txt. Use your local tools to do this. '
@@ -92,8 +120,7 @@ class Campaign:
         execute(['docker', 'cp', name + ':/opt/products/package-lock.json', str(self.out / 'package-lock.json')])
         execute(['docker', 'rm', name])
         if getattr(self.args, 'task_source', None):
-            shutil.rmtree(self.initial)
-            shutil.copytree(self.args.task_source, self.initial)
+            replace_task_source(self.initial, self.args.task_source)
         execute(['docker', 'network', 'create', '--internal', self.network])
         info = json.loads(execute(['docker', 'network', 'inspect', self.network]).stdout)[0]
         self.gateway = info['IPAM']['Config'][0]['Gateway']

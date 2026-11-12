@@ -2,9 +2,14 @@ name: Four-task six-harness AgentLoop benchmark
 
 on:
   workflow_call:
+    inputs:
+      runtime_run_id:
+        type: string
+        default: ''
 
 permissions:
   contents: read
+  actions: read
 
 jobs:
   build:
@@ -12,8 +17,8 @@ jobs:
     runs-on: ubuntu-24.04
     timeout-minutes: 270
     outputs:
-      bundle_sha256: ${{ steps.bundle.outputs.sha256 }}
-      image_id: ${{ steps.bundle.outputs.image_id }}
+      bundle_sha256: ${{ steps.bundle.outputs.sha256 || steps.reuse.outputs.sha256 }}
+      image_id: ${{ steps.bundle.outputs.image_id || steps.reuse.outputs.image_id }}
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
         with:
@@ -24,7 +29,24 @@ jobs:
         run: |
           sudo rm -rf /usr/share/dotnet /usr/local/lib/android /opt/ghc
           df -h /
+      - name: Reuse the identical encrypted image after a controller-only correction
+        if: inputs.runtime_run_id != ''
+        id: reuse
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RUNTIME_RUN_ID: ${{ inputs.runtime_run_id }}
+        run: |
+          [[ "$RUNTIME_RUN_ID" =~ ^[0-9]+$ ]]
+          mkdir -p "$RUNNER_TEMP/runtime-bundle" "$RUNNER_TEMP/build-evidence"
+          gh run download "$RUNTIME_RUN_ID" --repo "$GITHUB_REPOSITORY" --name "expanded-runtime-$RUNTIME_RUN_ID" --dir "$RUNNER_TEMP/runtime-bundle"
+          cd "$RUNNER_TEMP/runtime-bundle"
+          sha256sum -c SHA256SUMS
+          echo "sha256=$(sha256sum runtime.tar.zst.enc | cut -d ' ' -f 1)" >> "$GITHUB_OUTPUT"
+          echo "image_id=$(python3 -c 'import json; print(json.load(open("image.json"))[0]["Id"])')" >> "$GITHUB_OUTPUT"
+          cp image.json SHA256SUMS "$RUNNER_TEMP/build-evidence/"
+          echo "$RUNTIME_RUN_ID" > "$RUNNER_TEMP/build-evidence/reused-runtime-run-id.txt"
       - name: Prepare exact delivered patch, SDK and unchanged locks
+        if: inputs.runtime_run_id == ''
         env:
           OPENCLAW57_PATCH_KEY: ${{ secrets.OPENCLAW57_PATCH_KEY }}
         run: |
@@ -32,8 +54,10 @@ jobs:
           cp benchmarks/swe_single/idle_native_entry.py "$RUNNER_TEMP/swe-preparation/context/idle_native_entry.py"
           echo 'COPY idle_native_entry.py /opt/bench/idle_native_entry.py' >> "$RUNNER_TEMP/swe-preparation/context/Dockerfile"
       - name: Prepare four frozen base snapshots without scoring data
+        if: inputs.runtime_run_id == ''
         run: python3 benchmarks/swe_single/prepare_suite_sources.py --output "$RUNNER_TEMP/task-sources"
       - name: Build the same image used by every task and product
+        if: inputs.runtime_run_id == ''
         run: |
           mkdir -p "$RUNNER_TEMP/build-evidence" "$RUNNER_TEMP/runtime-bundle"
           cp "$RUNNER_TEMP/swe-preparation/preparation.json" "$RUNNER_TEMP/build-evidence/"
@@ -41,6 +65,7 @@ jobs:
           docker build --progress=plain -t six-harness-expanded "$RUNNER_TEMP/swe-preparation/context" > "$RUNNER_TEMP/swe-build.log" 2>&1
           docker image inspect six-harness-expanded > "$RUNNER_TEMP/build-evidence/image.json"
       - name: Seal common runtime and source snapshots
+        if: inputs.runtime_run_id == ''
         id: bundle
         env:
           OPENCLAW57_PATCH_KEY: ${{ secrets.OPENCLAW57_PATCH_KEY }}

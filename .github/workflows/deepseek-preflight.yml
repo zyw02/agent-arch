@@ -21,13 +21,21 @@ on:
         default: '600'
         options: ['600', '1800']
 
+      runtime_run_id:
+        description: Optional prior expanded campaign whose identical encrypted runtime can be reused
+        type: string
+        default: ''
+
 permissions:
   contents: read
+  actions: read
 
 jobs:
   expanded-suite:
     if: inputs.mode == 'enhanced-suite'
     uses: ./.github/workflows/swe-expanded.yml
+    with:
+      runtime_run_id: ${{ inputs.runtime_run_id }}
     secrets: inherit
 
   connection:
