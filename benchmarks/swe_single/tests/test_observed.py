@@ -9,11 +9,24 @@ from unittest.mock import patch
 
 HERE = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(HERE))
-from observed import combine, require_gate
+from observed import combine, require_gate, selected_protocol
 from run import calibration_prompt, formal_prompt
 
 
 class ObservedTests(unittest.TestCase):
+    def test_extended_timeout_changes_only_the_single_product_task_limit(self):
+        original = json.loads((HERE / 'protocol-six.json').read_text())
+        protocol = selected_protocol('openclaw57_patched', 1800)
+        self.assertEqual(protocol['execution']['task_timeout_seconds'], 1800)
+        expected_execution = dict(original['execution'], task_timeout_seconds=1800)
+        self.assertEqual(protocol['execution'], expected_execution)
+        self.assertEqual(protocol['provider'], original['provider'])
+        self.assertEqual(protocol['products'], {'openclaw57_patched': original['products']['openclaw57_patched']})
+        self.assertEqual(json.loads((HERE / 'protocol-six.json').read_text()), original)
+        self.assertEqual(selected_protocol('openclaw57_patched', 600)['execution'], original['execution'])
+        with self.assertRaises(ValueError):
+            selected_protocol('openclaw57_patched', 3600)
+
     def test_formal_prompt_is_exactly_the_historical_prompt(self):
         task = json.loads((HERE / 'task.json').read_text())
         self.assertEqual(hashlib.sha256(formal_prompt(task).encode()).hexdigest(),
@@ -42,6 +55,13 @@ class ObservedTests(unittest.TestCase):
             with patch('observed.subprocess.check_output', return_value='new\n'):
                 with self.assertRaisesRegex(ValueError, 'Image differs'):
                     require_gate(root, 'openclaw57_patched', 'block-1', 'image')
+            protocol_path = root / 'protocol.json'
+            protocol_path.write_text('{}')
+            (controls.parent / 'environment.json').write_text(json.dumps(dict(
+                image_id='old', protocol_sha256='different-timeout-protocol')))
+            with patch('observed.subprocess.check_output', return_value='old\n'):
+                with self.assertRaisesRegex(ValueError, 'Protocol differs'):
+                    require_gate(root, 'openclaw57_patched', 'block-1', 'image', protocol_path)
 
     def test_incremental_combination_keeps_previous_and_failed_run_evidence(self):
         with tempfile.TemporaryDirectory() as tmp, patch('observed.subprocess.run'):

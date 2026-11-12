@@ -73,3 +73,13 @@ locks, provider parameters, native executor, resource limits, and grader are
 reused. The image is freshly built, so equality of its ID to the running
 six-product campaign is not assumed. These isolated repeats are not rotated
 six-product comparison blocks and must not be pooled into that campaign.
+
+The observed mode accepts `observed_task_timeout_seconds=600` (default) or
+`1800` (the user-requested threefold extension). Only the selected product's
+formal solve limit changes; calibration, grading, resources, provider settings,
+source, and dependency locks stay fixed. Each formal Actions step has a
+40-minute outer limit and the observed job has a 150-minute outer limit.
+Admission checks require the accepted controls and calibration to use the same
+image and effective protocol, including the chosen timeout. A cancelled hosted
+execution is restarted as a fresh three-repeat batch; prior segment evidence
+remains separate and is not pooled with the changed-timeout experiment.

@@ -17,7 +17,27 @@ import time
 from run import Campaign, HERE, calibration_prompt, formal_prompt, dump
 
 
-def require_gate(root, product, stage, image):
+def selected_protocol(product, task_timeout_seconds):
+    if task_timeout_seconds not in (600, 1800):
+        raise ValueError('Observed task timeout must be 600 or 1800 seconds')
+    protocol = json.loads((HERE / 'protocol-six.json').read_text())
+    if product not in protocol['products']:
+        raise ValueError('Unknown product')
+    reference_timeout = protocol['execution']['task_timeout_seconds']
+    protocol['products'] = {product: protocol['products'][product]}
+    protocol['execution']['task_timeout_seconds'] = task_timeout_seconds
+    protocol['experiment_id'] = ('SWE-OBSERVED-' + os.environ.get('GITHUB_RUN_ID', 'local')
+                                 + '-' + product + '-T' + str(task_timeout_seconds))
+    protocol['purpose'] = 'Observed single-product batch; separate from rotated comparison'
+    protocol['comparison_provenance']['observed_timeout'] = dict(
+        reference_task_timeout_seconds=reference_timeout,
+        effective_task_timeout_seconds=task_timeout_seconds,
+        multiplier=task_timeout_seconds / reference_timeout,
+        original_campaign_unchanged=True)
+    return protocol
+
+
+def require_gate(root, product, stage, image, protocol_path=None):
     if stage == 'controls':
         return
     controls = root / 'segments/controls'
@@ -33,14 +53,19 @@ def require_gate(root, product, stage, image):
     current_id = subprocess.check_output(['docker', 'image', 'inspect', image,
                                           '--format', '{{.Id}}'], text=True).strip()
     for path in paths:
-        if json.loads((path / 'environment.json').read_text())['image_id'] != current_id:
+        environment = json.loads((path / 'environment.json').read_text())
+        if environment['image_id'] != current_id:
             raise ValueError('Image differs from the accepted controls/calibration')
+        if protocol_path is not None:
+            if environment['protocol_sha256'] != hashlib.sha256(protocol_path.read_bytes()).hexdigest():
+                raise ValueError('Protocol differs from the accepted controls/calibration')
 
 
 class ObservedCampaign(Campaign):
     def run_stage(self, product, stage):
         self.prepare()
         dump(self.out / 'observation.json', dict(stage=stage, product=product,
+             task_timeout_seconds=self.protocol['execution']['task_timeout_seconds'],
              source_protocol_sha256=hashlib.sha256((HERE / 'protocol-six.json').read_bytes()).hexdigest(),
              scheduling='Independent observed batch; not a rotated six-product comparison block',
              prompt_sha256=hashlib.sha256(formal_prompt(self.task).encode()).hexdigest()))
@@ -96,19 +121,15 @@ def main():
     parser.add_argument('--output', type=Path, required=True)
     parser.add_argument('--image', default='five-harness-swe')
     parser.add_argument('--product', default='openclaw57_patched')
+    parser.add_argument('--task-timeout-seconds', type=int, choices=[600, 1800], default=600)
     parser.add_argument('--stage', choices=['controls', 'calibration', 'block-1', 'block-2', 'block-3'], required=True)
     args = parser.parse_args()
     root = args.output.resolve()
-    protocol = json.loads((HERE / 'protocol-six.json').read_text())
-    if args.product not in protocol['products']:
-        raise ValueError('Unknown product')
+    protocol = selected_protocol(args.product, args.task_timeout_seconds)
     root.mkdir(parents=True, exist_ok=True)
-    protocol['products'] = {args.product: protocol['products'][args.product]}
-    protocol['experiment_id'] = 'SWE-OBSERVED-' + os.environ.get('GITHUB_RUN_ID', 'local') + '-' + args.product
-    protocol['purpose'] = 'Observed single-product batch; same task and execution controls; separate from rotated comparison'
     protocol_path = root / 'observed-protocol.json'
     dump(protocol_path, protocol)
-    require_gate(root, args.product, args.stage, args.image)
+    require_gate(root, args.product, args.stage, args.image, protocol_path)
     segment_args = argparse.Namespace(output=root / 'segments' / args.stage, image=args.image,
                                      protocol=protocol_path, mode='formal', deadline_seconds=14400)
     segment_args.output.parent.mkdir(parents=True, exist_ok=True)

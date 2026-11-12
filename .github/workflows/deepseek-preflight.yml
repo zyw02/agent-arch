@@ -15,6 +15,12 @@ on:
         default: openclaw57_patched
         options: [openclaw57_patched, openclaw, dsh, hermes, codex, claude]
 
+      observed_task_timeout_seconds:
+        description: Formal solve limit for the independent observed batch (seconds)
+        type: choice
+        default: '600'
+        options: ['600', '1800']
+
 permissions:
   contents: read
 
@@ -138,9 +144,10 @@ jobs:
     if: inputs.mode == 'enhanced-observed'
     name: Observed ${{ inputs.product }} — controls, calibration, three repeats
     runs-on: ubuntu-24.04
-    timeout-minutes: 110
+    timeout-minutes: 150
     env:
       OBSERVED_PRODUCT: ${{ inputs.product }}
+      OBSERVED_TASK_TIMEOUT_SECONDS: ${{ inputs.observed_task_timeout_seconds }}
       DEEPSEEK_API_KEY: ${{ secrets.DEEPSEEK_API_KEY }}
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
@@ -175,7 +182,7 @@ jobs:
         timeout-minutes: 20
         run: |
           sudo --preserve-env=DEEPSEEK_API_KEY,GITHUB_SHA,GITHUB_RUN_ID,GITHUB_STEP_SUMMARY python3 benchmarks/swe_single/observed.py \
-            --image five-harness-swe --product "$OBSERVED_PRODUCT" --stage controls \
+            --image five-harness-swe --product "$OBSERVED_PRODUCT" --task-timeout-seconds "$OBSERVED_TASK_TIMEOUT_SECONDS" --stage controls \
             --output "$RUNNER_TEMP/swe-evidence/observed"
       - name: Audit controls evidence
         id: audit_controls
@@ -195,7 +202,7 @@ jobs:
         timeout-minutes: 20
         run: |
           sudo --preserve-env=DEEPSEEK_API_KEY,GITHUB_SHA,GITHUB_RUN_ID,GITHUB_STEP_SUMMARY python3 benchmarks/swe_single/observed.py \
-            --image five-harness-swe --product "$OBSERVED_PRODUCT" --stage calibration \
+            --image five-harness-swe --product "$OBSERVED_PRODUCT" --task-timeout-seconds "$OBSERVED_TASK_TIMEOUT_SECONDS" --stage calibration \
             --output "$RUNNER_TEMP/swe-evidence/observed"
       - name: Audit calibration evidence
         id: audit_calibration
@@ -212,10 +219,10 @@ jobs:
           if-no-files-found: error
       - name: Formal repeat 1 of 3
         id: block_1
-        timeout-minutes: 20
+        timeout-minutes: 40
         run: |
           sudo --preserve-env=DEEPSEEK_API_KEY,GITHUB_SHA,GITHUB_RUN_ID,GITHUB_STEP_SUMMARY python3 benchmarks/swe_single/observed.py \
-            --image five-harness-swe --product "$OBSERVED_PRODUCT" --stage block-1 \
+            --image five-harness-swe --product "$OBSERVED_PRODUCT" --task-timeout-seconds "$OBSERVED_TASK_TIMEOUT_SECONDS" --stage block-1 \
             --output "$RUNNER_TEMP/swe-evidence/observed"
       - name: Audit block-1 evidence
         id: audit_block_1
@@ -232,10 +239,10 @@ jobs:
           if-no-files-found: error
       - name: Formal repeat 2 of 3
         id: block_2
-        timeout-minutes: 20
+        timeout-minutes: 40
         run: |
           sudo --preserve-env=DEEPSEEK_API_KEY,GITHUB_SHA,GITHUB_RUN_ID,GITHUB_STEP_SUMMARY python3 benchmarks/swe_single/observed.py \
-            --image five-harness-swe --product "$OBSERVED_PRODUCT" --stage block-2 \
+            --image five-harness-swe --product "$OBSERVED_PRODUCT" --task-timeout-seconds "$OBSERVED_TASK_TIMEOUT_SECONDS" --stage block-2 \
             --output "$RUNNER_TEMP/swe-evidence/observed"
       - name: Audit block-2 evidence
         id: audit_block_2
@@ -252,10 +259,10 @@ jobs:
           if-no-files-found: error
       - name: Formal repeat 3 of 3
         id: block_3
-        timeout-minutes: 20
+        timeout-minutes: 40
         run: |
           sudo --preserve-env=DEEPSEEK_API_KEY,GITHUB_SHA,GITHUB_RUN_ID,GITHUB_STEP_SUMMARY python3 benchmarks/swe_single/observed.py \
-            --image five-harness-swe --product "$OBSERVED_PRODUCT" --stage block-3 \
+            --image five-harness-swe --product "$OBSERVED_PRODUCT" --task-timeout-seconds "$OBSERVED_TASK_TIMEOUT_SECONDS" --stage block-3 \
             --output "$RUNNER_TEMP/swe-evidence/observed"
       - name: Audit block-3 evidence
         id: audit_block_3
