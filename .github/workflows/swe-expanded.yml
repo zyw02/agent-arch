@@ -1,0 +1,354 @@
+name: Four-task six-harness AgentLoop benchmark
+
+on:
+  workflow_call:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    name: Build one frozen common runtime and four gold-free snapshots
+    runs-on: ubuntu-24.04
+    timeout-minutes: 270
+    outputs:
+      bundle_sha256: ${{ steps.bundle.outputs.sha256 }}
+      image_id: ${{ steps.bundle.outputs.image_id }}
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - name: Validate controls and runtime admission without model calls
+        run: python3 -m unittest discover -s benchmarks/swe_single/tests -v
+      - name: Reclaim unused runner SDK storage
+        run: |
+          sudo rm -rf /usr/share/dotnet /usr/local/lib/android /opt/ghc
+          df -h /
+      - name: Prepare exact delivered patch, SDK and unchanged locks
+        env:
+          OPENCLAW57_PATCH_KEY: ${{ secrets.OPENCLAW57_PATCH_KEY }}
+        run: |
+          python3 benchmarks/swe_single/prepare_enhanced.py --output "$RUNNER_TEMP/swe-preparation"
+          cp benchmarks/swe_single/idle_native_entry.py "$RUNNER_TEMP/swe-preparation/context/idle_native_entry.py"
+          echo 'COPY idle_native_entry.py /opt/bench/idle_native_entry.py' >> "$RUNNER_TEMP/swe-preparation/context/Dockerfile"
+      - name: Prepare four frozen base snapshots without scoring data
+        run: python3 benchmarks/swe_single/prepare_suite_sources.py --output "$RUNNER_TEMP/task-sources"
+      - name: Build the same image used by every task and product
+        run: |
+          mkdir -p "$RUNNER_TEMP/build-evidence" "$RUNNER_TEMP/runtime-bundle"
+          cp "$RUNNER_TEMP/swe-preparation/preparation.json" "$RUNNER_TEMP/build-evidence/"
+          cp "$RUNNER_TEMP/task-sources/source-provenance.json" "$RUNNER_TEMP/build-evidence/"
+          docker build --progress=plain -t six-harness-expanded "$RUNNER_TEMP/swe-preparation/context" > "$RUNNER_TEMP/swe-build.log" 2>&1
+          docker image inspect six-harness-expanded > "$RUNNER_TEMP/build-evidence/image.json"
+      - name: Seal common runtime and source snapshots
+        id: bundle
+        env:
+          OPENCLAW57_PATCH_KEY: ${{ secrets.OPENCLAW57_PATCH_KEY }}
+        run: |
+          set -o pipefail
+          docker save six-harness-expanded | zstd -T2 -3 | openssl enc -aes-256-cbc -pbkdf2 -iter 200000 -salt -pass env:OPENCLAW57_PATCH_KEY -out "$RUNNER_TEMP/runtime-bundle/runtime.tar.zst.enc"
+          tar -C "$RUNNER_TEMP" -czf "$RUNNER_TEMP/runtime-bundle/task-sources.tar.gz" task-sources
+          cp "$RUNNER_TEMP/build-evidence/image.json" "$RUNNER_TEMP/runtime-bundle/"
+          cd "$RUNNER_TEMP/runtime-bundle"
+          sha256sum runtime.tar.zst.enc task-sources.tar.gz > SHA256SUMS
+          echo "sha256=$(sha256sum runtime.tar.zst.enc | cut -d ' ' -f 1)" >> "$GITHUB_OUTPUT"
+          echo "image_id=$(docker image inspect six-harness-expanded --format '{{.Id}}')" >> "$GITHUB_OUTPUT"
+      - name: Retain encrypted runtime for identical worker images
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: expanded-runtime-${{ github.run_id }}
+          path: ${{ runner.temp }}/runtime-bundle/
+          compression-level: 0
+          retention-days: 7
+          if-no-files-found: error
+      - name: Seal build log and retain build provenance
+        if: always()
+        env:
+          OPENCLAW57_PATCH_KEY: ${{ secrets.OPENCLAW57_PATCH_KEY }}
+        run: |
+          mkdir -p "$RUNNER_TEMP/build-evidence"
+          if [[ -f "$RUNNER_TEMP/swe-build.log" ]]; then
+            python3 -c 'import sys; sys.path.insert(0,"benchmarks/swe_single"); from sealed_input import transform; transform(sys.argv[1],sys.argv[2])' "$RUNNER_TEMP/swe-build.log" "$RUNNER_TEMP/build-evidence/build.log.enc"
+          fi
+      - name: Retain build evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: expanded-build-${{ github.run_id }}
+          path: ${{ runner.temp }}/build-evidence/
+          retention-days: 14
+          if-no-files-found: warn
+
+  measure:
+    needs: build
+    name: ${{ matrix.product }} / ${{ matrix.task }} / three fresh repeats
+    runs-on: ubuntu-24.04
+    timeout-minutes: 360
+    strategy:
+      fail-fast: false
+      max-parallel: 6
+      matrix:
+        product: [openclaw57_patched, codex, dsh, claude, hermes, openclaw]
+        task: [pytest-dev__pytest-7490, pytest-dev__pytest-7571, pytest-dev__pytest-7236, pytest-dev__pytest-7324]
+    env:
+      SUITE_PRODUCT: ${{ matrix.product }}
+      SUITE_TASK: ${{ matrix.task }}
+      DEEPSEEK_API_KEY: ${{ secrets.DEEPSEEK_API_KEY }}
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - name: Admit runner capacity and record its resources
+        run: |
+          mkdir -p "$RUNNER_TEMP/suite-evidence"
+          python3 -c 'from pathlib import Path; n=int(next(x.split()[1] for x in Path("/proc/meminfo").read_text().splitlines() if x.startswith("MemTotal:"))); assert n >= 12*1024**2, "8 GiB experiment requires at least 12 GiB host RAM"'
+          lscpu > "$RUNNER_TEMP/suite-evidence/runner-cpu.txt"
+          cat /proc/meminfo > "$RUNNER_TEMP/suite-evidence/runner-memory.txt"
+          df -h > "$RUNNER_TEMP/suite-evidence/runner-storage.txt"
+          sudo rm -rf /usr/share/dotnet /usr/local/lib/android /opt/ghc
+          sudo apt-get update -qq && sudo apt-get install -y --no-install-recommends zstd
+      - name: Download the common frozen runtime
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: expanded-runtime-${{ github.run_id }}
+          path: ${{ runner.temp }}/runtime-bundle
+      - name: Verify and load the sealed image; verify task source bundle
+        env:
+          OPENCLAW57_PATCH_KEY: ${{ secrets.OPENCLAW57_PATCH_KEY }}
+          EXPECTED_BUNDLE_SHA: ${{ needs.build.outputs.bundle_sha256 }}
+          EXPECTED_IMAGE_ID: ${{ needs.build.outputs.image_id }}
+        run: |
+          set -o pipefail
+          cd "$RUNNER_TEMP/runtime-bundle"
+          sha256sum -c SHA256SUMS
+          test "$(sha256sum runtime.tar.zst.enc | cut -d ' ' -f 1)" = "$EXPECTED_BUNDLE_SHA"
+          openssl enc -d -aes-256-cbc -pbkdf2 -iter 200000 -pass env:OPENCLAW57_PATCH_KEY -in runtime.tar.zst.enc | zstd -d | docker load
+          test "$(docker image inspect six-harness-expanded --format '{{.Id}}')" = "$EXPECTED_IMAGE_ID"
+          tar -xzf task-sources.tar.gz -C "$RUNNER_TEMP"
+          cp image.json SHA256SUMS "$RUNNER_TEMP/suite-evidence/"
+          rm runtime.tar.zst.enc
+      - name: Initial idle RSS/PSS repeat 1 of 3; no task or inference
+        id: idle_1
+        if: matrix.task == 'pytest-dev__pytest-7490'
+        continue-on-error: true
+        timeout-minutes: 30
+        run: |
+          sudo --preserve-env=GITHUB_SHA,GITHUB_RUN_ID python3 benchmarks/swe_single/suite_idle.py \
+            --product "$SUITE_PRODUCT" --repeat 1 --output "$RUNNER_TEMP/suite-evidence/idle"
+      - name: Audit idle repeat 1
+        id: audit_idle_1
+        if: always() && steps.idle_1.outcome != 'skipped'
+        run: sudo --preserve-env=DEEPSEEK_API_KEY python3 benchmarks/swe_single/audit_artifacts.py "$RUNNER_TEMP/suite-evidence/idle/repeat-1"
+      - name: Retain idle repeat 1 immediately
+        if: always() && steps.audit_idle_1.outcome == 'success'
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: expanded-idle-${{ matrix.product }}-repeat-1-${{ github.run_id }}
+          path: ${{ runner.temp }}/suite-evidence/idle/repeat-1/
+          retention-days: 14
+          compression-level: 3
+          if-no-files-found: error
+      - name: Initial idle RSS/PSS repeat 2 of 3; no task or inference
+        id: idle_2
+        if: matrix.task == 'pytest-dev__pytest-7490'
+        continue-on-error: true
+        timeout-minutes: 30
+        run: |
+          sudo --preserve-env=GITHUB_SHA,GITHUB_RUN_ID python3 benchmarks/swe_single/suite_idle.py \
+            --product "$SUITE_PRODUCT" --repeat 2 --output "$RUNNER_TEMP/suite-evidence/idle"
+      - name: Audit idle repeat 2
+        id: audit_idle_2
+        if: always() && steps.idle_2.outcome != 'skipped'
+        run: sudo --preserve-env=DEEPSEEK_API_KEY python3 benchmarks/swe_single/audit_artifacts.py "$RUNNER_TEMP/suite-evidence/idle/repeat-2"
+      - name: Retain idle repeat 2 immediately
+        if: always() && steps.audit_idle_2.outcome == 'success'
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: expanded-idle-${{ matrix.product }}-repeat-2-${{ github.run_id }}
+          path: ${{ runner.temp }}/suite-evidence/idle/repeat-2/
+          retention-days: 14
+          compression-level: 3
+          if-no-files-found: error
+      - name: Initial idle RSS/PSS repeat 3 of 3; no task or inference
+        id: idle_3
+        if: matrix.task == 'pytest-dev__pytest-7490'
+        continue-on-error: true
+        timeout-minutes: 30
+        run: |
+          sudo --preserve-env=GITHUB_SHA,GITHUB_RUN_ID python3 benchmarks/swe_single/suite_idle.py \
+            --product "$SUITE_PRODUCT" --repeat 3 --output "$RUNNER_TEMP/suite-evidence/idle"
+      - name: Audit idle repeat 3
+        id: audit_idle_3
+        if: always() && steps.idle_3.outcome != 'skipped'
+        run: sudo --preserve-env=DEEPSEEK_API_KEY python3 benchmarks/swe_single/audit_artifacts.py "$RUNNER_TEMP/suite-evidence/idle/repeat-3"
+      - name: Retain idle repeat 3 immediately
+        if: always() && steps.audit_idle_3.outcome == 'success'
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: expanded-idle-${{ matrix.product }}-repeat-3-${{ github.run_id }}
+          path: ${{ runner.temp }}/suite-evidence/idle/repeat-3/
+          retention-days: 14
+          compression-level: 3
+          if-no-files-found: error
+      - name: Summarize three initial idle observations
+        id: idle_summary
+        if: always() && matrix.task == 'pytest-dev__pytest-7490'
+        continue-on-error: true
+        run: |
+          sudo --preserve-env=GITHUB_SHA,GITHUB_RUN_ID,GITHUB_STEP_SUMMARY python3 benchmarks/swe_single/suite_idle.py \
+            --product "$SUITE_PRODUCT" --summarize --output "$RUNNER_TEMP/suite-evidence/idle"
+      - name: 'Hidden tests: base red and reference fix green twice'
+        id: controls
+        timeout-minutes: 60
+        run: |
+          sudo --preserve-env=DEEPSEEK_API_KEY,GITHUB_SHA,GITHUB_RUN_ID,GITHUB_STEP_SUMMARY python3 benchmarks/swe_single/suite.py \
+            --task-id "$SUITE_TASK" --product "$SUITE_PRODUCT" --stage controls \
+            --sources "$RUNNER_TEMP/task-sources" --output "$RUNNER_TEMP/suite-evidence/shard"
+      - name: Audit controls evidence
+        id: audit_controls
+        if: always() && steps.controls.outcome != 'skipped'
+        run: sudo --preserve-env=DEEPSEEK_API_KEY python3 benchmarks/swe_single/audit_artifacts.py "$RUNNER_TEMP/suite-evidence/shard/segments/controls"
+      - name: Upload controls traces immediately
+        if: always() && steps.audit_controls.outcome == 'success'
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: expanded-${{ matrix.product }}-${{ matrix.task }}-controls-${{ github.run_id }}
+          path: ${{ runner.temp }}/suite-evidence/shard/segments/controls/
+          retention-days: 14
+          compression-level: 3
+          if-no-files-found: error
+      - name: Native tools, billing usage and AgentLoop runtime admission
+        id: calibration
+        timeout-minutes: 60
+        run: |
+          sudo --preserve-env=DEEPSEEK_API_KEY,GITHUB_SHA,GITHUB_RUN_ID,GITHUB_STEP_SUMMARY python3 benchmarks/swe_single/suite.py \
+            --task-id "$SUITE_TASK" --product "$SUITE_PRODUCT" --stage calibration \
+            --sources "$RUNNER_TEMP/task-sources" --output "$RUNNER_TEMP/suite-evidence/shard"
+      - name: Audit calibration evidence
+        id: audit_calibration
+        if: always() && steps.calibration.outcome != 'skipped'
+        run: sudo --preserve-env=DEEPSEEK_API_KEY python3 benchmarks/swe_single/audit_artifacts.py "$RUNNER_TEMP/suite-evidence/shard/segments/calibration"
+      - name: Upload calibration traces immediately
+        if: always() && steps.audit_calibration.outcome == 'success'
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: expanded-${{ matrix.product }}-${{ matrix.task }}-calibration-${{ github.run_id }}
+          path: ${{ runner.temp }}/suite-evidence/shard/segments/calibration/
+          retention-days: 14
+          compression-level: 3
+          if-no-files-found: error
+      - name: Formal repeat 1 of 3; new container, home and memory
+        id: block_1
+        if: always() && steps.calibration.outcome == 'success'
+        continue-on-error: true
+        timeout-minutes: 120
+        run: |
+          sudo --preserve-env=DEEPSEEK_API_KEY,GITHUB_SHA,GITHUB_RUN_ID,GITHUB_STEP_SUMMARY python3 benchmarks/swe_single/suite.py \
+            --task-id "$SUITE_TASK" --product "$SUITE_PRODUCT" --stage block-1 \
+            --sources "$RUNNER_TEMP/task-sources" --output "$RUNNER_TEMP/suite-evidence/shard"
+      - name: Audit block-1 evidence
+        id: audit_block_1
+        if: always() && steps.block_1.outcome != 'skipped'
+        run: sudo --preserve-env=DEEPSEEK_API_KEY python3 benchmarks/swe_single/audit_artifacts.py "$RUNNER_TEMP/suite-evidence/shard/segments/block-1"
+      - name: Upload block-1 traces immediately
+        if: always() && steps.audit_block_1.outcome == 'success'
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: expanded-${{ matrix.product }}-${{ matrix.task }}-block-1-${{ github.run_id }}
+          path: ${{ runner.temp }}/suite-evidence/shard/segments/block-1/
+          retention-days: 14
+          compression-level: 3
+          if-no-files-found: error
+      - name: Formal repeat 2 of 3; new container, home and memory
+        id: block_2
+        if: always() && steps.calibration.outcome == 'success'
+        continue-on-error: true
+        timeout-minutes: 120
+        run: |
+          sudo --preserve-env=DEEPSEEK_API_KEY,GITHUB_SHA,GITHUB_RUN_ID,GITHUB_STEP_SUMMARY python3 benchmarks/swe_single/suite.py \
+            --task-id "$SUITE_TASK" --product "$SUITE_PRODUCT" --stage block-2 \
+            --sources "$RUNNER_TEMP/task-sources" --output "$RUNNER_TEMP/suite-evidence/shard"
+      - name: Audit block-2 evidence
+        id: audit_block_2
+        if: always() && steps.block_2.outcome != 'skipped'
+        run: sudo --preserve-env=DEEPSEEK_API_KEY python3 benchmarks/swe_single/audit_artifacts.py "$RUNNER_TEMP/suite-evidence/shard/segments/block-2"
+      - name: Upload block-2 traces immediately
+        if: always() && steps.audit_block_2.outcome == 'success'
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: expanded-${{ matrix.product }}-${{ matrix.task }}-block-2-${{ github.run_id }}
+          path: ${{ runner.temp }}/suite-evidence/shard/segments/block-2/
+          retention-days: 14
+          compression-level: 3
+          if-no-files-found: error
+      - name: Formal repeat 3 of 3; new container, home and memory
+        id: block_3
+        if: always() && steps.calibration.outcome == 'success'
+        continue-on-error: true
+        timeout-minutes: 120
+        run: |
+          sudo --preserve-env=DEEPSEEK_API_KEY,GITHUB_SHA,GITHUB_RUN_ID,GITHUB_STEP_SUMMARY python3 benchmarks/swe_single/suite.py \
+            --task-id "$SUITE_TASK" --product "$SUITE_PRODUCT" --stage block-3 \
+            --sources "$RUNNER_TEMP/task-sources" --output "$RUNNER_TEMP/suite-evidence/shard"
+      - name: Audit block-3 evidence
+        id: audit_block_3
+        if: always() && steps.block_3.outcome != 'skipped'
+        run: sudo --preserve-env=DEEPSEEK_API_KEY python3 benchmarks/swe_single/audit_artifacts.py "$RUNNER_TEMP/suite-evidence/shard/segments/block-3"
+      - name: Upload block-3 traces immediately
+        if: always() && steps.audit_block_3.outcome == 'success'
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: expanded-${{ matrix.product }}-${{ matrix.task }}-block-3-${{ github.run_id }}
+          path: ${{ runner.temp }}/suite-evidence/shard/segments/block-3/
+          retention-days: 14
+          compression-level: 3
+          if-no-files-found: error
+      - name: Require all three formal attempt records
+        if: always()
+        run: |
+          sudo --preserve-env=DEEPSEEK_API_KEY,GITHUB_SHA,GITHUB_RUN_ID python3 benchmarks/swe_single/suite.py \
+            --task-id "$SUITE_TASK" --product "$SUITE_PRODUCT" --stage summarize \
+            --sources "$RUNNER_TEMP/task-sources" --output "$RUNNER_TEMP/suite-evidence/shard"
+      - name: Require three valid idle observations for each product
+        if: always() && matrix.task == 'pytest-dev__pytest-7490'
+        env:
+          IDLE_OUTCOME: ${{ steps.idle_summary.outcome }}
+        run: test "$IDLE_OUTCOME" = success
+      - name: Audit complete shard evidence
+        id: audit_all
+        if: always()
+        run: sudo --preserve-env=DEEPSEEK_API_KEY python3 benchmarks/swe_single/audit_artifacts.py "$RUNNER_TEMP/suite-evidence"
+      - name: Retain complete shard and runner provenance
+        if: always() && steps.audit_all.outcome == 'success'
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: expanded-shard-${{ matrix.product }}-${{ matrix.task }}-${{ github.run_id }}
+          path: ${{ runner.temp }}/suite-evidence/
+          retention-days: 14
+          compression-level: 3
+          if-no-files-found: error
+
+  collect:
+    if: always() && needs.build.result == 'success'
+    needs: [build, measure]
+    name: Collect 72 attempt records and initial idle RSS/PSS
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          pattern: expanded-shard-*
+          path: ${{ runner.temp }}/shards
+      - name: Aggregate without mixing historical campaigns or missing values
+        run: python3 benchmarks/swe_single/suite_report.py --input "$RUNNER_TEMP/shards" --output "$RUNNER_TEMP/suite-report"
+      - name: Retain complete or partial campaign tables
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: expanded-campaign-report-${{ github.run_id }}
+          path: ${{ runner.temp }}/suite-report/
+          retention-days: 14
+          if-no-files-found: error

@@ -124,7 +124,8 @@ class Observation:
 
 
 class Relay:
-    def __init__(self, key, bind, output, run_id, maximum_attempts=64, output_limit=16384):
+    def __init__(self, key, bind, output, run_id, maximum_attempts=64, output_limit=16384,
+                 request_timeout=180):
         self.key = key
         self.output = Path(output)
         self.output.mkdir(parents=True, exist_ok=True)
@@ -132,6 +133,7 @@ class Relay:
         self.records = []
         self.lock = threading.Lock()
         self.maximum_attempts, self.output_limit = maximum_attempts, output_limit
+        self.request_timeout = request_timeout
         self.opener = urllib.request.build_opener(NoRedirect())
         owner = self
 
@@ -215,7 +217,7 @@ class Relay:
                                                  data=forwarded, headers=headers)
                     observation = Observation(api, row)
                     owner.flush()
-                    with owner.opener.open(req, timeout=180) as response:
+                    with owner.opener.open(req, timeout=owner.request_timeout) as response:
                         row.update(http_status=response.status, headers_ns=time.monotonic_ns(),
                                    upstream_request_id=response.headers.get('x-request-id'),
                                    response_content_type=response.headers.get('Content-Type'))

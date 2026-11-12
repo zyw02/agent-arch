@@ -67,7 +67,8 @@ class Campaign:
         self.args = args
         self.protocol_path = Path(getattr(args, 'protocol', None) or HERE / 'protocol.json')
         self.protocol = json.loads(self.protocol_path.read_text())
-        self.task = json.loads((HERE / 'task.json').read_text())
+        self.task_path = Path(getattr(args, 'task', None) or HERE / 'task.json')
+        self.task = json.loads(self.task_path.read_text())
         self.out = args.output.resolve()
         self.out.mkdir(parents=True, exist_ok=False)
         self.work = self.out.parent / (self.out.name + '-working-' + uuid.uuid4().hex[:8])
@@ -90,6 +91,9 @@ class Campaign:
         execute(['docker', 'cp', name + ':/opt/test-dependencies.txt', str(self.out / 'test-dependencies.txt')])
         execute(['docker', 'cp', name + ':/opt/products/package-lock.json', str(self.out / 'package-lock.json')])
         execute(['docker', 'rm', name])
+        if getattr(self.args, 'task_source', None):
+            shutil.rmtree(self.initial)
+            shutil.copytree(self.args.task_source, self.initial)
         execute(['docker', 'network', 'create', '--internal', self.network])
         info = json.loads(execute(['docker', 'network', 'inspect', self.network]).stdout)[0]
         self.gateway = info['IPAM']['Config'][0]['Gateway']
@@ -100,10 +104,10 @@ class Campaign:
             controller_sha=os.environ.get('GITHUB_SHA'), github_run_id=os.environ.get('GITHUB_RUN_ID'),
             started_utc=datetime.now(timezone.utc).isoformat(), network=info,
             protocol_sha256=hashlib.sha256(self.protocol_path.read_bytes()).hexdigest(),
-            task_sha256=hashlib.sha256((HERE / 'task.json').read_bytes()).hexdigest(),
+            task_sha256=hashlib.sha256(self.task_path.read_bytes()).hexdigest(),
             initial_storage=disk_tree(self.initial)))
         shutil.copyfile(self.protocol_path, self.out / 'protocol.json')
-        shutil.copyfile(HERE / 'task.json', self.out / 'controller-task.json')
+        shutil.copyfile(self.task_path, self.out / 'controller-task.json')
         inventory_code = (HERE / 'resources.py').read_text() + '''
 paths = {
     'npm_shared_install': '/opt/products',
@@ -131,15 +135,20 @@ print(json.dumps({'paths': {k: disk_tree(v) for k, v in paths.items()},
         # Only test paths touched by the frozen hidden patch; hidden F2P/P2P
         # membership comes from the immutable dataset, not agent-created tests.
         test_paths = sorted({line[6:] for line in self.task['test_patch'].splitlines() if line.startswith('+++ b/')})
-        command = ['docker', 'run', '--rm', '--network', 'none', '--cpus', '2', '--memory', '4g',
+        controls = self.protocol['execution']
+        command = ['docker', 'run', '--rm', '--network', 'none', '--cpus', str(controls['cpus']),
+                   '--memory', str(controls['memory_bytes']),
                    '--pids-limit', '256', '--user', '1000:1000',
                    '--mount', f'type=bind,src={workspace},dst=/testbed',
                    '--entrypoint', '/opt/testenv/bin/python', self.args.image,
                    '-m', 'pytest', '-rA', '-vv', '--tb=short', '-o', 'junit_family=xunit1',
                    '--junitxml=/testbed/benchmark-junit.xml', *test_paths]
+        if 'memory_swap_bytes' in controls:
+            command[3:3] = ['--memory-swap', str(controls['memory_swap_bytes'])]
         started = time.monotonic()
         try:
-            p = subprocess.run(command, capture_output=True, text=True, timeout=180)
+            p = subprocess.run(command, capture_output=True, text=True,
+                               timeout=controls.get('grading_timeout_seconds', 180))
             (output / 'stdout.log').write_text(p.stdout)
             (output / 'stderr.log').write_text(p.stderr)
             junit = workspace / 'benchmark-junit.xml'
@@ -196,11 +205,14 @@ print(json.dumps({'paths': {k: disk_tree(v) for k, v in paths.items()},
         chown_tree(root)
         collector = Collector(output, workspace, home, scratch, self.protocol['execution']['writable_paths_limit_bytes'])
         relay = Relay(self.key, self.gateway, output / 'provider', run_id,
-                      self.protocol['execution']['maximum_provider_attempts_per_run'])
+                      self.protocol['execution']['maximum_provider_attempts_per_run'],
+                      request_timeout=self.protocol['execution'].get('provider_request_timeout_seconds', 180))
         self.relays.append(relay)
         container = 'swe-' + run_id
+        limits = self.protocol['execution']
         command = ['docker', 'create', '--name', container, '--network', self.network,
-                   '--cpus', '2', '--memory', '4g', '--pids-limit', '512', '--read-only',
+                   '--cpus', str(limits['cpus']), '--memory', str(limits['memory_bytes']),
+                   '--pids-limit', str(limits['pids_limit']), '--read-only',
                    '--cap-drop', 'ALL',
                    '--security-opt', 'no-new-privileges',
                    '--env', 'BENCH_RUN_ID=' + run_id,
@@ -208,6 +220,13 @@ print(json.dumps({'paths': {k: disk_tree(v) for k, v in paths.items()},
                    '--mount', f'type=bind,src={home},dst=/home/bench',
                    '--mount', f'type=bind,src={scratch},dst=/tmp',
                    self.args.image, product, relay.base, '/home/bench/prompt.txt']
+        if 'memory_swap_bytes' in limits:
+            command[2:2] = ['--memory-swap', str(limits['memory_swap_bytes'])]
+        if 'native_timeout_seconds' in limits:
+            command[2:2] = ['--env', 'BENCH_TASK_TIMEOUT_SECONDS=' + str(limits['native_timeout_seconds'])]
+        if product == 'openclaw57_patched' and limits.get('aios_runtime') == 'agentloop':
+            command[command.index(self.args.image):command.index(self.args.image)] = [
+                '--env', 'BENCH_AIOS_RUNTIME=agentloop', '--env', 'AGENTLOOP_WARMUP=0']
         execute(command)
         self.containers.append(container)
         started_ns = time.monotonic_ns()
@@ -217,6 +236,12 @@ print(json.dumps({'paths': {k: disk_tree(v) for k, v in paths.items()},
         timeout = self.protocol['execution']['smoke_timeout_seconds' if smoke else 'task_timeout_seconds']
         termination = None
         report_path = home / 'agent-exit.json'
+        observer = None
+        if limits.get('live_observation'):
+            from live_observation import RunObserver
+            observer = RunObserver(output, container, collector, relay, started_ns,
+                                   product=product, run_id=run_id, timeout=timeout)
+            observer.start()
         while not report_path.exists():
             elapsed = (time.monotonic_ns() - started_ns) / 1e9
             if elapsed > timeout:
@@ -231,6 +256,9 @@ print(json.dumps({'paths': {k: disk_tree(v) for k, v in paths.items()},
                 break
             time.sleep(0.2)
         observed_ns = time.monotonic_ns()
+        if observer:
+            observer.phase('native_finished', termination=termination)
+            observer.stop()
         exit_report = json.loads(report_path.read_text()) if report_path.exists() else None
         subprocess.run(['docker', 'pause', container], capture_output=True)
         measurements = collector.finish()
@@ -250,7 +278,7 @@ print(json.dumps({'paths': {k: disk_tree(v) for k, v in paths.items()},
         subprocess.run(['docker', 'kill', container], capture_output=True)
         # Relay continues to read any already-admitted upstream response, rather
         # than silently losing its usage when the client was terminated.
-        settle_end = time.monotonic() + 15
+        settle_end = time.monotonic() + limits.get('relay_settle_seconds', 15)
         while any(not r['settled'] for r in relay.records) and time.monotonic() < settle_end:
             time.sleep(0.1)
         relay.flush()
@@ -266,17 +294,26 @@ print(json.dumps({'paths': {k: disk_tree(v) for k, v in paths.items()},
         if forwarded:
             result['time_to_first_provider_request_seconds'] = (min(r['started_ns'] for r in forwarded) - started_ns) / 1e9
         result['native_execution_ok'] = bool(exit_report and exit_report['exit_code'] == 0 and termination is None)
+        if product == 'openclaw57_patched' and limits.get('aios_runtime') == 'agentloop':
+            from live_observation import validate_agentloop
+            result['runtime_validation'] = validate_agentloop(home, logs.stdout + logs.stderr)
+            result['native_execution_ok'] &= result['runtime_validation']['valid']
         if smoke:
             path = workspace / 'BENCH_RESULT.txt'
             result['smoke_effect_verified'] = path.exists() and path.read_text().strip() == expected_digest
             result['calibration_passed'] = result['native_execution_ok'] and result['smoke_effect_verified'] and result['provider']['usage_complete']
         else:
+            if observer:
+                observer.phase('grading_started')
             result['patch'] = compare_source(self.initial, workspace, output / 'patch.diff')
             grade_root = root / 'grading'
             grading_workspace(self.initial, workspace, grade_root)
             result['grade'] = self.grade(grade_root, output / 'grading')
             result['patch_resolved'] = bool(result['patch']['policy_passed'] and result['grade']['official_subset_resolved'])
             result['resolved'] = result['patch_resolved'] and result['native_execution_ok']
+        if observer:
+            observer.phase('completed', resolved=result['resolved'],
+                           native_execution_ok=result['native_execution_ok'])
         dump(output / 'result.json', result)
         self.results.append(result)
         self.write_summary()

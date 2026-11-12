@@ -1,0 +1,56 @@
+{
+  "schema_version": 1,
+  "dataset": {
+    "dataset": "princeton-nlp/SWE-bench_Verified",
+    "revision": "c104f840cc67f8b6eec6f759ebc8b2693d585d4a",
+    "parquet_url": "https://huggingface.co/datasets/princeton-nlp/SWE-bench_Verified/resolve/c104f840cc67f8b6eec6f759ebc8b2693d585d4a/data/test-00000-of-00001.parquet",
+    "parquet_sha256": "a45b1fe4e2f0c8390b2b2938ac83e92ed5979000856808f3679c07812e9e6dcd",
+    "source_row_sha256": "9f00505f280ac7ce7c105fa5e02e2803da1dfc5eb4a370af06b8b5a032a1a645"
+  },
+  "tasks": [
+    {
+      "instance_id": "pytest-dev__pytest-7490",
+      "task_file": "tasks/pytest-dev__pytest-7490.json",
+      "task_sha256": "a5684f71a49790ebc3cb30f77bd8fff80b59068a16b34875b58b31f6e18af327",
+      "base_commit": "7f7a36478abe7dd1fa993b115d22606aa0e35e88",
+      "difficulty": "15 min - 1 hour",
+      "fail_to_pass": 2,
+      "pass_to_pass": 78
+    },
+    {
+      "instance_id": "pytest-dev__pytest-7571",
+      "task_file": "tasks/pytest-dev__pytest-7571.json",
+      "task_sha256": "a825d023af3a953bbe7d9c6bbc0dab862aa61b0488981abb0730d6ff2f6fadcb",
+      "base_commit": "422685d0bdc110547535036c1ff398b5e1c44145",
+      "difficulty": "15 min - 1 hour",
+      "fail_to_pass": 1,
+      "pass_to_pass": 14
+    },
+    {
+      "instance_id": "pytest-dev__pytest-7236",
+      "task_file": "tasks/pytest-dev__pytest-7236.json",
+      "task_sha256": "72b2312ddd56c264aa81f17e834e4e494550aa4eb40ed518a403635b7557df1e",
+      "base_commit": "c98bc4cd3d687fe9b392d8eecd905627191d4f06",
+      "difficulty": "15 min - 1 hour",
+      "fail_to_pass": 1,
+      "pass_to_pass": 51
+    },
+    {
+      "instance_id": "pytest-dev__pytest-7324",
+      "task_file": "tasks/pytest-dev__pytest-7324.json",
+      "task_sha256": "2ad9716becfc49cd82a590d229ff306ce3c175b459d179709a64d6f89797f06c",
+      "base_commit": "19ad5889353c7f5f2b65cc2acd346b7a9e95dfcd",
+      "difficulty": "15 min - 1 hour",
+      "fail_to_pass": 3,
+      "pass_to_pass": 58
+    }
+  ],
+  "selection_frozen_before_new_outcomes": true,
+  "criterion": "Retain original task and add three pure-Python pytest tasks in the same human-verified 15 min - 1 hour tier. Same frozen test dependencies; no service or new package requirement. Same tier is not proof of identical difficulty.",
+  "additional_topics": [
+    "caplog handler level restoration",
+    "unittest skipped teardown under pdb",
+    "marker expression constants"
+  ],
+  "excluded": "Do not choose or replace tasks based on product outcomes; invalid hidden-test controls block a task for all products."
+}

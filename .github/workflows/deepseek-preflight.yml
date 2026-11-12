@@ -7,7 +7,7 @@ on:
         description: Original five-product campaign, or enhanced six-product calibration/formal campaign
         type: choice
         default: connection
-        options: [connection, calibration, formal, enhanced-calibration, enhanced-formal, enhanced-reproduce, enhanced-lock, enhanced-observed, enhanced-memory, enhanced-idle-memory]
+        options: [connection, calibration, formal, enhanced-calibration, enhanced-formal, enhanced-reproduce, enhanced-lock, enhanced-observed, enhanced-memory, enhanced-idle-memory, enhanced-suite]
 
       product:
         description: Product for the independent observed batch
@@ -25,6 +25,11 @@ permissions:
   contents: read
 
 jobs:
+  expanded-suite:
+    if: inputs.mode == 'enhanced-suite'
+    uses: ./.github/workflows/swe-expanded.yml
+    secrets: inherit
+
   connection:
     if: inputs.mode == 'connection'
     runs-on: ubuntu-24.04
@@ -45,7 +50,7 @@ jobs:
           retention-days: 3
           if-no-files-found: error
   five-harness:
-    if: inputs.mode != 'connection' && inputs.mode != 'enhanced-observed' && inputs.mode != 'enhanced-memory' && inputs.mode != 'enhanced-idle-memory'
+    if: inputs.mode != 'connection' && inputs.mode != 'enhanced-observed' && inputs.mode != 'enhanced-memory' && inputs.mode != 'enhanced-idle-memory' && inputs.mode != 'enhanced-suite'
     runs-on: ubuntu-24.04
     timeout-minutes: 270
     steps:

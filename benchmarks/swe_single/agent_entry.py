@@ -47,6 +47,10 @@ def launch(product, base, prompt):
             cron=dict(enabled=False))))
         env.update(OPENCLAW_STATE_DIR=str(config.parent), OPENCLAW_CONFIG_PATH=str(config),
                    OPENCLAW_SKIP_CHANNELS='1')
+        if os.environ.get('BENCH_TASK_TIMEOUT_SECONDS'):
+            settings = json.loads(config.read_text())
+            settings['agents']['defaults']['timeoutSeconds'] = int(os.environ['BENCH_TASK_TIMEOUT_SECONDS'])
+            write(config, json.dumps(settings))
         command = ['openclaw', 'agent', '--local', '--session-id', str(uuid.uuid5(uuid.NAMESPACE_URL, os.environ['BENCH_RUN_ID'])),
                    '--json', '--message', prompt]
         if product == 'openclaw57_patched':
@@ -55,6 +59,14 @@ def launch(product, base, prompt):
             # mobile entrypoint shebang must not select the system openclaw.
             settings = json.loads(config.read_text())
             settings['tools']['exec'] = dict(security='full', ask='off')
+            if os.environ.get('BENCH_AIOS_RUNTIME') == 'agentloop':
+                settings['agents']['defaults']['agentRuntime'] = dict(id='agentloop')
+                settings['agents']['defaults']['memorySearch'] = dict(enabled=False)
+                settings['agents']['defaults']['timeoutSeconds'] = int(os.environ['BENCH_TASK_TIMEOUT_SECONDS'])
+                settings['plugins'] = dict(entries=dict(agentloop=dict(enabled=True)))
+                settings['logging'] = dict(level='debug', consoleLevel='info',
+                                           file='/home/bench/agentloop-debug.log')
+                env.update(OPENCLAW_AGENT_RUNTIME='agentloop', AGENTLOOP_WARMUP='0')
             write(config, json.dumps(settings))
             command = ['node', '/opt/openclaw57/openclaw.mjs', *command[1:]]
     elif product == 'claude':
