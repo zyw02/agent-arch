@@ -2,6 +2,7 @@
 """Native idle entrypoints: fresh state and no user task or model inference."""
 import argparse
 import fcntl
+import hashlib
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 import json
 import os
@@ -22,7 +23,10 @@ PREFIX = Path('/opt/products/node_modules')
 NODE = '/usr/local/bin/node'
 ANSI = re.compile(r'\x1b\][^\x07\x1b]*(?:\x07|\x1b\\)|\x1b\[[0-?]*[ -/]*[@-~]|\x1b[=>]')
 
-def dump(path,data):path.write_text(json.dumps(data,ensure_ascii=False,indent=2)+'\n')
+def dump(path,data):
+    temporary=path.with_name(path.name+'.tmp')
+    temporary.write_text(json.dumps(data,ensure_ascii=False,indent=2)+'\n')
+    temporary.replace(path)
 
 def port():
     with socket.socket() as s:s.bind(('127.0.0.1',0));return s.getsockname()[1]
@@ -38,8 +42,16 @@ class NoInference:
                 owner.requests.append(dict(method='GET',path=self.path,time=time.time()))
                 self.reply(dict(object='list',data=[dict(id='deepseek-flash',object='model')]))
             def do_POST(self):
-                size=int(self.headers.get('Content-Length','0'));self.rfile.read(size)
-                owner.requests.append(dict(method='POST',path=self.path,time=time.time()))
+                size=int(self.headers.get('Content-Length','0'));raw=self.rfile.read(size)
+                try:
+                    body=json.loads(raw)
+                except ValueError:
+                    body={}
+                heartbeat=any('Read HEARTBEAT.md' in str(m.get('content',''))
+                    for m in body.get('messages',[]) if m.get('role')=='user')
+                owner.requests.append(dict(method='POST',path=self.path,time=time.time(),
+                    model=body.get('model'),body_sha256=hashlib.sha256(raw).hexdigest(),
+                    purpose='heartbeat' if heartbeat else 'unclassified-inference'))
                 self.reply(dict(error=dict(type='idle_probe_no_inference',message='No model inference is allowed during idle observation')),400)
         self.server=ThreadingHTTPServer(('127.0.0.1',0),Handler);self.server.daemon_threads=True
         self.base=f'http://127.0.0.1:{self.server.server_port}'
@@ -60,7 +72,8 @@ class Application:
         if product in ('openclaw','openclaw57_patched'):
             self.port=port();state=self.home/'.openclaw';state.mkdir();config=state/'openclaw.json'
             cfg=dict(gateway=dict(mode='local',auth=dict(mode='token',token=token),controlUi=dict(enabled=False)),
-                agents=dict(defaults=dict(workspace=str(self.workspace),skipBootstrap=True,memorySearch=dict(enabled=False),model=dict(primary='deepseek/'+model))),
+                agents=dict(defaults=dict(workspace=str(self.workspace),skipBootstrap=True,memorySearch=dict(enabled=False),
+                    heartbeat=dict(every='0m'),thinkingDefault='high',model=dict(primary='deepseek/'+model))),
                 models=dict(providers=dict(deepseek=dict(baseUrl=base+'/v1',apiKey=token,api='openai-completions',models=[dict(id=model,name='Idle only',reasoning=True,input=['text'],contextWindow=1048576,maxTokens=max_output)]))),
                 cron=dict(enabled=False),logging=dict(level='debug',consoleLevel='info',file=str(self.home/'gateway-debug.log')))
             self.env.update(OPENCLAW_STATE_DIR=str(state),OPENCLAW_CONFIG_PATH=str(config),OPENCLAW_SKIP_CHANNELS='1',OPENCLAW_DISABLE_BONJOUR='1')

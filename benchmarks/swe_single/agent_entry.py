@@ -45,6 +45,7 @@ def launch(product, base, prompt):
                 api='openai-completions', models=[dict(id=model, name='Frozen DeepSeek',
                     reasoning=True, input=['text'], contextWindow=1048576, maxTokens=max_output)]))),
             agents=dict(defaults=dict(workspace='/testbed', skipBootstrap=True,
+                heartbeat=dict(every='0m'),
                 model=dict(primary='deepseek/' + model), thinkingDefault='high')),
             tools=dict(profile='coding', exec=dict(mode='full'),
                        deny=['web_search', 'web_fetch', 'browser', 'memory_search', 'memory_get']),

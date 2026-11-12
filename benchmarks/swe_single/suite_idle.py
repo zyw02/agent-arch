@@ -103,6 +103,9 @@ def repeat(args, index):
             raise ValueError('Container cgroup unavailable')
         print(json.dumps(dict(product=args.product, repeat=index, phase='idle_ready_settling_60_seconds')), flush=True)
         time.sleep(60)
+        state = json.loads(execute(['docker', 'inspect', container]).stdout)[0]
+        if not state['State']['Running']:
+            raise ValueError('Native process exited during idle settling; see retained logs')
         samples = []
         with (target/'memory-samples.jsonl').open('w') as stream:
             for _ in range(60):
@@ -110,6 +113,10 @@ def repeat(args, index):
                 row = dict(utc=datetime.now(timezone.utc).isoformat(), memory=memory,
                            cgroup=cgroup_snapshot(cgroup))
                 stream.write(json.dumps(row)+'\n'); stream.flush(); samples.append(row)
+                if not memory['complete']:
+                    state = json.loads(execute(['docker', 'inspect', container]).stdout)[0]
+                    if not state['State']['Running']:
+                        raise ValueError('Native process exited during idle sampling; see retained logs')
                 time.sleep(1)
         state = json.loads(execute(['docker', 'inspect', container]).stdout)[0]
         if not state['State']['Running'] or not all(s['memory']['complete'] for s in samples):

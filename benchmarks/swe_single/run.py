@@ -252,12 +252,14 @@ print(json.dumps({'paths': {k: disk_tree(v) for k, v in paths.items()},
         self.relays.append(relay)
         container = 'swe-' + run_id
         limits = self.protocol['execution']
+        native_session_identity = (self.protocol['experiment_id'] + ':' + run_id
+                                   if limits.get('single_host_campaign') else run_id)
         command = ['docker', 'create', '--name', container, '--network', self.network,
                    '--cpus', str(limits['cpus']), '--memory', str(limits['memory_bytes']),
                    '--pids-limit', str(limits['pids_limit']), '--read-only',
                    '--cap-drop', 'ALL',
                    '--security-opt', 'no-new-privileges',
-                   '--env', 'BENCH_RUN_ID=' + run_id,
+                   '--env', 'BENCH_RUN_ID=' + native_session_identity,
                    '--mount', f'type=bind,src={workspace},dst=/testbed',
                    '--mount', f'type=bind,src={home},dst=/home/bench',
                    '--mount', f'type=bind,src={scratch},dst=/tmp',

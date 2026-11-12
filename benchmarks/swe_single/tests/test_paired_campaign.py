@@ -2,6 +2,7 @@
 import argparse
 import json
 import os
+import re
 from pathlib import Path
 import sys
 import tempfile
@@ -14,6 +15,23 @@ import paired_campaign as paired
 
 
 class PairedCampaignTests(unittest.TestCase):
+    def test_workflow_executes_all_36_attempts_in_the_preregistered_order(self):
+        repo=Path(__file__).resolve().parents[3]
+        workflow=(repo/'.github/workflows/swe-two-task-same-host.yml').read_text()
+        actual=[(int(i),p) for i,p in re.findall(r'--stage round --round (\d+) --product ([a-z0-9_]+)',workflow)]
+        expected=[(b['index'],p) for b in paired.schedule() for p in b['products']]
+        self.assertEqual(actual,expected)
+
+    def test_split_steps_cannot_skip_an_incomplete_preceding_product(self):
+        with tempfile.TemporaryDirectory() as temp:
+            root=Path(temp)
+            (root/'calibration-acceptance.json').write_text('{"passed":true}')
+            args=argparse.Namespace(output=root,round=0,product='codex')
+            with patch.object(paired,'require_controls'), patch.object(paired,'campaign_for') as prepare:
+                with self.assertRaisesRegex(ValueError,'Previous product incomplete'):
+                    paired.round_stage(args)
+            prepare.assert_not_called()
+
     def test_two_tasks_three_repeats_and_every_product_visits_every_order_position(self):
         plan = paired.schedule()
         self.assertEqual(len(plan), 6)

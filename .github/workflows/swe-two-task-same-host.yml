@@ -119,127 +119,793 @@ jobs:
           retention-days: 14
           compression-level: 3
           if-no-files-found: error
-      - name: Task 7236 repeat 1 — six sequential fresh attempts, each preceded by idle RSS/PSS
-        id: round_0
-        timeout-minutes: 330
-        run: sudo -E python3 benchmarks/swe_single/paired_campaign.py --output "$PAIRED_ROOT" --sources "$PAIRED_SOURCES" --stage round --round 0
-      - name: Audit task 7236 repeat 1
-        id: audit_0
-        if: always() && steps.round_0.outcome != 'skipped'
+      - name: openclaw57_patched — task 7236 repeat 1 — idle RSS/PSS then fresh solver
+        id: r0_openclaw57_patched
+        timeout-minutes: 90
+        run: sudo -E python3 benchmarks/swe_single/paired_campaign.py --output "$PAIRED_ROOT" --sources "$PAIRED_SOURCES" --stage round --round 0 --product openclaw57_patched
+      - name: Audit openclaw57_patched task 7236 repeat 1
+        id: audit_r0_openclaw57_patched
+        if: always() && steps.r0_openclaw57_patched.outcome != 'skipped'
         run: sudo -E python3 benchmarks/swe_single/audit_artifacts.py "$PAIRED_ROOT"
-      - name: Retain task 7236 repeat 1 immediately
-        if: always() && steps.audit_0.outcome == 'success'
+      - name: Retain openclaw57_patched task 7236 repeat 1 immediately
+        if: always() && steps.audit_r0_openclaw57_patched.outcome == 'success'
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
-          name: same-host-task-7236-repeat-1-${{ github.run_id }}
+          name: same-host-openclaw57_patched-task-7236-repeat-1-${{ github.run_id }}
           path: |
-            ${{ runner.temp }}/two-task-evidence/segments/round-0/
-            ${{ runner.temp }}/two-task-evidence/idle/pytest-dev__pytest-7236-repeat-1-*/
+            ${{ runner.temp }}/two-task-evidence/segments/round-0-openclaw57_patched/
+            ${{ runner.temp }}/two-task-evidence/idle/pytest-dev__pytest-7236-repeat-1-openclaw57_patched/
+            ${{ runner.temp }}/two-task-evidence/blocks/
             ${{ runner.temp }}/two-task-evidence/progress.jsonl
             ${{ runner.temp }}/two-task-evidence/current-status.json
           retention-days: 14
           compression-level: 3
           if-no-files-found: error
-      - name: Task 7324 repeat 1 — six sequential fresh attempts, each preceded by idle RSS/PSS
-        id: round_1
-        timeout-minutes: 330
-        run: sudo -E python3 benchmarks/swe_single/paired_campaign.py --output "$PAIRED_ROOT" --sources "$PAIRED_SOURCES" --stage round --round 1
-      - name: Audit task 7324 repeat 1
-        id: audit_1
-        if: always() && steps.round_1.outcome != 'skipped'
+      - name: codex — task 7236 repeat 1 — idle RSS/PSS then fresh solver
+        id: r0_codex
+        timeout-minutes: 90
+        run: sudo -E python3 benchmarks/swe_single/paired_campaign.py --output "$PAIRED_ROOT" --sources "$PAIRED_SOURCES" --stage round --round 0 --product codex
+      - name: Audit codex task 7236 repeat 1
+        id: audit_r0_codex
+        if: always() && steps.r0_codex.outcome != 'skipped'
         run: sudo -E python3 benchmarks/swe_single/audit_artifacts.py "$PAIRED_ROOT"
-      - name: Retain task 7324 repeat 1 immediately
-        if: always() && steps.audit_1.outcome == 'success'
+      - name: Retain codex task 7236 repeat 1 immediately
+        if: always() && steps.audit_r0_codex.outcome == 'success'
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
-          name: same-host-task-7324-repeat-1-${{ github.run_id }}
+          name: same-host-codex-task-7236-repeat-1-${{ github.run_id }}
           path: |
-            ${{ runner.temp }}/two-task-evidence/segments/round-1/
-            ${{ runner.temp }}/two-task-evidence/idle/pytest-dev__pytest-7324-repeat-1-*/
+            ${{ runner.temp }}/two-task-evidence/segments/round-0-codex/
+            ${{ runner.temp }}/two-task-evidence/idle/pytest-dev__pytest-7236-repeat-1-codex/
+            ${{ runner.temp }}/two-task-evidence/blocks/
             ${{ runner.temp }}/two-task-evidence/progress.jsonl
             ${{ runner.temp }}/two-task-evidence/current-status.json
           retention-days: 14
           compression-level: 3
           if-no-files-found: error
-      - name: Task 7236 repeat 2 — six sequential fresh attempts, each preceded by idle RSS/PSS
-        id: round_2
-        timeout-minutes: 330
-        run: sudo -E python3 benchmarks/swe_single/paired_campaign.py --output "$PAIRED_ROOT" --sources "$PAIRED_SOURCES" --stage round --round 2
-      - name: Audit task 7236 repeat 2
-        id: audit_2
-        if: always() && steps.round_2.outcome != 'skipped'
+      - name: dsh — task 7236 repeat 1 — idle RSS/PSS then fresh solver
+        id: r0_dsh
+        timeout-minutes: 90
+        run: sudo -E python3 benchmarks/swe_single/paired_campaign.py --output "$PAIRED_ROOT" --sources "$PAIRED_SOURCES" --stage round --round 0 --product dsh
+      - name: Audit dsh task 7236 repeat 1
+        id: audit_r0_dsh
+        if: always() && steps.r0_dsh.outcome != 'skipped'
         run: sudo -E python3 benchmarks/swe_single/audit_artifacts.py "$PAIRED_ROOT"
-      - name: Retain task 7236 repeat 2 immediately
-        if: always() && steps.audit_2.outcome == 'success'
+      - name: Retain dsh task 7236 repeat 1 immediately
+        if: always() && steps.audit_r0_dsh.outcome == 'success'
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
-          name: same-host-task-7236-repeat-2-${{ github.run_id }}
+          name: same-host-dsh-task-7236-repeat-1-${{ github.run_id }}
           path: |
-            ${{ runner.temp }}/two-task-evidence/segments/round-2/
-            ${{ runner.temp }}/two-task-evidence/idle/pytest-dev__pytest-7236-repeat-2-*/
+            ${{ runner.temp }}/two-task-evidence/segments/round-0-dsh/
+            ${{ runner.temp }}/two-task-evidence/idle/pytest-dev__pytest-7236-repeat-1-dsh/
+            ${{ runner.temp }}/two-task-evidence/blocks/
             ${{ runner.temp }}/two-task-evidence/progress.jsonl
             ${{ runner.temp }}/two-task-evidence/current-status.json
           retention-days: 14
           compression-level: 3
           if-no-files-found: error
-      - name: Task 7324 repeat 2 — six sequential fresh attempts, each preceded by idle RSS/PSS
-        id: round_3
-        timeout-minutes: 330
-        run: sudo -E python3 benchmarks/swe_single/paired_campaign.py --output "$PAIRED_ROOT" --sources "$PAIRED_SOURCES" --stage round --round 3
-      - name: Audit task 7324 repeat 2
-        id: audit_3
-        if: always() && steps.round_3.outcome != 'skipped'
+      - name: claude — task 7236 repeat 1 — idle RSS/PSS then fresh solver
+        id: r0_claude
+        timeout-minutes: 90
+        run: sudo -E python3 benchmarks/swe_single/paired_campaign.py --output "$PAIRED_ROOT" --sources "$PAIRED_SOURCES" --stage round --round 0 --product claude
+      - name: Audit claude task 7236 repeat 1
+        id: audit_r0_claude
+        if: always() && steps.r0_claude.outcome != 'skipped'
         run: sudo -E python3 benchmarks/swe_single/audit_artifacts.py "$PAIRED_ROOT"
-      - name: Retain task 7324 repeat 2 immediately
-        if: always() && steps.audit_3.outcome == 'success'
+      - name: Retain claude task 7236 repeat 1 immediately
+        if: always() && steps.audit_r0_claude.outcome == 'success'
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
-          name: same-host-task-7324-repeat-2-${{ github.run_id }}
+          name: same-host-claude-task-7236-repeat-1-${{ github.run_id }}
           path: |
-            ${{ runner.temp }}/two-task-evidence/segments/round-3/
-            ${{ runner.temp }}/two-task-evidence/idle/pytest-dev__pytest-7324-repeat-2-*/
+            ${{ runner.temp }}/two-task-evidence/segments/round-0-claude/
+            ${{ runner.temp }}/two-task-evidence/idle/pytest-dev__pytest-7236-repeat-1-claude/
+            ${{ runner.temp }}/two-task-evidence/blocks/
             ${{ runner.temp }}/two-task-evidence/progress.jsonl
             ${{ runner.temp }}/two-task-evidence/current-status.json
           retention-days: 14
           compression-level: 3
           if-no-files-found: error
-      - name: Task 7236 repeat 3 — six sequential fresh attempts, each preceded by idle RSS/PSS
-        id: round_4
-        timeout-minutes: 330
-        run: sudo -E python3 benchmarks/swe_single/paired_campaign.py --output "$PAIRED_ROOT" --sources "$PAIRED_SOURCES" --stage round --round 4
-      - name: Audit task 7236 repeat 3
-        id: audit_4
-        if: always() && steps.round_4.outcome != 'skipped'
+      - name: hermes — task 7236 repeat 1 — idle RSS/PSS then fresh solver
+        id: r0_hermes
+        timeout-minutes: 90
+        run: sudo -E python3 benchmarks/swe_single/paired_campaign.py --output "$PAIRED_ROOT" --sources "$PAIRED_SOURCES" --stage round --round 0 --product hermes
+      - name: Audit hermes task 7236 repeat 1
+        id: audit_r0_hermes
+        if: always() && steps.r0_hermes.outcome != 'skipped'
         run: sudo -E python3 benchmarks/swe_single/audit_artifacts.py "$PAIRED_ROOT"
-      - name: Retain task 7236 repeat 3 immediately
-        if: always() && steps.audit_4.outcome == 'success'
+      - name: Retain hermes task 7236 repeat 1 immediately
+        if: always() && steps.audit_r0_hermes.outcome == 'success'
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
-          name: same-host-task-7236-repeat-3-${{ github.run_id }}
+          name: same-host-hermes-task-7236-repeat-1-${{ github.run_id }}
           path: |
-            ${{ runner.temp }}/two-task-evidence/segments/round-4/
-            ${{ runner.temp }}/two-task-evidence/idle/pytest-dev__pytest-7236-repeat-3-*/
+            ${{ runner.temp }}/two-task-evidence/segments/round-0-hermes/
+            ${{ runner.temp }}/two-task-evidence/idle/pytest-dev__pytest-7236-repeat-1-hermes/
+            ${{ runner.temp }}/two-task-evidence/blocks/
             ${{ runner.temp }}/two-task-evidence/progress.jsonl
             ${{ runner.temp }}/two-task-evidence/current-status.json
           retention-days: 14
           compression-level: 3
           if-no-files-found: error
-      - name: Task 7324 repeat 3 — six sequential fresh attempts, each preceded by idle RSS/PSS
-        id: round_5
-        timeout-minutes: 330
-        run: sudo -E python3 benchmarks/swe_single/paired_campaign.py --output "$PAIRED_ROOT" --sources "$PAIRED_SOURCES" --stage round --round 5
-      - name: Audit task 7324 repeat 3
-        id: audit_5
-        if: always() && steps.round_5.outcome != 'skipped'
+      - name: openclaw — task 7236 repeat 1 — idle RSS/PSS then fresh solver
+        id: r0_openclaw
+        timeout-minutes: 90
+        run: sudo -E python3 benchmarks/swe_single/paired_campaign.py --output "$PAIRED_ROOT" --sources "$PAIRED_SOURCES" --stage round --round 0 --product openclaw
+      - name: Audit openclaw task 7236 repeat 1
+        id: audit_r0_openclaw
+        if: always() && steps.r0_openclaw.outcome != 'skipped'
         run: sudo -E python3 benchmarks/swe_single/audit_artifacts.py "$PAIRED_ROOT"
-      - name: Retain task 7324 repeat 3 immediately
-        if: always() && steps.audit_5.outcome == 'success'
+      - name: Retain openclaw task 7236 repeat 1 immediately
+        if: always() && steps.audit_r0_openclaw.outcome == 'success'
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
-          name: same-host-task-7324-repeat-3-${{ github.run_id }}
+          name: same-host-openclaw-task-7236-repeat-1-${{ github.run_id }}
           path: |
-            ${{ runner.temp }}/two-task-evidence/segments/round-5/
-            ${{ runner.temp }}/two-task-evidence/idle/pytest-dev__pytest-7324-repeat-3-*/
+            ${{ runner.temp }}/two-task-evidence/segments/round-0-openclaw/
+            ${{ runner.temp }}/two-task-evidence/idle/pytest-dev__pytest-7236-repeat-1-openclaw/
+            ${{ runner.temp }}/two-task-evidence/blocks/
+            ${{ runner.temp }}/two-task-evidence/progress.jsonl
+            ${{ runner.temp }}/two-task-evidence/current-status.json
+          retention-days: 14
+          compression-level: 3
+          if-no-files-found: error
+      - name: codex — task 7324 repeat 1 — idle RSS/PSS then fresh solver
+        id: r1_codex
+        timeout-minutes: 90
+        run: sudo -E python3 benchmarks/swe_single/paired_campaign.py --output "$PAIRED_ROOT" --sources "$PAIRED_SOURCES" --stage round --round 1 --product codex
+      - name: Audit codex task 7324 repeat 1
+        id: audit_r1_codex
+        if: always() && steps.r1_codex.outcome != 'skipped'
+        run: sudo -E python3 benchmarks/swe_single/audit_artifacts.py "$PAIRED_ROOT"
+      - name: Retain codex task 7324 repeat 1 immediately
+        if: always() && steps.audit_r1_codex.outcome == 'success'
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: same-host-codex-task-7324-repeat-1-${{ github.run_id }}
+          path: |
+            ${{ runner.temp }}/two-task-evidence/segments/round-1-codex/
+            ${{ runner.temp }}/two-task-evidence/idle/pytest-dev__pytest-7324-repeat-1-codex/
+            ${{ runner.temp }}/two-task-evidence/blocks/
+            ${{ runner.temp }}/two-task-evidence/progress.jsonl
+            ${{ runner.temp }}/two-task-evidence/current-status.json
+          retention-days: 14
+          compression-level: 3
+          if-no-files-found: error
+      - name: dsh — task 7324 repeat 1 — idle RSS/PSS then fresh solver
+        id: r1_dsh
+        timeout-minutes: 90
+        run: sudo -E python3 benchmarks/swe_single/paired_campaign.py --output "$PAIRED_ROOT" --sources "$PAIRED_SOURCES" --stage round --round 1 --product dsh
+      - name: Audit dsh task 7324 repeat 1
+        id: audit_r1_dsh
+        if: always() && steps.r1_dsh.outcome != 'skipped'
+        run: sudo -E python3 benchmarks/swe_single/audit_artifacts.py "$PAIRED_ROOT"
+      - name: Retain dsh task 7324 repeat 1 immediately
+        if: always() && steps.audit_r1_dsh.outcome == 'success'
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: same-host-dsh-task-7324-repeat-1-${{ github.run_id }}
+          path: |
+            ${{ runner.temp }}/two-task-evidence/segments/round-1-dsh/
+            ${{ runner.temp }}/two-task-evidence/idle/pytest-dev__pytest-7324-repeat-1-dsh/
+            ${{ runner.temp }}/two-task-evidence/blocks/
+            ${{ runner.temp }}/two-task-evidence/progress.jsonl
+            ${{ runner.temp }}/two-task-evidence/current-status.json
+          retention-days: 14
+          compression-level: 3
+          if-no-files-found: error
+      - name: claude — task 7324 repeat 1 — idle RSS/PSS then fresh solver
+        id: r1_claude
+        timeout-minutes: 90
+        run: sudo -E python3 benchmarks/swe_single/paired_campaign.py --output "$PAIRED_ROOT" --sources "$PAIRED_SOURCES" --stage round --round 1 --product claude
+      - name: Audit claude task 7324 repeat 1
+        id: audit_r1_claude
+        if: always() && steps.r1_claude.outcome != 'skipped'
+        run: sudo -E python3 benchmarks/swe_single/audit_artifacts.py "$PAIRED_ROOT"
+      - name: Retain claude task 7324 repeat 1 immediately
+        if: always() && steps.audit_r1_claude.outcome == 'success'
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: same-host-claude-task-7324-repeat-1-${{ github.run_id }}
+          path: |
+            ${{ runner.temp }}/two-task-evidence/segments/round-1-claude/
+            ${{ runner.temp }}/two-task-evidence/idle/pytest-dev__pytest-7324-repeat-1-claude/
+            ${{ runner.temp }}/two-task-evidence/blocks/
+            ${{ runner.temp }}/two-task-evidence/progress.jsonl
+            ${{ runner.temp }}/two-task-evidence/current-status.json
+          retention-days: 14
+          compression-level: 3
+          if-no-files-found: error
+      - name: hermes — task 7324 repeat 1 — idle RSS/PSS then fresh solver
+        id: r1_hermes
+        timeout-minutes: 90
+        run: sudo -E python3 benchmarks/swe_single/paired_campaign.py --output "$PAIRED_ROOT" --sources "$PAIRED_SOURCES" --stage round --round 1 --product hermes
+      - name: Audit hermes task 7324 repeat 1
+        id: audit_r1_hermes
+        if: always() && steps.r1_hermes.outcome != 'skipped'
+        run: sudo -E python3 benchmarks/swe_single/audit_artifacts.py "$PAIRED_ROOT"
+      - name: Retain hermes task 7324 repeat 1 immediately
+        if: always() && steps.audit_r1_hermes.outcome == 'success'
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: same-host-hermes-task-7324-repeat-1-${{ github.run_id }}
+          path: |
+            ${{ runner.temp }}/two-task-evidence/segments/round-1-hermes/
+            ${{ runner.temp }}/two-task-evidence/idle/pytest-dev__pytest-7324-repeat-1-hermes/
+            ${{ runner.temp }}/two-task-evidence/blocks/
+            ${{ runner.temp }}/two-task-evidence/progress.jsonl
+            ${{ runner.temp }}/two-task-evidence/current-status.json
+          retention-days: 14
+          compression-level: 3
+          if-no-files-found: error
+      - name: openclaw — task 7324 repeat 1 — idle RSS/PSS then fresh solver
+        id: r1_openclaw
+        timeout-minutes: 90
+        run: sudo -E python3 benchmarks/swe_single/paired_campaign.py --output "$PAIRED_ROOT" --sources "$PAIRED_SOURCES" --stage round --round 1 --product openclaw
+      - name: Audit openclaw task 7324 repeat 1
+        id: audit_r1_openclaw
+        if: always() && steps.r1_openclaw.outcome != 'skipped'
+        run: sudo -E python3 benchmarks/swe_single/audit_artifacts.py "$PAIRED_ROOT"
+      - name: Retain openclaw task 7324 repeat 1 immediately
+        if: always() && steps.audit_r1_openclaw.outcome == 'success'
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: same-host-openclaw-task-7324-repeat-1-${{ github.run_id }}
+          path: |
+            ${{ runner.temp }}/two-task-evidence/segments/round-1-openclaw/
+            ${{ runner.temp }}/two-task-evidence/idle/pytest-dev__pytest-7324-repeat-1-openclaw/
+            ${{ runner.temp }}/two-task-evidence/blocks/
+            ${{ runner.temp }}/two-task-evidence/progress.jsonl
+            ${{ runner.temp }}/two-task-evidence/current-status.json
+          retention-days: 14
+          compression-level: 3
+          if-no-files-found: error
+      - name: openclaw57_patched — task 7324 repeat 1 — idle RSS/PSS then fresh solver
+        id: r1_openclaw57_patched
+        timeout-minutes: 90
+        run: sudo -E python3 benchmarks/swe_single/paired_campaign.py --output "$PAIRED_ROOT" --sources "$PAIRED_SOURCES" --stage round --round 1 --product openclaw57_patched
+      - name: Audit openclaw57_patched task 7324 repeat 1
+        id: audit_r1_openclaw57_patched
+        if: always() && steps.r1_openclaw57_patched.outcome != 'skipped'
+        run: sudo -E python3 benchmarks/swe_single/audit_artifacts.py "$PAIRED_ROOT"
+      - name: Retain openclaw57_patched task 7324 repeat 1 immediately
+        if: always() && steps.audit_r1_openclaw57_patched.outcome == 'success'
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: same-host-openclaw57_patched-task-7324-repeat-1-${{ github.run_id }}
+          path: |
+            ${{ runner.temp }}/two-task-evidence/segments/round-1-openclaw57_patched/
+            ${{ runner.temp }}/two-task-evidence/idle/pytest-dev__pytest-7324-repeat-1-openclaw57_patched/
+            ${{ runner.temp }}/two-task-evidence/blocks/
+            ${{ runner.temp }}/two-task-evidence/progress.jsonl
+            ${{ runner.temp }}/two-task-evidence/current-status.json
+          retention-days: 14
+          compression-level: 3
+          if-no-files-found: error
+      - name: dsh — task 7236 repeat 2 — idle RSS/PSS then fresh solver
+        id: r2_dsh
+        timeout-minutes: 90
+        run: sudo -E python3 benchmarks/swe_single/paired_campaign.py --output "$PAIRED_ROOT" --sources "$PAIRED_SOURCES" --stage round --round 2 --product dsh
+      - name: Audit dsh task 7236 repeat 2
+        id: audit_r2_dsh
+        if: always() && steps.r2_dsh.outcome != 'skipped'
+        run: sudo -E python3 benchmarks/swe_single/audit_artifacts.py "$PAIRED_ROOT"
+      - name: Retain dsh task 7236 repeat 2 immediately
+        if: always() && steps.audit_r2_dsh.outcome == 'success'
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: same-host-dsh-task-7236-repeat-2-${{ github.run_id }}
+          path: |
+            ${{ runner.temp }}/two-task-evidence/segments/round-2-dsh/
+            ${{ runner.temp }}/two-task-evidence/idle/pytest-dev__pytest-7236-repeat-2-dsh/
+            ${{ runner.temp }}/two-task-evidence/blocks/
+            ${{ runner.temp }}/two-task-evidence/progress.jsonl
+            ${{ runner.temp }}/two-task-evidence/current-status.json
+          retention-days: 14
+          compression-level: 3
+          if-no-files-found: error
+      - name: claude — task 7236 repeat 2 — idle RSS/PSS then fresh solver
+        id: r2_claude
+        timeout-minutes: 90
+        run: sudo -E python3 benchmarks/swe_single/paired_campaign.py --output "$PAIRED_ROOT" --sources "$PAIRED_SOURCES" --stage round --round 2 --product claude
+      - name: Audit claude task 7236 repeat 2
+        id: audit_r2_claude
+        if: always() && steps.r2_claude.outcome != 'skipped'
+        run: sudo -E python3 benchmarks/swe_single/audit_artifacts.py "$PAIRED_ROOT"
+      - name: Retain claude task 7236 repeat 2 immediately
+        if: always() && steps.audit_r2_claude.outcome == 'success'
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: same-host-claude-task-7236-repeat-2-${{ github.run_id }}
+          path: |
+            ${{ runner.temp }}/two-task-evidence/segments/round-2-claude/
+            ${{ runner.temp }}/two-task-evidence/idle/pytest-dev__pytest-7236-repeat-2-claude/
+            ${{ runner.temp }}/two-task-evidence/blocks/
+            ${{ runner.temp }}/two-task-evidence/progress.jsonl
+            ${{ runner.temp }}/two-task-evidence/current-status.json
+          retention-days: 14
+          compression-level: 3
+          if-no-files-found: error
+      - name: hermes — task 7236 repeat 2 — idle RSS/PSS then fresh solver
+        id: r2_hermes
+        timeout-minutes: 90
+        run: sudo -E python3 benchmarks/swe_single/paired_campaign.py --output "$PAIRED_ROOT" --sources "$PAIRED_SOURCES" --stage round --round 2 --product hermes
+      - name: Audit hermes task 7236 repeat 2
+        id: audit_r2_hermes
+        if: always() && steps.r2_hermes.outcome != 'skipped'
+        run: sudo -E python3 benchmarks/swe_single/audit_artifacts.py "$PAIRED_ROOT"
+      - name: Retain hermes task 7236 repeat 2 immediately
+        if: always() && steps.audit_r2_hermes.outcome == 'success'
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: same-host-hermes-task-7236-repeat-2-${{ github.run_id }}
+          path: |
+            ${{ runner.temp }}/two-task-evidence/segments/round-2-hermes/
+            ${{ runner.temp }}/two-task-evidence/idle/pytest-dev__pytest-7236-repeat-2-hermes/
+            ${{ runner.temp }}/two-task-evidence/blocks/
+            ${{ runner.temp }}/two-task-evidence/progress.jsonl
+            ${{ runner.temp }}/two-task-evidence/current-status.json
+          retention-days: 14
+          compression-level: 3
+          if-no-files-found: error
+      - name: openclaw — task 7236 repeat 2 — idle RSS/PSS then fresh solver
+        id: r2_openclaw
+        timeout-minutes: 90
+        run: sudo -E python3 benchmarks/swe_single/paired_campaign.py --output "$PAIRED_ROOT" --sources "$PAIRED_SOURCES" --stage round --round 2 --product openclaw
+      - name: Audit openclaw task 7236 repeat 2
+        id: audit_r2_openclaw
+        if: always() && steps.r2_openclaw.outcome != 'skipped'
+        run: sudo -E python3 benchmarks/swe_single/audit_artifacts.py "$PAIRED_ROOT"
+      - name: Retain openclaw task 7236 repeat 2 immediately
+        if: always() && steps.audit_r2_openclaw.outcome == 'success'
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: same-host-openclaw-task-7236-repeat-2-${{ github.run_id }}
+          path: |
+            ${{ runner.temp }}/two-task-evidence/segments/round-2-openclaw/
+            ${{ runner.temp }}/two-task-evidence/idle/pytest-dev__pytest-7236-repeat-2-openclaw/
+            ${{ runner.temp }}/two-task-evidence/blocks/
+            ${{ runner.temp }}/two-task-evidence/progress.jsonl
+            ${{ runner.temp }}/two-task-evidence/current-status.json
+          retention-days: 14
+          compression-level: 3
+          if-no-files-found: error
+      - name: openclaw57_patched — task 7236 repeat 2 — idle RSS/PSS then fresh solver
+        id: r2_openclaw57_patched
+        timeout-minutes: 90
+        run: sudo -E python3 benchmarks/swe_single/paired_campaign.py --output "$PAIRED_ROOT" --sources "$PAIRED_SOURCES" --stage round --round 2 --product openclaw57_patched
+      - name: Audit openclaw57_patched task 7236 repeat 2
+        id: audit_r2_openclaw57_patched
+        if: always() && steps.r2_openclaw57_patched.outcome != 'skipped'
+        run: sudo -E python3 benchmarks/swe_single/audit_artifacts.py "$PAIRED_ROOT"
+      - name: Retain openclaw57_patched task 7236 repeat 2 immediately
+        if: always() && steps.audit_r2_openclaw57_patched.outcome == 'success'
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: same-host-openclaw57_patched-task-7236-repeat-2-${{ github.run_id }}
+          path: |
+            ${{ runner.temp }}/two-task-evidence/segments/round-2-openclaw57_patched/
+            ${{ runner.temp }}/two-task-evidence/idle/pytest-dev__pytest-7236-repeat-2-openclaw57_patched/
+            ${{ runner.temp }}/two-task-evidence/blocks/
+            ${{ runner.temp }}/two-task-evidence/progress.jsonl
+            ${{ runner.temp }}/two-task-evidence/current-status.json
+          retention-days: 14
+          compression-level: 3
+          if-no-files-found: error
+      - name: codex — task 7236 repeat 2 — idle RSS/PSS then fresh solver
+        id: r2_codex
+        timeout-minutes: 90
+        run: sudo -E python3 benchmarks/swe_single/paired_campaign.py --output "$PAIRED_ROOT" --sources "$PAIRED_SOURCES" --stage round --round 2 --product codex
+      - name: Audit codex task 7236 repeat 2
+        id: audit_r2_codex
+        if: always() && steps.r2_codex.outcome != 'skipped'
+        run: sudo -E python3 benchmarks/swe_single/audit_artifacts.py "$PAIRED_ROOT"
+      - name: Retain codex task 7236 repeat 2 immediately
+        if: always() && steps.audit_r2_codex.outcome == 'success'
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: same-host-codex-task-7236-repeat-2-${{ github.run_id }}
+          path: |
+            ${{ runner.temp }}/two-task-evidence/segments/round-2-codex/
+            ${{ runner.temp }}/two-task-evidence/idle/pytest-dev__pytest-7236-repeat-2-codex/
+            ${{ runner.temp }}/two-task-evidence/blocks/
+            ${{ runner.temp }}/two-task-evidence/progress.jsonl
+            ${{ runner.temp }}/two-task-evidence/current-status.json
+          retention-days: 14
+          compression-level: 3
+          if-no-files-found: error
+      - name: claude — task 7324 repeat 2 — idle RSS/PSS then fresh solver
+        id: r3_claude
+        timeout-minutes: 90
+        run: sudo -E python3 benchmarks/swe_single/paired_campaign.py --output "$PAIRED_ROOT" --sources "$PAIRED_SOURCES" --stage round --round 3 --product claude
+      - name: Audit claude task 7324 repeat 2
+        id: audit_r3_claude
+        if: always() && steps.r3_claude.outcome != 'skipped'
+        run: sudo -E python3 benchmarks/swe_single/audit_artifacts.py "$PAIRED_ROOT"
+      - name: Retain claude task 7324 repeat 2 immediately
+        if: always() && steps.audit_r3_claude.outcome == 'success'
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: same-host-claude-task-7324-repeat-2-${{ github.run_id }}
+          path: |
+            ${{ runner.temp }}/two-task-evidence/segments/round-3-claude/
+            ${{ runner.temp }}/two-task-evidence/idle/pytest-dev__pytest-7324-repeat-2-claude/
+            ${{ runner.temp }}/two-task-evidence/blocks/
+            ${{ runner.temp }}/two-task-evidence/progress.jsonl
+            ${{ runner.temp }}/two-task-evidence/current-status.json
+          retention-days: 14
+          compression-level: 3
+          if-no-files-found: error
+      - name: hermes — task 7324 repeat 2 — idle RSS/PSS then fresh solver
+        id: r3_hermes
+        timeout-minutes: 90
+        run: sudo -E python3 benchmarks/swe_single/paired_campaign.py --output "$PAIRED_ROOT" --sources "$PAIRED_SOURCES" --stage round --round 3 --product hermes
+      - name: Audit hermes task 7324 repeat 2
+        id: audit_r3_hermes
+        if: always() && steps.r3_hermes.outcome != 'skipped'
+        run: sudo -E python3 benchmarks/swe_single/audit_artifacts.py "$PAIRED_ROOT"
+      - name: Retain hermes task 7324 repeat 2 immediately
+        if: always() && steps.audit_r3_hermes.outcome == 'success'
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: same-host-hermes-task-7324-repeat-2-${{ github.run_id }}
+          path: |
+            ${{ runner.temp }}/two-task-evidence/segments/round-3-hermes/
+            ${{ runner.temp }}/two-task-evidence/idle/pytest-dev__pytest-7324-repeat-2-hermes/
+            ${{ runner.temp }}/two-task-evidence/blocks/
+            ${{ runner.temp }}/two-task-evidence/progress.jsonl
+            ${{ runner.temp }}/two-task-evidence/current-status.json
+          retention-days: 14
+          compression-level: 3
+          if-no-files-found: error
+      - name: openclaw — task 7324 repeat 2 — idle RSS/PSS then fresh solver
+        id: r3_openclaw
+        timeout-minutes: 90
+        run: sudo -E python3 benchmarks/swe_single/paired_campaign.py --output "$PAIRED_ROOT" --sources "$PAIRED_SOURCES" --stage round --round 3 --product openclaw
+      - name: Audit openclaw task 7324 repeat 2
+        id: audit_r3_openclaw
+        if: always() && steps.r3_openclaw.outcome != 'skipped'
+        run: sudo -E python3 benchmarks/swe_single/audit_artifacts.py "$PAIRED_ROOT"
+      - name: Retain openclaw task 7324 repeat 2 immediately
+        if: always() && steps.audit_r3_openclaw.outcome == 'success'
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: same-host-openclaw-task-7324-repeat-2-${{ github.run_id }}
+          path: |
+            ${{ runner.temp }}/two-task-evidence/segments/round-3-openclaw/
+            ${{ runner.temp }}/two-task-evidence/idle/pytest-dev__pytest-7324-repeat-2-openclaw/
+            ${{ runner.temp }}/two-task-evidence/blocks/
+            ${{ runner.temp }}/two-task-evidence/progress.jsonl
+            ${{ runner.temp }}/two-task-evidence/current-status.json
+          retention-days: 14
+          compression-level: 3
+          if-no-files-found: error
+      - name: openclaw57_patched — task 7324 repeat 2 — idle RSS/PSS then fresh solver
+        id: r3_openclaw57_patched
+        timeout-minutes: 90
+        run: sudo -E python3 benchmarks/swe_single/paired_campaign.py --output "$PAIRED_ROOT" --sources "$PAIRED_SOURCES" --stage round --round 3 --product openclaw57_patched
+      - name: Audit openclaw57_patched task 7324 repeat 2
+        id: audit_r3_openclaw57_patched
+        if: always() && steps.r3_openclaw57_patched.outcome != 'skipped'
+        run: sudo -E python3 benchmarks/swe_single/audit_artifacts.py "$PAIRED_ROOT"
+      - name: Retain openclaw57_patched task 7324 repeat 2 immediately
+        if: always() && steps.audit_r3_openclaw57_patched.outcome == 'success'
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: same-host-openclaw57_patched-task-7324-repeat-2-${{ github.run_id }}
+          path: |
+            ${{ runner.temp }}/two-task-evidence/segments/round-3-openclaw57_patched/
+            ${{ runner.temp }}/two-task-evidence/idle/pytest-dev__pytest-7324-repeat-2-openclaw57_patched/
+            ${{ runner.temp }}/two-task-evidence/blocks/
+            ${{ runner.temp }}/two-task-evidence/progress.jsonl
+            ${{ runner.temp }}/two-task-evidence/current-status.json
+          retention-days: 14
+          compression-level: 3
+          if-no-files-found: error
+      - name: codex — task 7324 repeat 2 — idle RSS/PSS then fresh solver
+        id: r3_codex
+        timeout-minutes: 90
+        run: sudo -E python3 benchmarks/swe_single/paired_campaign.py --output "$PAIRED_ROOT" --sources "$PAIRED_SOURCES" --stage round --round 3 --product codex
+      - name: Audit codex task 7324 repeat 2
+        id: audit_r3_codex
+        if: always() && steps.r3_codex.outcome != 'skipped'
+        run: sudo -E python3 benchmarks/swe_single/audit_artifacts.py "$PAIRED_ROOT"
+      - name: Retain codex task 7324 repeat 2 immediately
+        if: always() && steps.audit_r3_codex.outcome == 'success'
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: same-host-codex-task-7324-repeat-2-${{ github.run_id }}
+          path: |
+            ${{ runner.temp }}/two-task-evidence/segments/round-3-codex/
+            ${{ runner.temp }}/two-task-evidence/idle/pytest-dev__pytest-7324-repeat-2-codex/
+            ${{ runner.temp }}/two-task-evidence/blocks/
+            ${{ runner.temp }}/two-task-evidence/progress.jsonl
+            ${{ runner.temp }}/two-task-evidence/current-status.json
+          retention-days: 14
+          compression-level: 3
+          if-no-files-found: error
+      - name: dsh — task 7324 repeat 2 — idle RSS/PSS then fresh solver
+        id: r3_dsh
+        timeout-minutes: 90
+        run: sudo -E python3 benchmarks/swe_single/paired_campaign.py --output "$PAIRED_ROOT" --sources "$PAIRED_SOURCES" --stage round --round 3 --product dsh
+      - name: Audit dsh task 7324 repeat 2
+        id: audit_r3_dsh
+        if: always() && steps.r3_dsh.outcome != 'skipped'
+        run: sudo -E python3 benchmarks/swe_single/audit_artifacts.py "$PAIRED_ROOT"
+      - name: Retain dsh task 7324 repeat 2 immediately
+        if: always() && steps.audit_r3_dsh.outcome == 'success'
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: same-host-dsh-task-7324-repeat-2-${{ github.run_id }}
+          path: |
+            ${{ runner.temp }}/two-task-evidence/segments/round-3-dsh/
+            ${{ runner.temp }}/two-task-evidence/idle/pytest-dev__pytest-7324-repeat-2-dsh/
+            ${{ runner.temp }}/two-task-evidence/blocks/
+            ${{ runner.temp }}/two-task-evidence/progress.jsonl
+            ${{ runner.temp }}/two-task-evidence/current-status.json
+          retention-days: 14
+          compression-level: 3
+          if-no-files-found: error
+      - name: hermes — task 7236 repeat 3 — idle RSS/PSS then fresh solver
+        id: r4_hermes
+        timeout-minutes: 90
+        run: sudo -E python3 benchmarks/swe_single/paired_campaign.py --output "$PAIRED_ROOT" --sources "$PAIRED_SOURCES" --stage round --round 4 --product hermes
+      - name: Audit hermes task 7236 repeat 3
+        id: audit_r4_hermes
+        if: always() && steps.r4_hermes.outcome != 'skipped'
+        run: sudo -E python3 benchmarks/swe_single/audit_artifacts.py "$PAIRED_ROOT"
+      - name: Retain hermes task 7236 repeat 3 immediately
+        if: always() && steps.audit_r4_hermes.outcome == 'success'
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: same-host-hermes-task-7236-repeat-3-${{ github.run_id }}
+          path: |
+            ${{ runner.temp }}/two-task-evidence/segments/round-4-hermes/
+            ${{ runner.temp }}/two-task-evidence/idle/pytest-dev__pytest-7236-repeat-3-hermes/
+            ${{ runner.temp }}/two-task-evidence/blocks/
+            ${{ runner.temp }}/two-task-evidence/progress.jsonl
+            ${{ runner.temp }}/two-task-evidence/current-status.json
+          retention-days: 14
+          compression-level: 3
+          if-no-files-found: error
+      - name: openclaw — task 7236 repeat 3 — idle RSS/PSS then fresh solver
+        id: r4_openclaw
+        timeout-minutes: 90
+        run: sudo -E python3 benchmarks/swe_single/paired_campaign.py --output "$PAIRED_ROOT" --sources "$PAIRED_SOURCES" --stage round --round 4 --product openclaw
+      - name: Audit openclaw task 7236 repeat 3
+        id: audit_r4_openclaw
+        if: always() && steps.r4_openclaw.outcome != 'skipped'
+        run: sudo -E python3 benchmarks/swe_single/audit_artifacts.py "$PAIRED_ROOT"
+      - name: Retain openclaw task 7236 repeat 3 immediately
+        if: always() && steps.audit_r4_openclaw.outcome == 'success'
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: same-host-openclaw-task-7236-repeat-3-${{ github.run_id }}
+          path: |
+            ${{ runner.temp }}/two-task-evidence/segments/round-4-openclaw/
+            ${{ runner.temp }}/two-task-evidence/idle/pytest-dev__pytest-7236-repeat-3-openclaw/
+            ${{ runner.temp }}/two-task-evidence/blocks/
+            ${{ runner.temp }}/two-task-evidence/progress.jsonl
+            ${{ runner.temp }}/two-task-evidence/current-status.json
+          retention-days: 14
+          compression-level: 3
+          if-no-files-found: error
+      - name: openclaw57_patched — task 7236 repeat 3 — idle RSS/PSS then fresh solver
+        id: r4_openclaw57_patched
+        timeout-minutes: 90
+        run: sudo -E python3 benchmarks/swe_single/paired_campaign.py --output "$PAIRED_ROOT" --sources "$PAIRED_SOURCES" --stage round --round 4 --product openclaw57_patched
+      - name: Audit openclaw57_patched task 7236 repeat 3
+        id: audit_r4_openclaw57_patched
+        if: always() && steps.r4_openclaw57_patched.outcome != 'skipped'
+        run: sudo -E python3 benchmarks/swe_single/audit_artifacts.py "$PAIRED_ROOT"
+      - name: Retain openclaw57_patched task 7236 repeat 3 immediately
+        if: always() && steps.audit_r4_openclaw57_patched.outcome == 'success'
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: same-host-openclaw57_patched-task-7236-repeat-3-${{ github.run_id }}
+          path: |
+            ${{ runner.temp }}/two-task-evidence/segments/round-4-openclaw57_patched/
+            ${{ runner.temp }}/two-task-evidence/idle/pytest-dev__pytest-7236-repeat-3-openclaw57_patched/
+            ${{ runner.temp }}/two-task-evidence/blocks/
+            ${{ runner.temp }}/two-task-evidence/progress.jsonl
+            ${{ runner.temp }}/two-task-evidence/current-status.json
+          retention-days: 14
+          compression-level: 3
+          if-no-files-found: error
+      - name: codex — task 7236 repeat 3 — idle RSS/PSS then fresh solver
+        id: r4_codex
+        timeout-minutes: 90
+        run: sudo -E python3 benchmarks/swe_single/paired_campaign.py --output "$PAIRED_ROOT" --sources "$PAIRED_SOURCES" --stage round --round 4 --product codex
+      - name: Audit codex task 7236 repeat 3
+        id: audit_r4_codex
+        if: always() && steps.r4_codex.outcome != 'skipped'
+        run: sudo -E python3 benchmarks/swe_single/audit_artifacts.py "$PAIRED_ROOT"
+      - name: Retain codex task 7236 repeat 3 immediately
+        if: always() && steps.audit_r4_codex.outcome == 'success'
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: same-host-codex-task-7236-repeat-3-${{ github.run_id }}
+          path: |
+            ${{ runner.temp }}/two-task-evidence/segments/round-4-codex/
+            ${{ runner.temp }}/two-task-evidence/idle/pytest-dev__pytest-7236-repeat-3-codex/
+            ${{ runner.temp }}/two-task-evidence/blocks/
+            ${{ runner.temp }}/two-task-evidence/progress.jsonl
+            ${{ runner.temp }}/two-task-evidence/current-status.json
+          retention-days: 14
+          compression-level: 3
+          if-no-files-found: error
+      - name: dsh — task 7236 repeat 3 — idle RSS/PSS then fresh solver
+        id: r4_dsh
+        timeout-minutes: 90
+        run: sudo -E python3 benchmarks/swe_single/paired_campaign.py --output "$PAIRED_ROOT" --sources "$PAIRED_SOURCES" --stage round --round 4 --product dsh
+      - name: Audit dsh task 7236 repeat 3
+        id: audit_r4_dsh
+        if: always() && steps.r4_dsh.outcome != 'skipped'
+        run: sudo -E python3 benchmarks/swe_single/audit_artifacts.py "$PAIRED_ROOT"
+      - name: Retain dsh task 7236 repeat 3 immediately
+        if: always() && steps.audit_r4_dsh.outcome == 'success'
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: same-host-dsh-task-7236-repeat-3-${{ github.run_id }}
+          path: |
+            ${{ runner.temp }}/two-task-evidence/segments/round-4-dsh/
+            ${{ runner.temp }}/two-task-evidence/idle/pytest-dev__pytest-7236-repeat-3-dsh/
+            ${{ runner.temp }}/two-task-evidence/blocks/
+            ${{ runner.temp }}/two-task-evidence/progress.jsonl
+            ${{ runner.temp }}/two-task-evidence/current-status.json
+          retention-days: 14
+          compression-level: 3
+          if-no-files-found: error
+      - name: claude — task 7236 repeat 3 — idle RSS/PSS then fresh solver
+        id: r4_claude
+        timeout-minutes: 90
+        run: sudo -E python3 benchmarks/swe_single/paired_campaign.py --output "$PAIRED_ROOT" --sources "$PAIRED_SOURCES" --stage round --round 4 --product claude
+      - name: Audit claude task 7236 repeat 3
+        id: audit_r4_claude
+        if: always() && steps.r4_claude.outcome != 'skipped'
+        run: sudo -E python3 benchmarks/swe_single/audit_artifacts.py "$PAIRED_ROOT"
+      - name: Retain claude task 7236 repeat 3 immediately
+        if: always() && steps.audit_r4_claude.outcome == 'success'
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: same-host-claude-task-7236-repeat-3-${{ github.run_id }}
+          path: |
+            ${{ runner.temp }}/two-task-evidence/segments/round-4-claude/
+            ${{ runner.temp }}/two-task-evidence/idle/pytest-dev__pytest-7236-repeat-3-claude/
+            ${{ runner.temp }}/two-task-evidence/blocks/
+            ${{ runner.temp }}/two-task-evidence/progress.jsonl
+            ${{ runner.temp }}/two-task-evidence/current-status.json
+          retention-days: 14
+          compression-level: 3
+          if-no-files-found: error
+      - name: openclaw — task 7324 repeat 3 — idle RSS/PSS then fresh solver
+        id: r5_openclaw
+        timeout-minutes: 90
+        run: sudo -E python3 benchmarks/swe_single/paired_campaign.py --output "$PAIRED_ROOT" --sources "$PAIRED_SOURCES" --stage round --round 5 --product openclaw
+      - name: Audit openclaw task 7324 repeat 3
+        id: audit_r5_openclaw
+        if: always() && steps.r5_openclaw.outcome != 'skipped'
+        run: sudo -E python3 benchmarks/swe_single/audit_artifacts.py "$PAIRED_ROOT"
+      - name: Retain openclaw task 7324 repeat 3 immediately
+        if: always() && steps.audit_r5_openclaw.outcome == 'success'
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: same-host-openclaw-task-7324-repeat-3-${{ github.run_id }}
+          path: |
+            ${{ runner.temp }}/two-task-evidence/segments/round-5-openclaw/
+            ${{ runner.temp }}/two-task-evidence/idle/pytest-dev__pytest-7324-repeat-3-openclaw/
+            ${{ runner.temp }}/two-task-evidence/blocks/
+            ${{ runner.temp }}/two-task-evidence/progress.jsonl
+            ${{ runner.temp }}/two-task-evidence/current-status.json
+          retention-days: 14
+          compression-level: 3
+          if-no-files-found: error
+      - name: openclaw57_patched — task 7324 repeat 3 — idle RSS/PSS then fresh solver
+        id: r5_openclaw57_patched
+        timeout-minutes: 90
+        run: sudo -E python3 benchmarks/swe_single/paired_campaign.py --output "$PAIRED_ROOT" --sources "$PAIRED_SOURCES" --stage round --round 5 --product openclaw57_patched
+      - name: Audit openclaw57_patched task 7324 repeat 3
+        id: audit_r5_openclaw57_patched
+        if: always() && steps.r5_openclaw57_patched.outcome != 'skipped'
+        run: sudo -E python3 benchmarks/swe_single/audit_artifacts.py "$PAIRED_ROOT"
+      - name: Retain openclaw57_patched task 7324 repeat 3 immediately
+        if: always() && steps.audit_r5_openclaw57_patched.outcome == 'success'
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: same-host-openclaw57_patched-task-7324-repeat-3-${{ github.run_id }}
+          path: |
+            ${{ runner.temp }}/two-task-evidence/segments/round-5-openclaw57_patched/
+            ${{ runner.temp }}/two-task-evidence/idle/pytest-dev__pytest-7324-repeat-3-openclaw57_patched/
+            ${{ runner.temp }}/two-task-evidence/blocks/
+            ${{ runner.temp }}/two-task-evidence/progress.jsonl
+            ${{ runner.temp }}/two-task-evidence/current-status.json
+          retention-days: 14
+          compression-level: 3
+          if-no-files-found: error
+      - name: codex — task 7324 repeat 3 — idle RSS/PSS then fresh solver
+        id: r5_codex
+        timeout-minutes: 90
+        run: sudo -E python3 benchmarks/swe_single/paired_campaign.py --output "$PAIRED_ROOT" --sources "$PAIRED_SOURCES" --stage round --round 5 --product codex
+      - name: Audit codex task 7324 repeat 3
+        id: audit_r5_codex
+        if: always() && steps.r5_codex.outcome != 'skipped'
+        run: sudo -E python3 benchmarks/swe_single/audit_artifacts.py "$PAIRED_ROOT"
+      - name: Retain codex task 7324 repeat 3 immediately
+        if: always() && steps.audit_r5_codex.outcome == 'success'
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: same-host-codex-task-7324-repeat-3-${{ github.run_id }}
+          path: |
+            ${{ runner.temp }}/two-task-evidence/segments/round-5-codex/
+            ${{ runner.temp }}/two-task-evidence/idle/pytest-dev__pytest-7324-repeat-3-codex/
+            ${{ runner.temp }}/two-task-evidence/blocks/
+            ${{ runner.temp }}/two-task-evidence/progress.jsonl
+            ${{ runner.temp }}/two-task-evidence/current-status.json
+          retention-days: 14
+          compression-level: 3
+          if-no-files-found: error
+      - name: dsh — task 7324 repeat 3 — idle RSS/PSS then fresh solver
+        id: r5_dsh
+        timeout-minutes: 90
+        run: sudo -E python3 benchmarks/swe_single/paired_campaign.py --output "$PAIRED_ROOT" --sources "$PAIRED_SOURCES" --stage round --round 5 --product dsh
+      - name: Audit dsh task 7324 repeat 3
+        id: audit_r5_dsh
+        if: always() && steps.r5_dsh.outcome != 'skipped'
+        run: sudo -E python3 benchmarks/swe_single/audit_artifacts.py "$PAIRED_ROOT"
+      - name: Retain dsh task 7324 repeat 3 immediately
+        if: always() && steps.audit_r5_dsh.outcome == 'success'
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: same-host-dsh-task-7324-repeat-3-${{ github.run_id }}
+          path: |
+            ${{ runner.temp }}/two-task-evidence/segments/round-5-dsh/
+            ${{ runner.temp }}/two-task-evidence/idle/pytest-dev__pytest-7324-repeat-3-dsh/
+            ${{ runner.temp }}/two-task-evidence/blocks/
+            ${{ runner.temp }}/two-task-evidence/progress.jsonl
+            ${{ runner.temp }}/two-task-evidence/current-status.json
+          retention-days: 14
+          compression-level: 3
+          if-no-files-found: error
+      - name: claude — task 7324 repeat 3 — idle RSS/PSS then fresh solver
+        id: r5_claude
+        timeout-minutes: 90
+        run: sudo -E python3 benchmarks/swe_single/paired_campaign.py --output "$PAIRED_ROOT" --sources "$PAIRED_SOURCES" --stage round --round 5 --product claude
+      - name: Audit claude task 7324 repeat 3
+        id: audit_r5_claude
+        if: always() && steps.r5_claude.outcome != 'skipped'
+        run: sudo -E python3 benchmarks/swe_single/audit_artifacts.py "$PAIRED_ROOT"
+      - name: Retain claude task 7324 repeat 3 immediately
+        if: always() && steps.audit_r5_claude.outcome == 'success'
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: same-host-claude-task-7324-repeat-3-${{ github.run_id }}
+          path: |
+            ${{ runner.temp }}/two-task-evidence/segments/round-5-claude/
+            ${{ runner.temp }}/two-task-evidence/idle/pytest-dev__pytest-7324-repeat-3-claude/
+            ${{ runner.temp }}/two-task-evidence/blocks/
+            ${{ runner.temp }}/two-task-evidence/progress.jsonl
+            ${{ runner.temp }}/two-task-evidence/current-status.json
+          retention-days: 14
+          compression-level: 3
+          if-no-files-found: error
+      - name: hermes — task 7324 repeat 3 — idle RSS/PSS then fresh solver
+        id: r5_hermes
+        timeout-minutes: 90
+        run: sudo -E python3 benchmarks/swe_single/paired_campaign.py --output "$PAIRED_ROOT" --sources "$PAIRED_SOURCES" --stage round --round 5 --product hermes
+      - name: Audit hermes task 7324 repeat 3
+        id: audit_r5_hermes
+        if: always() && steps.r5_hermes.outcome != 'skipped'
+        run: sudo -E python3 benchmarks/swe_single/audit_artifacts.py "$PAIRED_ROOT"
+      - name: Retain hermes task 7324 repeat 3 immediately
+        if: always() && steps.audit_r5_hermes.outcome == 'success'
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: same-host-hermes-task-7324-repeat-3-${{ github.run_id }}
+          path: |
+            ${{ runner.temp }}/two-task-evidence/segments/round-5-hermes/
+            ${{ runner.temp }}/two-task-evidence/idle/pytest-dev__pytest-7324-repeat-3-hermes/
+            ${{ runner.temp }}/two-task-evidence/blocks/
             ${{ runner.temp }}/two-task-evidence/progress.jsonl
             ${{ runner.temp }}/two-task-evidence/current-status.json
           retention-days: 14

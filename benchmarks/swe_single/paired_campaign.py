@@ -52,6 +52,9 @@ def protocol_for(task_id):
     base = json.loads((HERE/'protocol-six.json').read_text())['products']
     protocol['products'] = {p:base[p] for p in PRODUCTS}
     protocol['experiment_id'] = 'TWO-TASK-SAME-HOST-'+os.environ.get('GITHUB_RUN_ID','local')+'-'+task_id
+    protocol['purpose'] = 'Two tasks, six products, three repeats, all on one allocated hosted runner'
+    protocol['comparison_provenance']['expanded_campaign'].update(task_count=2, formal_attempts=36,
+        scheduling='One hosted job; all products sequential, identical allocated vCPUs and frozen runtime')
     protocol['execution'].update(single_host_campaign=True, cpuset_cpus=os.environ['BENCH_CPUSET_CPUS'],
         cpus=int(os.environ['BENCH_ALLOCATED_CPUS']),
         order='Six sequential rotated blocks; fixed before execution; see plan.json',
@@ -190,17 +193,30 @@ def round_stage(args):
         raise ValueError('All six native calibrations must pass')
     block = schedule()[args.round]
     if args.round:
-        previous = args.output/'segments'/f'round-{args.round-1}'/'block-complete.json'
+        previous = args.output/'blocks'/f'round-{args.round-1}.json'
         if not previous.exists():
             raise ValueError('Previous block incomplete; fixed planned order must be retained')
-    campaign = campaign_for(args, block['task_id'], f'round-{args.round}')
+    product = args.product
+    if product not in block['products']:
+        raise ValueError('Product is outside this block')
+    position = block['products'].index(product)
+    if position:
+        previous_product = block['products'][position-1]
+        previous = result_path(args.output, block, previous_product)
+        if not previous.exists() or not json.loads(previous.read_text()).get('preceding_idle_result'):
+            raise ValueError('Previous product incomplete; fixed planned order must be retained')
+    campaign = campaign_for(args, block['task_id'], f'round-{args.round}-{product}')
     try:
         campaign.prepare()
-        for product in block['products']:
-            solve(args, campaign, product, block['task_id'], block['repeat'])
-        dump(campaign.out/'block-complete.json', block)
+        solve(args, campaign, product, block['task_id'], block['repeat'])
+        if all(result_path(args.output, block, p).exists() for p in block['products']):
+            dump(args.output/'blocks'/f'round-{args.round}.json', block)
     finally:
         campaign.cleanup()
+
+
+def result_path(root, block, product):
+    return root/'segments'/f"round-{block['index']}-{product}"/'runs'/f"block-{block['repeat']}-{product}"/'result.json'
 
 
 def finalize(args):
@@ -208,7 +224,7 @@ def finalize(args):
     for block in schedule():
         for product in block['products']:
             identity = f"{block['task_id']}-repeat-{block['repeat']}-{product}"
-            path = args.output/'segments'/f"round-{block['index']}"/'runs'/f"block-{block['repeat']}-{product}"/'result.json'
+            path = result_path(args.output, block, product)
             if not path.exists():
                 rows.append(dict(identity=identity, measured=False, status='not_completed'))
                 continue
@@ -246,9 +262,11 @@ def main():
     parser.add_argument('--sources', type=Path, required=True)
     parser.add_argument('--stage', choices=['init','controls','calibration','round','finalize'], required=True)
     parser.add_argument('--round', type=int, choices=range(6))
+    parser.add_argument('--product', choices=PRODUCTS)
     args = parser.parse_args()
     args.output.mkdir(parents=True, exist_ok=True)
     (args.output/'protocols').mkdir(exist_ok=True)
+    (args.output/'blocks').mkdir(exist_ok=True)
     if args.stage == 'init':
         admission = fixed_runner_admission()
         require_protocol_preflight(os.environ['BENCH_PROTOCOL_PREFLIGHT_RECEIPT'])
